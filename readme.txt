@@ -1,6 +1,13 @@
-Marte Engine v0.1
+Marte Engine
+Version: 0.1
 
-http://thedoglion.wordpress.com/2010/08/09/flashpunk-tutorial-02-loading-and-reading-ogmo-maps-creating-tilemaps/
+1. Introduction
 
-todo:
-* refactor topdown component per muovere su giù ecc.. anche in altri! animazione annidata in update!
+MarteEngine (ME) is a Java videogame engine with focus in a simple, clear API for fast game development.
+Major inspiration comes from Flashpunk (http://flashpunk.net) and Slick forum (http://slick.javaunlimited.net/).
+
+
+2. Contribute
+
+MarteEngine is a opensource (see license.txt) project hosted on GitHun: do want to try, improve or help?
+With Git this is easy and fun :D 

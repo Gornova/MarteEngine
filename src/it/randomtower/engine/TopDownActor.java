@@ -1,4 +1,5 @@
 package it.randomtower.engine;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -8,197 +9,197 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class TopDownActor extends Entity {
 
-    public static final String NAME = "player";
+	public static final String NAME = "player";
 
-    private static final int HEIGHT = 28;
-    private static final int WIDTH = 23;
+	private static final int HEIGHT = 28;
+	private static final int WIDTH = 23;
 
-    public static final String STAND_DOWN = "stand_down";
-    public static final String STAND_UP = "stand_up";
-    public static final String STAND_RIGHT = "stand_right";
-    public static final String STAND_LEFT = "stand_left";
+	public static final String STAND_DOWN = "stand_down";
+	public static final String STAND_UP = "stand_up";
+	public static final String STAND_RIGHT = "stand_right";
+	public static final String STAND_LEFT = "stand_left";
 
-    public Vector2f mySpeed = new Vector2f(2, 2);
+	public Vector2f mySpeed = new Vector2f(2, 2);
 
-    public boolean attacking = false;
+	public boolean attacking = false;
 
-    public TopDownActor(float x, float y, String ref) {
-	super(x, y);
+	public TopDownActor(float x, float y, String ref) {
+		super(x, y);
 
-	// set id
-	name = NAME;
+		// set id
+		name = NAME;
 
-	// load spriteSheet
-	if (ref != null)
-	    setupAnimations(ref);
+		// load spriteSheet
+		if (ref != null)
+			setupAnimations(ref);
 
-	// player rendered above everything
-	zLevel = ME.Z_LEVEL_TOP;
+		// player rendered above everything
+		zLevel = ME.Z_LEVEL_TOP;
 
-	// define labels for the key
-	defineControls();
+		// define labels for the key
+		defineControls();
 
-	// define collision box and type
-	setHitBox(0, 0, WIDTH, HEIGHT);
-	addType(NAME);
-    }
-
-    private void defineControls() {
-	define(ME.WALK_UP, Input.KEY_UP, Input.KEY_W);
-	define(ME.WALK_DOWN, Input.KEY_DOWN, Input.KEY_S);
-	define(ME.WALK_LEFT, Input.KEY_LEFT, Input.KEY_A);
-	define(ME.WALK_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
-    }
-
-    public void setupAnimations(String ref) {
-	try {
-	    setGraphic(new SpriteSheet(ref, WIDTH, HEIGHT));
-	    duration = 150;
-	    add(STAND_DOWN, false, 0, 0);
-	    add(ME.WALK_DOWN, true, 0, 0, 1, 2, 3, 4, 5, 6, 7);
-	    add(ME.WALK_UP, true, 1, 0, 1, 2, 3, 4, 5, 6, 7);
-	    add(ME.WALK_RIGHT, true, 2, 0, 1, 2, 3, 4, 5);
-	    add(ME.WALK_LEFT, true, 3, 0, 1, 2, 3, 4, 5);
-	    add(STAND_UP, false, 1, 0);
-	    add(STAND_RIGHT, false, 2, 0);
-	    add(STAND_LEFT, false, 3, 0);
-	} catch (SlickException e) {
-	    e.printStackTrace();
+		// define collision box and type
+		setHitBox(0, 0, WIDTH, HEIGHT);
+		addType(NAME);
 	}
-    }
 
-    @Override
-    public void update(GameContainer container, int delta)
-	    throws SlickException {
-	super.update(container, delta);
-
-	// movements
-	updateMovements();
-    }
-
-    private void updateMovements() {
-	boolean horizontalMovement = true;
-	boolean verticalMovement = true;
-
-	if (check(ME.WALK_UP)) {
-	    currentAnim = ME.WALK_UP;
-
-	    moveUp();
-	} else if (check(ME.WALK_DOWN)) {
-	    currentAnim = ME.WALK_DOWN;
-
-	    moveDown();
-	} else
-	    verticalMovement = false;
-
-	if (check(ME.WALK_RIGHT)) {
-	    currentAnim = ME.WALK_RIGHT;
-
-	    moveRight();
-	} else if (check(ME.WALK_LEFT)) {
-	    currentAnim = ME.WALK_LEFT;
-
-	    moveLeft();
-	} else
-	    horizontalMovement = false;
-
-	if (!horizontalMovement && !verticalMovement) {
-	    if (currentAnim.equalsIgnoreCase(ME.WALK_DOWN)) {
-		currentAnim = STAND_DOWN;
-	    } else if (currentAnim.equalsIgnoreCase(ME.WALK_UP)) {
-		currentAnim = STAND_UP;
-	    } else if (currentAnim.equalsIgnoreCase(ME.WALK_RIGHT)) {
-		currentAnim = STAND_RIGHT;
-	    } else if (currentAnim.equalsIgnoreCase(ME.WALK_LEFT)) {
-		currentAnim = STAND_LEFT;
-	    }
+	private void defineControls() {
+		define(ME.WALK_UP, Input.KEY_UP, Input.KEY_W);
+		define(ME.WALK_DOWN, Input.KEY_DOWN, Input.KEY_S);
+		define(ME.WALK_LEFT, Input.KEY_LEFT, Input.KEY_A);
+		define(ME.WALK_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
 	}
-    }
 
-    public void moveLeft() {
-	if (!collide(ME.SOLID, x - mySpeed.x, y)) {
-	    x -= mySpeed.x;
+	public void setupAnimations(String ref) {
+		try {
+			setGraphic(new SpriteSheet(ref, WIDTH, HEIGHT));
+			duration = 150;
+			add(STAND_DOWN, false, 0, 0);
+			add(ME.WALK_DOWN, true, 0, 0, 1, 2, 3, 4, 5, 6, 7);
+			add(ME.WALK_UP, true, 1, 0, 1, 2, 3, 4, 5, 6, 7);
+			add(ME.WALK_RIGHT, true, 2, 0, 1, 2, 3, 4, 5);
+			add(ME.WALK_LEFT, true, 3, 0, 1, 2, 3, 4, 5);
+			add(STAND_UP, false, 1, 0);
+			add(STAND_RIGHT, false, 2, 0);
+			add(STAND_LEFT, false, 3, 0);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
-    }
 
-    public void moveRight() {
-	if (!collide(ME.SOLID, x + mySpeed.x, y)) {
-	    x += mySpeed.x;
+	@Override
+	public void update(GameContainer container, int delta)
+			throws SlickException {
+		super.update(container, delta);
+
+		// movements
+		updateMovements();
 	}
-    }
 
-    public void moveDown() {
-	if (!collide(ME.SOLID, x, y + mySpeed.y)) {
-	    y += mySpeed.y;
+	private void updateMovements() {
+		boolean horizontalMovement = true;
+		boolean verticalMovement = true;
+
+		if (check(ME.WALK_UP)) {
+			currentAnim = ME.WALK_UP;
+
+			moveUp();
+		} else if (check(ME.WALK_DOWN)) {
+			currentAnim = ME.WALK_DOWN;
+
+			moveDown();
+		} else
+			verticalMovement = false;
+
+		if (check(ME.WALK_RIGHT)) {
+			currentAnim = ME.WALK_RIGHT;
+
+			moveRight();
+		} else if (check(ME.WALK_LEFT)) {
+			currentAnim = ME.WALK_LEFT;
+
+			moveLeft();
+		} else
+			horizontalMovement = false;
+
+		if (!horizontalMovement && !verticalMovement) {
+			if (currentAnim.equalsIgnoreCase(ME.WALK_DOWN)) {
+				currentAnim = STAND_DOWN;
+			} else if (currentAnim.equalsIgnoreCase(ME.WALK_UP)) {
+				currentAnim = STAND_UP;
+			} else if (currentAnim.equalsIgnoreCase(ME.WALK_RIGHT)) {
+				currentAnim = STAND_RIGHT;
+			} else if (currentAnim.equalsIgnoreCase(ME.WALK_LEFT)) {
+				currentAnim = STAND_LEFT;
+			}
+		}
 	}
-    }
 
-    public void moveUp() {
-	if (!collide(ME.SOLID, x, y - mySpeed.y)) {
-	    y -= mySpeed.y;
+	public void moveLeft() {
+		if (!collide(ME.SOLID, x - mySpeed.x, y)) {
+			x -= mySpeed.x;
+		}
 	}
-    }
 
-    @Override
-    public void render(GameContainer container, Graphics g)
-	    throws SlickException {
-	super.render(container, g);
-    }
-
-    public boolean isRightMoving() {
-	if (currentAnim.equalsIgnoreCase(ME.WALK_RIGHT)) {
-	    return true;
+	public void moveRight() {
+		if (!collide(ME.SOLID, x + mySpeed.x, y)) {
+			x += mySpeed.x;
+		}
 	}
-	return false;
-    }
 
-    public boolean isLeftMoving() {
-	if (currentAnim.equalsIgnoreCase(ME.WALK_LEFT)) {
-	    return true;
+	public void moveDown() {
+		if (!collide(ME.SOLID, x, y + mySpeed.y)) {
+			y += mySpeed.y;
+		}
 	}
-	return false;
-    }
 
-    public boolean isUpMoving() {
-	if (currentAnim.equalsIgnoreCase(ME.WALK_UP)) {
-	    return true;
+	public void moveUp() {
+		if (!collide(ME.SOLID, x, y - mySpeed.y)) {
+			y -= mySpeed.y;
+		}
 	}
-	return false;
-    }
 
-    public boolean isDownMoving() {
-	if (currentAnim.equalsIgnoreCase(ME.WALK_DOWN)) {
-	    return true;
+	@Override
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
+		super.render(container, g);
 	}
-	return false;
-    }
 
-    public boolean isRightStanding() {
-	if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_RIGHT)) {
-	    return true;
+	public boolean isRightMoving() {
+		if (currentAnim.equalsIgnoreCase(ME.WALK_RIGHT)) {
+			return true;
+		}
+		return false;
 	}
-	return false;
-    }
 
-    public boolean isLeftStanding() {
-	if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_LEFT)) {
-	    return true;
+	public boolean isLeftMoving() {
+		if (currentAnim.equalsIgnoreCase(ME.WALK_LEFT)) {
+			return true;
+		}
+		return false;
 	}
-	return false;
-    }
 
-    public boolean isUpStanding() {
-	if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_UP)) {
-	    return true;
+	public boolean isUpMoving() {
+		if (currentAnim.equalsIgnoreCase(ME.WALK_UP)) {
+			return true;
+		}
+		return false;
 	}
-	return false;
-    }
 
-    public boolean isDownStanding() {
-	if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_DOWN)) {
-	    return true;
+	public boolean isDownMoving() {
+		if (currentAnim.equalsIgnoreCase(ME.WALK_DOWN)) {
+			return true;
+		}
+		return false;
 	}
-	return false;
-    }
+
+	public boolean isRightStanding() {
+		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_RIGHT)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isLeftStanding() {
+		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_LEFT)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isUpStanding() {
+		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_UP)) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isDownStanding() {
+		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_DOWN)) {
+			return true;
+		}
+		return false;
+	}
 
 }

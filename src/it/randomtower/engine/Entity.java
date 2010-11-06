@@ -52,6 +52,9 @@ public abstract class Entity implements Comparable<Entity> {
 	/** height of entity **/
 	protected int height;
 
+	/** stateManager for entity **/
+	public StateManager stateManager;
+	
 	/**
 	 * create a new entity setting initial position (x,y)
 	 * 
@@ -61,6 +64,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public Entity(float x, float y) {
 		this.x = x;
 		this.y = y;
+		stateManager = new StateManager();
 	}
 
 	/**
@@ -72,6 +76,10 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		if (stateManager!=null && stateManager.currentState()!=null){
+			stateManager.update(container, delta);
+			return;
+		}
 		if (animations != null) {
 			if (currentAnim != null) {
 				Animation anim = animations.get(currentAnim);
@@ -91,6 +99,10 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
+		if (stateManager!=null && stateManager.currentState()!=null){
+			stateManager.render(g);
+			return;
+		}		
 		if (currentAnim != null) {
 			animations.get(currentAnim).draw(x, y);
 		} else if (currentImage != null) {
@@ -283,6 +295,10 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void collisionResponse(Entity entity) {
 
+	}
+
+	public Image getCurrentImage() {
+		return currentImage;
 	}
 
 }

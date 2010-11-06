@@ -11,3 +11,21 @@ Major inspiration comes from Flashpunk (http://flashpunk.net) and Slick forum (h
 
 MarteEngine is a opensource (see license.txt) project hosted on GitHun: do want to try, improve or help?
 With Git this is easy and fun :D 
+
+
+3. Examples
+
+In test/it.randomtower.test you can find few test
+
+
+4. Tutorial
+
+4.1 Hello World Marte Engine
+
+HelloWorld.java is most simple ME example. You can read code and find few things:
+1) all objects are subclasses of Entity class
+2) for easy use, ME provide StaticActor, a simple way to diplay an image on screen
+3) code is similar to Slick base code, because ME is build on top of it. So there are init,render and update functions
+3.1) in init function we build basic entity
+3.2) in update function we update logic, collision and siimlar stuff: this is done from ME static class and StaticActor.java
+3.3) in render function we draw on screen the image: this is done from ME static class and StaticActor.java

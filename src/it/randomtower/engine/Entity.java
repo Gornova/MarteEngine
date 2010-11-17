@@ -31,7 +31,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public Hashtable<String, Animation> animations = new Hashtable<String, Animation>();
 	public String currentAnim;
 	public int duration = 200;
-	public int zLevel = -1;
+	public int depth = -1;
 
 	/** static image for not-animated entity **/
 	protected Image currentImage;
@@ -199,9 +199,9 @@ public abstract class Entity implements Comparable<Entity> {
 	 * Compare to another entity on zLevel
 	 */
 	public int compareTo(Entity o) {
-		if (zLevel == o.zLevel)
+		if (depth == o.depth)
 			return 0;
-		if (zLevel > o.zLevel)
+		if (depth > o.depth)
 			return 1;
 		return -1;
 	}

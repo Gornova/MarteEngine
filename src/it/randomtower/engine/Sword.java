@@ -94,7 +94,7 @@ public class Sword extends Entity {
 
 			setHitBox(1, 1, WIDTH, HEIGHT + 2);
 
-			zLevel = parent.zLevel - 2;
+			depth = parent.depth - 2;
 		} else if (parent.isDownMoving()) {
 			setGraphic(downSword);
 
@@ -103,7 +103,7 @@ public class Sword extends Entity {
 
 			setHitBox(1, 1, WIDTH, HEIGHT + 2);
 
-			zLevel = parent.zLevel + 2;
+			depth = parent.depth + 2;
 		}
 
 		if (parent.isRightMoving()) {
@@ -114,7 +114,7 @@ public class Sword extends Entity {
 
 			setHitBox(-HEIGHT / 3, WIDTH + 3, HEIGHT, WIDTH);
 
-			zLevel = parent.zLevel + 2;
+			depth = parent.depth + 2;
 		} else if (parent.isLeftMoving()) {
 			setGraphic(leftSword);
 
@@ -123,7 +123,7 @@ public class Sword extends Entity {
 
 			setHitBox(-HEIGHT / 3, WIDTH + 3, HEIGHT, WIDTH);
 
-			zLevel = parent.zLevel + 2;
+			depth = parent.depth + 2;
 		}
 
 		// attack

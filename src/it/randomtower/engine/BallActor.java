@@ -28,7 +28,7 @@ public class BallActor extends Entity {
 			setupGraphic(ref);
 
 		// player rendered above everything
-		zLevel = ME.Z_LEVEL_TOP;
+		depth = ME.Z_LEVEL_TOP;
 
 		// define collision box and type
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());

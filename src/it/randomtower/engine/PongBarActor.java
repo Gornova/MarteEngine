@@ -27,7 +27,7 @@ public class PongBarActor extends Entity {
 			setupAnimations(ref);
 
 		// player rendered above everything
-		zLevel = ME.Z_LEVEL_TOP;
+		depth = ME.Z_LEVEL_TOP;
 
 		// define labels for the key
 		defineControls(up, down);

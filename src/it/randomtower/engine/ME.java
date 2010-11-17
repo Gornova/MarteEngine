@@ -9,6 +9,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.RoundedRectangle;
 
 /**
@@ -122,6 +123,13 @@ public class ME {
 
 		// render entities
 		for (Entity e : entities) {
+			if (ME.debugEnabled) {
+				g.setColor(ME.borderColor);
+				Rectangle hitBox = new Rectangle(e.x + e.xOffset, e.y + e.yOffset, e.width,
+						e.height);
+				g.draw(hitBox);
+				g.setColor(Color.white);
+			}			
 			if (camera != null) {
 				// TODO
 				// if (camera.contains(e)) {

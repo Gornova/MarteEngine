@@ -5,14 +5,12 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity implements Comparable<Entity> {
@@ -45,8 +43,8 @@ public abstract class Entity implements Comparable<Entity> {
 	private HashSet<String> type = new HashSet<String>();
 	/** true for collidable entity, false otherwise **/
 	public boolean collidable = true;
-	private float xOffset;
-	private float yOffset;
+	protected float xOffset;
+	protected float yOffset;
 	/** width of entity **/
 	protected int width;
 	/** height of entity **/
@@ -107,13 +105,6 @@ public abstract class Entity implements Comparable<Entity> {
 			animations.get(currentAnim).draw(x, y);
 		} else if (currentImage != null) {
 			g.drawImage(currentImage, x, y);
-		}
-		if (ME.debugEnabled) {
-			g.setColor(ME.borderColor);
-			Rectangle hitBox = new Rectangle(x + xOffset, y + yOffset, width,
-					height);
-			g.draw(hitBox);
-			g.setColor(Color.white);
 		}
 	}
 

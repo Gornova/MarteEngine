@@ -35,7 +35,9 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/** static image for not-animated entity **/
 	protected Image currentImage;
-
+	/** true if this entity should be visible, false otherwise */
+	public boolean visible = true;
+	
 	/** available commands for entity **/
 	public Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
 
@@ -97,6 +99,8 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
+		if (!visible)
+			return;
 		if (stateManager!=null && stateManager.currentState()!=null){
 			stateManager.render(g);
 			return;

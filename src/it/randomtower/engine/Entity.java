@@ -260,9 +260,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @return
 	 */
 	public boolean collide(String type, float x, float y) {
-		if (type == null)
-			return false;
-		if (type.length() == 0)
+		if (type == null || type.isEmpty())
 			return false;
 		// offset
 		for (Entity entity : ME.getEntities()) {
@@ -286,9 +284,9 @@ public abstract class Entity implements Comparable<Entity> {
 	/**
 	 * Response to a collision with another entity
 	 * 
-	 * @param entity
+	 * @param other
 	 */
-	public void collisionResponse(Entity entity) {
+	public void collisionResponse(Entity other) {
 
 	}
 

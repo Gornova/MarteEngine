@@ -16,6 +16,9 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class PongTest extends StateBasedGame {
 
+	public static final int INTRO_STATE = 0;
+	public static final int GAME_STATE = 1;
+	
 	public PongTest() {
 		super("Pong Slick Marte Engine clone 1.0");
 	}
@@ -23,10 +26,12 @@ public class PongTest extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		ME.container = container;
+
+		PongIntroState introState = new PongIntroState(INTRO_STATE);
+		PongGameState gameState = new PongGameState(GAME_STATE);
 		
-		PongGameState gameState = new PongGameState(0);
-		
-		addState(gameState);
+		addState(introState);
+		addState(gameState);		
 	}
 
 	public static void main(String[] argv) {

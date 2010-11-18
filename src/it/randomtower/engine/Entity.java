@@ -263,7 +263,7 @@ public abstract class Entity implements Comparable<Entity> {
 		if (type == null || type.isEmpty())
 			return false;
 		// offset
-		for (Entity entity : ME.getEntities()) {
+		for (Entity entity : ME.world.getEntities()) {
 			if (entity.collidable && entity.type.contains(type)) {
 				if (!entity.equals(this)
 						&& x + xOffset + width > entity.x + entity.xOffset

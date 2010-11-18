@@ -1,16 +1,13 @@
 package it.randomtower.engine;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Hashtable;
-import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.RoundedRectangle;
+import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * Marte Engine Utility class
@@ -26,13 +23,12 @@ public class ME {
 	public static int keyToggleDebug = -1;
 	/** default border color of hitbox in debug mode **/
 	public static Color borderColor = Color.red;
+	/** key for restarting game **/
+	public static int keyRestart = -1;
+	
 
 	/** game container **/
 	public static GameContainer container;
-
-	private static final List<Entity> entities = new ArrayList<Entity>();
-	private static final List<Entity> removeable = new ArrayList<Entity>();
-	private static final List<Entity> addable = new ArrayList<Entity>();
 
 	/** x scale factor for graphics, default 1 (nothing) **/
 	public static float scaleX = 1;
@@ -55,55 +51,37 @@ public class ME {
 	/** utility hashtable for game attributes **/
 	public static Hashtable<String, Object> attributes = new Hashtable<String, Object>();
 
-	/**
-	 * Add entity to game and sort entity in z order
-	 * @param e entity to add
-	 */
-	public static void add(Entity e) {
-		// sort in z order
-		if (entities.size() > 1) {
-			Collections.sort(entities);
-		}
-		addable.add(e);
-	}
-
+	public static WorldGameState world;
+	
 	/** 
 	 * Update game camera, entities and add new entities and remove old entities
 	 * @param container
 	 * @param delta
 	 * @throws SlickException
 	 */
-	public static void update(GameContainer container, int delta)
+	public static void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
-		removeable.clear();
-
+		if (world == null)
+			throw new SlickException("no world set");
+		
 		// special key handling
 		if (keyToggleDebug != -1) {
 			if (container.getInput().isKeyPressed(keyToggleDebug)) {
 				debugEnabled = debugEnabled ? false : true;
 			}
 		}
+		if (keyRestart != -1) {
+			if (container.getInput().isKeyPressed(keyRestart)) {
+				ME.world.clear();
+				//TODO: go to first state?
+			}
+		}	
 
 		// update camera
 		if (camera != null) {
 			camera.update(container, delta);
-		}
-
-		// add new entities
-		for (Entity entity : addable) {
-			entities.add(entity);
-		}
-		addable.clear();
-
-		// update entities
-		for (Entity e : entities) {
-			e.update(container, delta);
-		}
-		// remove signed entities
-		for (Entity entity : removeable) {
-			entities.remove(entity);
 		}
 	}
 
@@ -113,32 +91,18 @@ public class ME {
 	 * @param g
 	 * @throws SlickException
 	 */
-	public static void render(GameContainer container, Graphics g)
+	public static void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		if (container == null)
+			throw new SlickException("no container set");
+		if (world == null)
+			throw new SlickException("no world set");		
+		
 		if (scaleX != 1 || scaleY != 1)
 			g.scale(scaleX, scaleY);
 		// center to camera position
 		if (camera != null)
 			g.translate(camera.x, camera.y);
-
-		// render entities
-		for (Entity e : entities) {
-			if (ME.debugEnabled) {
-				g.setColor(ME.borderColor);
-				Rectangle hitBox = new Rectangle(e.x + e.xOffset, e.y + e.yOffset, e.width,
-						e.height);
-				g.draw(hitBox);
-				g.setColor(Color.white);
-			}			
-			if (camera != null) {
-				// TODO
-				// if (camera.contains(e)) {
-				e.render(container, g);
-				// }
-			} else {
-				e.render(container, g);
-			}
-		}
 
 		if (camera != null)
 			g.translate(-camera.x, -camera.y);
@@ -153,53 +117,13 @@ public class ME {
 			g.fill(r);
 			g.draw(r);
 			g.setColor(Color.white);
-			g.drawString("Entities: " + entities.size(),
+			g.drawString("Entities: " + world.getEntities().size(),
 					container.getWidth() - 110, 10);
 			container.setShowFPS(true);
 
 		} else {
 			container.setShowFPS(false);
 		}
-	}
-
-	/**
-	 * @return List of entities currently in game
-	 */
-	public static List<Entity> getEntities() {
-		return entities;
-	}
-
-	/**
-	 * @param entity to remove from game
-	 * @return false if entity is already set to be remove
-	 */
-	public static boolean remove(Entity entity) {
-		if (!removeable.contains(entity)) {
-			return removeable.add(entity);
-		}
-		return false;
-	}
-
-	/**
-	 * @param name
-	 * @return null if name is null or if no entity is found in game, entity otherwise
-	 */
-	public static Entity find(String name) {
-		if (name == null)
-			return null;
-		for (Entity entity : entities) {
-			if (entity.name.equalsIgnoreCase(name)) {
-				return entity;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Remove all entities
-	 */
-	public static void clear() {
-		entities.clear();
 	}
 
 	/**
@@ -218,6 +142,13 @@ public class ME {
 	 */
 	public static void setCamera(Camera camera) {
 		ME.camera = camera;
+	}
+
+	public static void remove(Entity entity) {
+		if (world!=null){
+			world.remove(entity);
+		}
+		
 	}
 
 }

@@ -18,7 +18,7 @@ public class Map extends TiledMap {
 
 					StaticActor block = new StaticActor(i * 32, j * 32, 32, 32,
 							"data/block.png");
-					ME.add(block);
+					ME.world.add(block);
 				}
 			}
 		}

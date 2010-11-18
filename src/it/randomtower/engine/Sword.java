@@ -205,7 +205,7 @@ public class Sword extends Entity {
 	public void collisionResponse(Entity entity) {
 
 		if (entity.name.equalsIgnoreCase(StaticActor.NAME) && parent.attacking) {
-			ME.remove(entity);
+			ME.world.remove(entity);
 		}
 
 	}

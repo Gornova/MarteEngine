@@ -1,25 +1,30 @@
 package it.randomtower.test;
 
+import it.randomtower.engine.Camera;
+import it.randomtower.engine.ME;
+import it.randomtower.engine.StaticActor;
+import it.randomtower.engine.Sword;
+import it.randomtower.engine.TopDownActor;
+import it.randomtower.engine.WorldGameState;
+
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
 
-import it.randomtower.engine.*;
-
-public class MoveAvatarTest extends BasicGame {
-
-	public static int keyRestart = Input.KEY_R;
+public class MoveAvatarTest extends StateBasedGame {
 
 	public MoveAvatarTest() {
 		super("Move Avatar Test");
 	}
 
 	@Override
-	public void init(GameContainer container) throws SlickException {
+	public void initStatesList(GameContainer container) throws SlickException {
 		ME.container = container;
+		
+		ME.world = new WorldGameState(0);
+		
 		// create player
 		TopDownActor player = new TopDownActor(400, 400, "data/link.png");
 		// create sword relative to player
@@ -29,36 +34,20 @@ public class MoveAvatarTest extends BasicGame {
 				"data/tiles.png", 0, 6);
 
 		// add entities
-		ME.add(player);
-		ME.add(temple);
-		ME.add(sword);
+		ME.world.add(player);
+		ME.world.add(temple);
+		ME.world.add(sword);
 
 		// set screen camera
 		ME.setCamera(new Camera(player, container.getWidth(), ME.container
-				.getHeight()));
+				.getHeight()));		
 	}
-
-	@Override
-	public void update(GameContainer container, int delta)
-			throws SlickException {
-		ME.update(container, delta);
-		if (keyRestart != -1) {
-			if (container.getInput().isKeyPressed(keyRestart)) {
-				ME.clear();
-				init(container);
-			}
-		}
-	}
-
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
-		// ME.scale(3, 3);
-		ME.render(container, g);
-	}
+	
 
 	public static void main(String[] argv) {
 		try {
 			ME.keyToggleDebug = Input.KEY_1;
+			ME.keyRestart = Input.KEY_R;
 			AppGameContainer container = new AppGameContainer(
 					new MoveAvatarTest());
 			container.setDisplayMode(800, 600, false);

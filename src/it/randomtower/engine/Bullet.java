@@ -35,7 +35,7 @@ public class Bullet extends Entity {
 	@Override
 	public void collisionResponse(Entity entity) {
 		if (entity.name.equalsIgnoreCase(StaticActor.NAME)) {
-			ME.remove(this);
+			ME.world.remove(this);
 		}
 	}
 

@@ -13,12 +13,18 @@ MarteEngine is a opensource (see license.txt) project hosted on GitHun: do want 
 With Git this is easy and fun :D 
 
 
-3. Examples
+3. Concepts
 
-In test/it.randomtower.test you can find few test
+Entity - Main object in game with render logic and update logic
+
+World - Useful container for all game entity, help to organize game logic in differents states (Intro, Game, Pause, etc..)
+
+Camera - Camera will follow an entity and scroll screen
 
 
 4. Tutorial
+
+In test/it.randomtower.test you can find few test
 
 4.1 Hello World Marte Engine
 

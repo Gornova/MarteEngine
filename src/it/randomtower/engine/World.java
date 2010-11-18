@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class WorldGameState extends BasicGameState {
+public class World extends BasicGameState {
 
 	/** unique id for every world **/
 	public int id = 0;
@@ -28,7 +28,7 @@ public class WorldGameState extends BasicGameState {
 	/** current camera **/
 	public static Camera camera;
 
-	public WorldGameState(int id) {
+	public World(int id) {
 		this.id = id;
 	}
 

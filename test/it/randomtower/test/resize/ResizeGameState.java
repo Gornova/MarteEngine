@@ -2,14 +2,14 @@ package it.randomtower.test.resize;
 
 import it.randomtower.engine.Camera;
 import it.randomtower.engine.ME;
-import it.randomtower.engine.WorldGameState;
+import it.randomtower.engine.World;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class ResizeGameState extends WorldGameState {
+public class ResizeGameState extends World {
 
 	public ResizeGameState(int id) throws SlickException {
 		super(id);

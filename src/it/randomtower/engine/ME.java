@@ -51,7 +51,7 @@ public class ME {
 	/** utility hashtable for game attributes **/
 	public static Hashtable<String, Object> attributes = new Hashtable<String, Object>();
 
-	public static WorldGameState world;
+	public static World world;
 	
 	/** 
 	 * Update game camera, entities and add new entities and remove old entities

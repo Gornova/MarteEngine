@@ -1,7 +1,7 @@
 package it.randomtower.test.pong;
 
 import it.randomtower.engine.ME;
-import it.randomtower.engine.WorldGameState;
+import it.randomtower.engine.World;
 import it.randomtower.engine.actors.StaticActor;
 
 import org.newdawn.slick.GameContainer;
@@ -10,7 +10,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class PongGameState extends WorldGameState {
+public class PongGameState extends World {
 
 	/**
 	 * Timer for a new ball

@@ -1,7 +1,7 @@
 package it.randomtower.test.helloWorld;
 
 import it.randomtower.engine.ME;
-import it.randomtower.engine.WorldGameState;
+import it.randomtower.engine.World;
 import it.randomtower.engine.actors.StaticActor;
 
 import org.newdawn.slick.AppGameContainer;
@@ -20,7 +20,7 @@ public class HelloWorld extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		StaticActor helloWorld = new StaticActor(100, 100, 35, 35,
 				"data/cross.png");
-		WorldGameState world = new WorldGameState(0);
+		World world = new World(0);
 		world.add(helloWorld);
 		
 		addState(world);

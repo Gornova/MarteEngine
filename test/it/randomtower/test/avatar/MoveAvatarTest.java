@@ -2,7 +2,7 @@ package it.randomtower.test.avatar;
 
 import it.randomtower.engine.Camera;
 import it.randomtower.engine.ME;
-import it.randomtower.engine.WorldGameState;
+import it.randomtower.engine.World;
 import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.actors.TopDownActor;
 
@@ -22,7 +22,7 @@ public class MoveAvatarTest extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		ME.container = container;
 		
-		ME.world = new WorldGameState(0);
+		ME.world = new World(0);
 		
 		// create player
 		TopDownActor player = new TopDownActor(400, 400, "data/link.png");

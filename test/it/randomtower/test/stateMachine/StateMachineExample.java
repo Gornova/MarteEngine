@@ -2,7 +2,7 @@ package it.randomtower.test.stateMachine;
 
 import it.randomtower.engine.Entity;
 import it.randomtower.engine.ME;
-import it.randomtower.engine.WorldGameState;
+import it.randomtower.engine.World;
 import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.states.CombatState;
 import it.randomtower.engine.states.IdleState;
@@ -24,7 +24,7 @@ public class StateMachineExample extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		
-		WorldGameState state = new WorldGameState(0); 
+		World state = new World(0); 
 		
 		Entity e = new StaticActor(100, 100, 100,100 ,"data/cross.png");
 		e.speed = new Vector2f(8,8);

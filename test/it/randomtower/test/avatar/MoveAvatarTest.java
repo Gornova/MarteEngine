@@ -1,4 +1,4 @@
-package it.randomtower.test;
+package it.randomtower.test.avatar;
 
 import it.randomtower.engine.Camera;
 import it.randomtower.engine.ME;

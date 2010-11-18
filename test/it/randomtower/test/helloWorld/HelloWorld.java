@@ -1,4 +1,4 @@
-package it.randomtower.test;
+package it.randomtower.test.helloWorld;
 
 import it.randomtower.engine.ME;
 import it.randomtower.engine.StaticActor;

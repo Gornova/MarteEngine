@@ -1,4 +1,4 @@
-package it.randomtower.test;
+package it.randomtower.test.pong;
 
 import it.randomtower.engine.BallActor;
 import it.randomtower.engine.ME;

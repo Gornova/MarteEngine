@@ -1,4 +1,4 @@
-package it.randomtower.test;
+package it.randomtower.test.resize;
 
 import it.randomtower.engine.Bullet;
 import it.randomtower.engine.Camera;

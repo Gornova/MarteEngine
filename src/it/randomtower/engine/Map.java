@@ -1,5 +1,7 @@
 package it.randomtower.engine;
 
+import it.randomtower.engine.actors.StaticActor;
+
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 

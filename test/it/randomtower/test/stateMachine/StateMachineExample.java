@@ -2,8 +2,8 @@ package it.randomtower.test.stateMachine;
 
 import it.randomtower.engine.Entity;
 import it.randomtower.engine.ME;
-import it.randomtower.engine.StaticActor;
 import it.randomtower.engine.WorldGameState;
+import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.states.CombatState;
 import it.randomtower.engine.states.IdleState;
 import it.randomtower.engine.states.MovingState;

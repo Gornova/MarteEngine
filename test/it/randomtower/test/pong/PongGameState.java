@@ -1,10 +1,8 @@
 package it.randomtower.test.pong;
 
-import it.randomtower.engine.BallActor;
 import it.randomtower.engine.ME;
-import it.randomtower.engine.PongBarActor;
-import it.randomtower.engine.StaticActor;
 import it.randomtower.engine.WorldGameState;
+import it.randomtower.engine.actors.StaticActor;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

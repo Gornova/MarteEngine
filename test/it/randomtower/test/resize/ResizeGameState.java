@@ -1,9 +1,7 @@
 package it.randomtower.test.resize;
 
-import it.randomtower.engine.Bullet;
 import it.randomtower.engine.Camera;
 import it.randomtower.engine.ME;
-import it.randomtower.engine.ResizeSquare;
 import it.randomtower.engine.WorldGameState;
 
 import org.newdawn.slick.Color;

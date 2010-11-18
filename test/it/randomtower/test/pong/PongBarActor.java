@@ -1,4 +1,7 @@
-package it.randomtower.engine;
+package it.randomtower.test.pong;
+
+import it.randomtower.engine.Entity;
+import it.randomtower.engine.ME;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

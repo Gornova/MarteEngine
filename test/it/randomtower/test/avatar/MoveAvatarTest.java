@@ -1,6 +1,5 @@
 package it.randomtower.test.avatar;
 
-import it.randomtower.engine.Camera;
 import it.randomtower.engine.ME;
 import it.randomtower.engine.World;
 import it.randomtower.engine.actors.StaticActor;
@@ -22,7 +21,7 @@ public class MoveAvatarTest extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		ME.container = container;
 		
-		ME.world = new World(0);
+		World gameWorld = new World(0);
 		
 		// create player
 		TopDownActor player = new TopDownActor(400, 400, "data/link.png");
@@ -33,13 +32,16 @@ public class MoveAvatarTest extends StateBasedGame {
 				"data/tiles.png", 0, 6);
 
 		// add entities
-		ME.world.add(player);
-		ME.world.add(temple);
-		ME.world.add(sword);
+		gameWorld.add(player);
+		gameWorld.add(temple);
+		gameWorld.add(sword);
 
-		// set screen camera
-		ME.setCamera(new Camera(player, container.getWidth(), ME.container
-				.getHeight()));		
+		// set screen camera to follo player
+		gameWorld.setCameraOn(player);
+		
+		ME.world = gameWorld;
+
+		addState(gameWorld);
 	}
 	
 

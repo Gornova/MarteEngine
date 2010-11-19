@@ -34,8 +34,6 @@ public class ME {
 	public static float scaleX = 1;
 	/** y scale factor for graphics, default 1 (nothing) **/
 	public static float scaleY = 1;
-	/** current camera **/
-	public static Camera camera;
 
 	/** default collidable type SOLID **/
 	public static final String SOLID = "solid";
@@ -54,7 +52,7 @@ public class ME {
 	public static World world;
 	
 	/** 
-	 * Update game camera, entities and add new entities and remove old entities
+	 * Update entities and add new entities and remove old entities
 	 * @param container
 	 * @param delta
 	 * @throws SlickException
@@ -79,10 +77,6 @@ public class ME {
 			}
 		}	
 
-		// update camera
-		if (camera != null) {
-			camera.update(container, delta);
-		}
 	}
 
 	/**
@@ -100,12 +94,6 @@ public class ME {
 		
 		if (scaleX != 1 || scaleY != 1)
 			g.scale(scaleX, scaleY);
-		// center to camera position
-		if (camera != null)
-			g.translate(camera.x, camera.y);
-
-		if (camera != null)
-			g.translate(-camera.x, -camera.y);
 
 		// render debug stuff
 		if (debugEnabled) {
@@ -134,14 +122,6 @@ public class ME {
 	public static void scale(float sx, float sy) {
 		scaleX = sx;
 		scaleY = sy;
-	}
-
-	/**
-	 * Set camera 
-	 * @param camera
-	 */
-	public static void setCamera(Camera camera) {
-		ME.camera = camera;
 	}
 
 	public static void remove(Entity entity) {

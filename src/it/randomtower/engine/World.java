@@ -17,16 +17,13 @@ public class World extends BasicGameState {
 	/** unique id for every world **/
 	public int id = 0;
 
-	/** game container **/
-	public static GameContainer container;
-
 	/** internal list for entities **/
 	private final List<Entity> entities = new ArrayList<Entity>();
 	private final List<Entity> removeable = new ArrayList<Entity>();
 	private final List<Entity> addable = new ArrayList<Entity>();
 
 	/** current camera **/
-	public static Camera camera;
+	public Camera camera;
 
 	public World(int id) {
 		this.id = id;
@@ -44,6 +41,11 @@ public class World extends BasicGameState {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		
+		// center to camera position
+		if (camera != null)
+			g.translate(camera.x, camera.y);
+
 		// render entities
 		for (Entity e : entities) {
 			if (ME.debugEnabled) {
@@ -62,9 +64,11 @@ public class World extends BasicGameState {
 				e.render(container, g);
 			}
 		}
+
+		if (camera != null)
+			g.translate(-camera.x, -camera.y);
 		
 		ME.render(container, game, g);
-
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta)
@@ -87,6 +91,12 @@ public class World extends BasicGameState {
 		for (Entity entity : removeable) {
 			entities.remove(entity);
 		}
+		
+		// update camera
+		if (camera != null) {
+			camera.update(container, delta);
+		}
+		
 		
 		ME.update(container, game, delta);
 	}
@@ -151,6 +161,15 @@ public class World extends BasicGameState {
 	public void clear() {
 		removeable.clear();
 		removeable.addAll(entities);
+	}
+	
+	public void setCamera(Camera camera){
+		this.camera = camera;
+	}
+	
+	public void setCameraOn(Entity entity){
+		this.camera = new Camera(entity, ME.container.getWidth(), ME.container
+				.getHeight());	
 	}
 
 }

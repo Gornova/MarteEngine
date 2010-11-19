@@ -27,7 +27,7 @@ public class ResizeGameState extends World {
 		//new Map("data/level1.tmx");	
 		
 		// set screen camera
-		ME.setCamera(new Camera(square, ME.container.getWidth(), ME.container
+		setCamera(new Camera(square, ME.container.getWidth(), ME.container
 				.getHeight()));		
 		
 	}

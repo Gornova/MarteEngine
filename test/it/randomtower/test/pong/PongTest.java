@@ -25,7 +25,6 @@ public class PongTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		ME.container = container;
 
 		PongIntroState introState = new PongIntroState(INTRO_STATE);
 		PongGameState gameState = new PongGameState(GAME_STATE);

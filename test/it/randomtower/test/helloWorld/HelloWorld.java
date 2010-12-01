@@ -20,7 +20,7 @@ public class HelloWorld extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		StaticActor helloWorld = new StaticActor(100, 100, 35, 35,
 				"data/cross.png");
-		World world = new World(0);
+		World world = new World(0,container);
 		world.add(helloWorld);
 		
 		addState(world);

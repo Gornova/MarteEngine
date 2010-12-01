@@ -1,5 +1,7 @@
 package it.randomtower.engine;
 
+import it.randomtower.engine.entity.Entity;
+
 import java.util.Hashtable;
 
 import org.newdawn.slick.Color;
@@ -27,16 +29,11 @@ public class ME {
 	public static int keyRestart = -1;
 	
 
-	/** game container **/
-	public static GameContainer container;
-
 	/** x scale factor for graphics, default 1 (nothing) **/
 	public static float scaleX = 1;
 	/** y scale factor for graphics, default 1 (nothing) **/
 	public static float scaleY = 1;
 
-	/** default collidable type SOLID **/
-	public static final String SOLID = "solid";
 
 	/** top z order **/
 	public static final Integer Z_LEVEL_TOP = 100;

@@ -1,7 +1,6 @@
 package it.randomtower.engine.actors;
 
-import it.randomtower.engine.Entity;
-import it.randomtower.engine.ME;
+import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -18,8 +17,10 @@ public class StaticActor extends Entity {
 		name = NAME;
 
 		// define collision box and type
+		this.width = width;
+		this.height = height;
 		setHitBox(0, 0, width, height);
-		addType(NAME, ME.SOLID);
+		addType(NAME, Entity.SOLID);
 
 		// set image
 		setupGraphic(image);
@@ -45,7 +46,7 @@ public class StaticActor extends Entity {
 	private void setupAnimations(String ref, int row, int frame) {
 		try {
 			setGraphic(new SpriteSheet(ref, width, height));
-			add(NAME, false, row, frame);
+			addAnimation(NAME, false, row, frame);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

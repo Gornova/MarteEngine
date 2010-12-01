@@ -5,29 +5,40 @@ import it.randomtower.engine.ME;
 import it.randomtower.engine.World;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
 
 public class ResizeGameState extends World {
 
 	public ResizeGameState(int id) throws SlickException {
 		super(id);
-
+	}
+	
+	@Override
+	public void init(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		// TODO Auto-generated method stub
+		super.init(container, game);
 		Image cursor = new Image("data/cross.png", false, 0, Color.white);
 
-		ME.container.setMouseCursor(cursor, 0, 0);
+		container.setMouseCursor(cursor, 0, 0);
+
 		// create square
 		ResizeSquare square = new ResizeSquare(100, 100, 8, 8, "data/8.png");
 
 		// add entities
 		add(square);
-
+		
+		
 		//TODO
 		//new Map("data/level1.tmx");	
 		
+		
 		// set screen camera
-		setCamera(new Camera(square, ME.container.getWidth(), ME.container
+		setCamera(new Camera(square, container.getWidth(), container
 				.getHeight()));		
 		
 	}
@@ -37,8 +48,8 @@ public class ResizeGameState extends World {
 		if (button == 0) {
 			ResizeSquare rs = ((ResizeSquare) find(ResizeSquare.NAME));
 			Bullet b = new Bullet(rs.x, rs.y, "data/bullet.png",
-					calculateDirection(x, y, ME.container.getInput()
-							.getMouseX(), ME.container.getInput().getMouseY()));
+					calculateDirection(x, y, container.getInput()
+							.getMouseX(), container.getInput().getMouseY()));
 			ME.world.add(b);
 		}
 	}

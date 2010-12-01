@@ -18,7 +18,6 @@ public class ResizeTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		ME.container = container;
 		ResizeGameState inGameState = new ResizeGameState(0);
 		addState(inGameState);
 	}

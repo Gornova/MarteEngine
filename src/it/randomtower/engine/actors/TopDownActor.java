@@ -1,6 +1,6 @@
 package it.randomtower.engine.actors;
 
-import it.randomtower.engine.Entity;
+import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.ME;
 
 import org.newdawn.slick.GameContainer;
@@ -58,14 +58,14 @@ public class TopDownActor extends Entity {
 		try {
 			setGraphic(new SpriteSheet(ref, WIDTH, HEIGHT));
 			duration = 150;
-			add(STAND_DOWN, false, 0, 0);
-			add(ME.WALK_DOWN, true, 0, 0, 1, 2, 3, 4, 5, 6, 7);
-			add(ME.WALK_UP, true, 1, 0, 1, 2, 3, 4, 5, 6, 7);
-			add(ME.WALK_RIGHT, true, 2, 0, 1, 2, 3, 4, 5);
-			add(ME.WALK_LEFT, true, 3, 0, 1, 2, 3, 4, 5);
-			add(STAND_UP, false, 1, 0);
-			add(STAND_RIGHT, false, 2, 0);
-			add(STAND_LEFT, false, 3, 0);
+			addAnimation(STAND_DOWN, false, 0, 0);
+			addAnimation(ME.WALK_DOWN, true, 0, 0, 1, 2, 3, 4, 5, 6, 7);
+			addAnimation(ME.WALK_UP, true, 1, 0, 1, 2, 3, 4, 5, 6, 7);
+			addAnimation(ME.WALK_RIGHT, true, 2, 0, 1, 2, 3, 4, 5);
+			addAnimation(ME.WALK_LEFT, true, 3, 0, 1, 2, 3, 4, 5);
+			addAnimation(STAND_UP, false, 1, 0);
+			addAnimation(STAND_RIGHT, false, 2, 0);
+			addAnimation(STAND_LEFT, false, 3, 0);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -120,25 +120,25 @@ public class TopDownActor extends Entity {
 	}
 
 	public void moveLeft() {
-		if (!collide(ME.SOLID, x - mySpeed.x, y)) {
+		if (collide(Entity.SOLID, x - mySpeed.x, y) == null) {
 			x -= mySpeed.x;
 		}
 	}
 
 	public void moveRight() {
-		if (!collide(ME.SOLID, x + mySpeed.x, y)) {
+		if (collide(Entity.SOLID, x + mySpeed.x, y) == null) {
 			x += mySpeed.x;
 		}
 	}
 
 	public void moveDown() {
-		if (!collide(ME.SOLID, x, y + mySpeed.y)) {
+		if (collide(Entity.SOLID, x, y + mySpeed.y) == null) {
 			y += mySpeed.y;
 		}
 	}
 
 	public void moveUp() {
-		if (!collide(ME.SOLID, x, y - mySpeed.y)) {
+		if (collide(Entity.SOLID, x, y - mySpeed.y) == null) {
 			y -= mySpeed.y;
 		}
 	}

@@ -1,5 +1,7 @@
 package it.randomtower.engine;
 
+import it.randomtower.engine.entity.Entity;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,13 +16,21 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class World extends BasicGameState {
 
+	/** the game container this world belongs to */
+	public GameContainer container = null;
+
 	/** unique id for every world **/
 	public int id = 0;
 
+	/** width of the world, useful for horizontal wrapping entitites */
+	public int width = 0;
+	/** height of the world, useful for vertical wrapping entities */
+	public int height = 0;
+
 	/** internal list for entities **/
-	private final List<Entity> entities = new ArrayList<Entity>();
-	private final List<Entity> removeable = new ArrayList<Entity>();
-	private final List<Entity> addable = new ArrayList<Entity>();
+	private List<Entity> entities = new ArrayList<Entity>();
+	private List<Entity> removable = new ArrayList<Entity>();
+	private List<Entity> addable = new ArrayList<Entity>();
 
 	/** current camera **/
 	public Camera camera;
@@ -29,8 +39,18 @@ public class World extends BasicGameState {
 		this.id = id;
 	}
 
+	public World(int id, GameContainer container) {
+		this.id = id;
+		this.container = container;
+	}
+	
+	
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
+		this.container = container;
+		width = container.getWidth();
+		height = container.getHeight();
+		//this.clear();
 	}
 
 	@Override
@@ -75,21 +95,29 @@ public class World extends BasicGameState {
 			throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
-		removeable.clear();
+		
+		removable.clear();
 
 		// add new entities
-		for (Entity entity : addable) {
-			entities.add(entity);
+		if (addable.size() > 0) {
+			for (Entity entity : addable) {
+				entities.add(entity);
+				entity.addedToWorld();
+			}
+			addable.clear();
+			Collections.sort(entities);
 		}
-		addable.clear();
 
 		// update entities
 		for (Entity e : entities) {
 			e.update(container, delta);
+			// check for wrapping or out of world entities
+			e.checkWorldBoundaries();
 		}
 		// remove signed entities
-		for (Entity entity : removeable) {
+		for (Entity entity : removable) {
 			entities.remove(entity);
+			entity.removedFromWorld();
 		}
 		
 		// update camera
@@ -113,28 +141,43 @@ public class World extends BasicGameState {
 	 *            entity to add
 	 */
 	public void add(Entity e) {
-		// sort in z order
-		if (entities.size() > 1) {
-			Collections.sort(entities);
-		}
+		e.setWorld(this);		
 		addable.add(e);
 	}
 
 	/**
-	 * @return List of entities currently in game
+	 * @return List of entities currently in this world
 	 */
 	public List<Entity> getEntities() {
 		return entities;
 	}
 
 	/**
+	 * 
+	 * @param type
+	 * @return number of entities of the given type in this world
+	 */
+	public int getNrOfEntities(String type) {
+		if (entities.size() > 0) {
+			int number = 0;
+			for (Entity entity : entities) {
+				if (entity.getType().contains(type))
+					number++;
+			}
+			return number;
+		}
+		return 0;
+	}
+	
+	
+	/**
 	 * @param entity
 	 *            to remove from game
 	 * @return false if entity is already set to be remove
 	 */
 	public boolean remove(Entity entity) {
-		if (!removeable.contains(entity)) {
-			return removeable.add(entity);
+		if (!removable.contains(entity)) {
+			return removable.add(entity);
 		}
 		return false;
 	}
@@ -148,7 +191,7 @@ public class World extends BasicGameState {
 		if (name == null)
 			return null;
 		for (Entity entity : entities) {
-			if (entity.name.equalsIgnoreCase(name)) {
+			if (entity.name != null && entity.name.equalsIgnoreCase(name)) {
 				return entity;
 			}
 		}
@@ -159,8 +202,12 @@ public class World extends BasicGameState {
 	 * Remove all entities
 	 */
 	public void clear() {
-		removeable.clear();
-		removeable.addAll(entities);
+		for (Entity entity : entities) {
+			entity.removedFromWorld();
+		}
+		entities.clear();
+		addable.clear();
+		removable.clear();
 	}
 	
 	public void setCamera(Camera camera){
@@ -168,8 +215,22 @@ public class World extends BasicGameState {
 	}
 	
 	public void setCameraOn(Entity entity){
-		this.camera = new Camera(entity, ME.container.getWidth(), ME.container
-				.getHeight());	
+		this.camera = new Camera(entity, this.container.getWidth(), this.container.getHeight());	
 	}
 
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
 }

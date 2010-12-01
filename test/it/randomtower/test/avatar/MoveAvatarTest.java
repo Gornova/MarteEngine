@@ -19,9 +19,8 @@ public class MoveAvatarTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		ME.container = container;
 		
-		World gameWorld = new World(0);
+		World gameWorld = new World(0,container);
 		
 		// create player
 		TopDownActor player = new TopDownActor(400, 400, "data/link.png");

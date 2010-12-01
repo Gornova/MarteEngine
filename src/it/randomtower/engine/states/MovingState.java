@@ -1,7 +1,7 @@
 package it.randomtower.engine.states;
 
-import it.randomtower.engine.Entity;
 import it.randomtower.engine.State;
+import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

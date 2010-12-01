@@ -1,6 +1,6 @@
 package it.randomtower.test.pong;
 
-import it.randomtower.engine.Entity;
+import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.ME;
 
 import org.newdawn.slick.GameContainer;
@@ -37,7 +37,7 @@ public class PongBarActor extends Entity {
 
 		// define collision box and type
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
-		addType(name, ME.SOLID);
+		addType(name, Entity.SOLID);
 	}
 
 	private void defineControls(int up, int down) {
@@ -73,14 +73,14 @@ public class PongBarActor extends Entity {
 	}
 
 	public void moveDown() {
-		if (!collide(ME.SOLID, x, y + mySpeed.y)
+		if (collide(Entity.SOLID, x, y + mySpeed.y) == null
 				&& y + mySpeed.y + height < 600) {
 			y += mySpeed.y;
 		}
 	}
 
 	public void moveUp() {
-		if (!collide(ME.SOLID, x, y - mySpeed.y) && y - mySpeed.y > 0) {
+		if (collide(Entity.SOLID, x, y - mySpeed.y)== null && y - mySpeed.y > 0) {
 			y -= mySpeed.y;
 		}
 	}

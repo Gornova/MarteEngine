@@ -17,6 +17,7 @@ public class PongIntroState extends World {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
+		super.init(container, game);
 	}
 
 	@Override

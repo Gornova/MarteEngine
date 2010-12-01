@@ -1,6 +1,6 @@
 package it.randomtower.test.resize;
 
-import it.randomtower.engine.Entity;
+import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.ME;
 
 import org.newdawn.slick.GameContainer;
@@ -38,7 +38,7 @@ public class ResizeSquare extends Entity {
 
 		// define collision box and type
 		setHitBox(0, 0, width, height);
-		addType(NAME, ME.SOLID);
+		addType(NAME, Entity.SOLID);
 
 		// define labels for the key
 		defineControls();
@@ -122,31 +122,31 @@ public class ResizeSquare extends Entity {
 	}
 
 	public void moveLeft() {
-		if (!collide(ME.SOLID, x - mySpeed.x, y)) {
+		if (collide(Entity.SOLID, x - mySpeed.x, y) == null) {
 			x -= mySpeed.x;
 		}
 	}
 
 	public void moveRight() {
-		if (!collide(ME.SOLID, x + mySpeed.x, y)) {
+		if (collide(Entity.SOLID, x + mySpeed.x, y) == null) {
 			x += mySpeed.x;
 		}
 	}
 
 	public void moveDown() {
-		if (!collide(ME.SOLID, x, y + mySpeed.y)) {
+		if (collide(Entity.SOLID, x, y + mySpeed.y) == null) {
 			y += mySpeed.y;
 		}
 	}
 
 	public void moveUp() {
-		if (!collide(ME.SOLID, x, y - mySpeed.y)) {
+		if (collide(Entity.SOLID, x, y - mySpeed.y) == null) {
 			y -= mySpeed.y;
 		}
 	}
 
 	private void updateRotation() {
-		Input input = ME.container.getInput();
+		Input input = world.container.getInput();
 		int mx = input.getMouseX();
 		int my = input.getMouseY();
 		Vector2f position = new Vector2f(x, y);

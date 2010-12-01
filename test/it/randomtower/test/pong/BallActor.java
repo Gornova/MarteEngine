@@ -1,6 +1,6 @@
 package it.randomtower.test.pong;
 
-import it.randomtower.engine.Entity;
+import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.ME;
 import it.randomtower.engine.actors.StaticActor;
 
@@ -36,7 +36,7 @@ public class BallActor extends Entity {
 
 		// define collision box and type
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
-		addType(NAME, ME.SOLID);
+		addType(NAME, Entity.SOLID);
 	}
 
 	public void setupGraphic(String ref) {
@@ -60,7 +60,7 @@ public class BallActor extends Entity {
 			int score = (Integer) ME.attributes.get("score2");
 			ME.attributes.put("score2", ++score);
 			ME.remove(this);
-		} else if (x > ME.container.getWidth()) {
+		} else if (x > this.world.container.getWidth()) {
 			int score = (Integer) ME.attributes.get("score1");
 			ME.attributes.put("score1", ++score);
 			ME.remove(this);
@@ -68,10 +68,10 @@ public class BallActor extends Entity {
 	}
 
 	private void updateMovements() {
-		if (!collide(ME.SOLID, x + mySpeed.x, y)) {
+		if (collide(Entity.SOLID, x + mySpeed.x, y) == null) {
 			x += mySpeed.x;
 		}
-		if (!collide(ME.SOLID, x, y + mySpeed.y)) {
+		if (collide(Entity.SOLID, x, y + mySpeed.y) == null) {
 			y += mySpeed.y;
 		}
 	}

@@ -1,8 +1,8 @@
 package it.randomtower.test.resize;
 
-import it.randomtower.engine.Entity;
 import it.randomtower.engine.ME;
 import it.randomtower.engine.actors.StaticActor;
+import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -27,7 +27,7 @@ public class Bullet extends Entity {
 
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
 
-		addType(NAME, ME.SOLID);
+		addType(NAME, SOLID);
 	}
 
 	@Override

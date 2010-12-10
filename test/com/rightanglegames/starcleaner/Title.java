@@ -1,7 +1,7 @@
 package com.rightanglegames.starcleaner;
 
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.Color;
@@ -19,7 +19,7 @@ public class Title extends Entity {
 		super(x, y);
 		name = "title";
 		depth = 2;
-		currentImage = RessourceManager.getImage("title");
+		currentImage = ResourceManager.getImage("title");
 		define(CMD_START, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
 	}
 

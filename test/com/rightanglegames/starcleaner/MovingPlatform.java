@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.entity.PhysicsEntity;
 
@@ -18,7 +18,7 @@ public class MovingPlatform extends PhysicsEntity {
 	private static String[] carry = {Entity.PLAYER};
 	
 	private boolean direction = false;
-	private Image oneBlock = RessourceManager.getImage("platform");
+	private Image oneBlock = ResourceManager.getImage("platform");
 	
 	private int movement = 2;
 	

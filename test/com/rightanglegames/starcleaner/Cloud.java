@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -24,7 +24,7 @@ public class Cloud extends Entity {
 		this.wrapHorizontal = true;
 		
 		depth = 10 + (int)(Math.random() * 10);
-		setGraphic(RessourceManager.getImage("cloud"));
+		setGraphic(ResourceManager.getImage("cloud"));
 		setHitBox(0, 0, width, height);
 	}
 	

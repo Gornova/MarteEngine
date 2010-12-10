@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Solid;
 
 public class Block extends Solid {
@@ -9,7 +9,7 @@ public class Block extends Solid {
 		super(x, y, w, h);
 		name = "block";
 		depth = 5;
-		currentImage = RessourceManager.getImage("block");
+		currentImage = ResourceManager.getImage("block");
 	}
 
 }

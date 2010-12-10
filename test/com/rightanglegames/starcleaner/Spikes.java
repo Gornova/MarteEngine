@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 
@@ -14,10 +14,10 @@ public class Spikes extends Entity {
 		depth = 12;
 		this.addType(SPIKES);
 		if (up) {
-			this.setGraphic(RessourceManager.getImage("spikesup"));
+			this.setGraphic(ResourceManager.getImage("spikesup"));
 			this.setHitBox(0, 25, width, 15);
 		} else {
-			this.setGraphic(RessourceManager.getImage("spikesdown"));
+			this.setGraphic(ResourceManager.getImage("spikesdown"));
 			this.setHitBox(0, 0, width, 15);
 		}
 	}

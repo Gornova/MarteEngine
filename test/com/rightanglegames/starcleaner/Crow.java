@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -20,7 +20,7 @@ public class Crow extends Entity {
 		depth = 20;
 		name = CROW;
 		this.addType(CROW);
-		sheet = RessourceManager.getSpriteSheet("crow");
+		sheet = ResourceManager.getSpriteSheet("crow");
 		currentImage = sheet.getSprite(frame, 0);
 		wrapHorizontal = true;
 		setHitBox(4, 8, 32, 24);

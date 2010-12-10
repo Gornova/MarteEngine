@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -16,7 +16,7 @@ public class Star extends Entity {
 		super(x, y);
 		addType(STAR_TYPE);
 		depth = 10;
-		currentImage = RessourceManager.getImage("star");
+		currentImage = ResourceManager.getImage("star");
 		myLight = light;
 		setHitBox(4,4,32,32);
 	}

@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 
 import java.io.IOException;
 
@@ -78,15 +78,15 @@ public class StarCleaner extends StateBasedGame {
 	}
 
 	private void applyGameOptions() {
-		RessourceManager.setMusicVolume(1.0f);
-		RessourceManager.setSfxVolume(1.0f);
+		ResourceManager.setMusicVolume(1.0f);
+		ResourceManager.setSfxVolume(1.0f);
 	}
 
 	public static void initRessources() throws SlickException {
 		if (ressourcesInited)
 			return;
 		try {
-			RessourceManager.loadRessources("data/starcleaner/res/ressources.xml");
+			ResourceManager.loadResources("data/starcleaner/res/ressources.xml");
 		} catch (IOException e) {
 			Log.error("failed to load ressource file 'data/starcleaner/res/ressources.xml': "
 					+ e.getMessage());

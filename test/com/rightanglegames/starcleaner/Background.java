@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 public class Background extends Entity {
@@ -9,7 +9,7 @@ public class Background extends Entity {
 		super(x, y);
 		name = "background";
 		depth = 0;
-		currentImage = RessourceManager.getImage("background");
+		currentImage = ResourceManager.getImage("background");
 	}
 
 }

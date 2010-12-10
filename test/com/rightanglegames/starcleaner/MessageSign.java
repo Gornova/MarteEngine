@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -16,7 +16,7 @@ public class MessageSign extends Entity {
 		this.name = SIGN;
 		this.addType(SIGN);
 		depth = 12;
-		setGraphic(RessourceManager.getImage("sign"));
+		setGraphic(ResourceManager.getImage("sign"));
 		setHitBox(0, 0, width, height);
 	}
 	

@@ -19,8 +19,8 @@ public class Player extends PhysicsEntity {
 	public Player(float x, float y) throws SlickException {
 		super(x, y);
 		
-		currentImage = new Image("cross.png");
-		setHitBox(0, 0, 35, 35);
+		currentImage = new Image("blockRed.png");
+		setHitBox(0, 0, 32, 32);
 		
 		define(CMD_JUMP, Input.KEY_UP, Input.KEY_X, Input.KEY_W);
 		define(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);

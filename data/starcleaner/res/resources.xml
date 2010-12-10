@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- possible ressource settings are valid, transparentColor is optional 
+	<sound key="" file="" />
+	<music key="" file="" />
+	<image key="" file="" transparentColor=""/> 
+	<sheet key="" file="" width="" height="" transparentColor=""/>
+	<angelcodefont key="" fontFile="" imageFile=""/>
+	<int key="" value="">
+	<float key="" value=""> 
+	<string key="" value="">
+-->
+	
+<resources>
+	<!-- sounds -->
+	<sound key="bump" file="data/starcleaner/res/bump.wav" />
+	<sound key="hit" file="data/starcleaner/res/hit.wav" />
+	<sound key="jump" file="data/starcleaner/res/jump.wav" />
+	<sound key="pickupstar" file="data/starcleaner/res/pickupstar.wav" />
+	<sound key="allpickedup" file="data/starcleaner/res/allstarscollected.wav" />
+	<!-- songs -->
+	<!-- images -->
+	<image key="title" file="data/starcleaner/res/title.png" />
+	<image key="background" file="data/starcleaner/res/background.png" />
+	<image key="backgroundnight" file="data/starcleaner/res/backgroundnight.png" />
+	<image key="message" file="data/starcleaner/res/dialog320x240back.png" />
+	<image key="black40x40" file="data/starcleaner/res/black40x40.png" />
+	<image key="white40x40" file="data/starcleaner/res/white40x40.png" />
+	<image key="block" file="data/starcleaner/res/block.png" />
+	<image key="platform" file="data/starcleaner/res/movingblock.png" />
+	<image key="star" file="data/starcleaner/res/star.png" />
+	<image key="sun" file="data/starcleaner/res/sun.png" />
+	<image key="moon" file="data/starcleaner/res/moon.png" />
+	<image key="cloud" file="data/starcleaner/res/cloud.png" />
+	<image key="spikesup" file="data/starcleaner/res/spikesup.png" />
+	<image key="spikesdown" file="data/starcleaner/res/spikesdown.png" />
+	<image key="sign" file="data/starcleaner/res/sign.png" />
+	<!-- sheets -->
+	<sheet key="crow" file="data/starcleaner/res/crowsheet.png" width="40" height="40" />
+	<sheet key="angel" file="data/starcleaner/res/angelsheet.png" width="40" height="40" />
+	<!-- fonts -->
+	<angelcodefont key="bradleyhanditc24" fontFile="data/starcleaner/res/bradleyhanditc24.fnt" imageFile="data/starcleaner/res/bradleyhanditc24.png"/>
+</resources>

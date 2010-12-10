@@ -45,7 +45,6 @@ class Light {
 	public void setLocation(float x, float y) {
 		xpos = x;
 		ypos = y;
-		lightMap.lightMapChanged();
 	}
 	
 	/**

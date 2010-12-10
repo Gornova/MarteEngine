@@ -16,4 +16,6 @@ public class Globals {
 	public static Entity messageWindow = null;
 	
 	public static Vector2f originalPlayerMaxSpeed = null;
+	
+	public static boolean playerCheated = false;
 }

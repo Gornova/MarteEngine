@@ -109,7 +109,6 @@ public class StarCleaner extends StateBasedGame {
 //			Log.setVerbose(false);
 			AppGameContainer container = new AppGameContainer(new StarCleaner());
 			container.setDisplayMode(WIDTH, HEIGHT, false);
-			container.setTargetFrameRate(60);
 //			container.setShowFPS(false);
 			// switch off mouse cursor
 			container.start();

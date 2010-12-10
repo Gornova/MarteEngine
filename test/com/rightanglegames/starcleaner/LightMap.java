@@ -21,12 +21,14 @@ public class LightMap extends Entity {
 	public static final int ENDOFDAY = 29;
 	
 	// dawn is between 0 and 4 (5 seconds), day is between 5 and 14, evening between 15 and 19 and night between 20 and 29
-	private int dayTime = 4;	// we'll start with day
+	private int dayTime = 12;	// we'll start with late morning
 	private int incrDayTime = 1000;	// increment daytime every second
 	private int counterDayTime = 0;
 	
+	private int dawnCounter = 0;
+	private int dawnSpan = 0;
+	
 	private boolean colouredLights = true;
-	private boolean lightMapChanged = true;
 	
 	private Image whiteSquare;
 	
@@ -67,32 +69,31 @@ public class LightMap extends Entity {
 		if (counterDayTime >= incrDayTime) {
 			counterDayTime -= incrDayTime;
 			dayTime++;
-			lightMapChanged = true;
 			if (dayTime > ENDOFDAY)
 				dayTime = 0;
 		}
-		if (lightMapChanged) {
-			updateLightMap();
-			lightMapChanged = false;
-		}
+		updateLightMap(delta);
 	}
 
 	// do nothing during day time
-	public void updateLightMap() {
+	public void updateLightMap(int delta) {
+		boolean dawn = false;
 //		Log.debug("updateLightMap() is called, dayTime is " + dayTime);
 		if (dayTime >= DAWN && dayTime < DAY) {
-			fillLightMap(DAY-dayTime, DAY-DAWN);
-			return;
+			dawn = fillLightMap(delta, -1, DAY-DAWN);
+			if (!dawn)
+				return;
 		} else if (dayTime >= EVENING && dayTime < NIGHT) {
-			fillLightMap(dayTime-EVENING, NIGHT-EVENING);
-			return;
+			dawn = fillLightMap(delta, 1, NIGHT-EVENING);
 		}
 		// for every vertex on the map (notice the +1 again accounting for the trailing vertex)
 		for (int y=0;y<mapHeight+1;y++) {
 			for (int x=0;x<mapWidth+1;x++) {
 				// first reset the lighting value for each component (red, green, blue, alpha)
-				for (int component=0;component<4;component++) {
-					roughLightValues[x][y][component] = 0;
+				if (!dawn) {
+					for (int component=0;component<4;component++) {
+						roughLightValues[x][y][component] = 0;
+					}
 				}
 				
 				// next cycle through all the lights. Ask each light how much effect
@@ -142,23 +143,43 @@ public class LightMap extends Entity {
 		}
 	}
 	
-	private void fillLightMap(int value, int range) {
+	private boolean fillLightMap(int delta, int multiplier, int rangeInSeconds) {
 //		Log.debug("fillLightMap() is called, dayTime is " + dayTime + ", value is " + value + ", range is " + range);
 
-		float greyStep = 1.0f / (range+1);
-		float greyVal = value * greyStep;
+		if (this.dawnSpan == 0) {
+			this.dawnSpan = rangeInSeconds * 1000;
+			if (multiplier == 1)
+				this.dawnCounter = 0;
+			else
+				this.dawnCounter = this.dawnSpan;
+		}
+		this.dawnCounter += (delta * multiplier);
+		float greyVal = 0.0f;
+		if (this.dawnCounter <= 0) {
+			this.dawnSpan = 0;
+			this.dawnCounter = 0;
+			return false;
+//			greyVal = 1.0f;
+		} else if (this.dawnCounter >= this.dawnSpan) {
+			this.dawnSpan = 0;
+			this.dawnCounter = 0;
+			return false;
+//			greyVal = 0.0f;
+		} else
+			greyVal = ((float) this.dawnCounter) / ((float) this.dawnSpan); 
 		
 		for (int y=0;y<mapHeight+1;y++) {
 			for (int x=0;x<mapWidth+1;x++) {
 				// first reset the lighting value for each component (red, green, blue, alpha)
 				for (int component=0;component<3;component++) {
 //					lightValues[x][y][component] = 0;
-					smoothLightValues[x][y][component] = 0;
+					roughLightValues[x][y][component] = 0;
 				}
 //				lightValues[x][y][3] = greyVal;
-				smoothLightValues[x][y][3] = greyVal;
+				roughLightValues[x][y][3] = greyVal;
 			}
 		}
+		return true;
 	}
 
 
@@ -193,31 +214,29 @@ public class LightMap extends Entity {
 		return dayTime;
 	}
 	
+	public void setDayTime(int newDayTime) {
+		dayTime = newDayTime;
+	}
+
 	public boolean isDay() {
-		if (dayTime >= DAY && dayTime < NIGHT)
+		if (dayTime >= DAWN && dayTime < NIGHT)
 			return true;
 		return false;
 	}
 	
 	public boolean isNight() {
-		if (dayTime >= NIGHT || dayTime < DAY)
+		if (dayTime >= NIGHT || dayTime < DAWN)
 			return true;
 		return false;
 	}
 	
-	public void lightMapChanged() {
-		lightMapChanged = true;
-	}
-	
 	public void addLight(Light light) {
-		lightMapChanged = true;
 		light.setLightMap(this);
 		lights.add(light);
 		
 	}
 	
 	public void removeLight(Light light) {
-		lightMapChanged = true;
 		lights.remove(light);
 	}
 	

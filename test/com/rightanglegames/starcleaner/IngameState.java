@@ -51,6 +51,10 @@ public class IngameState extends World {
 		// if we completed the last level we start with the full time for the next level
 		if (Globals.levelDone)
 			this.timeLeft = this.currentLevel.timeToFinish;
+		if (Globals.playerCheated) {
+			this.score = 0;
+			// reset score to 0 every new level. cheating is not nice and won't be forgotten ;-)
+		}
 		Globals.playerDead = false;
 		Globals.levelDone = false;
 		Globals.blenderDone = false;

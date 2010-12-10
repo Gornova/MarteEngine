@@ -30,6 +30,10 @@ public class Angel extends PhysicsEntity {
 	public boolean faceRight = true;
 	
 	public boolean onGround = false;
+	
+	// did we jump or just fell off some solid?
+	public boolean didJump = false;
+	
 	//are we walljumping? (0 = no, 1 = left, 2 = right)
 	public int wallJumping = 0;
 	//can we double jump? (false = no, true = yes)
@@ -89,6 +93,7 @@ public class Angel extends PhysicsEntity {
 			onGround = true;
 			wallJumping = 0;
 			doubleJump = true;
+			didJump = false;
 		}
 		
 		//set acceleration to nothing
@@ -117,7 +122,8 @@ public class Angel extends PhysicsEntity {
 			//normal jump
 			if (onGround) { 
 				speed.y = -jumpSpeed; 
-				jumped = true; 
+				jumped = true;
+				didJump = true;
 				jumpSnd.play();
 			}
 			
@@ -141,7 +147,7 @@ public class Angel extends PhysicsEntity {
 			}
 			
 			//set double jump to false
-			if (!onGround && !jumped && doubleJump) { 
+			if (!onGround && !jumped && didJump && doubleJump) { 
 				speed.y = -jumpSpeed;
 				doubleJump = false;
 				//set walljumping to 0 so we can move back in any direction again

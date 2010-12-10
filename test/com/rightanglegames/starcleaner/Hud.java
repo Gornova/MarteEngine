@@ -62,16 +62,15 @@ public class Hud extends Entity {
 	public void update(GameContainer container, int delta) throws SlickException {
 		if (check(CMD_NEXT)) {
 			Globals.levelDone = true;
-			IngameState state = (IngameState) this.world;
-			state.score = 0;	// reset score for cheaters
+			Globals.playerCheated = true;
 		}
 		if (check(CMD_PREVIOUS)) {
 			IngameState state = (IngameState) this.world;
-			state.score = 0;	// reset score for cheaters
 			state.levelNo -= 2;
 			if (state.levelNo < 0)
 				state.levelNo = 0;
 			Globals.levelDone = true;
+			Globals.playerCheated = true;
 		}
 
 	}

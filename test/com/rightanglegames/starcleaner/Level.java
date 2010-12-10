@@ -90,7 +90,7 @@ public class Level {
 		return loadedLevel;
 	}
 
-	private void createEntities(Level level, int width, int height, World world) {
+	private void createEntities(Level level, int width, int height, World world) throws SlickException {
 		// create the lightmap entity
 		LightMap lightMap = new LightMap(0,0, 20);
 		Globals.lightMap = lightMap;

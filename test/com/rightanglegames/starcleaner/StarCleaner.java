@@ -86,11 +86,11 @@ public class StarCleaner extends StateBasedGame {
 		if (ressourcesInited)
 			return;
 		try {
-			ResourceManager.loadResources("data/starcleaner/res/ressources.xml");
+			ResourceManager.loadResources("data/starcleaner/res/resources.xml");
 		} catch (IOException e) {
-			Log.error("failed to load ressource file 'data/starcleaner/res/ressources.xml': "
+			Log.error("failed to load ressource file 'data/starcleaner/res/resources.xml': "
 					+ e.getMessage());
-			throw new SlickException("Ressource loading failed!");
+			throw new SlickException("Resource loading failed!");
 		}
 		
 		ressourcesInited = true;

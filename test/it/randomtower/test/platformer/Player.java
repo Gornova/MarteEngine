@@ -22,6 +22,8 @@ public class Player extends PhysicsEntity {
 		currentImage = new Image("blockRed.png");
 		setHitBox(0, 0, 32, 32);
 		
+		depth = 10;
+		
 		define(CMD_JUMP, Input.KEY_UP, Input.KEY_X, Input.KEY_W);
 		define(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
 		define(CMD_LEFT, Input.KEY_LEFT, Input.KEY_A);

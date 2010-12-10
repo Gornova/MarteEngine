@@ -42,8 +42,7 @@ PlatformerTest.java is and example how simple is ME: you can build a platformer 
 Let's start to examine example, starting from PlatformerGameWorld.java (PlatformerTest.java is really trivial):
 PlatformerGameWorld.java:
 1) into init() method we create a new istance of Player and some blocks and then add them to the world
-2) notice that we add a Camera: will follow Player entity movements
-3) we don't override render() and update() methods, because we don't have any huds or special effects
+2) we don't override render() and update() methods, because we don't have any huds or special effects
 Player.java:
 1) Player is not a normal Entity, but a PhysicsEntity: this kind of entity follow gravity and can move right, left and jump
 2) into Player constructor we select player image, hitbox that is equal to image border (we need it for collision detection!) and define commands for jump, move right and move left

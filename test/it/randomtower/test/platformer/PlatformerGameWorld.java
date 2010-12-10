@@ -9,9 +9,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class PlatformerGameState extends World {
+public class PlatformerGameWorld extends World {
 
-	public PlatformerGameState(int id) {
+	public PlatformerGameWorld(int id) {
 		super(id);
 	}
 

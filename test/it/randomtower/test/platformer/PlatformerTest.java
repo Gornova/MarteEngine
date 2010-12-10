@@ -25,7 +25,7 @@ public class PlatformerTest extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 
-		PlatformerGameState gameState = new PlatformerGameState(
+		PlatformerGameWorld gameState = new PlatformerGameWorld(
 				GAME_STATE);
 
 		addState(gameState);

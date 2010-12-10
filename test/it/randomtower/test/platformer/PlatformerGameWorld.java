@@ -5,7 +5,6 @@ import it.randomtower.engine.World;
 import it.randomtower.engine.entity.Solid;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -31,20 +30,6 @@ public class PlatformerGameWorld extends World {
 			Solid block = new Solid(20+i*32, 400, 32, 32, "data/block.png");
 			add(block);
 		}
-	}
-
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g)
-			throws SlickException {
-		super.render(container, game, g);
-
-	}
-
-	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
-		super.update(container, game, delta);
-
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -53,8 +54,13 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean wrapHorizontal = false;
 	public boolean wrapVertical = false;
 	
-	/** speed vector (x,y) **/
-	public Vector2f speed;
+	/** speed vector (x,y): specifies x and y movement per update call in pixels **/
+	public Vector2f speed = null;
+	
+	/** angle in degrees from 0 to 360, used for drawing the entity rotated. NOT used for direction! */
+	public int angle = 0;
+	
+	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
@@ -124,6 +130,10 @@ public abstract class Entity implements Comparable<Entity> {
 				}
 			}
 		}
+		if (speed != null) {
+			x += speed.x;
+			y += speed.y;
+		}
 		checkWorldBoundaries();
 		previousx = x;
 		previousy = y;
@@ -147,6 +157,7 @@ public abstract class Entity implements Comparable<Entity> {
 		if (currentAnim != null) {
 			animations.get(currentAnim).draw(x, y);
 		} else if (currentImage != null) {
+			currentImage.setRotation(angle);
 			g.drawImage(currentImage, x, y);
 		}
 		if (ME.debugEnabled) {
@@ -479,5 +490,81 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void destroy() {
 		this.world.remove(this);
+	}
+	
+	/***************** some methods to deal with alarms ************************************/
+	public void setAlarm(String name, int triggerTime, boolean oneShot, boolean startNow) {
+		Alarm alarm = new Alarm(name, triggerTime, oneShot);
+		alarms.put(name, alarm);
+		if (startNow)
+			alarm.start();
+	}
+	
+	public void restartAlarm(String name) {
+		Alarm alarm = alarms.get(name);
+		if (alarm != null)
+			alarm.start();
+	}
+
+	public void pauseAlarm(String name) {
+		Alarm alarm = alarms.get(name);
+		if (alarm != null)
+			alarm.pause();
+	}
+
+	public void resumeAlarm(String name) {
+		Alarm alarm = alarms.get(name);
+		if (alarm != null)
+			alarm.resume();
+	}
+	
+	public void destroyAlarm(String name) {
+		Alarm alarm = alarms.get(name);
+		if (alarm != null)
+			alarm.setDead(true);
+	}
+	
+	/**
+	 * overwrite this method if your entity shall react on alarms that reached their triggerTime
+	 * @param name the name of the alarm that triggered right now
+	 */
+	public void alarmTriggered(String name) {
+		// this method needs to be overwritten to deal with alarms
+	}
+
+	/**
+	 * this method is called automatically by the World and must not be called by your game code.
+	 * Don't touch this method ;-)
+	 * Consider it private!
+	 */
+	public void updateAlarms() {
+		ArrayList<String> deadAlarms = null;
+		Set<String> alarmNames = alarms.keySet();
+		if (!alarmNames.isEmpty()) {
+			for (String alarmName : alarmNames) {
+				Alarm alarm = alarms.get(alarmName);
+				if (alarm.isActive()) {
+					boolean retval = alarm.update();
+					if (retval) {
+						alarmTriggered(alarm.getName());
+						if (alarm.isOneShotAlaram()) {
+							alarm.setActive(false);
+						} else {
+							alarm.start();
+						}
+					}
+				}
+				if (alarm.isDead()) {
+					if (deadAlarms == null)
+						deadAlarms = new ArrayList<String>();
+					deadAlarms.add(alarmName);
+				}
+			}
+			if (deadAlarms != null) {
+				for (String deadAlarm : deadAlarms) {
+					alarms.put(deadAlarm, null);
+				}
+			}
+		}
 	}
 }

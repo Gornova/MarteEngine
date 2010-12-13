@@ -110,6 +110,7 @@ public class World extends BasicGameState {
 
 		// update entities
 		for (Entity e : entities) {
+			e.updateAlarms();
 			e.update(container, delta);
 			// check for wrapping or out of world entities
 			e.checkWorldBoundaries();

@@ -155,7 +155,10 @@ public abstract class Entity implements Comparable<Entity> {
 			return;
 		}		
 		if (currentAnim != null) {
-			animations.get(currentAnim).draw(x, y);
+			Animation anim = animations.get(currentAnim);
+			g.rotate(x+anim.getWidth()/2, y + anim.getHeight()/2, angle);
+			anim.draw(x, y);
+			g.resetTransform();
 		} else if (currentImage != null) {
 			currentImage.setRotation(angle);
 			g.drawImage(currentImage, x, y);

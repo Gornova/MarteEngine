@@ -1,6 +1,9 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 public class Background extends Entity {
@@ -9,7 +12,14 @@ public class Background extends Entity {
 		super(x, y);
 		name = "background";
 		depth = 0;
-		currentImage = RessourceManager.getImage("background");
+		currentImage = ResourceManager.getImage("background");
+	}
+	
+	public Background(float x, float y, String refImage) throws SlickException {
+		super(x, y);
+		name = "background";
+		depth = 0;
+		currentImage = new Image(refImage);
 	}
 
 }

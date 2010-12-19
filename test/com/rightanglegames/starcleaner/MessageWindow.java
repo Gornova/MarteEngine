@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ public class MessageWindow extends Entity {
 	
 	public MessageWindow(ArrayList<String> message, int x, int y, boolean centerOnScreen) {
 		super(x, y);
-		background = RessourceManager.getImage("message");
+		background = ResourceManager.getImage("message");
 		this.name = MESSAGEWINDOW;
 		this.addType(MESSAGEWINDOW);
 		messageLines = message;
 		setGraphic(background);
-		font = RessourceManager.getAngelCodeFont("bradleyhanditc24");
+		font = ResourceManager.getAngelCodeFont("bradleyhanditc24");
 		setHitBox(0, 0, width, height);
 		depth = 100;
 		if (centerOnScreen) {

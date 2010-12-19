@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.entity.PhysicsEntity;
 
@@ -55,7 +55,7 @@ public class Angel extends PhysicsEntity {
 		depth = 10;
 		this.name = ANGEL;
 		this.addType(Entity.PLAYER);
-		sheet = RessourceManager.getSpriteSheet(ANGEL);
+		sheet = ResourceManager.getSpriteSheet(ANGEL);
 		currentImage = sheet.getSprite(0, 0);
 		myLight = light;
 		width = 40;
@@ -70,11 +70,11 @@ public class Angel extends PhysicsEntity {
 		setHitBox(6, 2, 24, 38);
 		defineCommands();
 		// set sounds
-		bumpSnd = RessourceManager.getSound("bump");
-		jumpSnd = RessourceManager.getSound("jump");
-		hitSnd = RessourceManager.getSound("hit");
-		pickupstarSnd = RessourceManager.getSound("pickupstar");
-		allPickedUpSnd = RessourceManager.getSound("allpickedup");
+		bumpSnd = ResourceManager.getSound("bump");
+		jumpSnd = ResourceManager.getSound("jump");
+		hitSnd = ResourceManager.getSound("hit");
+		pickupstarSnd = ResourceManager.getSound("pickupstar");
+		allPickedUpSnd = ResourceManager.getSound("allpickedup");
 	}
 	
 	private void defineCommands() {

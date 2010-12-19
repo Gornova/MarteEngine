@@ -395,14 +395,14 @@ public abstract class Entity implements Comparable<Entity> {
 		return collidingEntities;
 	}
 	
-	/*
+	/**
 	 * overload if you want to act on addition to world
 	 */
 	public void addedToWorld() {
 		
 	}
 	
-	/*
+	/**
 	 * overload if you want to act on removal from world
 	 */
 	public void removedFromWorld() {
@@ -418,7 +418,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	}
 
-	/*
+	/**
 	 * overload if you want to act on leaving world boundaries
 	 */
 	public void leftWorldBoundaries() {

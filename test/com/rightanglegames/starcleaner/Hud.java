@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.AngelCodeFont;
@@ -33,7 +33,7 @@ public class Hud extends Entity {
 		super(x, y);
 		this.name = "HUD";
 		this.depth = 400;
-		this.font = RessourceManager.getAngelCodeFont("bradleyhanditc24");
+		this.font = ResourceManager.getAngelCodeFont("bradleyhanditc24");
 
 		this.define(CMD_NEXT, Input.KEY_N);
 		this.define(CMD_PREVIOUS, Input.KEY_P);

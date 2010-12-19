@@ -1,6 +1,6 @@
 package com.rightanglegames.starcleaner;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -13,7 +13,7 @@ public class Moon extends Entity {
 		this.name = "Moon";
 		this.addType(Sun.SUN_AND_MOON);	// sun and moon share the same type
 		depth = 1;
-		setGraphic( RessourceManager.getImage("moon"));
+		setGraphic( ResourceManager.getImage("moon"));
 		setHitBox(0, 0, width, height);
 	}
 	

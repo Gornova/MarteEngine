@@ -10,7 +10,7 @@
 	<string key="" value="">
 -->
 	
-<ressources>
+<resources>
 	<!-- sounds -->
 	<sound key="bump" file="data/starcleaner/res/bump.wav" />
 	<sound key="hit" file="data/starcleaner/res/hit.wav" />
@@ -39,4 +39,4 @@
 	<sheet key="angel" file="data/starcleaner/res/angelsheet.png" width="40" height="40" />
 	<!-- fonts -->
 	<angelcodefont key="bradleyhanditc24" fontFile="data/starcleaner/res/bradleyhanditc24.fnt" imageFile="data/starcleaner/res/bradleyhanditc24.png"/>
-</ressources>
+</resources>

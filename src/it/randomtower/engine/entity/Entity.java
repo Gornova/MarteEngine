@@ -188,15 +188,26 @@ public abstract class Entity implements Comparable<Entity> {
 		float xpos = x, ypos = y;
 		if (currentAnim != null) {
 			Animation anim = animations.get(currentAnim);
+			int w = anim.getWidth()/2;
+			int h = anim.getHeight()/2;
 			if (centered) {
-				xpos -= anim.getWidth()/2;
-				ypos -= anim.getHeight()/2;
+				xpos -= w;
+				ypos -= h;
 			}
-			if (scale != 1.0f)
+			if (scale != 1.0f) {
+				if (centered)
+					g.translate(xpos-(w*scale-w),ypos-(h*scale-h));
+				else
+					g.translate(xpos,ypos);
 				g.scale(scale, scale);
-			if (angle != 0)
-				g.rotate(x, y, angle);
-			anim.draw(xpos, ypos);
+				if (angle != 0)
+					g.rotate(x, y, angle);
+				anim.draw(0, 0);
+			} else {
+				if (angle != 0)
+					g.rotate(x, y, angle);
+				anim.draw(xpos, ypos);
+			}
 			if (angle != 0 || scale != 1.0f)
 				g.resetTransform();
 		} else if (currentImage != null) {
@@ -558,6 +569,29 @@ public abstract class Entity implements Comparable<Entity> {
 		this.world.remove(this);
 	}
 	
+	/***************** some methods to deal with angles and vectors ************************************/
+	
+	public int getAngleToPosition(Vector2f otherPos) {
+		Vector2f diff = otherPos.sub(new Vector2f(x,y));
+		return (((int) diff.getTheta()) + 90) % 360;
+	}
+
+
+	public int getAngleDiff(int angle1, int angle2) {
+    	return ((((angle2 - angle1) % 360) + 540) % 360) - 180;
+    }
+
+
+	public Vector2f getPointWithAngleAndDistance(int angle, float distance) {
+		Vector2f point;
+		float tx, ty;
+		double theta = StrictMath.toRadians(angle + 90);
+		tx = (float) (this.x + distance * StrictMath.cos(theta));
+		ty = (float) (this.y + distance * StrictMath.sin(theta));
+		point = new Vector2f(tx, ty);
+		return point;
+	}
+
 	/***************** some methods to deal with alarms ************************************/
 	public void setAlarm(String name, int triggerTime, boolean oneShot, boolean startNow) {
 		Alarm alarm = new Alarm(name, triggerTime, oneShot);

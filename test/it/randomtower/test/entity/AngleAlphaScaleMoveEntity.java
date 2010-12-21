@@ -50,14 +50,21 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 				angle -= 360;
 			
 			// we are playing tricks here: to avoid modifying the TopDownActor class we
-			// retrieve the player from the world and rotate it too
+			// retrieve the players from the world and rotate them too
 			Entity player = world.find(PLAYER);
 			if (player != null)
 				player.angle = this.angle;
+			Entity scaledPlayer = world.find("ScaledPlayer");
+			if (scaledPlayer != null)
+				scaledPlayer.angle = this.angle;
 		} else if ("scaleMe".equals(alarmName)) {
 			this.scale += scaleDir;
 			if (this.scale <= 0.1f || this.scale >= 2.0f)
 				scaleDir *= -1;
+			
+			Entity scaledPlayer = world.find("ScaledPlayer");
+			if (scaledPlayer != null)
+				scaledPlayer.scale = this.scale;
 		}
 	}
 

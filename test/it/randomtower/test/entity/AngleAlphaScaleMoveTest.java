@@ -14,6 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class AngleAlphaScaleMoveTest extends StateBasedGame {
 
 	private TopDownActor player = null;
+	private TopDownActor scaledPlayer = null;
 	
 	public AngleAlphaScaleMoveTest() {
 		super("AngleAlphaScaleMoveTest");
@@ -34,6 +35,11 @@ public class AngleAlphaScaleMoveTest extends StateBasedGame {
 		player.name = Entity.PLAYER;
 		player.setCentered(true);
 		world.add(player);
+
+		scaledPlayer = new TopDownActor(100, 400, "data/link.png");
+		scaledPlayer.name = "ScaledPlayer";
+		scaledPlayer.setCentered(true);
+		world.add(scaledPlayer);
 	}
 
 	/**

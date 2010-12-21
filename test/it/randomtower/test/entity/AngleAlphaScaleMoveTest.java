@@ -29,8 +29,10 @@ public class AngleAlphaScaleMoveTest extends StateBasedGame {
 	private void prepareTestScenario(World world) {
 		// add some entities to our world
 		world.add(new AngleAlphaScaleMoveEntity(400, 300, true, false, false, false));
+		world.add(new AngleAlphaScaleMoveEntity(100, 200, true, false, true, false));
 		player = new TopDownActor(400, 400, "data/link.png");
 		player.name = Entity.PLAYER;
+		player.setCentered(true);
 		world.add(player);
 	}
 

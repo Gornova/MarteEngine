@@ -48,6 +48,9 @@ public class ME {
 
 	public static World world;
 	
+	/** value of current delta of update call. might be helpful here */
+	public static int delta;
+	
 	/** 
 	 * Update entities and add new entities and remove old entities
 	 * @param container

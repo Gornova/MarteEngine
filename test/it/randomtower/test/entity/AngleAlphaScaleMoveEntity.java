@@ -3,7 +3,7 @@ package it.randomtower.test.entity;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
 
 /**
@@ -13,24 +13,32 @@ import it.randomtower.engine.entity.Entity;
  *
  */
 public class AngleAlphaScaleMoveEntity extends Entity {
+	private float scaleDir = -0.1f;
 
 	public AngleAlphaScaleMoveEntity(float x, float y, boolean changeAngle, boolean changeAlpha, boolean changeScale, boolean move) {
 		super(x, y);
 		
 		// load and get the image that we are showing
-		try {
-			RessourceManager.loadImage("ship", "data/triangle.png", null);
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (ResourceManager.getImage("ship") == null) {
+			try {
+				ResourceManager.loadImage("ship", "data/triangle.png", null);
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		this.setGraphic(RessourceManager.getImage("ship"));
+		this.setGraphic(ResourceManager.getImage("ship"));
 		
 		if (changeAngle) {
 			// set an alarm named "rotateMe" that is triggered every 2 update calls, starts right now
 			// and runs for ever
 			this.setAlarm("rotateMe", 2, false, true);
 		}
+		
+		if (changeScale) {
+			this.setAlarm("scaleMe", 10, false, true);
+		}
+		this.setCentered(true);
 	}
 	
 	@Override
@@ -46,6 +54,10 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 			Entity player = world.find(PLAYER);
 			if (player != null)
 				player.angle = this.angle;
+		} else if ("scaleMe".equals(alarmName)) {
+			this.scale += scaleDir;
+			if (this.scale <= 0.1f || this.scale >= 2.0f)
+				scaleDir *= -1;
 		}
 	}
 

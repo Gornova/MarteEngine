@@ -40,7 +40,10 @@ public abstract class Entity implements Comparable<Entity> {
 	public float x;
 	/** y position **/
 	public float y;
-
+	
+	/** x,y is the center of the image/animation, otherwise it's top left corner */
+	private boolean centered = false;
+	
 	/** width of the entity. not necessarily the width of the hitbox. Used for world wrapping */
 	public int width;
 	/** height of the entity. not necessarily the height of the hitbox. Used for world wrapping */
@@ -59,6 +62,9 @@ public abstract class Entity implements Comparable<Entity> {
 	
 	/** angle in degrees from 0 to 360, used for drawing the entity rotated. NOT used for direction! */
 	public int angle = 0;
+	
+	/** scale used for both horizontal and vertical scaling. */
+	public float scale = 1.0f;
 	
 	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
 
@@ -84,9 +90,9 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean visible = true;
 
 	/** x offset for collision box */
-	public float xOffset;
+	public float hitboxOffsetX;
 	/** y offset for collision box */
-	public float yOffset;
+	public float hitboxOffsetY;
 	/** hitbox width of entity **/
 	public int hitboxWidth;
 	/** hitbox height of entity **/
@@ -107,6 +113,31 @@ public abstract class Entity implements Comparable<Entity> {
 		this.startx = x;
 		this.starty = y;
 		stateManager = new StateManager();
+	}
+	
+	public void setCentered(boolean on) {
+		int whalf = 0, hhalf = 0;
+		if (currentImage != null) {
+			whalf = currentImage.getWidth() / 2;
+			hhalf = currentImage.getHeight() / 2;
+		}
+		if (currentAnim != null) {
+			whalf = animations.get(currentAnim).getWidth() / 2;
+			hhalf = animations.get(currentAnim).getHeight() / 2;
+		}
+		if (on) {
+			// modify hitbox position accordingly - move it a bit up and left
+			this.hitboxOffsetX -= whalf;
+			this.hitboxOffsetY -= hhalf;
+			this.centered = true;
+		} else {
+			if (centered == true) {
+				// reset hitbox position to top left origin
+				this.hitboxOffsetX += whalf;
+				this.hitboxOffsetY += hhalf;
+			}
+			this.centered = false;
+		}
 	}
 
 	/**
@@ -153,21 +184,53 @@ public abstract class Entity implements Comparable<Entity> {
 		if (stateManager!=null && stateManager.currentState()!=null){
 			stateManager.render(g);
 			return;
-		}		
+		}
+		float xpos = x, ypos = y;
 		if (currentAnim != null) {
 			Animation anim = animations.get(currentAnim);
-			g.rotate(x+anim.getWidth()/2, y + anim.getHeight()/2, angle);
-			anim.draw(x, y);
-			g.resetTransform();
+			if (centered) {
+				xpos -= anim.getWidth()/2;
+				ypos -= anim.getHeight()/2;
+			}
+			if (scale != 1.0f)
+				g.scale(scale, scale);
+			if (angle != 0)
+				g.rotate(x, y, angle);
+			anim.draw(xpos, ypos);
+			if (angle != 0 || scale != 1.0f)
+				g.resetTransform();
 		} else if (currentImage != null) {
-			currentImage.setRotation(angle);
-			g.drawImage(currentImage, x, y);
+			int w = currentImage.getWidth()/2;
+			int h = currentImage.getHeight()/2;
+			if (centered) {
+				xpos -= w;
+				ypos -= h;
+				currentImage.setCenterOfRotation(w, h);
+			} else
+				currentImage.setCenterOfRotation(0, 0);
+			
+			if (angle != 0) {
+				currentImage.setRotation(angle);
+			}
+			if (scale != 1.0f) {
+				if (centered)
+					g.translate(xpos-(w*scale-w),ypos-(h*scale-h));
+				else
+					g.translate(xpos,ypos);
+				g.scale(scale, scale);
+				g.drawImage(currentImage, 0, 0);
+			}
+			else
+				g.drawImage(currentImage, xpos, ypos);
+			if (scale != 1.0f)
+				g.resetTransform();
 		}
 		if (ME.debugEnabled) {
 			g.setColor(ME.borderColor);
-			Rectangle hitBox = new Rectangle(x + xOffset, y + yOffset, hitboxWidth, hitboxHeight);
+			Rectangle hitBox = new Rectangle(x + hitboxOffsetX, y + hitboxOffsetY, hitboxWidth, hitboxHeight);
 			g.draw(hitBox);
 			g.setColor(Color.white);
+			g.drawRect(x, y, 1, 1);
 		}
 	}
 
@@ -296,8 +359,8 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @param collidable
 	 */
 	public void setHitBox(float xOffset, float yOffset, int width, int height, boolean collidable) {
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
+		this.hitboxOffsetX = xOffset;
+		this.hitboxOffsetY = yOffset;
 		this.hitboxWidth = width;
 		this.hitboxHeight = height;
 		this.collidable = true;
@@ -328,11 +391,11 @@ public abstract class Entity implements Comparable<Entity> {
 		for (Entity entity : world.getEntities()) {
 			if (entity.collidable && entity.type.contains(type)) {
 				if (!entity.equals(this)
-						&& x + xOffset + hitboxWidth > entity.x + entity.xOffset
-						&& y + yOffset + hitboxHeight > entity.y + entity.yOffset
-						&& x + xOffset < entity.x + entity.xOffset
+						&& x + hitboxOffsetX + hitboxWidth > entity.x + entity.hitboxOffsetX
+						&& y + hitboxOffsetY + hitboxHeight > entity.y + entity.hitboxOffsetY
+						&& x + hitboxOffsetX < entity.x + entity.hitboxOffsetX
 								+ entity.hitboxWidth
-						&& y + yOffset < entity.y + entity.yOffset
+						&& y + hitboxOffsetY < entity.y + entity.hitboxOffsetY
 								+ entity.hitboxHeight) {
 					this.collisionResponse(entity);
 					entity.collisionResponse(this);
@@ -355,11 +418,11 @@ public abstract class Entity implements Comparable<Entity> {
 	public Entity collideWith(Entity other, float x, float y) {
 		if (other.collidable) {
 			if (!other.equals(this)
-					&& x + xOffset + hitboxWidth > other.x + other.xOffset
-					&& y + yOffset + hitboxHeight > other.y + other.yOffset
-					&& x + xOffset < other.x + other.xOffset
+					&& x + hitboxOffsetX + hitboxWidth > other.x + other.hitboxOffsetX
+					&& y + hitboxOffsetY + hitboxHeight > other.y + other.hitboxOffsetY
+					&& x + hitboxOffsetX < other.x + other.hitboxOffsetX
 							+ other.hitboxWidth
-					&& y + yOffset < other.y + other.yOffset
+					&& y + hitboxOffsetY < other.y + other.hitboxOffsetY
 							+ other.hitboxHeight) {
 				this.collisionResponse(other);
 				other.collisionResponse(this);
@@ -378,11 +441,11 @@ public abstract class Entity implements Comparable<Entity> {
 		for (Entity entity : world.getEntities()) {
 			if (entity.collidable && entity.type.contains(type)) {
 				if (!entity.equals(this)
-						&& x + xOffset + hitboxWidth > entity.x + entity.xOffset
-						&& y + yOffset + hitboxHeight > entity.y + entity.yOffset
-						&& x + xOffset < entity.x + entity.xOffset
+						&& x + hitboxOffsetX + hitboxWidth > entity.x + entity.hitboxOffsetX
+						&& y + hitboxOffsetY + hitboxHeight > entity.y + entity.hitboxOffsetY
+						&& x + hitboxOffsetX < entity.x + entity.hitboxOffsetX
 								+ entity.hitboxWidth
-						&& y + yOffset < entity.y + entity.yOffset
+						&& y + hitboxOffsetY < entity.y + entity.hitboxOffsetY
 								+ entity.hitboxHeight) {
 					this.collisionResponse(entity);
 					entity.collisionResponse(this);

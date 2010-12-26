@@ -75,6 +75,8 @@
 		<delete dir="${webstart.dir}" />
 		<delete dir="${dist.dir}" />
 		<delete file="${target.class}.exe" />
+		<delete file="${target.dir}/Gornova.ks" />
+		<delete dir="${target.dir}" />
 	</target>
 
 	<target name="format">

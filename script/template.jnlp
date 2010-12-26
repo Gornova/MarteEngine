@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+"
+    codebase="@codebase@">
+    <information>
+        <title>@title@</title>
+        <vendor>Gornova</vendor>
+        <description kind="short">@description@</description>
+        <homepage href="@homepage@" />
+        <offline-allowed />
+        <shortcut online="false">
+            <desktop />
+        </shortcut>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.5+"/>
+        <jar href="@jarname@"/>
+        <extension href="http://anotherearlymorning.com/games/slick/Slick.jnlp" />
+    </resources> 
+    <application-desc main-class="@mainclass@"/>
+</jnlp>

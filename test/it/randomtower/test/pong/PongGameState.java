@@ -36,7 +36,7 @@ public class PongGameState extends World {
 
 		super.init(container, game);
 		// create players
-		add(new PongBarActor(20, container.getHeight() / 2, "data/bar.PNG",
+		add(new PongBarActor(20, container.getHeight() / 2, "data/bar.png",
 				"player1", Input.KEY_W, Input.KEY_S));
 		add(new PongBarActor(container.getWidth() - 26,
 				container.getHeight() / 2, "data/bar.png", "player2",

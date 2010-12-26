@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: MarteEngine
+Main-Class: @package@.@class@
+Class-Path: lib/slick.jar lib/lwjgl.jar

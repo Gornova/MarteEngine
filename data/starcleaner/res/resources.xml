@@ -34,7 +34,6 @@
 	<image key="spikesup" file="data/starcleaner/res/spikesup.png" />
 	<image key="spikesdown" file="data/starcleaner/res/spikesdown.png" />
 	<image key="sign" file="data/starcleaner/res/sign.png" />
-	<image key="redTank" file="data/redTank.png" />
 	<!-- sheets -->
 	<sheet key="crow" file="data/starcleaner/res/crowsheet.png" width="40" height="40" />
 	<sheet key="angel" file="data/starcleaner/res/angelsheet.png" width="40" height="40" />

@@ -18,15 +18,6 @@ public class Tank extends Entity {
 	public Tank(float x, float y) {
 		super(x, y);
 		
-		// load and get the image that we are showing
-		if (ResourceManager.getImage("redTank") == null) {
-			try {
-				ResourceManager.loadImage("redTank", "data/redTank.png", null);
-			} catch (SlickException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		this.setGraphic(ResourceManager.getImage("redTank"));
 		
 		this.setCentered(true);

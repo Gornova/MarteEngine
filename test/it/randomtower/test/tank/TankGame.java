@@ -9,6 +9,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.rightanglegames.starcleaner.Background;
+
 /**
  * In game World for TestTest
  * 
@@ -41,16 +43,22 @@ public class TankGame extends World {
 		add(new BlueTarget(750,450));
 		add(new BlueTarget(650,482));
 
+		// add background from http://www.flickr.com/photos/fredmikerudy/4136592583/
+		Background bg = new Background(0, 0);
+		bg.depth=-100;
+		add(bg);		
+		
 		container.setMouseCursor(ResourceManager.getImage("cursor"), 25, 25);
+		
 	}
 	
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		// simple gui
-		font.drawString(5, 550, "WASD/arrows to move, mouse rotate turret, click to destroy Red targets");
 		// render everything
 		super.render(container, game, g);
+		// simple gui
+		font.drawString(5, 570, "WASD/arrows to move, mouse rotate turret, click to destroy Red targets");
 	}
 	
 	

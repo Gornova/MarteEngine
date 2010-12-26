@@ -12,6 +12,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+/**
+ * Tank test is an effort to build a little tank-fighting game
+ * 
+ * @author Gornova
+ */
 public class TankTest extends StateBasedGame {
 
 	public static int keyRestart = Input.KEY_R;

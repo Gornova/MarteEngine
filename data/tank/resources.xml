@@ -15,7 +15,12 @@
 	<!-- songs -->
 	<!-- images -->
 	<image key="redTank" file="data/tank/redTank.png" />
+	<image key="missile" file="data/tank/missile.png" />
+	<image key="cursor" file="data/tank/cursor.png" />
+	<image key="blockRed" file="data/tank/blockRed.png" />
+	<image key="blockBlue" file="data/tank/blockBlue.png" />
 	<!-- sheets -->
 	<sheet key="tank" file="data/tank/tank.png" width="50" height="50" />
 	<!-- fonts -->
+	<angelcodefont key="bradleyhanditc24" fontFile="data/starcleaner/res/bradleyhanditc24.fnt" imageFile="data/starcleaner/res/bradleyhanditc24.png"/>
 </resources>

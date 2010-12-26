@@ -591,6 +591,22 @@ public abstract class Entity implements Comparable<Entity> {
 		point = new Vector2f(tx, ty);
 		return point;
 	}
+	
+	/**
+	 * Calculate vector from angle and magnitude 
+	 * @param angle
+	 * @param magnitude
+	 * @return
+	 * @author Alex Schearer
+	 */
+	public static Vector2f calculateVector(float angle, float magnitude) {
+		Vector2f v = new Vector2f();
+		v.x = (float) Math.sin(Math.toRadians(angle));
+		v.x *= magnitude;
+		v.y = (float) -Math.cos(Math.toRadians(angle));
+		v.y *= magnitude;
+		return v;
+	}	
 
 	/***************** some methods to deal with alarms ************************************/
 	public void setAlarm(String name, int triggerTime, boolean oneShot, boolean startNow) {

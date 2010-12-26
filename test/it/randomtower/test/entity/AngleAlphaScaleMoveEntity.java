@@ -1,10 +1,9 @@
 package it.randomtower.test.entity;
 
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.util.Log;
-
-import it.randomtower.engine.RessourceManager;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
+
+import org.newdawn.slick.SlickException;
 
 /**
  * some smart test entity that can rotate and scale and change alpha and move
@@ -19,12 +18,12 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 		
 		// load and get the image that we are showing
 		try {
-			RessourceManager.loadImage("ship", "data/triangle.png", null);
+			ResourceManager.loadImage("ship", "data/triangle.png", null);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.setGraphic(RessourceManager.getImage("ship"));
+		this.setGraphic(ResourceManager.getImage("ship"));
 		
 		if (changeAngle) {
 			// set an alarm named "rotateMe" that is triggered every 2 update calls, starts right now

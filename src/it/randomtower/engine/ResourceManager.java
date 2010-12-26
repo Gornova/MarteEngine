@@ -26,20 +26,20 @@ import org.newdawn.slick.util.ResourceLoader;
 public class ResourceManager {
 	private static float sfxVolume = 1.0f;
 	private static float musicVolume = 1.0f;
-	
-	private static HashMap<String,Sound> sounds = new HashMap<String, Sound>();
-	private static HashMap<String,Music> songs = new HashMap<String, Music>();
-	private static HashMap<String,Image> images = new HashMap<String, Image>();
-	private static HashMap<String,SpriteSheet> sheets = new HashMap<String, SpriteSheet>();
-	private static HashMap<String,AngelCodeFont> fonts = new HashMap<String, AngelCodeFont>();
-	private static HashMap<String,Integer> ints = new HashMap<String, Integer>();
-	private static HashMap<String,Float> floats = new HashMap<String, Float>();
-	private static HashMap<String,String> strings = new HashMap<String, String>();
-	
+
+	private static HashMap<String, Sound> sounds = new HashMap<String, Sound>();
+	private static HashMap<String, Music> songs = new HashMap<String, Music>();
+	private static HashMap<String, Image> images = new HashMap<String, Image>();
+	private static HashMap<String, SpriteSheet> sheets = new HashMap<String, SpriteSheet>();
+	private static HashMap<String, AngelCodeFont> fonts = new HashMap<String, AngelCodeFont>();
+	private static HashMap<String, Integer> ints = new HashMap<String, Integer>();
+	private static HashMap<String, Float> floats = new HashMap<String, Float>();
+	private static HashMap<String, String> strings = new HashMap<String, String>();
+
 	public static void loadResources(String ref) throws IOException {
 		loadResources(ResourceLoader.getResourceAsStream(ref));
 	}
-	
+
 	public static void loadResources(File ref) throws IOException {
 		loadResources(new FileInputStream(ref));
 	}
@@ -106,30 +106,42 @@ public class ResourceManager {
 	private static void loadMusic(Element music) throws SlickException {
 		String key = music.getAttribute("key");
 		String file = music.getAttribute("file");
-		Log.debug("Trying to load music file '" + file + "' at key '" + key + "'...");
-		if (songs.get(key)!= null)
-			throw new SlickException("Music for key " + key + " already existing!");
+		loadMusic(key, file);
+	}
+
+	public static void loadMusic(String key, String file) throws SlickException {
+		Log.debug("Trying to load music file '" + file + "' at key '" + key
+				+ "'...");
+		if (songs.get(key) != null)
+			throw new SlickException("Music for key " + key
+					+ " already existing!");
 		Music song = new Music(file);
 		songs.put(key, song);
 	}
-	
+
 	public static Music getMusic(String key) {
 		Music music = songs.get(key);
 		if (music == null)
 			Log.error("No music for key " + key + " found!");
 		return music;
 	}
-	
+
 	private static void loadSound(Element snd) throws SlickException {
 		String key = snd.getAttribute("key");
 		String file = snd.getAttribute("file");
-		Log.debug("Trying to load sound file '" + file + "' at key '" + key + "'...");
-		if (sounds.get(key)!= null)
-			throw new SlickException("Sound for key " + key + " already existing!");
+		loadSound(key, file);
+	}
+
+	public static void loadSound(String key, String file) throws SlickException {
+		Log.debug("Trying to load sound file '" + file + "' at key '" + key
+				+ "'...");
+		if (sounds.get(key) != null)
+			throw new SlickException("Sound for key " + key
+					+ " already existing!");
 		Sound sound = new Sound(file);
 		sounds.put(key, sound);
 	}
-	
+
 	public static Sound getSound(String key) {
 		Sound sound = sounds.get(key);
 		if (sound == null)
@@ -146,9 +158,16 @@ public class ResourceManager {
 			transparentColor = Color.decode(transColor);
 		else
 			transColor = null;
-		Log.debug("Trying to load image file '" + file + "' at key '" + key + "'...");
-		if (images.get(key)!= null)
-			throw new SlickException("Image for key " + key + " already existing!");
+		loadImage(key, file, transparentColor);
+	}
+
+	public static void loadImage(String key, String file, Color transparentColor)
+			throws SlickException {
+		Log.debug("Trying to load image file '" + file + "' at key '" + key
+				+ "'...");
+		if (images.get(key) != null)
+			throw new SlickException("Image for key " + key
+					+ " already existing!");
 		Image image;
 		if (transparentColor != null)
 			image = new Image(file, transparentColor);
@@ -156,14 +175,14 @@ public class ResourceManager {
 			image = new Image(file);
 		images.put(key, image);
 	}
-	
+
 	public static Image getImage(String key) {
 		Image image = images.get(key);
 		if (image == null)
 			Log.error("No image for key " + key + " found!");
 		return image;
 	}
-	
+
 	private static void loadSpriteSheet(Element sprsheet) throws SlickException {
 		String key = sprsheet.getAttribute("key");
 		String file = sprsheet.getAttribute("file");
@@ -175,39 +194,59 @@ public class ResourceManager {
 			transparentColor = Color.decode(transColor);
 		else
 			transColor = null;
-		Log.debug("Trying to load spritesheet file '" + file + "' with width " + width + 
-				" and height " + height +
-				((transColor == null) ? " without transparent color" : " with transparent color '" + transColor + "'" ) + " at key '" + key + "'...");
-		if (sheets.get(key)!= null)
-			throw new SlickException("SpriteSheet for key " + key + " already existing!");
+		loadSpriteSheet(key, file, width, height, transparentColor);
+	}
+
+	public static void loadSpriteSheet(String key, String file, int width,
+			int height, Color transparentColor) throws SlickException {
+		Log.debug("Trying to load spritesheet file '"
+				+ file
+				+ "' with width "
+				+ width
+				+ " and height "
+				+ height
+				+ ((transparentColor == null) ? " without transparent color"
+						: " with transparent color '"
+								+ transparentColor.toString() + "'")
+				+ " at key '" + key + "'...");
+		if (sheets.get(key) != null)
+			throw new SlickException("SpriteSheet for key " + key
+					+ " already existing!");
 		SpriteSheet spriteSheet = null;
 		if (transparentColor == null)
 			spriteSheet = new SpriteSheet(file, width, height);
 		else
 			spriteSheet = new SpriteSheet(file, width, height, transparentColor);
 		sheets.put(key, spriteSheet);
+
 	}
-	
+
 	public static SpriteSheet getSpriteSheet(String key) {
 		SpriteSheet spriteSheet = sheets.get(key);
 		if (spriteSheet == null)
 			Log.error("No SpriteSheet for key " + key + " found!");
 		return spriteSheet;
 	}
-	
+
 	private static void loadAngelCodeFont(Element fnt) throws SlickException {
 		String key = fnt.getAttribute("key");
 		String fntfile = fnt.getAttribute("fontFile");
 		String imagefile = fnt.getAttribute("imageFile");
-		Log.debug("Trying to load Angelcode font file '" + fntfile + "' and imagefile '" + imagefile
-				+ "' at key '" + key + "'...");
-		if (fonts.get(key)!= null)
-			throw new SlickException("AngelCodeFont for key " + key + " already existing!");
+		loadAngelCodeFont(key, fntfile, imagefile);
+	}
+
+	public static void loadAngelCodeFont(String key, String fontFile,
+			String imageFile) throws SlickException {
+		Log.debug("Trying to load Angelcode font file '" + fontFile
+				+ "' and imagefile '" + imageFile + "' at key '" + key + "'...");
+		if (fonts.get(key) != null)
+			throw new SlickException("AngelCodeFont for key " + key
+					+ " already existing!");
 		// load AngelCodeFonts with caching enabled to speed up rendering
-		AngelCodeFont font = new AngelCodeFont(fntfile, imagefile, true);
+		AngelCodeFont font = new AngelCodeFont(fontFile, imageFile, true);
 		fonts.put(key, font);
 	}
-	
+
 	public static AngelCodeFont getAngelCodeFont(String key) {
 		AngelCodeFont font = fonts.get(key);
 		if (font == null)
@@ -219,9 +258,13 @@ public class ResourceManager {
 		String key = intval.getAttribute("key");
 		String value = intval.getAttribute("value");
 		int val = Integer.parseInt(value);
-		ints.put(key, val);
+		setInt(key, val);
 	}
-	
+
+	public static void setInt(String key, int value) {
+		ints.put(key, value);
+	}
+
 	public static int getInt(String key) {
 		Integer intval = ints.get(key);
 		if (intval == null)
@@ -233,9 +276,13 @@ public class ResourceManager {
 		String key = floatval.getAttribute("key");
 		String value = floatval.getAttribute("value");
 		float val = Float.parseFloat(value);
-		floats.put(key, val);
+		setFloat(key, val);
 	}
-	
+
+	public static void setFloat(String key, float value) {
+		floats.put(key, value);
+	}
+
 	public static float getFloat(String key) {
 		Float floatval = floats.get(key);
 		if (floatval == null)
@@ -246,9 +293,13 @@ public class ResourceManager {
 	private static void loadString(Element stringval) throws SlickException {
 		String key = stringval.getAttribute("key");
 		String value = stringval.getAttribute("value");
+		setString(key, value);
+	}
+
+	public static void setString(String key, String value) {
 		strings.put(key, value);
 	}
-	
+
 	public static String getString(String key) {
 		String val = strings.get(key);
 		if (val == null)
@@ -258,7 +309,9 @@ public class ResourceManager {
 
 	/**
 	 * set the volume of all sound effects to given volume
-	 * @param sfxVolume a value between 0 and 1
+	 * 
+	 * @param sfxVolume
+	 *            a value between 0 and 1
 	 */
 	public static void setSfxVolume(float volume) {
 		sfxVolume = volume;
@@ -268,7 +321,9 @@ public class ResourceManager {
 
 	/**
 	 * set the volume of all songs to given volume
-	 * @param musicVolume a value between 0 and 1
+	 * 
+	 * @param musicVolume
+	 *            a value between 0 and 1
 	 */
 	public static void setMusicVolume(float volume) {
 		musicVolume = volume;
@@ -283,5 +338,5 @@ public class ResourceManager {
 	public static float getSfxVolume() {
 		return sfxVolume;
 	}
-	
+
 }

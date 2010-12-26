@@ -70,8 +70,8 @@ public class World extends BasicGameState {
 		for (Entity e : entities) {
 			if (ME.debugEnabled) {
 				g.setColor(ME.borderColor);
-				Rectangle hitBox = new Rectangle(e.x + e.xOffset, e.y
-						+ e.yOffset, e.width, e.height);
+				Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
+						+ e.hitboxOffsetY, e.width, e.height);
 				g.draw(hitBox);
 				g.setColor(Color.white);
 			}
@@ -95,6 +95,9 @@ public class World extends BasicGameState {
 			throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
+		
+		// store the current delta in ME for anyone who's interested in it.
+		ME.delta = delta;
 		
 		removable.clear();
 

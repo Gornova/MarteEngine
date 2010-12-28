@@ -32,7 +32,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/** the world this entity lives in */
 	public World world = null;
-	
+
 	/** unique identifier **/
 	public String name;
 
@@ -40,32 +40,44 @@ public abstract class Entity implements Comparable<Entity> {
 	public float x;
 	/** y position **/
 	public float y;
-	
+
 	/** x,y is the center of the image/animation, otherwise it's top left corner */
 	private boolean centered = false;
-	
-	/** width of the entity. not necessarily the width of the hitbox. Used for world wrapping */
+
+	/**
+	 * width of the entity. not necessarily the width of the hitbox. Used for
+	 * world wrapping
+	 */
 	public int width;
-	/** height of the entity. not necessarily the height of the hitbox. Used for world wrapping */
+	/**
+	 * height of the entity. not necessarily the height of the hitbox. Used for
+	 * world wrapping
+	 */
 	public int height;
-	
+
 	public float previousx, previousy;
 
 	/** start x and y position stored for reseting for example. very helpful */
 	public float startx, starty;
-	
+
 	public boolean wrapHorizontal = false;
 	public boolean wrapVertical = false;
-	
+
 	/** speed vector (x,y): specifies x and y movement per update call in pixels **/
 	public Vector2f speed = null;
-	
-	/** angle in degrees from 0 to 360, used for drawing the entity rotated. NOT used for direction! */
+
+	/**
+	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
+	 * used for direction!
+	 */
 	public int angle = 0;
-	
+
 	/** scale used for both horizontal and vertical scaling. */
 	public float scale = 1.0f;
 	
+	/** color of the entity, mainly used for alpha transparency, but could also be used for tinting */
+	public Color color = new Color(Color.white);
+
 	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
 
 	/** spritesheet that holds animations **/
@@ -77,7 +89,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/** static image for not-animated entity **/
 	public Image currentImage;
-	
+
 	/** available commands for entity **/
 	public Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
 
@@ -100,7 +112,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/** stateManager for entity **/
 	public StateManager stateManager;
-	
+
 	/**
 	 * create a new entity setting initial position (x,y)
 	 * 
@@ -114,7 +126,11 @@ public abstract class Entity implements Comparable<Entity> {
 		this.starty = y;
 		stateManager = new StateManager();
 	}
-	
+
+	/**
+	 * Set if image or animation must be centered on position
+	 * @param on
+	 */
 	public void setCentered(boolean on) {
 		int whalf = 0, hhalf = 0;
 		if (currentImage != null) {
@@ -149,7 +165,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		if (stateManager!=null && stateManager.currentState()!=null){
+		if (stateManager != null && stateManager.currentState() != null) {
 			stateManager.update(container, delta);
 			return;
 		}
@@ -181,64 +197,57 @@ public abstract class Entity implements Comparable<Entity> {
 			throws SlickException {
 		if (!visible)
 			return;
-		if (stateManager!=null && stateManager.currentState()!=null){
+		if (stateManager != null && stateManager.currentState() != null) {
 			stateManager.render(g);
 			return;
 		}
 		float xpos = x, ypos = y;
 		if (currentAnim != null) {
 			Animation anim = animations.get(currentAnim);
-			int w = anim.getWidth()/2;
-			int h = anim.getHeight()/2;
+			int w = anim.getWidth();
+			int h = anim.getHeight();
+			int whalf = w / 2;
+			int hhalf = h / 2;
 			if (centered) {
-				xpos -= w;
-				ypos -= h;
+				xpos = x - (whalf * scale);
+				ypos = y - (hhalf * scale);
 			}
-			if (scale != 1.0f) {
-				if (centered)
-					g.translate(xpos-(w*scale-w),ypos-(h*scale-h));
-				else
-					g.translate(xpos,ypos);
-				g.scale(scale, scale);
-				if (angle != 0)
-					g.rotate(x, y, angle);
-				anim.draw(0, 0);
-			} else {
-				if (angle != 0)
-					g.rotate(x, y, angle);
-				anim.draw(xpos, ypos);
+			if (angle != 0) {
+				g.rotate(x, y, angle);
 			}
-			if (angle != 0 || scale != 1.0f)
+			anim.draw(xpos, ypos, w * scale, h * scale);
+			if (angle != 0)
 				g.resetTransform();
 		} else if (currentImage != null) {
-			int w = currentImage.getWidth()/2;
-			int h = currentImage.getHeight()/2;
+			currentImage.setAlpha(color.a);
+			int w = currentImage.getWidth() / 2;
+			int h = currentImage.getHeight() / 2;
 			if (centered) {
 				xpos -= w;
 				ypos -= h;
 				currentImage.setCenterOfRotation(w, h);
 			} else
 				currentImage.setCenterOfRotation(0, 0);
-			
+
 			if (angle != 0) {
 				currentImage.setRotation(angle);
 			}
 			if (scale != 1.0f) {
 				if (centered)
-					g.translate(xpos-(w*scale-w),ypos-(h*scale-h));
+					g.translate(xpos - (w * scale - w), ypos - (h * scale - h));
 				else
-					g.translate(xpos,ypos);
+					g.translate(xpos, ypos);
 				g.scale(scale, scale);
 				g.drawImage(currentImage, 0, 0);
-			}
-			else
+			} else
 				g.drawImage(currentImage, xpos, ypos);
 			if (scale != 1.0f)
 				g.resetTransform();
 		}
 		if (ME.debugEnabled) {
 			g.setColor(ME.borderColor);
-			Rectangle hitBox = new Rectangle(x + hitboxOffsetX, y + hitboxOffsetY, hitboxWidth, hitboxHeight);
+			Rectangle hitBox = new Rectangle(x + hitboxOffsetX, y
+					+ hitboxOffsetY, hitboxWidth, hitboxHeight);
 			g.draw(hitBox);
 			g.setColor(Color.white);
 			g.drawRect(x, y, 1, 1);
@@ -247,6 +256,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Set an image as graphic
+	 * 
 	 * @param image
 	 */
 	public void setGraphic(Image image) {
@@ -257,6 +267,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Set a sprite sheet as graphic
+	 * 
 	 * @param sheet
 	 */
 	public void setGraphic(SpriteSheet sheet) {
@@ -286,10 +297,10 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * define commands
+	 * define commands to handle inputs
 	 * 
-	 * @param key
-	 * @param keys
+	 * @param command name of the command
+	 * @param keys keys or mouse input from {@link Input} class
 	 */
 	public void define(String command, int... keys) {
 		commands.put(command, keys);
@@ -308,6 +319,14 @@ public abstract class Entity implements Comparable<Entity> {
 		for (int i = 0; i < checked.length; i++) {
 			if (world.container.getInput().isKeyDown(checked[i])) {
 				return true;
+			} else if (checked[i] < 10) {
+				/**
+				 * 10 is max number of button on a mouse
+				 * @see Input
+				 */
+				if (world.container.getInput().isMousePressed(checked[i])) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -369,7 +388,8 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @param height
 	 * @param collidable
 	 */
-	public void setHitBox(float xOffset, float yOffset, int width, int height, boolean collidable) {
+	public void setHitBox(float xOffset, float yOffset, int width, int height,
+			boolean collidable) {
 		this.hitboxOffsetX = xOffset;
 		this.hitboxOffsetY = yOffset;
 		this.hitboxWidth = width;
@@ -402,8 +422,10 @@ public abstract class Entity implements Comparable<Entity> {
 		for (Entity entity : world.getEntities()) {
 			if (entity.collidable && entity.type.contains(type)) {
 				if (!entity.equals(this)
-						&& x + hitboxOffsetX + hitboxWidth > entity.x + entity.hitboxOffsetX
-						&& y + hitboxOffsetY + hitboxHeight > entity.y + entity.hitboxOffsetY
+						&& x + hitboxOffsetX + hitboxWidth > entity.x
+								+ entity.hitboxOffsetX
+						&& y + hitboxOffsetY + hitboxHeight > entity.y
+								+ entity.hitboxOffsetY
 						&& x + hitboxOffsetX < entity.x + entity.hitboxOffsetX
 								+ entity.hitboxWidth
 						&& y + hitboxOffsetY < entity.y + entity.hitboxOffsetY
@@ -425,12 +447,14 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		return null;
 	}
-	
+
 	public Entity collideWith(Entity other, float x, float y) {
 		if (other.collidable) {
 			if (!other.equals(this)
-					&& x + hitboxOffsetX + hitboxWidth > other.x + other.hitboxOffsetX
-					&& y + hitboxOffsetY + hitboxHeight > other.y + other.hitboxOffsetY
+					&& x + hitboxOffsetX + hitboxWidth > other.x
+							+ other.hitboxOffsetX
+					&& y + hitboxOffsetY + hitboxHeight > other.y
+							+ other.hitboxOffsetY
 					&& x + hitboxOffsetX < other.x + other.hitboxOffsetX
 							+ other.hitboxWidth
 					&& y + hitboxOffsetY < other.y + other.hitboxOffsetY
@@ -444,7 +468,6 @@ public abstract class Entity implements Comparable<Entity> {
 		return null;
 	}
 
-	
 	public List<Entity> collideInto(String type, float x, float y) {
 		if (type == null || type.isEmpty())
 			return null;
@@ -452,8 +475,10 @@ public abstract class Entity implements Comparable<Entity> {
 		for (Entity entity : world.getEntities()) {
 			if (entity.collidable && entity.type.contains(type)) {
 				if (!entity.equals(this)
-						&& x + hitboxOffsetX + hitboxWidth > entity.x + entity.hitboxOffsetX
-						&& y + hitboxOffsetY + hitboxHeight > entity.y + entity.hitboxOffsetY
+						&& x + hitboxOffsetX + hitboxWidth > entity.x
+								+ entity.hitboxOffsetX
+						&& y + hitboxOffsetY + hitboxHeight > entity.y
+								+ entity.hitboxOffsetY
 						&& x + hitboxOffsetX < entity.x + entity.hitboxOffsetX
 								+ entity.hitboxWidth
 						&& y + hitboxOffsetY < entity.y + entity.hitboxOffsetY
@@ -468,19 +493,19 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		return collidingEntities;
 	}
-	
+
 	/**
 	 * overload if you want to act on addition to world
 	 */
 	public void addedToWorld() {
-		
+
 	}
-	
+
 	/**
 	 * overload if you want to act on removal from world
 	 */
 	public void removedFromWorld() {
-		
+
 	}
 
 	/**
@@ -496,7 +521,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * overload if you want to act on leaving world boundaries
 	 */
 	public void leftWorldBoundaries() {
-		
+
 	}
 
 	public Image getCurrentImage() {
@@ -506,7 +531,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	public void checkWorldBoundaries() {
 		if ((x + width) < 0) {
 			leftWorldBoundaries();
@@ -517,7 +542,7 @@ public abstract class Entity implements Comparable<Entity> {
 		if (x > this.world.width) {
 			leftWorldBoundaries();
 			if (wrapHorizontal) {
-				x = (-width+1);
+				x = (-width + 1);
 			}
 		}
 		if ((y + height) < 0) {
@@ -529,11 +554,11 @@ public abstract class Entity implements Comparable<Entity> {
 		if (y > this.world.height) {
 			leftWorldBoundaries();
 			if (wrapVertical) {
-				y = (-height+1);
+				y = (-height + 1);
 			}
 		}
 	}
-	
+
 	private String getTypes() {
 		StringBuffer types = new StringBuffer();
 		for (String singleType : type) {
@@ -543,7 +568,7 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		return types.toString();
 	}
-	
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("name: " + name);
@@ -557,30 +582,28 @@ public abstract class Entity implements Comparable<Entity> {
 	public HashSet<String> getType() {
 		return type;
 	}
-	
+
 	public boolean isType(String type) {
 		return type.contains(type);
 	}
-	
+
 	/**
 	 * remove ourselves from world
 	 */
 	public void destroy() {
 		this.world.remove(this);
 	}
-	
+
 	/***************** some methods to deal with angles and vectors ************************************/
-	
+
 	public int getAngleToPosition(Vector2f otherPos) {
-		Vector2f diff = otherPos.sub(new Vector2f(x,y));
+		Vector2f diff = otherPos.sub(new Vector2f(x, y));
 		return (((int) diff.getTheta()) + 90) % 360;
 	}
 
-
 	public int getAngleDiff(int angle1, int angle2) {
-    	return ((((angle2 - angle1) % 360) + 540) % 360) - 180;
-    }
-
+		return ((((angle2 - angle1) % 360) + 540) % 360) - 180;
+	}
 
 	public Vector2f getPointWithAngleAndDistance(int angle, float distance) {
 		Vector2f point;
@@ -592,14 +615,46 @@ public abstract class Entity implements Comparable<Entity> {
 		return point;
 	}
 
+	/**
+	 * Calculate vector from angle and magnitude
+	 * 
+	 * @param angle
+	 * @param magnitude
+	 * @return
+	 * @author Alex Schearer
+	 */
+	public static Vector2f calculateVector(float angle, float magnitude) {
+		Vector2f v = new Vector2f();
+		v.x = (float) Math.sin(Math.toRadians(angle));
+		v.x *= magnitude;
+		v.y = (float) -Math.cos(Math.toRadians(angle));
+		v.y *= magnitude;
+		return v;
+	}
+
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param x1
+	 * @param y1
+	 * @return
+	 * @author Alex Schearer
+	 */
+	public static float calculateAngle(float x, float y, float x1, float y1) {
+		double angle = Math.atan2(y - y1, x - x1);
+		return (float) (Math.toDegrees(angle) - 90);
+	}
+
 	/***************** some methods to deal with alarms ************************************/
-	public void setAlarm(String name, int triggerTime, boolean oneShot, boolean startNow) {
+	public void setAlarm(String name, int triggerTime, boolean oneShot,
+			boolean startNow) {
 		Alarm alarm = new Alarm(name, triggerTime, oneShot);
 		alarms.put(name, alarm);
 		if (startNow)
 			alarm.start();
 	}
-	
+
 	public void restartAlarm(String name) {
 		Alarm alarm = alarms.get(name);
 		if (alarm != null)
@@ -617,25 +672,27 @@ public abstract class Entity implements Comparable<Entity> {
 		if (alarm != null)
 			alarm.resume();
 	}
-	
+
 	public void destroyAlarm(String name) {
 		Alarm alarm = alarms.get(name);
 		if (alarm != null)
 			alarm.setDead(true);
 	}
-	
+
 	/**
-	 * overwrite this method if your entity shall react on alarms that reached their triggerTime
-	 * @param name the name of the alarm that triggered right now
+	 * overwrite this method if your entity shall react on alarms that reached
+	 * their triggerTime
+	 * 
+	 * @param name
+	 *            the name of the alarm that triggered right now
 	 */
 	public void alarmTriggered(String name) {
 		// this method needs to be overwritten to deal with alarms
 	}
 
 	/**
-	 * this method is called automatically by the World and must not be called by your game code.
-	 * Don't touch this method ;-)
-	 * Consider it private!
+	 * this method is called automatically by the World and must not be called
+	 * by your game code. Don't touch this method ;-) Consider it private!
 	 */
 	public void updateAlarms() {
 		ArrayList<String> deadAlarms = null;

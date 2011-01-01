@@ -45,18 +45,20 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 	public void alarmTriggered(String alarmName) {
 		if ("rotateMe".equals(alarmName)) {
 			// let's rotate a bit
-			this.angle = this.angle + 2;
+			int angle = this.getAngle();
+			angle += 2;
 			if (angle >= 360)
 				angle -= 360;
+			this.setAngle(angle);
 			
 			// we are playing tricks here: to avoid modifying the TopDownActor class we
 			// retrieve the players from the world and rotate them too
 			Entity player = world.find(PLAYER);
 			if (player != null)
-				player.angle = this.angle;
+				player.setAngle(this.getAngle());
 			Entity scaledPlayer = world.find("ScaledPlayer");
 			if (scaledPlayer != null)
-				scaledPlayer.angle = this.angle;
+				scaledPlayer.setAngle(this.getAngle());
 		} else if ("scaleMe".equals(alarmName)) {
 			this.scale += scaleDir;
 			if (this.scale <= 0.1f || this.scale >= 2.0f)

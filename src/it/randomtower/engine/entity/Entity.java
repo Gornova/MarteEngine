@@ -22,6 +22,8 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+//TODO modify hitbox coordinates to a real shape without changing method interface.
+//TODO a shape can be rotated and scaled when the entity is rotated and scaled.
 public abstract class Entity implements Comparable<Entity> {
 
 	/** default collidable type SOLID **/
@@ -42,7 +44,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public float y;
 
 	/** x,y is the center of the image/animation, otherwise it's top left corner */
-	private boolean centered = false;
+	public boolean centered = false;
 
 	/**
 	 * width of the entity. not necessarily the width of the hitbox. Used for
@@ -70,13 +72,13 @@ public abstract class Entity implements Comparable<Entity> {
 	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
 	 * used for direction!
 	 */
-	public int angle = 0;
+	private int angle = 0;
 
 	/** scale used for both horizontal and vertical scaling. */
 	public float scale = 1.0f;
 	
 	/** color of the entity, mainly used for alpha transparency, but could also be used for tinting */
-	public Color color = new Color(Color.white);
+	private Color color = new Color(Color.white);
 
 	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
 
@@ -96,6 +98,8 @@ public abstract class Entity implements Comparable<Entity> {
 	/** collision type for entity **/
 	private HashSet<String> type = new HashSet<String>();
 
+	/** true for active entities, false otherwise. for active entities update() is called */
+	public boolean active = true;
 	/** true for collidable entity, false otherwise **/
 	public boolean collidable = true;
 	/** true if this entity should be visible, false otherwise */
@@ -193,10 +197,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @param g
 	 * @throws SlickException
 	 */
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
-		if (!visible)
-			return;
+	public void render(GameContainer container, Graphics g)	throws SlickException {
 		if (stateManager != null && stateManager.currentState() != null) {
 			stateManager.render(g);
 			return;
@@ -694,14 +695,14 @@ public abstract class Entity implements Comparable<Entity> {
 	 * this method is called automatically by the World and must not be called
 	 * by your game code. Don't touch this method ;-) Consider it private!
 	 */
-	public void updateAlarms() {
+	public void updateAlarms(int delta) {
 		ArrayList<String> deadAlarms = null;
 		Set<String> alarmNames = alarms.keySet();
 		if (!alarmNames.isEmpty()) {
 			for (String alarmName : alarmNames) {
 				Alarm alarm = alarms.get(alarmName);
 				if (alarm.isActive()) {
-					boolean retval = alarm.update();
+					boolean retval = alarm.update(delta);
 					if (retval) {
 						alarmTriggered(alarm.getName());
 						if (alarm.isOneShotAlaram()) {
@@ -723,5 +724,31 @@ public abstract class Entity implements Comparable<Entity> {
 				}
 			}
 		}
+	}
+
+	public int getAngle() {
+		return angle;
+	}
+
+	//TODO: add proper rotation for the hitbox/shape here!!!
+	public void setAngle(int angle) {
+		this.angle = angle;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	public float getAlpha() {
+		return color.a;
+	}
+	
+	public void setAlpha(float alpha) {
+		if (alpha >= 0.0f && alpha <= 1.0f)
+			color.a = alpha;
 	}
 }

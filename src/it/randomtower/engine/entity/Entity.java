@@ -216,7 +216,7 @@ public abstract class Entity implements Comparable<Entity> {
 			if (angle != 0) {
 				g.rotate(x, y, angle);
 			}
-			anim.draw(xpos, ypos, w * scale, h * scale);
+			anim.draw(xpos, ypos, w * scale, h * scale, color);
 			if (angle != 0)
 				g.resetTransform();
 		} else if (currentImage != null) {

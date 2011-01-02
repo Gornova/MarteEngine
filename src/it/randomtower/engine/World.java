@@ -72,7 +72,7 @@ public class World extends BasicGameState {
 				if (ME.debugEnabled) {
 					g.setColor(ME.borderColor);
 					Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
-							+ e.hitboxOffsetY, e.width, e.height);
+							+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
 					g.draw(hitBox);
 					g.setColor(Color.white);
 				}

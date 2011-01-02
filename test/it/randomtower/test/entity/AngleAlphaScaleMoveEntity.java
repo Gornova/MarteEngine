@@ -14,6 +14,11 @@ import it.randomtower.engine.entity.Entity;
  */
 public class AngleAlphaScaleMoveEntity extends Entity {
 	private float scaleDir = -0.1f;
+	private float alphaDir = -0.05f;
+	
+	private String[] rotatingPlayers = {"Player", "ScaledPlayer", "RotatingAndAlphaPlayer", "RotatingAndScalingAndAlphaPlayer" };
+	private String[] scalingPlayers = {"ScaledPlayer", "RotatingAndScalingAndAlphaPlayer" };
+	private String[] alphaPlayers = {"RotatingAndAlphaPlayer", "RotatingAndScalingAndAlphaPlayer" };
 
 	public AngleAlphaScaleMoveEntity(float x, float y, boolean changeAngle, boolean changeAlpha, boolean changeScale, boolean move) {
 		super(x, y);
@@ -28,6 +33,7 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 			}
 		}
 		this.setGraphic(ResourceManager.getImage("ship"));
+		this.setHitBox(0, 0, width, height);
 		
 		if (changeAngle) {
 			// set an alarm named "rotateMe" that is triggered every 2 update calls, starts right now
@@ -37,6 +43,10 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 		
 		if (changeScale) {
 			this.setAlarm("scaleMe", 10, false, true);
+		}
+		
+		if (changeAlpha) {
+			this.setAlarm("alphaMe", 5, false, true);
 		}
 		this.setCentered(true);
 	}
@@ -53,20 +63,33 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 			
 			// we are playing tricks here: to avoid modifying the TopDownActor class we
 			// retrieve the players from the world and rotate them too
-			Entity player = world.find(PLAYER);
-			if (player != null)
-				player.setAngle(this.getAngle());
-			Entity scaledPlayer = world.find("ScaledPlayer");
-			if (scaledPlayer != null)
-				scaledPlayer.setAngle(this.getAngle());
+			for (String name : rotatingPlayers) {
+				Entity player = world.find(name);
+				if (player != null)
+					player.setAngle(this.getAngle());
+			}
 		} else if ("scaleMe".equals(alarmName)) {
 			this.scale += scaleDir;
 			if (this.scale <= 0.1f || this.scale >= 2.0f)
 				scaleDir *= -1;
 			
-			Entity scaledPlayer = world.find("ScaledPlayer");
-			if (scaledPlayer != null)
-				scaledPlayer.scale = this.scale;
+			for (String name : scalingPlayers) {
+				Entity player = world.find(name);
+				if (player != null)
+					player.scale = this.scale;
+			}
+		} else if ("alphaMe".equals(alarmName)) {
+			float alpha = this.getAlpha();
+			this.setAlpha(alpha+alphaDir);
+			alpha = this.getAlpha();
+			if (alpha <= 0.1f || alpha >= 1.0f)
+				alphaDir = -alphaDir;
+			
+			for (String name : alphaPlayers) {
+				Entity player = world.find(name);
+				if (player != null)
+					player.setAlpha(this.getAlpha());
+			}
 		}
 	}
 

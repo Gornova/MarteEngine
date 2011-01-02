@@ -1,8 +1,17 @@
 <?xml version="1.0" ?>
+<!--
+
+Welcome into MarteEngine ant buildfile. For more information about ant see http://ant.apache.org/
+Main objective of this build configuration is to help in build distribuiable packages as:
+- windows's .exe,
+- webstart
+-->
+
 <project name="MarteEngine" default="compile">
 
-	<property name="target.package" value="it.randomtower.test.pong" />
-	<property name="target.class" value="PongTest" />
+	<property name="target.package" value="com.rightanglegames.starcleaner" />
+	<property name="target.class" value="StarCleaner" />
+	<property name="target.res" value="data/starcleaner/res" />
 
 	<property name="webstart.title" value="MarteEngine Pong Test Example" />
 	<property name="webstart.description" value="MarteEngine Pong for 2 players on same pc" />
@@ -10,6 +19,8 @@
 	<!-- change codebase from . to your website to change mode of test for webstart: local or remote  -->
 	<!-- <property name="webstart.codebase" value="." /> -->
 	<property name="webstart.codebase" value="http://jpacman.googlecode.com/files/" />
+
+	<property name="exej.dir" value="external/exej" />
 
 
 
@@ -30,7 +41,7 @@
 	<property name="launch4j.dir" location="C:/Programmi/launch4j-3.0.1-win32/launch4j" />
 
 	<!-- Set up the environment including preparing the natives. -->
-	<target name="setup" depends="check-setup" unless="setup.exists">
+	<target name="setup" depends="setup-check" unless="setup.exists">
 		<delete dir="${lib.dir}/native" />
 		<mkdir dir="${lib.dir}/native" />
 		<unzip src="${lib.dir}/natives-win32.jar" dest="${lib.dir}/native" />
@@ -40,20 +51,20 @@
 
 	<!-- Compile and archive -->
 	<target name="jar">
-		<antcall target="compile4jar" />
-		<antcall target="archive4jar" />
+		<antcall target="compile" />
+		<antcall target="archive" />
 	</target>
 
 	<!-- Run -->
 	<target name="run" depends="setup,compile">
-		<java fork="true" classname="${target.package}">
+		<java fork="true" classname="${target.package}.${target.class}">
 			<classpath>
 				<pathelement path="${obj.dir}" />
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar" />
 				</fileset>
 			</classpath>
-			<jvmarg value="-Djava.library.path=lib/natives-win32" />
+			<jvmarg value="-Djava.library.path=lib/native" />
 		</java>
 	</target>
 
@@ -62,39 +73,17 @@
 		<delete includeEmptyDirs="true">
 			<fileset dir="${obj.dir}" includes="**/*" defaultExcludes="no" />
 		</delete>
-		<delete file="${target.dir}/${target.class}.jar" />
-		<delete>
-			<fileset dir="${src.dir}" includes="**/*.orig" />
-		</delete>
-		<delete>
-			<fileset dir="." defaultExcludes="no">
-				<include name="**/*.DS_Store" />
-			</fileset>
-		</delete>
-		<delete file="${target.dir}/manifest.txt" />
-		<delete dir="${webstart.dir}" />
-		<delete dir="${dist.dir}" />
-		<delete file="${target.class}.exe" />
-		<delete file="${target.dir}/Gornova.ks" />
-		<delete dir="${target.dir}" />
-	</target>
-
-	<target name="format">
-		<exec executable="${script.dir}/astyle">
-			<arg value="-p" />
-			<arg value="-r" />
-			<arg value="-c" />
-			<arg value="--style=java" />
-			<arg value="${src.dir}/*" />
-		</exec>
+		<delete includeEmptyDirs="true">
+			<fileset dir="${target.dir}" includes="**/*" defaultExcludes="no" />
+		</delete>		
 	</target>
 
 	<!-- Create a webstart directory in order to deploy. -->
-	<target name="webstart" depends="clean,jar">
+	<target name="webstart" depends="clean,proguard">
 		<delete dir="${webstart.dir}" />
 		<mkdir dir="${webstart.dir}" />
 		<copy file="${script.dir}/htaccess" tofile="${webstart.dir}/.htaccess" />
-		<copy file="${target.dir}/${target.class}.jar" tofile="${webstart.dir}/${target.class}.jar" />
+		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${webstart.dir}/${target.class}.jar" />
 		<copy file="${script.dir}/template.jnlp" tofile="${webstart.dir}/${target.class}.jnlp">
 			<filterchain>
 				<replacetokens>
@@ -107,12 +96,52 @@
 				</replacetokens>
 			</filterchain>
 		</copy>
-		<antcall target="signjar" />
+		<antcall target="webstart-signjar" />
 	</target>
 
 
+	<!-- Build a .exe wrapper for project -->
+	<target name="exej" depends="clean,proguard">
+		<delete file="${target.dir}/${target.class}.jar"/>
+		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${target.dir}/${target.class}.jar" />
+		<delete file="${target.dir}/${target.class}_opt.jar"/>
+		<copy file="${exej.dir}/exej.exe" tofile="${target.dir}/exej.exe" />
+		<mkdir dir="${target.dir}/system" />
+		<copy file="${exej.dir}/system/exe_template.exe" tofile="${target.dir}/system/exe_template.exe" />
+		<copy file="${exej.dir}/config.txt" tofile="${target.dir}/config.txt">
+			<filterchain>
+				<replacetokens>
+					<token key="jarname" value="${target.class}.jar" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+		<exec dir="${target.dir}" executable="cmd">
+			<arg value="/c" />
+			<arg value="exej.exe -cfg config.txt" />
+		</exec>
+
+
+		<move file="${target.dir}/using_javaw.exe" tofile="${target.dir}/${target.class}.exe" />
+		<move file="${target.dir}/using_java.exe" tofile="${target.dir}/${target.class}_debug.exe" />
+		<mkdir dir="${target.dir}/lib" />
+		<copy todir="${target.dir}">
+			<fileset dir="${lib.dir}/native">
+				<include name="*.dll" />
+			</fileset>
+		</copy>
+		<copyfile dest="${target.dir}/lib/slick.jar" src="${lib.dir}/slick.jar" />
+		<copyfile dest="${target.dir}/lib/lwjgl.jar" src="${lib.dir}/lwjgl.jar" />
+		<delete file="${target.dir}/manifest.txt" />
+		<delete file="${target.dir}/exej.exe" />
+		<delete dir="${target.dir}/system" />
+		<delete file="${target.dir}/config.txt" />
+
+
+	</target>
+
 	<!-- Determines whether setup has been run. -->
-	<target name="check-setup">
+	<target name="setup-check">
 		<condition property="setup.exists">
 			<available file="${lib.dir}/native" type="dir" />
 		</condition>
@@ -129,7 +158,7 @@
 	</target>
 
 	<!-- Create a key store. -->
-	<target name="keystore" depends="check-keystore" unless="keystore.exists">
+	<target name="webstart-keystore" depends="check-keystore" unless="keystore.exists">
 		<input message="Full Name:" addproperty="keystore.name" />
 		<input message="Company:" addproperty="keystore.company" />
 
@@ -144,11 +173,12 @@
 	</target>
 
 	<!-- Sign's jar for deployment. -->
-	<target name="signjar" depends="keystore">
+	<target name="webstart-signjar" depends="webstart-keystore">
 		<signjar jar="${webstart.dir}/${target.class}.jar" keystore="${target.dir}/${keystore.alias}.ks" storepass="${keystore.pass}" alias="${keystore.alias}" />
 	</target>
 
 	<!-- Compile the code put results into obj.dir. -->
+	<!--
 	<target name="compile">
 		<mkdir dir="${obj.dir}" />
 		<javac destdir="${obj.dir}" debug="on">
@@ -162,9 +192,10 @@
 			<fileset dir="${res.dir}" />
 		</copy>
 	</target>
+	-->
 
 	<!-- Compile the code put results into obj.dir. -->
-	<target name="compile4jar" depends="clean">
+	<target name="compile" depends="clean">
 		<mkdir dir="${obj.dir}" />
 		<javac destdir="${obj.dir}" debug="on">
 			<src path="${src.dir}" />
@@ -183,27 +214,10 @@
 
 	</target>
 
-
 	<!-- Jar compiled code and place result into target.dir. -->
 	<target name="archive">
-		<copy file="${script.dir}/manifest.txt" tofile="${target.dir}/manifest.txt">
-			<filterchain>
-				<replacetokens>
-					<token key="package" value="${target.package}" />
-					<token key="class" value="${target.class}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-
-		<jar destfile="${target.dir}/${target.class}.jar" manifest="${target.dir}/manifest.txt" basedir="">
-			<fileset dir="${obj.dir}" />
-		</jar>
-	</target>
-
-	<!-- Jar compiled code and place result into target.dir. -->
-	<target name="archive4jar">
-		<copy todir="${obj.dir}/${res.dir}">
-			<fileset dir="${res.dir}" />
+		<copy todir="${obj.dir}/${target.res}">
+			<fileset dir="${target.res}" />
 		</copy>
 		<copy file="${script.dir}/manifest.txt" tofile="${target.dir}/manifest.txt">
 			<filterchain>
@@ -218,136 +232,18 @@
 		</jar>
 	</target>
 
+	<taskdef resource="proguard/ant/task.properties" classpath="external/proguard/proguard.jar" />
+	<target name="proguard" depends="jar">
+		<proguard>
+		  -libraryjars ${java.home}/lib/rt.jar;lib/lwjgl.jar;lib/slick.jar
+		  -injars      target/${target.class}.jar
+		  -outjars     target/${target.class}_opt.jar
 
-	<!-- Build package for win32 -->
-	<target name="distribuite-Win32" depends="clean,setup,jar,launch4j">
-
-		<delete dir="${dist.dir}" />
-		<delete file="${res.dir}/Thumbs.db" />
-		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${dist.dir}/win32" />
-		<mkdir dir="${dist.dir}/win32/lib" />
-		<copy file="${target.class}.exe" tofile="${dist.dir}/win32/${target.class}.exe" />
-		<copy file="README.txt" tofile="${dist.dir}/win32/README.txt" />
-		<copy file="release notes.txt" tofile="${dist.dir}/win32/release notes.txt" />
-		<copy file="LICENSE" tofile="${dist.dir}/win32/LICENSE" />
-		<unzip src="${lib.dir}/natives-win32.jar" dest="${dist.dir}/win32" />
-		<copy todir="${dist.dir}/win32/lib">
-			<fileset dir="${lib.dir}" />
-		</copy>
-		<delete file="${dist.dir}/win32/lib/natives-win32.jar" />
-		<delete file="${dist.dir}/win32/lib/natives-linux.jar" />
-		<delete file="${dist.dir}/win32/lib/natives-mac.jar" />
-		<delete dir="${dist.dir}/win32/lib/natives-win32" />
-		<delete dir="${dist.dir}/win32/lib/native" />
-		<input message="Insert version of ${target.class}:" addproperty="version.number" />
-		<zip destfile="${dist.dir}/${target.class}-win32-${version.number}.zip" basedir="${dist.dir}/win32/" />
-		<delete dir="${dist.dir}/win32" />
+		  -keepclasseswithmembers public class * {
+		      public static void main(java.lang.String[]);
+		  }
+		</proguard>
 	</target>
 
-	<!-- Build package for linux -->
-	<target name="distribuite-Linux" depends="clean,jar">
-		<delete dir="${dist.dir}" />
-		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${dist.dir}/linux" />
-		<mkdir dir="${dist.dir}/linux/lib" />
-		<copy file="${target.class}.jar" tofile="${dist.dir}/linux/${target.class}.jar" />
-		<copy file="${target.class}.sh" tofile="${dist.dir}/linux/${target.class}.sh" />
-		<copy file="README.txt" tofile="${dist.dir}/linux/README.txt" />
-		<copy file="LICENSE" tofile="${dist.dir}/linux/LICENSE" />
-		<copy file="release notes.txt" tofile="${dist.dir}/linux/release notes.txt" />
-		<unzip src="${lib.dir}/natives-linux.jar" dest="${dist.dir}/linux/" />
-		<copy todir="${dist.dir}/linux/lib">
-			<fileset dir="${lib.dir}" />
-		</copy>
-		<delete file="${dist.dir}/linux/lib/natives-win32.jar" />
-		<delete file="${dist.dir}/linux/lib/natives-mac.jar" />
-		<delete file="${dist.dir}/linux/lib/natives-linux.jar" />
-		<delete dir="${dist.dir}/linux/lib/natives-win32" />
-		<delete dir="${dist.dir}/linux/lib/native" />
-		<input message="Insert version of ${target.class}:" addproperty="version.number" />
-		<zip destfile="${dist.dir}/${target.class}-linux-${version.number}.zip" basedir="${dist.dir}/linux/" />
-		<delete dir="${dist.dir}/linux" />
-	</target>
-
-	<!-- Build package for Mac -->
-	<target name="distribuite-Mac" depends="clean,jar">
-		<delete dir="${dist.dir}" />
-		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${dist.dir}/mac" />
-		<mkdir dir="${dist.dir}/mac/lib" />
-		<copy file="${target.class}.jar" tofile="${dist.dir}/mac/${target.class}.jar" />
-		<copy file="${target.class}.bat" tofile="${dist.dir}/mac/${target.class}.sh" />
-		<copy file="README.txt" tofile="${dist.dir}/mac/README.txt" />
-		<copy file="LICENSE" tofile="${dist.dir}/mac/LICENSE" />
-		<!--
-		<copy file="scoretable.properties" tofile="${dist.dir}/mac/scoretable.properties" />
-		-->
-		<delete dir="${lib.dir}/native" />
-		<mkdir dir="${lib.dir}/native" />
-		<unzip src="${lib.dir}/natives-mac.jar" dest="${lib.dir}/native" />
-		<copy todir="${dist.dir}/mac/lib">
-			<fileset dir="${lib.dir}" />
-		</copy>
-		<delete file="${dist.dir}/mac/lib/natives-win32.jar" />
-		<delete file="${dist.dir}/mac/lib/natives-mac.jar" />
-		<delete file="${dist.dir}/mac/lib/natives-linux.jar" />
-		<delete dir="${dist.dir}/mac/lib/natives-win32" />
-		<!--
-		<copy todir="${dist.dir}/mac/data">
-			<fileset dir="${data.dir}"/>
-		</copy>
-		-->
-		<input message="Insert version of ${target.class}:" addproperty="version.number" />
-		<zip destfile="${dist.dir}/${target.class}-mac-${version.number}.zip" basedir="${dist.dir}/mac/" />
-		<delete dir="${dist.dir}/mac" />
-	</target>
-
-
-	<!-- Create win32 executable using launch4j (http://launch4j.sourceforge.net/) -->
-	<target name="launch4j">
-		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
-		        :${launch4j.dir}/lib/xstream.jar" />
-		<launch4j configFile="./l4j/${target.class}.xml" />
-	</target>
-
-	<target name="dist_all">
-		<delete dir="${dist_all.dir}" />
-		<mkdir dir="${dist_all.dir}" />
-		<input message="Insert version of ${target.class}:" addproperty="version.number" />
-		<antcall target="distribuite-Win32" />
-		<copy file="${dist.dir}/${target.class}-win32-${version.number}.zip" todir="${dist_all.dir}" />
-		<antcall target="distribuite-Linux" />
-		<copy file="${dist.dir}/${target.class}-linux-${version.number}.zip" todir="${dist_all.dir}" />
-		<antcall target="distribuite-Mac" />
-		<copy file="${dist.dir}/${target.class}-mac-${version.number}.zip" todir="${dist_all.dir}" />
-		<antcall target="webstart" />
-		<mkdir dir="${dist_all.dir}/webstart" />
-		<copy todir="${dist_all.dir}/webstart">
-			<fileset dir="${webstart.dir}" />
-		</copy>
-	</target>
-
-	<!-- Deploy the jar on local Wamp Server -->
-	<target name="Applet2Wamp" depends="clean,jar4applet">
-		<delete file="${wamp.libdir}/${applet.jarname}" />
-		<copy file="${target.dir}/${applet.jarname}" tofile="${wamp.libdir}/${applet.jarname}" />
-	</target>
-
-	<!-- Compile and archive myShump. -->
-	<target name="jar4applet">
-		<antcall target="compile4jar" />
-		<antcall target="archive4jarApplet" />
-	</target>
-
-	<!-- Jar compiled code and place result into target.dir. -->
-	<target name="archive4jarApplet">
-		<copy todir="${obj.dir}/">
-			<fileset dir="${res.dir}" />
-		</copy>
-		<jar destfile="${target.dir}/${applet.jarname}" manifest="${script.dir}/manifestApplet.txt">
-			<fileset dir="${obj.dir}" />
-		</jar>
-	</target>
 
 </project>

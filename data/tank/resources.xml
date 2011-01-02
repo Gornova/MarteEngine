@@ -23,5 +23,5 @@
 	<!-- sheets -->
 	<sheet key="tank" file="data/tank/tank.png" width="50" height="50" />
 	<!-- fonts -->
-	<angelcodefont key="bradleyhanditc24" fontFile="data/starcleaner/res/bradleyhanditc24.fnt" imageFile="data/starcleaner/res/bradleyhanditc24.png"/>
+	<angelcodefont key="bradleyhanditc24" fontFile="data/tank/bradleyhanditc24.fnt" imageFile="data/tank/bradleyhanditc24.png"/>
 </resources>

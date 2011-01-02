@@ -1,12 +1,12 @@
 package it.randomtower.test.pong;
 
-import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.ME;
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.actors.StaticActor;
+import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -21,15 +21,13 @@ public class BallActor extends Entity {
 
 	public boolean attacking = false;
 
-	public BallActor(float x, float y, String ref) {
+	public BallActor(float x, float y) {
 		super(x, y);
 
 		// set id
 		this.name = NAME;
 
-		// load spriteSheet
-		if (ref != null)
-			setupGraphic(ref);
+		setGraphic(ResourceManager.getImage("ball"));
 
 		// player rendered above everything
 		depth = ME.Z_LEVEL_TOP;
@@ -37,14 +35,6 @@ public class BallActor extends Entity {
 		// define collision box and type
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
 		addType(NAME, Entity.SOLID);
-	}
-
-	public void setupGraphic(String ref) {
-		try {
-			setGraphic(new Image(ref));
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package it.randomtower.test.platformer;
 
+import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.PhysicsEntity;
 
 import org.newdawn.slick.GameContainer;
@@ -19,7 +20,7 @@ public class Player extends PhysicsEntity {
 	public Player(float x, float y) throws SlickException {
 		super(x, y);
 		
-		currentImage = new Image("blockRed.png");
+		currentImage = ResourceManager.getImage("player");
 		setHitBox(0, 0, 32, 32);
 		
 		depth = 10;

@@ -9,9 +9,9 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 <project name="MarteEngine" default="compile">
 
-	<property name="target.package" value="com.rightanglegames.starcleaner" />
-	<property name="target.class" value="StarCleaner" />
-	<property name="target.res" value="data/starcleaner/res" />
+	<property name="target.package" value="it.randomtower.test.platformer" />
+	<property name="target.class" value="PlatformerTest" />
+	<property name="target.res" value="data/platformer" />
 
 	<property name="webstart.title" value="MarteEngine Pong Test Example" />
 	<property name="webstart.description" value="MarteEngine Pong for 2 players on same pc" />

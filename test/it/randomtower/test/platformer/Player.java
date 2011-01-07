@@ -4,7 +4,6 @@ import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.PhysicsEntity;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 

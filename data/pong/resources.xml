@@ -11,11 +11,13 @@
 -->
 	
 <resources>
+	<!-- basedir -->
+	<basedir path="data/pong" />
 	<!-- sounds -->
 	<!-- songs -->
 	<!-- images -->
-	<image key="ball" file="data/pong/ball.png" />
-	<image key="bar" file="data/pong/bar.png" />
+	<image key="ball" file="ball.png" />
+	<image key="bar" file="bar.png" />
 	<!-- sheets -->
 	<!-- fonts -->
 </resources>

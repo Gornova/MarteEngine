@@ -11,12 +11,14 @@
 -->
 	
 <resources>
+	<!-- basedir -->
+	<basedir path="data/platformer" />
 	<!-- sounds -->
 	<!-- songs -->
 	<!-- images -->
-	<image key="block" file="data/platformer/block.png" />
-	<image key="player" file="data/platformer/blockRed.png" />
-	<image key="background" file="data/platformer/cartoonClouds.jpg" />
+	<image key="block" file="block.png" />
+	<image key="player" file="blockRed.png" />
+	<image key="background" file="cartoonClouds.jpg" />
 	<!-- sheets -->
 	<!-- fonts -->
 </resources>

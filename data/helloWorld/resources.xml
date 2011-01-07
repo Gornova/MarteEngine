@@ -11,10 +11,12 @@
 -->
 	
 <resources>
+	<!-- basedir -->
+	<basedir path="data/helloWorld" />
 	<!-- sounds -->
 	<!-- songs -->
 	<!-- images -->
-	<image key="hello" file="data/helloWorld/helloWorld.png" />
+	<image key="hello" file="helloWorld.png" />
 	<!-- sheets -->
 	<!-- fonts -->
 </resources>

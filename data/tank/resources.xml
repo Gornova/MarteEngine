@@ -11,17 +11,19 @@
 -->
 	
 <resources>
+	<!-- basedir -->
+	<basedir path="data/tank" />
 	<!-- sounds -->
 	<!-- songs -->
 	<!-- images -->
-	<image key="redTank" file="data/tank/redTank.png" />
-	<image key="missile" file="data/tank/missile.png" />
-	<image key="cursor" file="data/tank/cursor.png" />
-	<image key="blockRed" file="data/tank/blockRed.png" />
-	<image key="blockBlue" file="data/tank/blockBlue.png" />
-	<image key="background" file="data/tank/blueLandscape.jpg" />
+	<image key="redTank" file="redTank.png" />
+	<image key="missile" file="missile.png" />
+	<image key="cursor" file="cursor.png" />
+	<image key="blockRed" file="blockRed.png" />
+	<image key="blockBlue" file="blockBlue.png" />
+	<image key="background" file="blueLandscape.jpg" />
 	<!-- sheets -->
-	<sheet key="tank" file="data/tank/tank.png" width="50" height="50" />
+	<sheet key="tank" file="tank.png" width="50" height="50" />
 	<!-- fonts -->
-	<angelcodefont key="bradleyhanditc24" fontFile="data/tank/bradleyhanditc24.fnt" imageFile="data/tank/bradleyhanditc24.png"/>
+	<angelcodefont key="bradleyhanditc24" fontFile="bradleyhanditc24.fnt" imageFile="bradleyhanditc24.png"/>
 </resources>

@@ -9,7 +9,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * In game World for TestTest
+ * World for Tween Test
  * 
  * @author Gornova
  */

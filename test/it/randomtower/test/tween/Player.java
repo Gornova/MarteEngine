@@ -20,7 +20,6 @@ public class Player extends Entity {
 		setGraphic(ResourceManager.getImage("image"));
 		define("MOVE", Input.MOUSE_LEFT_BUTTON);
 		define("CHANGE_MODE",Input.MOUSE_RIGHT_BUTTON);
-
 	}
 
 	@Override

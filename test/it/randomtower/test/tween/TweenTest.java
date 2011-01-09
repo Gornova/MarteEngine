@@ -13,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 /**
- * Tank test is an effort to build a little tank-fighting game
+ * Test for Tweening
  * 
  * @author Gornova
  */

@@ -21,5 +21,5 @@ public class Background extends Entity {
 		depth = 0;
 		currentImage = new Image(refImage);
 	}
-
+	
 }

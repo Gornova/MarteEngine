@@ -72,7 +72,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
 	 * used for direction!
 	 */
-	private int angle = 0;
+	protected int angle = 0;
 
 	/** scale used for both horizontal and vertical scaling. */
 	public float scale = 1.0f;

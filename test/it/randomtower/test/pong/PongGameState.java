@@ -33,17 +33,16 @@ public class PongGameState extends World {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-
 		super.init(container, game);
 		// create players
-		add(new PongBarActor(20, container.getHeight() / 2, "data/bar.PNG",
-				"player1", Input.KEY_W, Input.KEY_S));
+		add(new PongBarActor(20, container.getHeight() / 2, "player1",
+				Input.KEY_W, Input.KEY_S));
 		add(new PongBarActor(container.getWidth() - 26,
-				container.getHeight() / 2, "data/bar.png", "player2",
-				Input.KEY_UP, Input.KEY_DOWN));
-		add(new StaticActor(0, 0, container.getWidth(), 1, null));
+				container.getHeight() / 2, "player2", Input.KEY_UP,
+				Input.KEY_DOWN));
+		add(new StaticActor(0, 0, container.getWidth(), 1, ""));
 		add(new StaticActor(0, container.getHeight(), container.getWidth(), 1,
-				null));
+				""));
 
 		newBallTimer = 0;
 
@@ -124,7 +123,7 @@ public class PongGameState extends World {
 
 	private void addNewBall(GameContainer container) {
 		BallActor ball = new BallActor(container.getWidth() / 2,
-				container.getHeight() / 2, "data/ball.png");
+				container.getHeight() / 2);
 		if (lastDir > 0) {
 			lastDir *= -1;
 		} else {

@@ -68,22 +68,20 @@ public class World extends BasicGameState {
 
 		// render entities
 		for (Entity e : entities) {
-			if (e.visible) {
-				if (ME.debugEnabled) {
-					g.setColor(ME.borderColor);
-					Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
-							+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
-					g.draw(hitBox);
-					g.setColor(Color.white);
-				}
-				if (camera != null) {
-					// TODO
-					// if (camera.contains(e)) {
-					e.render(container, g);
-					// }
-				} else {
-					e.render(container, g);
-				}
+			if (ME.debugEnabled) {
+				g.setColor(ME.borderColor);
+				Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
+						+ e.hitboxOffsetY, e.width, e.height);
+				g.draw(hitBox);
+				g.setColor(Color.white);
+			}
+			if (camera != null) {
+				// TODO
+				// if (camera.contains(e)) {
+				e.render(container, g);
+				// }
+			} else {
+				e.render(container, g);
 			}
 		}
 
@@ -113,11 +111,10 @@ public class World extends BasicGameState {
 			Collections.sort(entities);
 		}
 
-		// update alarms always and active entities
+		// update entities
 		for (Entity e : entities) {
 			e.updateAlarms(delta);
-			if (e.active)
-				e.update(container, delta);
+			e.update(container, delta);
 			// check for wrapping or out of world entities
 			e.checkWorldBoundaries();
 		}

@@ -1,11 +1,11 @@
 package it.randomtower.test.pong;
 
-import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.ME;
+import it.randomtower.engine.ResourceManager;
+import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -18,7 +18,7 @@ public class PongBarActor extends Entity {
 
 	public boolean attacking = false;
 
-	public PongBarActor(float x, float y, String ref, String name, int up,
+	public PongBarActor(float x, float y, String name, int up,
 			int down) {
 		super(x, y);
 
@@ -26,8 +26,7 @@ public class PongBarActor extends Entity {
 		this.name = name;
 
 		// load spriteSheet
-		if (ref != null)
-			setupAnimations(ref);
+		setGraphic(ResourceManager.getImage("bar"));
 
 		// player rendered above everything
 		depth = ME.Z_LEVEL_TOP;
@@ -43,14 +42,6 @@ public class PongBarActor extends Entity {
 	private void defineControls(int up, int down) {
 		define(ME.WALK_UP, up);
 		define(ME.WALK_DOWN, down);
-	}
-
-	public void setupAnimations(String ref) {
-		try {
-			setGraphic(new Image(ref));
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

@@ -28,13 +28,19 @@ public class StaticActor extends Entity {
 
 	public StaticActor(float x, float y, int width, int height, String ref,
 			int row, int frame) {
-		this(x, y, width, height, null);
+		this(x, y, width, height, "");
 
 		setupAnimations(ref, row, frame);
 	}
 
+	public StaticActor(float x, float y, int width, int height, Image image) {
+		this(x, y, width, height, "");
+
+		setGraphic(image);
+	}
+
 	private void setupGraphic(String ref) {
-		if (ref == null)
+		if (ref == null || ref.length() == 0)
 			return;
 		try {
 			setGraphic(new Image(ref));

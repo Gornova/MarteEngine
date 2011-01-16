@@ -4,4 +4,4 @@
 # passed to java.exe/javaw.exe when the user
 # runs the resulting .exe files.
 #
-commandline=-classpath . -jar pong.jar
+commandline=-classpath . -jar @jarname@

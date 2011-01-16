@@ -20,6 +20,8 @@ public class Player extends Entity {
 		setGraphic(ResourceManager.getImage("image"));
 		define("MOVE", Input.MOUSE_LEFT_BUTTON);
 		define("CHANGE_MODE",Input.MOUSE_RIGHT_BUTTON);
+		define("START",Input.KEY_SPACE);
+		define("RESET",Input.KEY_ENTER);
 	}
 
 	@Override
@@ -38,9 +40,17 @@ public class Player extends Entity {
 		}
 		if (check("MOVE")) {
 			tween = new Tween(this, new LinearMotion(x, y, input.getMouseX(),
-					input.getMouseY(), 100, currentEase));
+					input.getMouseY(), 100, currentEase),true);
 		}
 
+		if (check("START")){
+			tween.start();
+		}
+		
+		if (check("RESET")){
+			tween.reset();
+		}		
+		
 		if (tween != null) {
 			tween.update(container, delta);
 		}

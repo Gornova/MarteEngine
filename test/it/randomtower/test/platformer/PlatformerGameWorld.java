@@ -2,9 +2,11 @@ package it.randomtower.test.platformer;
 
 import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.World;
+import it.randomtower.engine.entity.PlatformerEntity;
 import it.randomtower.engine.entity.Solid;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -23,7 +25,7 @@ public class PlatformerGameWorld extends World {
 
 		super.init(container, game);
 		// create player & camera
-		Player player = new Player(80, 100);
+		PlatformerEntity player = new PlatformerEntity(80, 100, "player");
 		add(player);
 
 		// add some blocks to level, I will just create and add to the world
@@ -54,8 +56,16 @@ public class PlatformerGameWorld extends World {
 		}
 		// add a background image, from http://thetutorials.wordpress.com/2008/11/26/ps-cute-cartoon-clouds-the-simple-way/
 		add(new Background(0, 0));
-		
-		
 	}
+	
+	@Override
+	public void render(GameContainer container, StateBasedGame game, Graphics g)
+			throws SlickException {
+		super.render(container, game, g);
+		
+		// render gui
+		g.drawString("Press WASD or ARROWS to move, X or UP to Jump", 65, 5);
+		
+	}	
 
 }

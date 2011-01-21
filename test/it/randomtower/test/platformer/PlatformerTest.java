@@ -13,10 +13,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 /**
- * Pong clone
+ * Platformer Test
  * 
- * @author RandomTower
- * @project MarteEngine
+ * @author Gornova
  */
 public class PlatformerTest extends StateBasedGame {
 

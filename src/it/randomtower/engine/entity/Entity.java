@@ -76,8 +76,11 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/** scale used for both horizontal and vertical scaling. */
 	public float scale = 1.0f;
-	
-	/** color of the entity, mainly used for alpha transparency, but could also be used for tinting */
+
+	/**
+	 * color of the entity, mainly used for alpha transparency, but could also
+	 * be used for tinting
+	 */
 	private Color color = new Color(Color.white);
 
 	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
@@ -98,7 +101,10 @@ public abstract class Entity implements Comparable<Entity> {
 	/** collision type for entity **/
 	private HashSet<String> type = new HashSet<String>();
 
-	/** true for active entities, false otherwise. for active entities update() is called */
+	/**
+	 * true for active entities, false otherwise. for active entities update()
+	 * is called
+	 */
 	public boolean active = true;
 	/** true for collidable entity, false otherwise **/
 	public boolean collidable = true;
@@ -133,6 +139,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Set if image or animation must be centered on position
+	 * 
 	 * @param on
 	 */
 	public void setCentered(boolean on) {
@@ -197,7 +204,8 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @param g
 	 * @throws SlickException
 	 */
-	public void render(GameContainer container, Graphics g)	throws SlickException {
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
 		if (stateManager != null && stateManager.currentState() != null) {
 			stateManager.render(g);
 			return;
@@ -300,8 +308,10 @@ public abstract class Entity implements Comparable<Entity> {
 	/**
 	 * define commands to handle inputs
 	 * 
-	 * @param command name of the command
-	 * @param keys keys or mouse input from {@link Input} class
+	 * @param command
+	 *            name of the command
+	 * @param keys
+	 *            keys or mouse input from {@link Input} class
 	 */
 	public void define(String command, int... keys) {
 		commands.put(command, keys);
@@ -323,6 +333,7 @@ public abstract class Entity implements Comparable<Entity> {
 			} else if (checked[i] < 10) {
 				/**
 				 * 10 is max number of button on a mouse
+				 * 
 				 * @see Input
 				 */
 				if (world.container.getInput().isMousePressed(checked[i])) {
@@ -730,7 +741,7 @@ public abstract class Entity implements Comparable<Entity> {
 		return angle;
 	}
 
-	//TODO: add proper rotation for the hitbox/shape here!!!
+	// TODO: add proper rotation for the hitbox/shape here!!!
 	public void setAngle(int angle) {
 		this.angle = angle;
 	}
@@ -742,13 +753,21 @@ public abstract class Entity implements Comparable<Entity> {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
+
 	public float getAlpha() {
 		return color.a;
 	}
-	
+
 	public void setAlpha(float alpha) {
 		if (alpha >= 0.0f && alpha <= 1.0f)
 			color.a = alpha;
 	}
+
+	public void setPosition(Vector2f pos) {
+		if (pos != null) {
+			this.x = pos.x;
+			this.y = pos.y;
+		}
+	}
+
 }

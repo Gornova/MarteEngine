@@ -1,10 +1,9 @@
 package it.randomtower.test.entity;
 
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.util.Log;
-
 import it.randomtower.engine.ResourceManager;
 import it.randomtower.engine.entity.Entity;
+
+import org.newdawn.slick.SlickException;
 
 /**
  * some smart test entity that can rotate and scale and change alpha and move

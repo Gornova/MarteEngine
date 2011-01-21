@@ -34,6 +34,7 @@ public class TweenWorld extends World {
 		// render gui
 		g.drawString("Press Right mouse button to change Ease function ", 5, 5);
 		g.drawString("Press Left mouse button to move Entity ", 5, 25);
+		g.drawString("Press Z to start, X to pause, C to reset current Tween", 5, 45);
 		
 		g.drawString("Current ease: "+Ease.getName(player.currentEase), 550, 5);
 	}

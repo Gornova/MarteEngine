@@ -5,10 +5,10 @@ import org.newdawn.slick.util.Log;
 
 public abstract class Motion {
 
-	protected float fromX;
-	protected float fromY;
-	protected float toX;
-	protected float toY;
+	public float fromX;
+	public float fromY;
+	public float toX;
+	public float toY;
 
 	protected int duration;
 

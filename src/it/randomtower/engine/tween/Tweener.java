@@ -9,6 +9,11 @@ import java.util.List;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.util.Log;
 
+/**
+ * Tweener is a utility container for variuos tween that can change Entity in many ways
+ * 
+ * @author Gornova
+ */
 public class Tweener {
 
 	public int MODE_DELETE = 0;

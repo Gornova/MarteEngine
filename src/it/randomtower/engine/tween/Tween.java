@@ -5,6 +5,11 @@ import it.randomtower.engine.entity.Entity;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.util.Log;
 
+/**
+ * Tween can change Entity status
+ * 
+ * @author Gornova
+ */
 public class Tween {
 
 	private Motion motion;

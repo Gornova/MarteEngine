@@ -276,5 +276,21 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 	</target>
 
+	<!-- Create MarteEngine distribution jar -->
+	<target name="distribuite" depends="clean">
+		<!-- compile core classes -->
+		<mkdir dir="${obj.dir}" />
+		<javac destdir="${obj.dir}" debug="on">
+			<src path="${src.dir}" />
+			<classpath>
+				<pathelement path="${lib.dir}/slick.jar" />
+				<pathelement path="${lib.dir}/lwjgl.jar" />
+			</classpath>
+		</javac>
+		<!-- create jar -->
+		<jar destfile="${target.dir}/marteEngine.jar">
+			<fileset dir="${obj.dir}" />
+		</jar>		
+	</target>	
 
 </project>

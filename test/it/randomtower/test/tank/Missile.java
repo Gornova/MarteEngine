@@ -44,6 +44,4 @@ public class Missile extends Entity {
 	public void collisionResponse(Entity other) {
 		ME.world.remove(this);
 	}
-	
-
 }

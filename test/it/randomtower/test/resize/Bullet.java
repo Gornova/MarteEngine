@@ -1,7 +1,5 @@
 package it.randomtower.test.resize;
 
-import it.randomtower.engine.ME;
-import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -11,36 +9,32 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Bullet extends Entity {
 
-	private Vector2f direction;
 	public float fireSpeed = 0.5f;
 	public static final String NAME = "BULLET";
 
-	public Bullet(float startx, float starty, String ref, Vector2f direction) {
-		super(startx, starty);
-		this.direction = direction;
-
-		try {
-			setGraphic(new Image(ref));
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
-
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
-
-		addType(NAME, SOLID);
+	public Bullet(float x, float y, String ref, int angle) throws SlickException {
+		super(x, y);
+		this.angle =angle;
+		currentImage = new Image(ref);
+		
+		addType(SOLID);
+		setHitBox(0, 0, 8, 8);
 	}
-
+	
 	@Override
-	public void update(GameContainer gc, int delta) throws SlickException {
-		x += fireSpeed * direction.x;
-		y += fireSpeed * direction.y;
+	public void update(GameContainer container, int delta)
+			throws SlickException {
+		float dx = 0;
+		float dy = 0;
+		Vector2f vectorSpeed = calculateVector(angle, 8);
+		dx += vectorSpeed.x;
+		dy += vectorSpeed.y;
+		x+=dx;
+		y+=dy;
+		
+		collide(SOLID, x, y);
+		
+		super.update(container, delta);
 	}
-
-	@Override
-	public void collisionResponse(Entity entity) {
-		if (entity.name.equalsIgnoreCase(StaticActor.NAME)) {
-			ME.world.remove(this);
-		}
-	}
-
+	
 }

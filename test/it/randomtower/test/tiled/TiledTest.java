@@ -1,9 +1,8 @@
 package it.randomtower.test.tiled;
 
-import java.io.IOException;
-
-import it.randomtower.engine.ME;
 import it.randomtower.engine.ResourceManager;
+
+import java.io.IOException;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;

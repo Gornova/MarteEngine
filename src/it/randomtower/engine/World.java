@@ -1,7 +1,7 @@
 package it.randomtower.engine;
 
+import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.entity.Entity;
-import it.randomtower.test.tiled.TileEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -264,7 +264,7 @@ public class World extends BasicGameState {
 				for (int h = 0; h < map.getHeight(); h++) {
 					Image img = map.getTileImage(w, h, layerIndex);
 					if (img != null) {
-						TileEntity te = new TileEntity(w*img.getWidth(), h*img.getHeight(), img);
+						StaticActor te = new StaticActor(w*img.getWidth(), h*img.getHeight(),img.getWidth(),img.getHeight(), img);
 						add(te);
 					}
 				}

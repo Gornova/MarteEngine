@@ -1,5 +1,5 @@
 Marte Engine
-Version: 0.1
+Version: 0.2
 
 1. Introduction
 

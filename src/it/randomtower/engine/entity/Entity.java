@@ -136,6 +136,17 @@ public abstract class Entity implements Comparable<Entity> {
 		this.starty = y;
 		stateManager = new StateManager();
 	}
+	
+	/**
+	 * Create a new entity setting initial position (x,y) and static image
+	 * @param x
+	 * @param y
+	 * @param image
+	 */
+	public Entity(float x, float y, Image image){
+		this(x,y);
+		setGraphic(image);
+	}
 
 	/**
 	 * Set if image or animation must be centered on position

@@ -6,14 +6,17 @@
  <tileset firstgid="26" name="entities" tilewidth="32" tileheight="32">
   <image source="entities.PNG" width="32" height="32"/>
  </tileset>
- <layer name="tiles" width="5" height="5">
+ <layer name="tiles" width="5" height="5" visible="0">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+NiYGBgQ8JcUJoXSjOhyaNjZiQM4otiwQBsjigoZAAAAA==
   </data>
  </layer>
  <layer name="entities" width="5" height="5">
+  <properties>
+   <property name="type" value="entity"/>
+  </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgwA+kCMgTAwB5ppEpZAAAAA==
+   H4sIAAAAAAAAC5NiQAVSDJQBdP0gPgC87QB9ZAAAAA==
   </data>
  </layer>
 </map>

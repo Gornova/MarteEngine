@@ -49,7 +49,6 @@ public class TiledTest extends StateBasedGame {
 	
 	public static void main(String[] argv) {
 		try {
-			ME.keyToggleDebug = Input.KEY_1;
 			AppGameContainer container = new AppGameContainer(new TiledTest());
 			container.setDisplayMode(800, 600, false);
 			container.setTargetFrameRate(60);

@@ -17,6 +17,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.openal.SoundStore;
+import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 import org.newdawn.slick.util.ResourceLoader;
 import org.w3c.dom.Document;
@@ -25,7 +26,7 @@ import org.w3c.dom.NodeList;
 
 public class ResourceManager {
 	private static String baseDir = null;
-	
+
 	private static float sfxVolume = 1.0f;
 	private static float musicVolume = 1.0f;
 
@@ -37,6 +38,7 @@ public class ResourceManager {
 	private static HashMap<String, Integer> ints = new HashMap<String, Integer>();
 	private static HashMap<String, Float> floats = new HashMap<String, Float>();
 	private static HashMap<String, String> strings = new HashMap<String, String>();
+	private static HashMap<String, TiledMap> maps = new HashMap<String, TiledMap>();
 
 	public static void loadResources(String ref) throws IOException {
 		loadResources(ResourceLoader.getResourceAsStream(ref));
@@ -48,7 +50,8 @@ public class ResourceManager {
 
 	public static void loadResources(InputStream ref) throws IOException {
 		try {
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
 			Document document = builder.parse(ref);
 
 			Element element = document.getDocumentElement();
@@ -60,7 +63,7 @@ public class ResourceManager {
 			for (int i = 0; i < list.getLength(); i++) {
 				setBaseDirectory((Element) list.item(i));
 			}
-			
+
 			// load sounds
 			list = element.getElementsByTagName("sound");
 			for (int i = 0; i < list.getLength(); i++) {
@@ -86,6 +89,11 @@ public class ResourceManager {
 			for (int i = 0; i < list.getLength(); i++) {
 				loadAngelCodeFont((Element) list.item(i));
 			}
+			// load maps
+			list = element.getElementsByTagName("map");
+			for (int i = 0; i < list.getLength(); i++) {
+				loadTiledMap((Element) list.item(i));
+			}
 			// load ints
 			list = element.getElementsByTagName("int");
 			for (int i = 0; i < list.getLength(); i++) {
@@ -110,20 +118,31 @@ public class ResourceManager {
 		}
 	}
 
+	public static void loadTiledMap(Element map) throws SlickException {
+		String key = map.getAttribute("key");
+		String file = map.getAttribute("file");
+		Log.debug("Trying to load tiled map file '" + file + "' at key '" + key
+				+ "'...");
+		TiledMap tiledMap = new TiledMap(baseDir + "/" + file);
+		maps.put(key, tiledMap);
+	}
+
 	private static void setBaseDirectory(Element basedir) throws SlickException {
 		String dir = basedir.getAttribute("path");
 		setBaseDirectory(dir);
 	}
-	
-	public static void setBaseDirectory(String baseDirectory) throws SlickException {
-		Log.debug("Setting ResourceManager base directory to '" + baseDirectory + "'");
+
+	public static void setBaseDirectory(String baseDirectory)
+			throws SlickException {
+		Log.debug("Setting ResourceManager base directory to '" + baseDirectory
+				+ "'");
 		if (baseDirectory == null || baseDirectory.isEmpty())
 			throw new SlickException("BaseDirectory must not be null or empty!");
 		baseDir = baseDirectory;
 		if (!baseDir.endsWith("/"))
 			baseDir = baseDir + "/";
 	}
-	
+
 	private static void loadMusic(Element music) throws SlickException {
 		String key = music.getAttribute("key");
 		String file = music.getAttribute("file");
@@ -340,6 +359,13 @@ public class ResourceManager {
 		return val;
 	}
 
+	public static TiledMap getMap(String key) {
+		TiledMap map = maps.get(key);
+		if (map == null)
+			Log.error("No map for key "+ key + " found!");
+		return map;
+	}
+	
 	/**
 	 * set the volume of all sound effects to given volume
 	 * 

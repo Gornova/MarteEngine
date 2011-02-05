@@ -4,9 +4,6 @@ import it.randomtower.engine.ME;
 import it.randomtower.engine.World;
 import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.entity.Entity;
-import it.randomtower.engine.states.CombatState;
-import it.randomtower.engine.states.IdleState;
-import it.randomtower.engine.states.MovingState;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;

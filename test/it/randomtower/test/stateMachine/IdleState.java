@@ -1,4 +1,4 @@
-package it.randomtower.engine.states;
+package it.randomtower.test.stateMachine;
 
 import it.randomtower.engine.State;
 import it.randomtower.engine.entity.Entity;

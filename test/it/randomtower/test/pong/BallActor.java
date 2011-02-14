@@ -34,7 +34,7 @@ public class BallActor extends Entity {
 
 		// define collision box and type
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
-		addType(NAME, Entity.SOLID);
+		addType(NAME, SOLID);
 	}
 
 	@Override
@@ -58,10 +58,10 @@ public class BallActor extends Entity {
 	}
 
 	private void updateMovements() {
-		if (collide(Entity.SOLID, x + mySpeed.x, y) == null) {
+		if (collide(SOLID, x + mySpeed.x, y) == null) {
 			x += mySpeed.x;
 		}
-		if (collide(Entity.SOLID, x, y + mySpeed.y) == null) {
+		if (collide(SOLID, x, y + mySpeed.y) == null) {
 			y += mySpeed.y;
 		}
 	}

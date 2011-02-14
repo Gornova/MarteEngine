@@ -20,7 +20,7 @@ public class StaticActor extends Entity {
 		this.width = width;
 		this.height = height;
 		setHitBox(0, 0, width, height);
-		addType(NAME, Entity.SOLID);
+		addType(NAME, SOLID);
 
 		// set image
 		setupGraphic(image);

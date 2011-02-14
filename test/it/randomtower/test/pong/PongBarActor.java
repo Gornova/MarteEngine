@@ -36,7 +36,7 @@ public class PongBarActor extends Entity {
 
 		// define collision box and type
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
-		addType(name, Entity.SOLID);
+		addType(name, SOLID);
 	}
 
 	private void defineControls(int up, int down) {
@@ -64,14 +64,14 @@ public class PongBarActor extends Entity {
 	}
 
 	public void moveDown() {
-		if (collide(Entity.SOLID, x, y + mySpeed.y) == null
+		if (collide(SOLID, x, y + mySpeed.y) == null
 				&& y + mySpeed.y + height < 600) {
 			y += mySpeed.y;
 		}
 	}
 
 	public void moveUp() {
-		if (collide(Entity.SOLID, x, y - mySpeed.y)== null && y - mySpeed.y > 0) {
+		if (collide(SOLID, x, y - mySpeed.y)== null && y - mySpeed.y > 0) {
 			y -= mySpeed.y;
 		}
 	}

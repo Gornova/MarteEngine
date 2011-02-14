@@ -37,7 +37,7 @@ public class ResizeSquare extends Entity {
 
 		// define collision box and type
 		setHitBox(0, 0, width, height);
-		addType(NAME, Entity.SOLID);
+		addType(NAME, SOLID);
 
 		// define labels for the key
 		defineControls();
@@ -141,25 +141,25 @@ public class ResizeSquare extends Entity {
 	}
 
 	public void moveLeft() {
-		if (collide(Entity.SOLID, x - mySpeed.x, y) == null) {
+		if (collide(SOLID, x - mySpeed.x, y) == null) {
 			x -= mySpeed.x;
 		}
 	}
 
 	public void moveRight() {
-		if (collide(Entity.SOLID, x + mySpeed.x, y) == null) {
+		if (collide(SOLID, x + mySpeed.x, y) == null) {
 			x += mySpeed.x;
 		}
 	}
 
 	public void moveDown() {
-		if (collide(Entity.SOLID, x, y + mySpeed.y) == null) {
+		if (collide(SOLID, x, y + mySpeed.y) == null) {
 			y += mySpeed.y;
 		}
 	}
 
 	public void moveUp() {
-		if (collide(Entity.SOLID, x, y - mySpeed.y) == null) {
+		if (collide(SOLID, x, y - mySpeed.y) == null) {
 			y -= mySpeed.y;
 		}
 	}

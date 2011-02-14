@@ -1,7 +1,6 @@
 package com.rightanglegames.starcleaner;
 
 import it.randomtower.engine.ResourceManager;
-import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.entity.PhysicsEntity;
 
 import java.util.Random;
@@ -14,8 +13,8 @@ import org.newdawn.slick.SlickException;
 
 public class MovingPlatform extends PhysicsEntity {
 
-//	private static String[] carry = {Entity.SOLID, Entity.PLAYER};
-	private static String[] carry = {Entity.PLAYER};
+//	private static String[] carry = {SOLID, PLAYER};
+	private static String[] carry = {PLAYER};
 	
 	private boolean direction = false;
 	private Image oneBlock = ResourceManager.getImage("platform");

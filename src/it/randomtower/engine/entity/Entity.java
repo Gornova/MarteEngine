@@ -136,15 +136,16 @@ public abstract class Entity implements Comparable<Entity> {
 		this.starty = y;
 		stateManager = new StateManager();
 	}
-	
+
 	/**
 	 * Create a new entity setting initial position (x,y) and static image
+	 * 
 	 * @param x
 	 * @param y
 	 * @param image
 	 */
-	public Entity(float x, float y, Image image){
-		this(x,y);
+	public Entity(float x, float y, Image image) {
+		this(x, y);
 		setGraphic(image);
 	}
 
@@ -271,6 +272,14 @@ public abstract class Entity implements Comparable<Entity> {
 			g.draw(hitBox);
 			g.setColor(Color.white);
 			g.drawRect(x, y, 1, 1);
+			// draw entity center
+			if (width!=0 && height!=0){
+				float centerX = x + width/2;
+				float centerY = y + width/2;
+				g.setColor(Color.green);
+				g.drawRect(centerX, centerY, 1, 1);
+				g.setColor(Color.white);	
+			}
 		}
 	}
 
@@ -515,6 +524,24 @@ public abstract class Entity implements Comparable<Entity> {
 			}
 		}
 		return collidingEntities;
+	}
+
+	/**
+	 * Checks if this Entity collides with the specified point.
+	 * 
+	 * @param x
+	 *            The x-position of the point.
+	 * @param y
+	 *            The y-position of the point.
+	 */
+	public boolean collidePoint(float x, float y) {
+		if (x >= this.x - hitboxOffsetX && y >= this.y - hitboxOffsetY
+				&& x < this.x - hitboxOffsetX + width
+				&& y < this.y - hitboxOffsetY + height) {
+			this.collisionResponse(null);
+			return true;
+		}
+		return false;
 	}
 
 	/**

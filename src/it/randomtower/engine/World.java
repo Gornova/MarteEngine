@@ -4,6 +4,7 @@ import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.entity.Entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -102,8 +103,6 @@ public class World extends BasicGameState {
 		// store the current delta in ME for anyone who's interested in it.
 		ME.delta = delta;
 
-		removable.clear();
-
 		// add new entities
 		if (addable.size() > 0) {
 			for (Entity entity : addable) {
@@ -149,6 +148,10 @@ public class World extends BasicGameState {
 	public void add(Entity e) {
 		e.setWorld(this);
 		addable.add(e);
+	}
+	
+	public void addAll(Collection<Entity> e){
+		addable.addAll(e);
 	}
 
 	/**
@@ -272,4 +275,45 @@ public class World extends BasicGameState {
 		}
 
 	}
+	
+	public List<Entity> findEntityWithType(String type){
+		if (type==null){
+			Log.error("Parameter must be not null");
+			return null;
+		}
+		List<Entity> result = new ArrayList<Entity>();
+		for (Entity entity : entities) {
+			if (entity.getType().contains(type)){
+				result.add(entity);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * @param x
+	 * @param y
+	 * @return true if an entity is already in position
+	 */
+	public boolean isEmpty(int x, int y, int depth){
+		Rectangle rect; 
+		for (Entity entity : entities) {
+			rect = new Rectangle(entity.x, entity.y, entity.width, entity.height);
+			if (entity.depth == depth && rect.contains(x, y)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public Entity find(int x, int y){
+		Rectangle rect; 
+		for (Entity entity : entities) {
+			rect = new Rectangle(entity.x, entity.y, entity.width, entity.height);
+			if (rect.contains(x, y)){
+				return entity;
+			}
+		}
+		return null;
+	}	
 }

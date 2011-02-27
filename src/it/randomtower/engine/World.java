@@ -1,18 +1,23 @@
 package it.randomtower.engine;
 
+import it.randomtower.engine.actors.StaticActor;
 import it.randomtower.engine.entity.Entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.util.Log;
 
 public class World extends BasicGameState {
 
@@ -43,14 +48,13 @@ public class World extends BasicGameState {
 		this.id = id;
 		this.container = container;
 	}
-	
-	
+
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		this.container = container;
 		width = container.getWidth();
 		height = container.getHeight();
-		//this.clear();
+		// this.clear();
 	}
 
 	@Override
@@ -61,35 +65,33 @@ public class World extends BasicGameState {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		
+
 		// center to camera position
 		if (camera != null)
 			g.translate(camera.x, camera.y);
 
 		// render entities
 		for (Entity e : entities) {
-			if (e.visible) {
-				if (ME.debugEnabled) {
-					g.setColor(ME.borderColor);
-					Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
-							+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
-					g.draw(hitBox);
-					g.setColor(Color.white);
-				}
-				if (camera != null) {
-					// TODO
-					// if (camera.contains(e)) {
-					e.render(container, g);
-					// }
-				} else {
-					e.render(container, g);
-				}
+			if (ME.debugEnabled) {
+				g.setColor(ME.borderColor);
+				Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
+						+ e.hitboxOffsetY, e.width, e.height);
+				g.draw(hitBox);
+				g.setColor(Color.white);
+			}
+			if (camera != null) {
+				// TODO
+				// if (camera.contains(e)) {
+				e.render(container, g);
+				// }
+			} else {
+				e.render(container, g);
 			}
 		}
 
 		if (camera != null)
 			g.translate(-camera.x, -camera.y);
-		
+
 		ME.render(container, game, g);
 	}
 
@@ -97,11 +99,9 @@ public class World extends BasicGameState {
 			throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
-		
+
 		// store the current delta in ME for anyone who's interested in it.
 		ME.delta = delta;
-		
-		removable.clear();
 
 		// add new entities
 		if (addable.size() > 0) {
@@ -113,11 +113,10 @@ public class World extends BasicGameState {
 			Collections.sort(entities);
 		}
 
-		// update alarms always and active entities
+		// update entities
 		for (Entity e : entities) {
 			e.updateAlarms(delta);
-			if (e.active)
-				e.update(container, delta);
+			e.update(container, delta);
 			// check for wrapping or out of world entities
 			e.checkWorldBoundaries();
 		}
@@ -126,13 +125,12 @@ public class World extends BasicGameState {
 			entities.remove(entity);
 			entity.removedFromWorld();
 		}
-		
+
 		// update camera
 		if (camera != null) {
 			camera.update(container, delta);
 		}
-		
-		
+
 		ME.update(container, game, delta);
 	}
 
@@ -148,8 +146,12 @@ public class World extends BasicGameState {
 	 *            entity to add
 	 */
 	public void add(Entity e) {
-		e.setWorld(this);		
+		e.setWorld(this);
 		addable.add(e);
+	}
+	
+	public void addAll(Collection<Entity> e){
+		addable.addAll(e);
 	}
 
 	/**
@@ -175,8 +177,7 @@ public class World extends BasicGameState {
 		}
 		return 0;
 	}
-	
-	
+
 	/**
 	 * @param entity
 	 *            to remove from game
@@ -216,13 +217,14 @@ public class World extends BasicGameState {
 		addable.clear();
 		removable.clear();
 	}
-	
-	public void setCamera(Camera camera){
+
+	public void setCamera(Camera camera) {
 		this.camera = camera;
 	}
-	
-	public void setCameraOn(Entity entity){
-		this.camera = new Camera(entity, this.container.getWidth(), this.container.getHeight());	
+
+	public void setCameraOn(Entity entity) {
+		this.camera = new Camera(entity, this.container.getWidth(),
+				this.container.getHeight());
 	}
 
 	public int getWidth() {
@@ -240,4 +242,78 @@ public class World extends BasicGameState {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+
+	/**
+	 * Load entity from a tiled map into current World
+	 * @param map
+	 */
+	public void loadEntityFromMap(TiledMap map) {
+		if (map == null) {
+			Log.error("unable to load map information");
+			return;
+		}
+		// try to find a layer with property type set to entity
+		int layerIndex = -1;
+		for (int l = 0; l < map.getLayerCount(); l++) {
+			String value = map.getLayerProperty(l, "type", null);
+			if (value != null && value.equalsIgnoreCase("entity")) {
+				layerIndex = l;
+				break;
+			}
+		}
+		if (layerIndex != -1) {
+			Log.debug("Entity layer found on map");
+			for (int w = 0; w < map.getWidth(); w++) {
+				for (int h = 0; h < map.getHeight(); h++) {
+					Image img = map.getTileImage(w, h, layerIndex);
+					if (img != null) {
+						StaticActor te = new StaticActor(w*img.getWidth(), h*img.getHeight(),img.getWidth(),img.getHeight(), img);
+						add(te);
+					}
+				}
+			}
+		}
+
+	}
+	
+	public List<Entity> findEntityWithType(String type){
+		if (type==null){
+			Log.error("Parameter must be not null");
+			return null;
+		}
+		List<Entity> result = new ArrayList<Entity>();
+		for (Entity entity : entities) {
+			if (entity.getType().contains(type)){
+				result.add(entity);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * @param x
+	 * @param y
+	 * @return true if an entity is already in position
+	 */
+	public boolean isEmpty(int x, int y, int depth){
+		Rectangle rect; 
+		for (Entity entity : entities) {
+			rect = new Rectangle(entity.x, entity.y, entity.width, entity.height);
+			if (entity.depth == depth && rect.contains(x, y)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public Entity find(int x, int y){
+		Rectangle rect; 
+		for (Entity entity : entities) {
+			rect = new Rectangle(entity.x, entity.y, entity.width, entity.height);
+			if (rect.contains(x, y)){
+				return entity;
+			}
+		}
+		return null;
+	}	
 }

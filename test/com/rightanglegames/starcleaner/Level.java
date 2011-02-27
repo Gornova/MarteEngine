@@ -38,7 +38,7 @@ public class Level {
 
 		// now load the level file and create the entities from the file
 		DecimalFormat formatter = new DecimalFormat("###000");
-		String level = "data/starcleaner/levels/level" + formatter.format(levelNo) + ".dat";
+		String level = "data/starcleaner/res/levels/level" + formatter.format(levelNo) + ".dat";
 
 		boolean levelExists = true;
 		try {
@@ -48,7 +48,7 @@ public class Level {
 		}
 		if (!levelExists) {
 			levelNo = 1;
-			level = "data/starcleaner/levels/level" + formatter.format(levelNo) + ".dat";
+			level = "data/starcleaner/res/levels/level" + formatter.format(levelNo) + ".dat";
 			
 		}
 

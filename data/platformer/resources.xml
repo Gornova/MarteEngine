@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- possible resource settings are valid, transparentColor is optional 
+	<sound key="" file="" />
+	<music key="" file="" />
+	<image key="" file="" transparentColor=""/> 
+	<sheet key="" file="" width="" height="" transparentColor=""/>
+	<angelcodefont key="" fontFile="" imageFile=""/>
+	<int key="" value="">
+	<float key="" value=""> 
+	<string key="" value="">
+-->
+	
+<resources>
+	<!-- basedir -->
+	<basedir path="data/platformer" />
+	<!-- sounds -->
+	<!-- songs -->
+	<!-- images -->
+	<image key="block" file="block.png" />
+	<image key="player" file="blockRed.png" />
+	<image key="background" file="cartoonClouds.jpg" />
+	<!-- sheets -->
+	<!-- fonts -->
+</resources>

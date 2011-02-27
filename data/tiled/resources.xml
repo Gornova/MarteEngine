@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- possible resource settings are valid, transparentColor is optional 
+	<sound key="" file="" />
+	<music key="" file="" />
+	<image key="" file="" transparentColor=""/> 
+	<sheet key="" file="" width="" height="" transparentColor=""/>
+	<angelcodefont key="" fontFile="" imageFile=""/>
+	<int key="" value="">
+	<float key="" value=""> 
+	<string key="" value="">
+-->
+	
+<resources>
+	<!-- basedir -->
+	<basedir path="data/tiled" />
+	<!-- sounds -->
+	<!-- songs -->
+	<!-- images -->
+	<!-- sheets -->
+	<!-- fonts -->
+	<!-- tiled maps -->
+	<map key="test1" file="test1.tmx"/>
+</resources>

@@ -44,7 +44,7 @@ public class Angel extends PhysicsEntity {
 	
 	public static String[] enemies = {Spikes.SPIKES, Crow.CROW};
 	
-	private Sound bumpSnd, jumpSnd, hitSnd, pickupstarSnd, allPickedUpSnd;
+	private Sound jumpSnd, hitSnd, pickupstarSnd, allPickedUpSnd;
 	
 	private int frame = 0;
 	private int frameTimer = 0;
@@ -70,7 +70,7 @@ public class Angel extends PhysicsEntity {
 		setHitBox(6, 2, 24, 38);
 		defineCommands();
 		// set sounds
-		bumpSnd = ResourceManager.getSound("bump");
+		//bumpSnd = ResourceManager.getSound("bump");
 		jumpSnd = ResourceManager.getSound("jump");
 		hitSnd = ResourceManager.getSound("hit");
 		pickupstarSnd = ResourceManager.getSound("pickupstar");

@@ -6,7 +6,7 @@ echo is called TestClass2 and it shows a popup
 echo with the arguments passed to the executable.
 echo ***
 
-echo ..\..\exej.exe -cfg config.txt
+echo exej.exe -cfg config.txt
 exej.exe -cfg config.txt
 
 echo ***

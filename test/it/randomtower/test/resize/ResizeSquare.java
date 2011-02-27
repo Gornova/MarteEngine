@@ -1,14 +1,13 @@
 package it.randomtower.test.resize;
 
-import it.randomtower.engine.entity.Entity;
 import it.randomtower.engine.ME;
+import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.util.Log;
 
 public class ResizeSquare extends Entity {
 
@@ -38,10 +37,11 @@ public class ResizeSquare extends Entity {
 
 		// define collision box and type
 		setHitBox(0, 0, width, height);
-		addType(NAME, Entity.SOLID);
+		addType(NAME, SOLID);
 
 		// define labels for the key
 		defineControls();
+		
 	}
 
 	public void setupImage() {
@@ -84,30 +84,49 @@ public class ResizeSquare extends Entity {
 		if (pressed(MINUS)) {
 			sizeDown();
 		}
-
+		//
 		width = value;
 		height = value;
 		setHitBox(0, 0, width, height);
-		updateSpeed();
-
+		// updateSpeed();
+		//
 		setGraphic(new Image("data/" + value + ".png"));
+		//
+		// updateRotation();
 
-		updateRotation();
+		// calculate heading of turret
+//		Input input = container.getInput();
+//		float mx = input.getMouseX();
+//		float my = input.getMouseY();
+		// TODO Going to add the offset here! HACK
+		// mx -= 20;
+		// my -= 15;
+		//angle = (int) calculateAngle(x, y, mx, my);
+
+		// add new Missile when player fire
+//		if (check(ATTACK1)) {
+//			Bullet b = new Bullet(x, y, "data/bullet.png", angle);
+//			b.setCentered(true);
+//			ME.world.add(b);			
+//		}
+
+		super.update(container, delta);
+
 	}
 
-	private void updateSpeed() {
-		if (value == 8) {
-			mySpeed.set(FASTEST);
-		} else if (value == 16) {
-			mySpeed.set(FAST);
-		} else if (value == 32) {
-			mySpeed.set(NORMAL);
-		} else if (value == 64) {
-			mySpeed.set(SLOW);
-		} else if (value == 128) {
-			mySpeed.set(SLOWEST);
-		}
-	}
+//	private void updateSpeed() {
+//		if (value == 8) {
+//			mySpeed.set(FASTEST);
+//		} else if (value == 16) {
+//			mySpeed.set(FAST);
+//		} else if (value == 32) {
+//			mySpeed.set(NORMAL);
+//		} else if (value == 64) {
+//			mySpeed.set(SLOW);
+//		} else if (value == 128) {
+//			mySpeed.set(SLOWEST);
+//		}
+//	}
 
 	public void sizeDown() {
 		if (value / 2 >= 8) {
@@ -122,38 +141,38 @@ public class ResizeSquare extends Entity {
 	}
 
 	public void moveLeft() {
-		if (collide(Entity.SOLID, x - mySpeed.x, y) == null) {
+		if (collide(SOLID, x - mySpeed.x, y) == null) {
 			x -= mySpeed.x;
 		}
 	}
 
 	public void moveRight() {
-		if (collide(Entity.SOLID, x + mySpeed.x, y) == null) {
+		if (collide(SOLID, x + mySpeed.x, y) == null) {
 			x += mySpeed.x;
 		}
 	}
 
 	public void moveDown() {
-		if (collide(Entity.SOLID, x, y + mySpeed.y) == null) {
+		if (collide(SOLID, x, y + mySpeed.y) == null) {
 			y += mySpeed.y;
 		}
 	}
 
 	public void moveUp() {
-		if (collide(Entity.SOLID, x, y - mySpeed.y) == null) {
+		if (collide(SOLID, x, y - mySpeed.y) == null) {
 			y -= mySpeed.y;
 		}
 	}
 
-	private void updateRotation() {
-		Input input = world.container.getInput();
-		int mx = input.getMouseX();
-		int my = input.getMouseY();
-		Vector2f position = new Vector2f(x, y);
-		rotation = (float) Math.toDegrees(Math.atan2(position.x - mx + value
-				/ 2, position.y - my + value / 2)
-				* -1) + 180;
-		Log.info("rotation " + rotation);
-	}
+//	private void updateRotation() {
+//		Input input = world.container.getInput();
+//		int mx = input.getMouseX();
+//		int my = input.getMouseY();
+//		Vector2f position = new Vector2f(x, y);
+//		rotation = (float) Math.toDegrees(Math.atan2(position.x - mx + value
+//				/ 2, position.y - my + value / 2)
+//				* -1) + 180;
+//		Log.info("rotation " + rotation);
+//	}
 
 }

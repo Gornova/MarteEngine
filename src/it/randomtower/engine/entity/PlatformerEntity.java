@@ -1,13 +1,13 @@
-package it.randomtower.test.platformer;
+package it.randomtower.engine.entity;
 
-import it.randomtower.engine.entity.PhysicsEntity;
+import it.randomtower.engine.ResourceManager;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-public class Player extends PhysicsEntity {
+public class PlatformerEntity extends PhysicsEntity {
 
 	private static final String CMD_LEFT = "left";
 	private static final String CMD_RIGHT = "right";
@@ -16,11 +16,21 @@ public class Player extends PhysicsEntity {
 	private int moveSpeed = 1;
 	private int jumpSpeed = 6;
 
-	public Player(float x, float y) throws SlickException {
+	/**
+	 * Create a new PlatformerEntity able to jump and move around. Create a default hitbox on image
+	 * @param x
+	 * @param y
+	 * @param ref, name of resource into resource.xml or path to image
+	 * @throws SlickException if image is not found
+	 */
+	public PlatformerEntity(float x, float y, String ref) throws SlickException {
 		super(x, y);
 		
-		currentImage = new Image("blockRed.png");
-		setHitBox(0, 0, 32, 32);
+		currentImage = ResourceManager.getImage(ref);
+		if (currentImage ==null){
+			currentImage = new Image(ref);
+		}
+		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
 		
 		depth = 10;
 		
@@ -64,7 +74,6 @@ public class Player extends PhysicsEntity {
 			if (onGround) { 
 				speed.y = -jumpSpeed; 
 			}
-			
 		}
 		
 		//set the gravity

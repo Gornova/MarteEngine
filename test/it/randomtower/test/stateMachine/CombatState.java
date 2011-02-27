@@ -1,4 +1,4 @@
-package it.randomtower.engine.states;
+package it.randomtower.test.stateMachine;
 
 import it.randomtower.engine.State;
 import it.randomtower.engine.entity.Entity;
@@ -9,19 +9,19 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-public class MovingState implements State {
+public class CombatState implements State {
 
 	private Image image;
 
 	private Entity entity;
 
-	public MovingState(Entity e) {
+	public CombatState(Entity e) {
 		this.entity = e;
 	}
 
 	public void init() {
 		try {
-			image = new Image("data/move.png");
+			image = new Image("data/sword-icon.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -34,20 +34,10 @@ public class MovingState implements State {
 	}
 
 	public void update(GameContainer container, int delta) {
-		// move entity
-		Input input = container.getInput();
-		if (input.isKeyDown(Input.KEY_W)) {
-			entity.y -= entity.speed.y;
-		} else if (input.isKeyDown(Input.KEY_S)) {
-			entity.y += entity.speed.y;
-		} else if (input.isKeyDown(Input.KEY_D)) {
-			entity.x += entity.speed.x;
-		} else if (input.isKeyDown(Input.KEY_A)) {
-			entity.x -= entity.speed.x;
-		} 
+		Input input = container.getInput();		
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
-			entity.stateManager.enter(CombatState.class);
+			entity.stateManager.enter(IdleState.class);
 		}
 	}
-
+	
 }

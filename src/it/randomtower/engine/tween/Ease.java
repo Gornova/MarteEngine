@@ -20,6 +20,8 @@ public class Ease {
 	/** @private */ private static double B5 = 2.25 / 2.75;
 	/** @private */ private static double B6 = 2.625 / 2.75;	
 	
+	public static final int NONE = -1;
+	
 	public static final int QUAD_IN = 0;
 	
 	/** Quadratic in. */
@@ -321,7 +323,70 @@ public class Ease {
 			Log.warn("Easing function not mapped " + easeFunction);
 			break;
 		}
-		return "NO_ONE";
+		return "NONE";
 	}
-	
+
+	public static float ease(int easeFunction, float t) {
+		switch (easeFunction) {
+		case Ease.QUAD_IN:
+			return Ease.quadIn(t);
+		case Ease.QUAD_OUT:
+			return Ease.quadOut(t);
+		case Ease.QUAD_IN_OUT:
+			return Ease.quadInOut(t);
+		case Ease.CUBE_IN:
+			return Ease.cubeIn(t);
+		case Ease.CUBE_OUT:
+			return Ease.cubeOut(t);
+		case Ease.CUBE_IN_OUT:
+			return Ease.cubeInOut(t);
+		case Ease.QUART_IN:
+			return Ease.quartIn(t);
+		case Ease.QUART_OUT:
+			return Ease.quartOut(t);
+		case Ease.QUART_IN_OUT:
+			return Ease.quartInOut(t);
+		case Ease.QUINT_IN:
+			return Ease.quintIn(t);
+		case Ease.QUINT_OUT:
+			return Ease.quintOut(t);
+		case Ease.QUINT_IN_OUT:
+			return Ease.quintInOut(t);
+		case Ease.SINE_IN:
+			return Ease.sineIn(t);
+		case Ease.SINE_OUT:
+			return Ease.sineOut(t);
+		case Ease.SINE_IN_OUT:
+			return Ease.sineInOut(t);
+		case Ease.BOUNCE_IN:
+			return Ease.bounceIn(t);
+		case Ease.BOUNCE_OUT:
+			return Ease.bounceOut(t);
+		case Ease.BOUNCE_IN_OUT:
+			return Ease.bounceInOut(t);
+		case Ease.CIRC_IN:
+			return Ease.circIn(t);
+		case Ease.CIRC_OUT:
+			return Ease.circOut(t);
+		case Ease.CIRC_IN_OUT:
+			return Ease.circInOut(t);
+		case Ease.EXPO_IN:
+			return Ease.expoIn(t);
+		case Ease.EXPO_OUT:
+			return Ease.expoOut(t);
+		case Ease.EXPO_IN_OUT:
+			return Ease.expoInOut(t);
+		case Ease.BACK_IN:
+			return Ease.backIn(t);
+		case Ease.BACK_OUT:
+			return Ease.backOut(t);
+		case Ease.BACK_IN_OUT:
+			return Ease.backInOut(t);
+		default:
+			Log.warn("Easing function not mapped " + easeFunction);
+			break;
+		}
+		return 0;
+	}
+
 }

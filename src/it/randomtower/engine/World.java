@@ -39,6 +39,8 @@ public class World extends BasicGameState {
 
 	/** current camera **/
 	public Camera camera;
+	
+	public int renderedEntities;
 
 	public World(int id) {
 		this.id = id;
@@ -68,9 +70,10 @@ public class World extends BasicGameState {
 
 		// center to camera position
 		if (camera != null)
-			g.translate(camera.x, camera.y);
+			g.translate(-camera.cameraX, -camera.cameraY);
 
 		// render entities
+		renderedEntities = 0;
 		for (Entity e : entities) {
 			if (ME.debugEnabled) {
 				g.setColor(ME.borderColor);
@@ -80,17 +83,18 @@ public class World extends BasicGameState {
 				g.setColor(Color.white);
 			}
 			if (camera != null) {
-				// TODO
-				// if (camera.contains(e)) {
-				e.render(container, g);
-				// }
+				if (camera.contains(e)) {
+					renderedEntities++;
+					e.render(container, g);
+				}
 			} else {
+				renderedEntities++;
 				e.render(container, g);
 			}
 		}
 
 		if (camera != null)
-			g.translate(-camera.x, -camera.y);
+			g.translate(camera.cameraX, camera.cameraY);
 
 		ME.render(container, game, g);
 	}
@@ -149,8 +153,8 @@ public class World extends BasicGameState {
 		e.setWorld(this);
 		addable.add(e);
 	}
-	
-	public void addAll(Collection<Entity> e){
+
+	public void addAll(Collection<Entity> e) {
 		addable.addAll(e);
 	}
 
@@ -220,11 +224,17 @@ public class World extends BasicGameState {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+		this.camera.setMyWorld(this);
 	}
 
 	public void setCameraOn(Entity entity) {
-		this.camera = new Camera(entity, this.container.getWidth(),
+		if (camera == null) {
+		this.camera = new Camera(this, entity, this.container.getWidth(),
 				this.container.getHeight());
+		this.setCamera(camera);
+		} else {
+			this.camera.setFollow(entity);
+		}
 	}
 
 	public int getWidth() {
@@ -245,6 +255,7 @@ public class World extends BasicGameState {
 
 	/**
 	 * Load entity from a tiled map into current World
+	 * 
 	 * @param map
 	 */
 	public void loadEntityFromMap(TiledMap map) {
@@ -267,7 +278,9 @@ public class World extends BasicGameState {
 				for (int h = 0; h < map.getHeight(); h++) {
 					Image img = map.getTileImage(w, h, layerIndex);
 					if (img != null) {
-						StaticActor te = new StaticActor(w*img.getWidth(), h*img.getHeight(),img.getWidth(),img.getHeight(), img);
+						StaticActor te = new StaticActor(w * img.getWidth(), h
+								* img.getHeight(), img.getWidth(),
+								img.getHeight(), img);
 						add(te);
 					}
 				}
@@ -275,45 +288,47 @@ public class World extends BasicGameState {
 		}
 
 	}
-	
-	public List<Entity> findEntityWithType(String type){
-		if (type==null){
+
+	public List<Entity> findEntityWithType(String type) {
+		if (type == null) {
 			Log.error("Parameter must be not null");
 			return null;
 		}
 		List<Entity> result = new ArrayList<Entity>();
 		for (Entity entity : entities) {
-			if (entity.getType().contains(type)){
+			if (entity.getType().contains(type)) {
 				result.add(entity);
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @param x
 	 * @param y
 	 * @return true if an entity is already in position
 	 */
-	public boolean isEmpty(int x, int y, int depth){
-		Rectangle rect; 
+	public boolean isEmpty(int x, int y, int depth) {
+		Rectangle rect;
 		for (Entity entity : entities) {
-			rect = new Rectangle(entity.x, entity.y, entity.width, entity.height);
-			if (entity.depth == depth && rect.contains(x, y)){
+			rect = new Rectangle(entity.x, entity.y, entity.width,
+					entity.height);
+			if (entity.depth == depth && rect.contains(x, y)) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public Entity find(int x, int y){
-		Rectangle rect; 
+
+	public Entity find(int x, int y) {
+		Rectangle rect;
 		for (Entity entity : entities) {
-			rect = new Rectangle(entity.x, entity.y, entity.width, entity.height);
-			if (rect.contains(x, y)){
+			rect = new Rectangle(entity.x, entity.y, entity.width,
+					entity.height);
+			if (rect.contains(x, y)) {
 				return entity;
 			}
 		}
 		return null;
-	}	
+	}
 }

@@ -105,8 +105,8 @@ public class ME {
 			g.fill(r);
 			g.draw(r);
 			g.setColor(Color.white);
-			g.drawString("Entities: " + world.getEntities().size(),
-					container.getWidth() - 130, 10);
+			g.drawString("Entities: " + world.getEntities().size() + ", rendered Entities: " + world.renderedEntities,
+					container.getWidth() - 350/*130*/, 10);
 			container.setShowFPS(true);
 
 		} else {

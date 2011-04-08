@@ -188,6 +188,8 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		previousx = x;
+		previousy = y;
 		if (stateManager != null && stateManager.currentState() != null) {
 			stateManager.update(container, delta);
 			return;
@@ -205,8 +207,6 @@ public abstract class Entity implements Comparable<Entity> {
 			y += speed.y;
 		}
 		checkWorldBoundaries();
-		previousx = x;
-		previousy = y;
 	}
 
 	/**
@@ -634,7 +634,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isType(String type) {
-		return type.contains(type);
+		return this.type.contains(type);
 	}
 
 	/**

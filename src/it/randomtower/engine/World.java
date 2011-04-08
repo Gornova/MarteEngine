@@ -75,6 +75,8 @@ public class World extends BasicGameState {
 		// render entities
 		renderedEntities = 0;
 		for (Entity e : entities) {
+			if (!e.visible)
+				continue;	// next entity. this one stays invisible
 			if (ME.debugEnabled) {
 				g.setColor(ME.borderColor);
 				Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
@@ -120,7 +122,8 @@ public class World extends BasicGameState {
 		// update entities
 		for (Entity e : entities) {
 			e.updateAlarms(delta);
-			e.update(container, delta);
+			if (e.active)
+				e.update(container, delta);
 			// check for wrapping or out of world entities
 			e.checkWorldBoundaries();
 		}
@@ -181,6 +184,19 @@ public class World extends BasicGameState {
 		}
 		return 0;
 	}
+	
+	
+	public List<Entity> getEntities(String type) {
+		if (entities.size() > 0) {
+			List<Entity> res = new ArrayList<Entity>();
+			for (Entity entity : entities) {
+				if (entity.getType().contains(type))
+					res.add(entity);
+			}
+			return res;
+		}
+		return null;
+	}
 
 	/**
 	 * @param entity
@@ -203,6 +219,12 @@ public class World extends BasicGameState {
 		if (name == null)
 			return null;
 		for (Entity entity : entities) {
+			if (entity.name != null && entity.name.equalsIgnoreCase(name)) {
+				return entity;
+			}
+		}
+		// also look in addable list
+		for (Entity entity : addable) {
 			if (entity.name != null && entity.name.equalsIgnoreCase(name)) {
 				return entity;
 			}

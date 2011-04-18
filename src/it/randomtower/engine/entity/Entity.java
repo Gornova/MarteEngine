@@ -642,6 +642,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void destroy() {
 		this.world.remove(this);
+		this.visible = false;
 	}
 
 	/***************** some methods to deal with angles and vectors ************************************/

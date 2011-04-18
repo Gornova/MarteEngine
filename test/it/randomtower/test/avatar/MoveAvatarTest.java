@@ -21,6 +21,9 @@ public class MoveAvatarTest extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		
 		World gameWorld = new World(0,container);
+		// make the world a bit bigger than the screen to force camera scrolling
+		gameWorld.setWidth(2000);
+		gameWorld.setHeight(2000);
 		
 		// create player
 		TopDownActor player = new TopDownActor(400, 400, "data/link.png");

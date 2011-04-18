@@ -1,5 +1,7 @@
 package it.randomtower.engine.entity;
 
+import it.randomtower.engine.ME;
+
 public class Alarm {
 	/** the name of this alarm */
 	private String name;
@@ -13,8 +15,6 @@ public class Alarm {
 	private boolean oneShotAlaram = true;
 	/** marked as dead, don't want to remove alarms while iterating them! */
 	private boolean dead = false;
-	/** do we count update calls or milliseconds from delta time? Alarms can use both! */
-	private boolean useDelta = false;
 	
 	
 	/**
@@ -24,16 +24,6 @@ public class Alarm {
 	 * @param oneShot shall this alarm remove itself after one trigger or shall it run for ever
 	 */
 	public Alarm(String name, int triggerTime, boolean oneShot) {
-		this(name, triggerTime, oneShot, false);
-	}
-	/**
-	 * create a new Alarm object
-	 * @param name the name of this alarm
-	 * @param triggerTime after how many update calls should this alarm trigger
-	 * @param oneShot shall this alarm remove itself after one trigger or shall it run for ever
-	 * @param useDelta do we count update calls or delta time in milliseconds?
-	 */
-	public Alarm(String name, int triggerTime, boolean oneShot, boolean useDelta) {
 		this.name = name;
 		this.triggerTime = triggerTime;
 		this.counter = 0;
@@ -65,7 +55,7 @@ public class Alarm {
 	 * called by World if alarm is active. Don't mess around with it.
 	 */
 	public boolean update(int delta) {
-		if (useDelta)
+		if (ME.useDeltaTiming)
 			this.counter += delta;
 		else
 			this.counter++;

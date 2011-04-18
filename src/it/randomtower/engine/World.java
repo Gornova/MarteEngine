@@ -19,8 +19,13 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
+//TODO addAll() muss intern add() aufrufen, um korrekt nach flags in die listen einzusortieren
 public class World extends BasicGameState {
 
+	public static final int BELOW = -1;
+	public static final int GAME = 0;
+	public static final int ABOVE = 1;
+	
 	/** the game container this world belongs to */
 	public GameContainer container = null;
 
@@ -31,11 +36,15 @@ public class World extends BasicGameState {
 	public int width = 0;
 	/** height of the world, useful for vertical wrapping entities */
 	public int height = 0;
-
+	
 	/** internal list for entities **/
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Entity> removable = new ArrayList<Entity>();
 	private List<Entity> addable = new ArrayList<Entity>();
+	
+	/** two lists to contain objects that are rendered before and after camera stuff is rendered */
+	private List<Entity> belowCamera = new ArrayList<Entity>();
+	private List<Entity> aboveCamera = new ArrayList<Entity>();
 
 	/** current camera **/
 	public Camera camera;
@@ -54,8 +63,10 @@ public class World extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		this.container = container;
-		width = container.getWidth();
-		height = container.getHeight();
+		if (width == 0)
+			width = container.getWidth();
+		if (height == 0)
+			height = container.getHeight();
 		// this.clear();
 	}
 
@@ -68,39 +79,55 @@ public class World extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 
+		renderedEntities = 0;
+		// first render entities below camera
+		for (Entity e:belowCamera) {
+			if (!e.visible)
+				continue;
+			renderEntity(e, g, container);
+		}
 		// center to camera position
 		if (camera != null)
 			g.translate(-camera.cameraX, -camera.cameraY);
 
 		// render entities
-		renderedEntities = 0;
 		for (Entity e : entities) {
 			if (!e.visible)
 				continue;	// next entity. this one stays invisible
-			if (ME.debugEnabled) {
-				g.setColor(ME.borderColor);
-				Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
-						+ e.hitboxOffsetY, e.width, e.height);
-				g.draw(hitBox);
-				g.setColor(Color.white);
-			}
 			if (camera != null) {
 				if (camera.contains(e)) {
-					renderedEntities++;
-					e.render(container, g);
+					renderEntity(e, g, container);
 				}
 			} else {
-				renderedEntities++;
-				e.render(container, g);
+				renderEntity(e, g, container);
 			}
 		}
 
 		if (camera != null)
 			g.translate(camera.cameraX, camera.cameraY);
 
+		// finally render entities above camera
+		for (Entity e:aboveCamera) {
+			if (!e.visible)
+				continue;
+			renderEntity(e, g, container);
+		}
+		
 		ME.render(container, game, g);
 	}
 
+	private void renderEntity(Entity e, Graphics g, GameContainer container) throws SlickException {
+		renderedEntities++;
+		if (ME.debugEnabled) {
+			g.setColor(ME.borderColor);
+			Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
+					+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
+			g.draw(hitBox);
+			g.setColor(Color.white);
+		}
+		e.render(container, g);
+	}
+	
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if (container == null)
@@ -120,6 +147,11 @@ public class World extends BasicGameState {
 		}
 
 		// update entities
+		for (Entity e : belowCamera) {
+			e.updateAlarms(delta);
+			if (e.active)
+				e.update(container, delta);
+		}
 		for (Entity e : entities) {
 			e.updateAlarms(delta);
 			if (e.active)
@@ -127,9 +159,16 @@ public class World extends BasicGameState {
 			// check for wrapping or out of world entities
 			e.checkWorldBoundaries();
 		}
+		for (Entity e : aboveCamera) {
+			e.updateAlarms(delta);
+			if (e.active)
+				e.update(container, delta);
+		}
 		// remove signed entities
 		for (Entity entity : removable) {
 			entities.remove(entity);
+			belowCamera.remove(entity);
+			aboveCamera.remove(entity);
 			entity.removedFromWorld();
 		}
 
@@ -152,13 +191,28 @@ public class World extends BasicGameState {
 	 * @param e
 	 *            entity to add
 	 */
-	public void add(Entity e) {
+	public void add(Entity e, int ...flags) {
 		e.setWorld(this);
-		addable.add(e);
+		if (flags.length == 1) {
+			switch(flags[0]) {
+			case BELOW:
+				belowCamera.add(e);
+				break;
+			case GAME:
+				addable.add(e);
+				break;
+			case ABOVE:
+				aboveCamera.add(e);
+				break;
+			}
+		} else
+			addable.add(e);
 	}
 
-	public void addAll(Collection<Entity> e) {
-		addable.addAll(e);
+	public void addAll(Collection<Entity> e, int ...flags) {
+		for (Entity entity : e) {
+			this.add(entity, flags);
+		}
 	}
 
 	/**
@@ -239,6 +293,8 @@ public class World extends BasicGameState {
 		for (Entity entity : entities) {
 			entity.removedFromWorld();
 		}
+		belowCamera.clear();
+		aboveCamera.clear();
 		entities.clear();
 		addable.clear();
 		removable.clear();
@@ -251,12 +307,10 @@ public class World extends BasicGameState {
 
 	public void setCameraOn(Entity entity) {
 		if (camera == null) {
-		this.camera = new Camera(this, entity, this.container.getWidth(),
-				this.container.getHeight());
-		this.setCamera(camera);
-		} else {
-			this.camera.setFollow(entity);
+			this.setCamera(new Camera(this, entity, this.container.getWidth(),
+				this.container.getHeight()));
 		}
+		this.camera.setFollow(entity);
 	}
 
 	public int getWidth() {
@@ -353,4 +407,5 @@ public class World extends BasicGameState {
 		}
 		return null;
 	}
+
 }

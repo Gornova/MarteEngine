@@ -11,6 +11,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+
 /**
  * Marte Engine Utility class
  * 
@@ -48,8 +49,18 @@ public class ME {
 
 	public static World world;
 	
+	/** do we base time calculations on delta timing or on frames per second? */
+	public static boolean useDeltaTiming = false;
 	/** value of current delta of update call. might be helpful here */
 	public static int delta;
+	/** the frames per seconds we targeted in our main class */
+	public static int targetFrameRate;
+	
+	public static void setTargetFrameRate(GameContainer container, int targetframerate) {
+		container.setTargetFrameRate(targetframerate);
+		ME.targetFrameRate = targetframerate;
+
+	}
 	
 	/** 
 	 * Update entities and add new entities and remove old entities

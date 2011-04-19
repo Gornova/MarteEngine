@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -84,6 +85,7 @@ public abstract class Entity implements Comparable<Entity> {
 	private Color color = new Color(Color.white);
 
 	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
+	private Hashtable<String,Alarm> addableAlarms = new Hashtable<String, Alarm>();
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
@@ -697,12 +699,17 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/***************** some methods to deal with alarms ************************************/
-	public void setAlarm(String name, int triggerTime, boolean oneShot,
+	
+	/**
+	 * Create an Alarm with given parameters and add to current Entity
+	 */
+	public Alarm setAlarm(String name, int triggerTime, boolean oneShot,
 			boolean startNow) {
 		Alarm alarm = new Alarm(name, triggerTime, oneShot);
-		alarms.put(name, alarm);
 		if (startNow)
 			alarm.start();
+		addableAlarms.put(name, alarm);
+		return alarm;
 	}
 
 	public void restartAlarm(String name) {
@@ -772,6 +779,17 @@ public abstract class Entity implements Comparable<Entity> {
 					alarms.put(deadAlarm, null);
 				}
 			}
+		}
+		if (addableAlarms != null && !addableAlarms.isEmpty()){
+			
+			Iterator<String> itr = addableAlarms.keySet().iterator();
+			while (itr.hasNext()){
+				String name = itr.next();
+				alarms.put(name, addableAlarms.get(name));
+			}
+		}		
+		if(!addableAlarms.isEmpty()){
+			addableAlarms.clear();
 		}
 	}
 

@@ -441,6 +441,9 @@ public abstract class Entity implements Comparable<Entity> {
 		this.hitboxWidth = width;
 		this.hitboxHeight = height;
 		this.collidable = true;
+		
+		this.width = width;
+		this.height = height;
 	}
 
 	/**
@@ -845,4 +848,8 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
+	public String toCsv(){
+		return ""+(int)x+","+(int)y+","+name+","+type.iterator().next();
+	}
+	
 }

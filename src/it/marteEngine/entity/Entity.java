@@ -452,6 +452,13 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean addType(String... types) {
 		return type.addAll(Arrays.asList(types));
 	}
+	
+	/**
+	 * Reset type information for this entity
+	 */
+	public void clearTypes(){
+		type.clear();
+	}
 
 	/**
 	 * check collision with another entity of given type

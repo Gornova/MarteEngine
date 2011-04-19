@@ -326,6 +326,18 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		animations.put(name, anim);
 	}
+	
+	public void addAnimation(SpriteSheet sheet, String name, boolean loop, int row, int... frames) {
+		Animation anim = new Animation(false);
+		anim.setLooping(loop);
+		for (int i = 0; i < frames.length; i++) {
+			anim.addFrame(sheet.getSprite(frames[i], row), duration);
+		}
+		if (animations.size() == 0) {
+			currentAnim = name;
+		}
+		animations.put(name, anim);
+	}	
 
 	/**
 	 * define commands to handle inputs

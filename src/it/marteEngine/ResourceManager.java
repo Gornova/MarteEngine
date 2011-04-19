@@ -452,4 +452,22 @@ public class ResourceManager {
 		return null;
 	}
 	
+	public static ArrayList<Image> getImagesAsListWithoutKeys(List<String> keys){
+		ArrayList<Image> list = new ArrayList<Image>();
+		for (String key : images.keySet()) {
+			if (key!=null){
+				boolean found = false;
+				for (String without : keys) {
+					if (key.contains(without)){
+						found = true;
+					}
+				}
+				if (!found){
+					list.add(images.get(key));
+				}
+			}
+		}
+		return list;
+	}	
+	
 }

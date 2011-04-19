@@ -9,6 +9,7 @@ public class Solid extends Entity {
 		super(x, y);
 		addType(SOLID);
 		setHitBox(0, 0, width, height);
+		name = "solid";
 	}
 
 	public Solid(float x, float y, int width, int height, int depth)
@@ -22,6 +23,7 @@ public class Solid extends Entity {
 		this.depth = depth;
 		if (refImage != null)
 			currentImage = new Image(refImage);
+		name = "solid";		
 	}
 	
 	public Solid(float x, float y, int width, int height, int depth,
@@ -31,6 +33,7 @@ public class Solid extends Entity {
 		setHitBox(0, 0, width, height);
 		this.depth = depth;
 		currentImage = image;
+		name = "solid";
 	}	
 
 }

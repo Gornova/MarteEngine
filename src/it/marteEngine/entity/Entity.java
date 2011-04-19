@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -85,7 +84,6 @@ public abstract class Entity implements Comparable<Entity> {
 	private Color color = new Color(Color.white);
 
 	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
-	private Hashtable<String,Alarm> addableAlarms = new Hashtable<String, Alarm>();
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
@@ -326,18 +324,6 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		animations.put(name, anim);
 	}
-	
-	public void addAnimation(SpriteSheet sheet, String name, boolean loop, int row, int... frames) {
-		Animation anim = new Animation(false);
-		anim.setLooping(loop);
-		for (int i = 0; i < frames.length; i++) {
-			anim.addFrame(sheet.getSprite(frames[i], row), duration);
-		}
-		if (animations.size() == 0) {
-			currentAnim = name;
-		}
-		animations.put(name, anim);
-	}	
 
 	/**
 	 * define commands to handle inputs
@@ -441,9 +427,6 @@ public abstract class Entity implements Comparable<Entity> {
 		this.hitboxWidth = width;
 		this.hitboxHeight = height;
 		this.collidable = true;
-		
-		this.width = width;
-		this.height = height;
 	}
 
 	/**
@@ -454,13 +437,6 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public boolean addType(String... types) {
 		return type.addAll(Arrays.asList(types));
-	}
-	
-	/**
-	 * Reset type information for this entity
-	 */
-	public void clearTypes(){
-		type.clear();
 	}
 
 	/**
@@ -721,17 +697,12 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/***************** some methods to deal with alarms ************************************/
-	
-	/**
-	 * Create an Alarm with given parameters and add to current Entity
-	 */
-	public Alarm setAlarm(String name, int triggerTime, boolean oneShot,
+	public void setAlarm(String name, int triggerTime, boolean oneShot,
 			boolean startNow) {
 		Alarm alarm = new Alarm(name, triggerTime, oneShot);
+		alarms.put(name, alarm);
 		if (startNow)
 			alarm.start();
-		addableAlarms.put(name, alarm);
-		return alarm;
 	}
 
 	public void restartAlarm(String name) {
@@ -774,7 +745,6 @@ public abstract class Entity implements Comparable<Entity> {
 	 * by your game code. Don't touch this method ;-) Consider it private!
 	 */
 	public void updateAlarms(int delta) {
-		
 		ArrayList<String> deadAlarms = null;
 		Set<String> alarmNames = alarms.keySet();
 		if (!alarmNames.isEmpty()) {
@@ -802,17 +772,6 @@ public abstract class Entity implements Comparable<Entity> {
 					alarms.put(deadAlarm, null);
 				}
 			}
-		}
-		if (addableAlarms != null && !addableAlarms.isEmpty()){
-			
-			Iterator<String> itr = addableAlarms.keySet().iterator();
-			while (itr.hasNext()){
-				String name = itr.next();
-				alarms.put(name, addableAlarms.get(name));
-			}
-		}		
-		if(!addableAlarms.isEmpty()){
-			addableAlarms.clear();
 		}
 	}
 
@@ -849,8 +808,4 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
-	public String toCsv(){
-		return ""+(int)x+","+(int)y+","+name+","+type.iterator().next();
-	}
-	
 }

@@ -115,10 +115,12 @@ public class World extends BasicGameState {
 
 		// update entities
 		for (Entity e : entities) {
-			e.updateAlarms(delta);
-			e.update(container, delta);
-			// check for wrapping or out of world entities
-			e.checkWorldBoundaries();
+			if (e.active){
+				e.updateAlarms(delta);
+				e.update(container, delta);
+				// check for wrapping or out of world entities
+				e.checkWorldBoundaries();
+			}
 		}
 		// remove signed entities
 		for (Entity entity : removable) {

@@ -1,13 +1,8 @@
 package it.randomtower.engine.tween;
 
-import it.randomtower.engine.entity.Entity;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.util.Log;
 
 /**
  * Tweener is a utility container for variuos tweens that can change Entity in many ways

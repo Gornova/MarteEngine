@@ -11,7 +11,6 @@ public class LinearMotion extends Motion {
 	private float moveX;
 	private float moveY;
 	private float speed = 1.0f;
-	private float distance = -1f;
 	
 	public LinearMotion(float fromX, float fromY, float toX, float toY,
 			float duration, int easeFunction) {
@@ -25,22 +24,15 @@ public class LinearMotion extends Motion {
 
 	public LinearMotion(float fromX, float fromY, float toX, float toY,
 			float speed, TweenerMode type, float duration, int easeFunction) {
-		this(fromX, fromY, toX, toY, speed, type, duration, easeFunction, false);
-	}
-
-	public LinearMotion(float fromX, float fromY, float toX, float toY,
-			float speed, TweenerMode type, float duration, int easeFunction, boolean deltaMode) {
-		super(duration, type, easeFunction, false, true);
-		this.distance = -1f;
+		super(duration, type, easeFunction, true);
 		this.x = this.fromX = fromX;
 		this.y = this.fromY = fromY;
 		this.toX = toX;
 		this.toY = toY;
-		this.moveX = toX - fromX;
-		this.moveY = toY - fromY;
+		this.moveX = this.toX - fromX;
+		this.moveY = this.toY - fromY;
 		this.speed = speed;
-		this.target = duration / speed;
-		this.deltaTiming = deltaMode;
+		this.target = duration / this.speed;
 		this.easingFunction = easeFunction;
 		this.mode = type;
 		this.start();

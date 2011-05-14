@@ -1,9 +1,7 @@
 package it.randomtower.engine.tween;
 
-import it.randomtower.engine.entity.Entity;
+import it.randomtower.engine.ME;
 
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.util.Log;
 
 /**
  * Tween can change Entity status
@@ -27,26 +25,20 @@ public abstract class Tween {
 	private float time = 0f;
 	/** when is this tweener done */
 	protected float target = 0f;
-	/** do we use delta timing or frame counting */
-	protected boolean deltaTiming = false;
 	
 	/** which easing function does this Tween use */
 	protected int easingFunction = Ease.NONE;
 
 	
 	public Tween(float duration, TweenerMode type, int easingType, boolean active) {
-		this(duration, type, easingType, false, active);
-	}
-
-	public Tween(float duration, TweenerMode type, int easingType, boolean deltaTiming, boolean active) {
 		this.target = duration;
 		this.active = active;
-		this.deltaTiming = deltaTiming;
+		this.mode = type;
 		this.easingFunction = easingType;
 	}
 
 	public void update(int delta) {
-		if (this.deltaTiming)
+		if (ME.useDeltaTiming)
 			time += delta;
 		else
 			time++;

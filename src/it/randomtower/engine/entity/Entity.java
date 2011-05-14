@@ -66,7 +66,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean wrapVertical = false;
 
 	/** speed vector (x,y): specifies x and y movement per update call in pixels **/
-	public Vector2f speed = null;
+	public Vector2f speed = new Vector2f(0,0);
 
 	/**
 	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
@@ -665,6 +665,15 @@ public abstract class Entity implements Comparable<Entity> {
 		point = new Vector2f(tx, ty);
 		return point;
 	}
+	
+	public float getDistance(Entity other) {
+		return getDistance(new Vector2f(other.x, other.y));
+	}
+	
+	public float getDistance(Vector2f otherPos) {
+		Vector2f myPos = new Vector2f(x,y);
+		return myPos.distance(otherPos);
+	}
 
 	/**
 	 * Calculate vector from angle and magnitude
@@ -704,6 +713,12 @@ public abstract class Entity implements Comparable<Entity> {
 		alarms.put(name, alarm);
 		if (startNow)
 			alarm.start();
+	}
+	
+	public void triggerAlarm(String name) {
+		Alarm alarm = alarms.get(name);
+		if (alarm != null)
+			alarm.trigger();
 	}
 
 	public void restartAlarm(String name) {

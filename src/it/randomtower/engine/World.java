@@ -283,6 +283,17 @@ public class World extends BasicGameState {
 				return entity;
 			}
 		}
+		// and look in aboveCamera and belowCamera list
+		for (Entity entity : aboveCamera) {
+			if (entity.name != null && entity.name.equalsIgnoreCase(name)) {
+				return entity;
+			}
+		}
+		for (Entity entity : belowCamera) {
+			if (entity.name != null && entity.name.equalsIgnoreCase(name)) {
+				return entity;
+			}
+		}
 		return null;
 	}
 

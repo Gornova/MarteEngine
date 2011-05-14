@@ -7,8 +7,8 @@ public class NumTween extends Tween {
 	private float range = 0f;
 	
 	
-	public NumTween(float from, float to, float duration, TweenerMode type, int easingType, boolean deltaTiming) {
-		super(duration, type, easingType, deltaTiming, true);
+	public NumTween(float from, float to, float duration, TweenerMode type, int easingType) {
+		super(duration, type, easingType, true);
 		start = value = from;
 		range = to - value;
 		target = duration;

@@ -22,6 +22,8 @@ public class ME {
 
 	/** true if debug is enabled, shows hitbox of entities **/
 	public static boolean debugEnabled = false;
+	/** place debug information on top or at bottom **/
+	public static boolean debugWindowAtTop = true;
 	/** key to activate debug mode **/
 	public static int keyToggleDebug = -1;
 	/** default border color of hitbox in debug mode **/
@@ -107,8 +109,13 @@ public class ME {
 			g.scale(scaleX, scaleY);
 
 		// render debug stuff
+		int ypos = 1;
+		if (debugWindowAtTop)
+			ypos = 1;
+		else
+			ypos = container.getHeight() - 40;
 		if (debugEnabled) {
-			RoundedRectangle r = new RoundedRectangle(1, 1,
+			RoundedRectangle r = new RoundedRectangle(1, ypos,
 					container.getWidth() - 1, 40, 20);
 			Color c = Color.lightGray;
 			c.a = 0.3f;
@@ -116,8 +123,9 @@ public class ME {
 			g.fill(r);
 			g.draw(r);
 			g.setColor(Color.white);
+			g.resetFont();
 			g.drawString("Entities: " + world.getEntities().size() + ", rendered Entities: " + world.renderedEntities,
-					container.getWidth() - 350/*130*/, 10);
+					container.getWidth() - 350/*130*/, ypos + 9);
 			container.setShowFPS(true);
 
 		} else {

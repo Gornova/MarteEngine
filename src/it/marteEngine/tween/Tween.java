@@ -1,59 +1,57 @@
 package it.marteEngine.tween;
 
-import it.marteEngine.entity.Entity;
-
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.util.Log;
 
 /**
  * Tween can change Entity status
  * 
  * @author Gornova
  */
-public class Tween {
+public abstract class Tween {
 
-	private Motion motion;
-	private boolean active = true;
-	private Vector2f startingPosition;
+	public enum TweenerMode { ONESHOT, LOOPING, PERSIST };
 
-	/**
-	 * Create a tween with given Motion, active by default, use another
-	 * constructor instead
-	 * 
-	 * @param motion
-	 */
-	public Tween(Motion motion) {
-		this(motion, true);
+	protected String name = null;
+	protected TweenerMode mode = TweenerMode.PERSIST;
+
+	protected Tweener parent = null;
+	protected boolean active = true;
+	protected boolean finished = false;
+	
+	protected float t = 0f;
+	
+	/** how much time proceeded */
+	private float time = 0f;
+	/** when is this tweener done */
+	protected float target = 0f;
+	/** do we use delta timing or frame counting */
+	protected boolean deltaTiming = false;
+	
+	/** which easing function does this Tween use */
+	protected int easingFunction = Ease.NONE;
+
+	
+	public Tween(float duration, TweenerMode type, int easingType, boolean active) {
+		this(duration, type, easingType, false, active);
 	}
 
-	/**
-	 * Create a tween with given Motion and specify if is active
-	 * 
-	 * @param motion
-	 * @param active
-	 */
-	public Tween(Motion motion, boolean active) {
-		this.motion = motion;
+	public Tween(float duration, TweenerMode type, int easingType, boolean deltaTiming, boolean active) {
+		this.target = duration;
 		this.active = active;
+		this.deltaTiming = deltaTiming;
+		this.easingFunction = easingType;
 	}
 
-	/**
-	 * Get updated position from Tween
-	 * 
-	 * @param parent
-	 * @return updated x and y, null if not active
-	 */
-	public Vector2f apply(Entity parent) {
-		if (active && !motion.completed) {
-			if (startingPosition == null) {
-				startingPosition = new Vector2f(parent.x, parent.y);
-			}
-			Vector2f result = motion.update();
-			Log.debug("move to :" + result.toString());
-			return result;
-		} else {
-			active = false;
-			return null;
+	public void update(int delta) {
+		if (this.deltaTiming)
+			time += delta;
+		else
+			time++;
+		t = time / target;
+		if (easingFunction != Ease.NONE && t > 0 && t < 1)
+			t = Ease.ease(easingFunction, t);
+		if (time > target) {
+			t = 1;
+			this.finished = true;
 		}
 	}
 
@@ -62,6 +60,9 @@ public class Tween {
 	 */
 	public void start() {
 		active = true;
+		time = 0;
+		if (target == 0)
+			active = false;
 	}
 
 	/**
@@ -74,16 +75,55 @@ public class Tween {
 	/**
 	 * Reset tween to initial position
 	 * 
-	 * @return initial position of tween
+	 * @return void
 	 */
-	public Vector2f reset() {
-		if (startingPosition != null) {
-			active = false;
-			return startingPosition;
-		}
-		return null;
+	public void reset() {
+		time = 0;
+		active = false;
 	}
 
+	/**
+	 * internal function, called by the Tweener if this Tween is finished
+	 */
+	public void finish() {
+		switch (this.mode) {
+		case PERSIST:
+			time = target;
+			active = false;
+			break;
+		case ONESHOT:
+			time = target;
+			active = false;
+			if (parent != null)
+				parent.remove(this);
+			break;
+		case LOOPING:
+			time %= target;
+			t = time / target;
+			break;
+		}
+		finished = false;
+	}
+
+	public float getValue() {
+		return t;	// after the ease function has been applied
+	}
+	
+	/**
+	 * how many percent is this tween done? value between 0 and 1
+	 * @return a value between 0 and 1 where 1 means hundred percent
+	 */
+	public float getPercentage() {
+		return time / target;
+	}
+	
+	/**
+	 * sets the progress of this tween.
+	 * @param val must be a value between 0 and 1.
+	 */
+	public void setPercentage(float val) {
+		time = target * val;
+	}
 	/**
 	 * @return true if tween is active
 	 */
@@ -91,10 +131,36 @@ public class Tween {
 		return active;
 	}
 	
-	public void setStartPosition(float x, float y){
-		startingPosition = new Vector2f(x,y);
-		motion.fromX = x;
-		motion.fromY = y;
+	public TweenerMode getMode() {
+		return mode;
+	}
+
+	public void setMode(TweenerMode mode) {
+		this.mode = mode;
+	}
+
+	public Tweener getParent() {
+		return parent;
+	}
+
+	public void setParent(Tweener parent) {
+		this.parent = parent;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

@@ -1,7 +1,7 @@
 package it.randomtower.test.entity;
 
-import it.randomtower.engine.ME;
-import it.randomtower.engine.World;
+import it.marteEngine.ME;
+import it.marteEngine.World;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;

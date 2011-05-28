@@ -1,82 +1,102 @@
 package it.marteEngine.tween;
 
-import it.marteEngine.entity.Entity;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.util.Log;
-
 /**
- * Tweener is a utility container for variuos tween that can change Entity in many ways
+ * Tweener is a utility container for variuos tweens that can change Entity in many ways
  * 
  * @author Gornova
  */
 public class Tweener {
 
-	public int MODE_DELETE = 0;
-
 	private List<Tween> tweens = new ArrayList<Tween>();
-
-	private int current = -1;
-
-	private int mode = 0;
+	
+	private boolean active = true;
 
 	public Tweener(Tween... tweens) {
 		if (tweens != null) {
-			this.tweens.addAll(Arrays.asList(tweens));
-			current = this.tweens.size() - 1;
+			List<Tween> allTweens = Arrays.asList(tweens);
+			this.tweens.addAll(allTweens);
+			for (Tween tween : allTweens) {
+				tween.setParent(this);
+			}
 		}
 	}
 
 	public boolean add(Tween tween) {
-		if (tween != null) {
+		return add(tween, true);
+	}
+
+	public boolean add(Tween tween, boolean start) {
+		if (tween != null && tween.getParent() == null) {
 			boolean result = tweens.add(tween);
-			if (current <= 0) {
-				current = tweens.size() - 1;
-			}
+			tween.setActive(true);
 			return result;
 		}
 		return false;
 	}
+	
+	public boolean remove(Tween tween) {
+		if (tween == null || tween.getParent() != this)
+			return false;
+		boolean result = tweens.remove(tween);
+		tween.setActive(false);
+		tween.setParent(null);
+		return result;
+	}
+	
+	public void clearTweens() {
+		for (Tween tween : tweens) {
+			tween.setActive(false);
+			tween.setParent(null);
+		}
+		tweens = new ArrayList<Tween>();
+	}
 
-	public Vector2f apply(Entity parent) {
-		if (!tweens.isEmpty() && tweens.get(current) != null) {
-			Vector2f value = tweens.get(current).apply(parent);
-			if (value == null) {
-				if (mode == 0) {
-					tweens.remove(current);
-					current = tweens.size() - 1;
-					if (current >= 0){
-						tweens.get(current).setStartPosition(parent.previousx, parent.previousy);
-					}
-					Log.debug("Current Tweener size: " + tweens.size());
-				}
-			}
-			return value;
+	public Tween getTween(String name) {
+		if (name == null || name.isEmpty())
+			return null;
+		for (Tween tween : tweens) {
+			if (tween.getName() != null && tween.getName().equals(name))
+				return tween;
 		}
 		return null;
 	}
+	
+	public Tween getTween(int index) {
+		if (index < 0 || index >= tweens.size())
+			return null;
+		return tweens.get(index);
+	}
+
+	public void update(int delta) {
+		if (!tweens.isEmpty()) {
+			for (Tween tween : tweens) {
+				if (tween.isActive())
+					tween.update(delta);
+				if (tween.isFinished())
+					tween.finish();
+			}
+		}
+	}
 
 	public void start() {
-		if (!tweens.isEmpty() && tweens.get(current) != null) {
-			tweens.get(current).start();
+		for (Tween tween : tweens) {
+			tween.reset();
+			tween.setActive(true);
 		}
 	}
 
 	public void pause() {
-		if (!tweens.isEmpty() && tweens.get(current) != null) {
-			tweens.get(current).pause();
-		}		
+		for (Tween tween : tweens) {
+			tween.setActive(false);
+		}
 	}
 
-	public Vector2f reset() {
-		if (!tweens.isEmpty() && tweens.get(current) != null) {
-			return tweens.get(current).reset();
-		}
-		return null;
+	public void reset() {
+		this.start();
 	}
 
 }

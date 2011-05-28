@@ -1,11 +1,11 @@
 package it.marteEngine.test.helloWorld;
 
-import java.io.IOException;
-
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
+
+import java.io.IOException;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;

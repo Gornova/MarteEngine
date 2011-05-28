@@ -1,9 +1,9 @@
 package it.marteEngine.game.starcleaner;
 
-import org.newdawn.slick.SlickException;
-
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Solid;
+
+import org.newdawn.slick.SlickException;
 
 public class Block extends Solid {
 

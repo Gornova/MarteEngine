@@ -21,6 +21,8 @@ public class ME {
 
 	/** true if debug is enabled, shows hitbox of entities **/
 	public static boolean debugEnabled = false;
+	/** place debug information on top or at bottom **/
+	public static boolean debugWindowAtTop = true;
 	/** key to activate debug mode **/
 	public static int keyToggleDebug = -1;
 	/** default border color of hitbox in debug mode **/
@@ -48,8 +50,18 @@ public class ME {
 
 	public static World world;
 	
+	/** do we base time calculations on delta timing or on frames per second? */
+	public static boolean useDeltaTiming = false;
 	/** value of current delta of update call. might be helpful here */
 	public static int delta;
+	/** the frames per seconds we targeted in our main class */
+	public static int targetFrameRate;
+	
+	public static void setTargetFrameRate(GameContainer container, int targetframerate) {
+		container.setTargetFrameRate(targetframerate);
+		ME.targetFrameRate = targetframerate;
+
+	}
 	
 	/** 
 	 * Update entities and add new entities and remove old entities
@@ -96,8 +108,13 @@ public class ME {
 			g.scale(scaleX, scaleY);
 
 		// render debug stuff
+		int ypos = 1;
+		if (debugWindowAtTop)
+			ypos = 1;
+		else
+			ypos = container.getHeight() - 40;
 		if (debugEnabled) {
-			RoundedRectangle r = new RoundedRectangle(1, 1,
+			RoundedRectangle r = new RoundedRectangle(1, ypos,
 					container.getWidth() - 1, 40, 20);
 			Color c = Color.lightGray;
 			c.a = 0.3f;
@@ -105,8 +122,9 @@ public class ME {
 			g.fill(r);
 			g.draw(r);
 			g.setColor(Color.white);
-			g.drawString("Entities: " + world.getEntities().size(),
-					container.getWidth() - 130, 10);
+			g.resetFont();
+			g.drawString("Entities: " + world.getEntities().size() + ", rendered Entities: " + world.renderedEntities,
+					container.getWidth() - 350/*130*/, ypos + 9);
 			container.setShowFPS(true);
 
 		} else {

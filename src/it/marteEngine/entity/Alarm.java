@@ -1,6 +1,11 @@
 package it.marteEngine.entity;
 
+import it.marteEngine.ME;
+
 public class Alarm {
+	/** we want some alarms to ignore the trigger time. They can only be triggered by Entity.triggerAlarm() */
+	public static final int FOREVER = -666;
+	
 	/** the name of this alarm */
 	private String name;
 	/** is this alarm active or not */
@@ -13,8 +18,8 @@ public class Alarm {
 	private boolean oneShotAlaram = true;
 	/** marked as dead, don't want to remove alarms while iterating them! */
 	private boolean dead = false;
-	/** do we count update calls or milliseconds from delta time? Alarms can use both! */
-	private boolean useDelta = false;
+	/** this alarm is only triggered by calling trigger() */
+	private boolean triggeredExternal = false;
 	
 	
 	/**
@@ -42,10 +47,13 @@ public class Alarm {
 	}
 	
 	public void start() {
-		if (this.counter >= this.triggerTime)
-			this.counter -= this.triggerTime;
-		else
-			this.counter = 0;
+		if (this.triggerTime != FOREVER) {
+			if (this.counter >= this.triggerTime)
+				this.counter -= this.triggerTime;
+			else
+				this.counter = 0;
+		}
+		this.triggeredExternal = false;
 		this.active = true;
 	}
 	
@@ -61,16 +69,23 @@ public class Alarm {
 		return active;
 	}
 
+	public void trigger() {
+		this.triggeredExternal = true;
+	}
 	/**
 	 * called by World if alarm is active. Don't mess around with it.
 	 */
 	public boolean update(int delta) {
-		if (useDelta)
-			this.counter += delta;
-		else
-			this.counter++;
-		if (this.counter >= this.triggerTime)
+		if (this.triggeredExternal)
 			return true;
+		if (this.triggerTime != FOREVER) {
+			if (ME.useDeltaTiming)
+				this.counter += delta;
+			else
+				this.counter++;
+			if (this.counter >= this.triggerTime)
+				return true;
+		}
 		return false;
 	}
 

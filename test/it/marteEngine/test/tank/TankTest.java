@@ -1,9 +1,9 @@
 package it.marteEngine.test.tank;
 
-import java.io.IOException;
-
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
+
+import java.io.IOException;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;

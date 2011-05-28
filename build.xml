@@ -279,7 +279,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 	</target>
 
 	<!-- Create MarteEngine distribution jar -->
-	<target name="distribuite" depends="clean">
+	<target name="distributeMarte" depends="clean">
 		<!-- compile core classes -->
 		<mkdir dir="${obj.dir}" />
 		<javac destdir="${obj.dir}" debug="on">

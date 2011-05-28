@@ -1,10 +1,10 @@
 package it.marteEngine.game.starcleaner;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 public class Background extends Entity {
 

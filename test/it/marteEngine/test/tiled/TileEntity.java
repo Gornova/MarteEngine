@@ -1,8 +1,8 @@
 package it.marteEngine.test.tiled;
 
-import org.newdawn.slick.Image;
-
 import it.marteEngine.entity.Entity;
+
+import org.newdawn.slick.Image;
 
 /**
  * Simple entity 

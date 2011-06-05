@@ -115,22 +115,27 @@ public class ME {
 		else
 			ypos = container.getHeight() - 40;
 		if (debugEnabled) {
-			RoundedRectangle r = new RoundedRectangle(1, ypos,
-					container.getWidth() - 1, 40, 20);
-			Color c = Color.lightGray;
-			c.a = 0.3f;
-			g.setColor(c);
-			g.fill(r);
-			g.draw(r);
-			g.setColor(Color.white);
-			g.resetFont();
-			g.drawString("Entities: " + world.getEntities().size() + ", rendered Entities: " + world.renderedEntities,
-					container.getWidth() - 350/*130*/, ypos + 9);
+			String text = "Entities: " + world.getEntities().size() + ", rendered Entities: " + world.renderedEntities;
+			//int xpos= container.getWidth() - 350;/*130*/
+			int xpos = 0;
+			showMessage(container, g, xpos, ypos,container.getWidth() - 1, 40, 20,Color.lightGray,text,350);
 			container.setShowFPS(true);
 
 		} else {
 			container.setShowFPS(false);
 		}
+	}
+
+	public static void showMessage(GameContainer container, Graphics g,
+			int xpos,int ypos, int width, int height, int radius, Color c, String text, int spaceText) {
+		RoundedRectangle r = new RoundedRectangle(xpos, ypos,width, height, radius);
+		c.a = 0.6f;
+		g.setColor(c);
+		g.fill(r);
+		g.draw(r);
+		g.setColor(Color.white);
+		g.resetFont();
+		g.drawString(text,xpos+spaceText, ypos + 9);
 	}
 
 	/**

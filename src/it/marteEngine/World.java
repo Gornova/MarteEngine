@@ -2,6 +2,7 @@ package it.marteEngine;
 
 import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.test.scrollingPlatformer.Star;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -380,8 +381,15 @@ public class World extends BasicGameState {
 							if (type.equalsIgnoreCase("background")){
 								te.collidable = false;
 								te.depth=-100;
+								te.setAlpha(0.6f);
 							}
-							add(te);
+							if (type.equalsIgnoreCase("star")){
+								Star star = new Star(w * img.getWidth(), h
+									* img.getHeight());
+								add(star);
+							} else {							
+								add(te);
+							}
 							loaded++;
 						} 
 					}

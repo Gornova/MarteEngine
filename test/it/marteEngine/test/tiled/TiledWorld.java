@@ -1,5 +1,7 @@
 package it.marteEngine.test.tiled;
 
+import java.util.Arrays;
+
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 
@@ -33,7 +35,7 @@ public class TiledWorld extends World {
 		// load entities from map (see resource.xml of this example in
 		// data/tiled)
 		map = ResourceManager.getMap("test1");
-		loadEntityFromMap(map);
+		loadEntityFromMap(map, Arrays.asList("entity"));
 	}
 
 	@Override

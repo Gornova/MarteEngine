@@ -85,6 +85,7 @@ public class ME {
 		if (keyRestart != -1) {
 			if (container.getInput().isKeyPressed(keyRestart)) {
 				ME.world.clear();
+				ME.world.init(container, game);
 				//TODO: go to first state?
 			}
 		}	

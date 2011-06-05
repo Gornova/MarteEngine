@@ -1,22 +1,34 @@
 package it.marteEngine.test.scrollingPlatformer;
 
 import it.marteEngine.Camera;
+import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.PlatformerEntity;
+import it.marteEngine.game.starcleaner.Background;
 
 import java.util.Arrays;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.util.Log;
 
 
 public class ScrollingPlatformerGameWorld extends World {
 
+	private int stars;
+	private int total = -1;
+	private boolean levelEnd = false;
+
+	private int levelIndex = 2;
+	public static boolean playerDead = false;
+	
 	public ScrollingPlatformerGameWorld(int id) {
 		super(id);
 	}
@@ -26,14 +38,16 @@ public class ScrollingPlatformerGameWorld extends World {
 			throws SlickException {
 		super.init(container, game);
 		
-		TiledMap map = ResourceManager.getMap("map");
-		loadEntityFromMap(map, Arrays.asList("entity","background"));
+		TiledMap map = ResourceManager.getMap("map"+levelIndex);
+		loadEntityFromMap(map, Arrays.asList("entity","background","star"));
 
 		PlatformerEntity player = loadPlayer(map,"player");
 		setCamera(new Camera(this, player, container.getWidth(), container.getHeight()));
 		
 		// make the world a bit bigger than the screen to force camera scrolling		
 		computeWorldSize(map.getWidth(),map.getHeight());
+		
+		add(new Background(0, 0),BELOW);
 	}
 	
 	private void computeWorldSize(int width, int height) {
@@ -72,8 +86,65 @@ public class ScrollingPlatformerGameWorld extends World {
 		super.render(container, game, g);
 		
 		// render gui
-		g.drawString("Press WASD or ARROWS to move, X or UP to Jump", 65, 5);
+		String text = "Collected stars "+(total-stars)+"/"+total;
+		ME.showMessage(container, g, 5, 5, 200, 35, 5, Color.darkGray, text,5);
+		String instructions = "Press WASD or ARROWS to move, X or UP to Jump";
+		ME.showMessage(container, g, 65, 440, 430, 35, 5, Color.darkGray, instructions,5);		
 		
+		if (levelEnd){
+			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray, "LEVEL COMPLETED, press space to continue",5);		
+		}
+		
+		if (playerDead){
+			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray, "YOU LOSE, press space to continue",5);
+		}
+	}	
+	
+	@Override
+	public void update(GameContainer container, StateBasedGame game, int delta)
+			throws SlickException {
+		if (levelEnd){
+			if (container.getInput().isKeyPressed(Input.KEY_SPACE)){
+				Log.info("Load next level...");
+				nextLevel(container,game);
+			}
+			return;
+		}
+		if (playerDead){
+			if (container.getInput().isKeyPressed(Input.KEY_SPACE)){
+				Log.info("Load next level...");
+				reloadLevel(container,game);
+			}
+			return;
+		}
+		super.update(container, game, delta);
+		
+		stars = getNrOfEntities(Star.STAR);
+		if (total < 0){
+			total = stars;
+		}
+		
+		if (stars==0){
+			Log.info("Level end");
+			levelEnd = true;
+		}
+	}
+	
+	private void nextLevel(GameContainer container, StateBasedGame game) throws SlickException{
+		clear();
+		levelIndex++;
+		total = -1;
+		levelEnd = false;
+		playerDead = false;		
+		init(container, game);
+	}
+	
+	private void reloadLevel(GameContainer container, StateBasedGame game) throws SlickException{
+		clear();
+		total = -1;
+		levelEnd = false;
+		playerDead = false;
+		init(container, game);
 	}	
 
 }

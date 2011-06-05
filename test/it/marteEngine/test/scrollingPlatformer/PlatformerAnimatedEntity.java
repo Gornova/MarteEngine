@@ -1,5 +1,6 @@
 package it.marteEngine.test.scrollingPlatformer;
 
+import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.PlatformerEntity;
 
@@ -16,6 +17,8 @@ public class PlatformerAnimatedEntity extends PlatformerEntity {
 		super(x, y, ref);
 		addAnimation(ResourceManager.getSpriteSheet("left"), "left", true, 0, 0, 1, 2, 3);
 		addAnimation(ResourceManager.getSpriteSheet("right"), "right", true, 0, 0, 1, 2, 3);
+		
+		addType(PLAYER);
 	}
 	
 	@Override
@@ -37,6 +40,12 @@ public class PlatformerAnimatedEntity extends PlatformerEntity {
 		if (check(CMD_RIGHT)) {
 			faceRight = true;
 		}		
+	}
+	
+	@Override
+	public void leftWorldBoundaries() {
+		ME.world.remove(this);
+		ScrollingPlatformerGameWorld.playerDead = true;
 	}
 
 }

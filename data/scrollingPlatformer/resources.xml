@@ -18,11 +18,13 @@
 	<!-- images -->
 	<image key="block" file="block.png" />
 	<image key="player" file="blockRed.png" />
-	<image key="background" file="cartoonClouds.jpg" />
+	<image key="background" file="sky.png" />
+	<image key="star" file="star.png" />
 	<!-- sheets -->
 	<sheet key="left" file="walkLeft.png" width="32" height="32"/>
 	<sheet key="right" file="walkRight.png" width="32" height="32"/>
 	<!-- fonts -->
 	<!-- Tiled map -->
-	<map key="map" file="map.tmx"/>
+	<map key="map1" file="map1.tmx"/>
+	<map key="map2" file="map2.tmx"/>
 </resources>

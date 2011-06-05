@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="block" tilewidth="32" tileheight="32">
+  <image source="block.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" name="blockRed" tilewidth="32" tileheight="32">
+  <image source="blockRed.png" width="32" height="32"/>
+ </tileset>
+ <layer name="tile" width="80" height="40">
+  <properties>
+   <property name="type" value="entity"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2Yyw7EIAhF7f//9KQ741i8CBgETuJmKlbvUB4+rbVnGBTjXM6IyOxsFjpE1i/Se05T+sko/WSUfjJKPxnS2gLNz1H1e5HUJLPaR/MdN7DrgzMbSr/S8N8G+Q15FgEqjqG9SGb9etC4trLbWSMCO/qtYkD0u4QeC//r50TX8Cv+IXace7CofOUGjh9m1lCjjkN8Meqdq6bvSOrzW3VEYx1nPc0+xzta/kfV41p78QgSs1b2Wt9eJP208yraE96WX6j+l2trxW36oXaln03/O87jjtUePcHVj6uddD+StU7A0c9aO2oPHvWbfTOrvIiuqbUvrzmYW0Oga2bA4v/06CNWWJwzi3YvFr6XCa3zZvpme3bywg058TSSnqAoiqLIwQ9teJtJADIAAA==
+  </data>
+ </layer>
+ <layer name="player" width="80" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OQREAAAwCIG/9Qy+GPiABCQDQdO0AAAAAAAAAAAAAAPMeYzRYpgAyAAA=
+  </data>
+ </layer>
+</map>

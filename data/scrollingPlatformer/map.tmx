@@ -11,7 +11,7 @@
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Yyw7EIAhF7f//9KQ741i8CBgETuJmKlbvUB4+rbVnGBTjXM6IyOxsFjpE1i/Se05T+sko/WSUfjJKPxnS2gLNz1H1e5HUJLPaR/MdN7DrgzMbSr/S8N8G+Q15FgEqjqG9SGb9etC4trLbWSMCO/qtYkD0u4QeC//r50TX8Cv+IXace7CofOUGjh9m1lCjjkN8Meqdq6bvSOrzW3VEYx1nPc0+xzta/kfV41p78QgSs1b2Wt9eJP208yraE96WX6j+l2trxW36oXaln03/O87jjtUePcHVj6uddD+StU7A0c9aO2oPHvWbfTOrvIiuqbUvrzmYW0Oga2bA4v/06CNWWJwzi3YvFr6XCa3zZvpme3bywg058TSSnqAoiqLIwQ9teJtJADIAAA==
+   H4sIAAAAAAAAC+1W2Y7EIAxr//+n92mlEYLEdhzYdscS0nQIOUwO7uu67mFFGGWZ9UbMYuvg4c38PcFOd16r+p/E3+p/hkuWp0zu6fwxMo58HXX8N/4ceBp/TG0iepyzsJrTbB9ZnYl8QP1j4xhtqzOjcg+Mrsg/tEdHvO96W63eew67jn4Q8ZJxq9rLfMlqReGwi79fPZ91tdLP8hfFj0J5SzH34MKqRqP6Xe1nvkd6Zn4hvrNnGLldQPiafWf6EDlWPzq7dizE1+gbPXdCvzqvUKj8IfxX7ofhBs3DDrjzb9ZnFR+YmE9yyMbH+oHGpp4dZZG7VfsYo3OUmf1mbFT33TNrdc6Rowp/0T1U+UNlZr6w2MEf69+u/EPqB9FRRWaftVHhj5kNHbE7dJzizz1XkZnhmC8If6gNZf4yPne8Sap2EL6cdtX87nrTrWxl+8wbCrGn5hCjn/GDWZmPii8omLfLTMY9j1mgfcg5txhfMhln/qtAcnBH70D7wT38h8ipNhFkdc3ElfUHxFZkg/U9QqUnMshiyrhl/EH7SRWV2cfwWe2Fjrvq6B3OGYnWnzt/UdmO3Iv2unq9qje7n6wWXPFUarbbdieUuaD0/cqMjOyd5O4TlRxGdUf7qs6/wF03TtX1W5C9Vb6I4ewFXzwfP0X16RkAMgAA
   </data>
  </layer>
  <layer name="player" width="80" height="40">

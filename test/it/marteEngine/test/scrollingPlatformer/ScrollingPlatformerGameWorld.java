@@ -31,12 +31,19 @@ public class ScrollingPlatformerGameWorld extends World {
 		loadEntityFromMap(map);
 
 		PlatformerEntity player = loadPlayer(map,"player");
-		setCamera(new Camera(this, player, 800, 600));
+		setCamera(new Camera(this, player, container.getWidth(), container.getHeight()));
 		
 		// add a background image, from http://thetutorials.wordpress.com/2008/11/26/ps-cute-cartoon-clouds-the-simple-way/
 		//add(new Background(0, 0));
+		// make the world a bit bigger than the screen to force camera scrolling		
+		computeWorldSize(map.getWidth(),map.getHeight());
 	}
 	
+	private void computeWorldSize(int width, int height) {
+		this.setWidth(width * 32);
+		this.setHeight(height * 32);		
+	}
+
 	/**
 	 * Load player position from layer with given name
 	 * @param map

@@ -88,7 +88,7 @@ public class World extends BasicGameState {
 		}
 		// center to camera position
 		if (camera != null)
-			g.translate(-camera.x, -camera.y);
+			g.translate(-camera.cameraX, -camera.cameraY);
 
 		// render entities
 		for (Entity e : entities) {
@@ -104,7 +104,7 @@ public class World extends BasicGameState {
 		}
 
 		if (camera != null)
-			g.translate(camera.x, camera.y);
+			g.translate(camera.cameraX, camera.cameraY);
 
 		// finally render entities above camera
 		for (Entity e:aboveCamera) {
@@ -164,7 +164,8 @@ public class World extends BasicGameState {
 			if (e.active)
 				e.update(container, delta);
 				// check for wrapping or out of world entities
-				e.checkWorldBoundaries();
+				//TODO: comment for a test
+				//e.checkWorldBoundaries();
 		}
 		// remove signed entities
 		for (Entity entity : removable) {
@@ -315,11 +316,12 @@ public class World extends BasicGameState {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+		this.camera.setMyWorld(this);
 	}
 
 	public void setCameraOn(Entity entity) {
 		if (camera == null) {
-			this.setCamera(new Camera(entity, this.container.getWidth(),
+			this.setCamera(new Camera(this,entity, this.container.getWidth(),
 				this.container.getHeight()));
 		}
 		this.camera.setFollow(entity);
@@ -362,6 +364,7 @@ public class World extends BasicGameState {
 		}
 		if (layerIndex != -1) {
 			Log.debug("Entity layer found on map");
+			int loaded = 0;
 			for (int w = 0; w < map.getWidth(); w++) {
 				for (int h = 0; h < map.getHeight(); h++) {
 					Image img = map.getTileImage(w, h, layerIndex);
@@ -370,12 +373,17 @@ public class World extends BasicGameState {
 								* img.getHeight(), img.getWidth(),
 								img.getHeight(), img);
 						add(te);
-					}
+						loaded++;
+					} 
 				}
 			}
+			Log.debug("Loaded "+loaded + " entities");
+		} else {
+			Log.info("Entity layer not found on map");
 		}
 
 	}
+	
 
 	public List<Entity> findEntityWithType(String type) {
 		if (type == null) {

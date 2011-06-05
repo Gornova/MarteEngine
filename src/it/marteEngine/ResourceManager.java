@@ -259,7 +259,7 @@ public class ResourceManager {
 			Log.error("No image for key " + key + " found!");
 		return image;
 	}
-
+	
 	private static void loadSpriteSheet(Element sprsheet) throws SlickException {
 		String key = sprsheet.getAttribute("key");
 		String file = sprsheet.getAttribute("file");

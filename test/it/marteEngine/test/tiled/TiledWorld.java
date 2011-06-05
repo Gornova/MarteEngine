@@ -39,7 +39,7 @@ public class TiledWorld extends World {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		// center grapchis
+		// center graphics
 		g.translate(300, 200);
 		// render all except entities
 		if (!hideTiles) {

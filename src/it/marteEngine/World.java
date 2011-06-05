@@ -348,40 +348,49 @@ public class World extends BasicGameState {
 	 * 
 	 * @param map
 	 */
-	public void loadEntityFromMap(TiledMap map) {
+	public void loadEntityFromMap(TiledMap map, List<String> types) {
 		if (map == null) {
 			Log.error("unable to load map information");
 			return;
 		}
-		// try to find a layer with property type set to entity
-		int layerIndex = -1;
-		for (int l = 0; l < map.getLayerCount(); l++) {
-			String value = map.getLayerProperty(l, "type", null);
-			if (value != null && value.equalsIgnoreCase("entity")) {
-				layerIndex = l;
-				break;
-			}
+		if (types == null || types.isEmpty()){
+			Log.error("no types defined to load");
+			return;
 		}
-		if (layerIndex != -1) {
-			Log.debug("Entity layer found on map");
-			int loaded = 0;
-			for (int w = 0; w < map.getWidth(); w++) {
-				for (int h = 0; h < map.getHeight(); h++) {
-					Image img = map.getTileImage(w, h, layerIndex);
-					if (img != null) {
-						StaticActor te = new StaticActor(w * img.getWidth(), h
-								* img.getHeight(), img.getWidth(),
-								img.getHeight(), img);
-						add(te);
-						loaded++;
-					} 
+		for (String type : types) {
+			// try to find a layer with property type set to entity
+			int layerIndex = -1;
+			for (int l = 0; l < map.getLayerCount(); l++) {
+				String value = map.getLayerProperty(l, "type", null);
+				if (value != null && value.equalsIgnoreCase(type)) {
+					layerIndex = l;
+					break;
 				}
 			}
-			Log.debug("Loaded "+loaded + " entities");
-		} else {
-			Log.info("Entity layer not found on map");
+			if (layerIndex != -1) {
+				Log.debug("Entity layer found on map");
+				int loaded = 0;
+				for (int w = 0; w < map.getWidth(); w++) {
+					for (int h = 0; h < map.getHeight(); h++) {
+						Image img = map.getTileImage(w, h, layerIndex);
+						if (img != null) {
+							StaticActor te = new StaticActor(w * img.getWidth(), h
+									* img.getHeight(), img.getWidth(),
+									img.getHeight(), img);
+							if (type.equalsIgnoreCase("background")){
+								te.collidable = false;
+								te.depth=-100;
+							}
+							add(te);
+							loaded++;
+						} 
+					}
+				}
+				Log.debug("Loaded "+loaded + " entities");
+			} else {
+				Log.info("Entity layer not found on map");
+			}
 		}
-
 	}
 	
 

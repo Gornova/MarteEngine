@@ -9,6 +9,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.RoundedRectangle;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -56,6 +57,8 @@ public class ME {
 	public static int delta;
 	/** the frames per seconds we targeted in our main class */
 	public static int targetFrameRate;
+	
+	public static ParticleSystem ps;
 	
 	public static void setTargetFrameRate(GameContainer container, int targetframerate) {
 		container.setTargetFrameRate(targetframerate);

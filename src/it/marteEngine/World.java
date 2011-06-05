@@ -104,6 +104,11 @@ public class World extends BasicGameState {
 			}
 		}
 
+		// render particle system
+		if (ME.ps!=null){
+			ME.ps.render();
+		}		
+		
 		if (camera != null)
 			g.translate(camera.cameraX, camera.cameraY);
 
@@ -168,6 +173,12 @@ public class World extends BasicGameState {
 				//TODO: comment for a test
 				//e.checkWorldBoundaries();
 		}
+		
+		// update particle system
+		if (ME.ps!=null){
+			ME.ps.update(delta);
+		}			
+		
 		// remove signed entities
 		for (Entity entity : removable) {
 			entities.remove(entity);
@@ -175,12 +186,12 @@ public class World extends BasicGameState {
 			aboveCamera.remove(entity);
 			entity.removedFromWorld();
 		}
-
+		
 		// update camera
 		if (camera != null) {
 			camera.update(container, delta);
 		}
-
+		
 		ME.update(container, game, delta);
 	}
 

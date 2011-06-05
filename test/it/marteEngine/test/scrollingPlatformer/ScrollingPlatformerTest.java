@@ -52,6 +52,7 @@ public class ScrollingPlatformerTest extends StateBasedGame {
 	public static void main(String[] argv) {
 		try {
 			ME.keyToggleDebug = Input.KEY_1;
+			ME.keyRestart = Input.KEY_R;
 			AppGameContainer container = new AppGameContainer(
 					new ScrollingPlatformerTest());
 			container.setDisplayMode(640, 480, false);

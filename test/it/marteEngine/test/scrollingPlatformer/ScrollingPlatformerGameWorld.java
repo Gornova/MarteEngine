@@ -4,8 +4,8 @@ import it.marteEngine.Camera;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.PlatformerEntity;
-import it.marteEngine.entity.Solid;
-import it.marteEngine.game.starcleaner.Background;
+
+import java.util.Arrays;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -27,14 +27,11 @@ public class ScrollingPlatformerGameWorld extends World {
 		super.init(container, game);
 		
 		TiledMap map = ResourceManager.getMap("map");
-		
-		loadEntityFromMap(map);
+		loadEntityFromMap(map, Arrays.asList("entity","background"));
 
 		PlatformerEntity player = loadPlayer(map,"player");
 		setCamera(new Camera(this, player, container.getWidth(), container.getHeight()));
 		
-		// add a background image, from http://thetutorials.wordpress.com/2008/11/26/ps-cute-cartoon-clouds-the-simple-way/
-		//add(new Background(0, 0));
 		// make the world a bit bigger than the screen to force camera scrolling		
 		computeWorldSize(map.getWidth(),map.getHeight());
 	}
@@ -60,7 +57,7 @@ public class ScrollingPlatformerGameWorld extends World {
 					int x = h * img.getWidth();
 					int y = w * img.getHeight() ;
 					// create player & camera
-					PlatformerEntity player = new PlatformerEntity(x, y, "player");
+					PlatformerAnimatedEntity player = new PlatformerAnimatedEntity(x, y, "player");
 					add(player);
 					return player;
 				}

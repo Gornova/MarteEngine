@@ -20,6 +20,8 @@
 	<image key="player" file="blockRed.png" />
 	<image key="background" file="cartoonClouds.jpg" />
 	<!-- sheets -->
+	<sheet key="left" file="walkLeft.png" width="32" height="32"/>
+	<sheet key="right" file="walkRight.png" width="32" height="32"/>
 	<!-- fonts -->
 	<!-- Tiled map -->
 	<map key="map" file="map.tmx"/>

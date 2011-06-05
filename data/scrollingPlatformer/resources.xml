@@ -14,12 +14,16 @@
 	<!-- basedir -->
 	<basedir path="data/scrollingPlatformer" />
 	<!-- sounds -->
+	<sound key="jump" file="jump.wav" />
+	<sound key="pickupstar" file="pickupstar.wav" />
+	<sound key="allpickedup" file="allstarscollected.wav" />
 	<!-- songs -->
 	<!-- images -->
 	<image key="block" file="block.png" />
 	<image key="player" file="blockRed.png" />
 	<image key="background" file="sky.png" />
 	<image key="star" file="star.png" />
+	<image key="particle" file="particle.tga" />
 	<!-- sheets -->
 	<sheet key="left" file="walkLeft.png" width="32" height="32"/>
 	<sheet key="right" file="walkRight.png" width="32" height="32"/>
@@ -27,4 +31,5 @@
 	<!-- Tiled map -->
 	<map key="map1" file="map1.tmx"/>
 	<map key="map2" file="map2.tmx"/>
+	<map key="map3" file="map3.tmx"/>
 </resources>

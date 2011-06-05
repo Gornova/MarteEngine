@@ -67,7 +67,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean wrapVertical = false;
 
 	/** speed vector (x,y): specifies x and y movement per update call in pixels **/
-	public Vector2f speed = null;
+	public Vector2f speed = new Vector2f(0,0);
 
 	/**
 	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
@@ -190,6 +190,8 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		previousx = x;
+		previousy = y;
 		if (stateManager != null && stateManager.currentState() != null) {
 			stateManager.update(container, delta);
 			return;
@@ -666,6 +668,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void destroy() {
 		this.world.remove(this);
+		this.visible = false;
 	}
 
 	/***************** some methods to deal with angles and vectors ************************************/
@@ -687,6 +690,15 @@ public abstract class Entity implements Comparable<Entity> {
 		ty = (float) (this.y + distance * StrictMath.sin(theta));
 		point = new Vector2f(tx, ty);
 		return point;
+	}
+
+	public float getDistance(Entity other) {
+		return getDistance(new Vector2f(other.x, other.y));
+	}
+	
+	public float getDistance(Vector2f otherPos) {
+		Vector2f myPos = new Vector2f(x,y);
+		return myPos.distance(otherPos);
 	}
 
 	/**
@@ -728,8 +740,15 @@ public abstract class Entity implements Comparable<Entity> {
 	public Alarm setAlarm(String name, int triggerTime, boolean oneShot,
 			boolean startNow) {
 		Alarm alarm = new Alarm(name, triggerTime, oneShot);
+
 		if (startNow)
 			alarm.start();
+
+
+
+
+
+
 		addableAlarms.put(name, alarm);
 		return alarm;
 	}

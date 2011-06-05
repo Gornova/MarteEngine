@@ -31,6 +31,9 @@ public class ScrollingPlatformerTest extends StateBasedGame {
 		initRessources();
 		ScrollingPlatformerGameWorld gameState = new ScrollingPlatformerGameWorld(
 				GAME_STATE);
+		// make the world a bit bigger than the screen to force camera scrolling
+		gameState.setWidth(2000);
+		gameState.setHeight(2000);		
 
 		addState(gameState);
 	}

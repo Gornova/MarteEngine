@@ -15,6 +15,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
@@ -26,11 +28,19 @@ public class ScrollingPlatformerGameWorld extends World {
 	private int total = -1;
 	private boolean levelEnd = false;
 
-	private int levelIndex = 2;
+	private int levelIndex = 1;
+	private int levelNumbers = 3;
+	private boolean gameEnd = false;
+	private boolean showTutorialPanel=true;
+	private Sound allpickedup;
 	public static boolean playerDead = false;
 	
 	public ScrollingPlatformerGameWorld(int id) {
 		super(id);
+		
+		allpickedup = ResourceManager.getSound("allpickedup");
+		
+		ME.ps = new ParticleSystem(ResourceManager.getImage("particle"));		
 	}
 
 	@Override
@@ -88,12 +98,21 @@ public class ScrollingPlatformerGameWorld extends World {
 		// render gui
 		String text = "Collected stars "+(total-stars)+"/"+total;
 		ME.showMessage(container, g, 5, 5, 200, 35, 5, Color.darkGray, text,5);
-		String instructions = "Press WASD or ARROWS to move, X or UP to Jump";
-		ME.showMessage(container, g, 65, 440, 430, 35, 5, Color.darkGray, instructions,5);		
+		
+		if (showTutorialPanel){
+			String instructions = "Press WASD or ARROWS to move, X or UP to Jump";
+			ME.showMessage(container, g, 65, 440, 430, 35, 5, Color.darkGray, instructions,5);
+		}
 		
 		if (levelEnd){
-			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray, "LEVEL COMPLETED, press space to continue",5);		
+			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray, "LEVEL COMPLETED, press space to continue",5);
+			if (!allpickedup.playing()){
+				allpickedup.play();
+			}
 		}
+		if (gameEnd){
+			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray, "GAME COMPLETED, press space to continue",5);		
+		} 		
 		
 		if (playerDead){
 			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray, "YOU LOSE, press space to continue",5);
@@ -103,6 +122,15 @@ public class ScrollingPlatformerGameWorld extends World {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
+		if (gameEnd){
+			if (container.getInput().isKeyPressed(Input.KEY_SPACE)){
+				Log.info("Start from first level...");
+				levelIndex=0;
+				gameEnd = false;
+				nextLevel(container,game);
+			}
+			return;
+		}
 		if (levelEnd){
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)){
 				Log.info("Load next level...");
@@ -119,6 +147,11 @@ public class ScrollingPlatformerGameWorld extends World {
 		}
 		super.update(container, game, delta);
 		
+		if (container.getInput().isKeyPressed(Input.KEY_F1)||container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+			showTutorialPanel = showTutorialPanel ? false : true;
+		}
+		
+		
 		stars = getNrOfEntities(Star.STAR);
 		if (total < 0){
 			total = stars;
@@ -127,6 +160,10 @@ public class ScrollingPlatformerGameWorld extends World {
 		if (stars==0){
 			Log.info("Level end");
 			levelEnd = true;
+			if (levelIndex++ == levelNumbers){
+				gameEnd  = true;
+				levelEnd = false;
+			}
 		}
 	}
 	

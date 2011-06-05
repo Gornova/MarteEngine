@@ -13,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 /**
- * Platformer Test
+ * Scrolling Platformer Test
  * 
  * @author Gornova
  */

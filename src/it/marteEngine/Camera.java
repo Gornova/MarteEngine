@@ -1,6 +1,5 @@
 package it.marteEngine;
 
-
 import it.marteEngine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -23,11 +22,6 @@ public class Camera {
 		setCamera();
 	}
 
-	public Camera(World world, Entity entity,
-			int width2, int height2) {
-		// TODO Auto-generated constructor stub
-	}
-
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		setCamera();
@@ -48,7 +42,5 @@ public class Camera {
 	public void setFollow(Entity entity) {
 		this.follow = entity;
 	}
-	
-	
 
 }

@@ -329,7 +329,7 @@ public abstract class Entity implements Comparable<Entity> {
 		animations.put(name, anim);
 	}
 	
-	public void addAnimation(SpriteSheet sheet, String name, boolean loop, int row, int... frames) {
+	public Animation addAnimation(SpriteSheet sheet, String name, boolean loop, int row, int... frames) {
 		Animation anim = new Animation(false);
 		anim.setLooping(loop);
 		for (int i = 0; i < frames.length; i++) {
@@ -339,6 +339,7 @@ public abstract class Entity implements Comparable<Entity> {
 			currentAnim = name;
 		}
 		animations.put(name, anim);
+		return anim;
 	}	
 
 	/**

@@ -20,13 +20,13 @@ public class RingEmitter implements ParticleEmitter {
     /** The y coordinate of the center of the fire effect */
     private int y;
     /** The particle emission rate */
-    private int interval = 300;
+    private int interval = 400;
     /** Time til the next particle */
     private int timer;
     /** The size of the initial particles */
     private float size = 10;
     /** The radius of the ring */
-    private int radius = 15;
+    private int radius = 12;
 
     /**
      * Create a default fire effect at 0,0
@@ -89,7 +89,7 @@ public class RingEmitter implements ParticleEmitter {
             particle.adjustSize(-0.04f * delta * (size / 40.0f));
         }
         float c = 0.002f * delta;
-        particle.adjustColor(c, c, c, -c / 4);
+        particle.adjustColor(c, c, c, -c / 6);
     }
 
     /**

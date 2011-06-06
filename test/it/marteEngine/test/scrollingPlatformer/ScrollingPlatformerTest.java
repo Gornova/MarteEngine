@@ -19,7 +19,9 @@ import org.newdawn.slick.util.Log;
  */
 public class ScrollingPlatformerTest extends StateBasedGame {
 
-	public static final int GAME_STATE = 0;
+	public static final int MENU_STATE = 0;
+	public static final int GAME_STATE = 1;
+
 	private static boolean ressourcesInited;
 
 	public ScrollingPlatformerTest() {
@@ -31,7 +33,10 @@ public class ScrollingPlatformerTest extends StateBasedGame {
 		initRessources();
 		ScrollingPlatformerGameWorld gameState = new ScrollingPlatformerGameWorld(
 				GAME_STATE);
+		ScrollingPlatformerMenuWorld menuState = new ScrollingPlatformerMenuWorld(
+				MENU_STATE);
 
+		addState(menuState);
 		addState(gameState);
 	}
 
@@ -39,20 +44,21 @@ public class ScrollingPlatformerTest extends StateBasedGame {
 		if (ressourcesInited)
 			return;
 		try {
-			ResourceManager.loadResources("data/scrollingPlatformer/resources.xml");
+			ResourceManager
+					.loadResources("data/scrollingPlatformer/resources.xml");
 		} catch (IOException e) {
 			Log.error("failed to load ressource file 'data/scrollingPlatformer/resources.xml': "
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-		
+
 		ressourcesInited = true;
-	}	
-	
+	}
+
 	public static void main(String[] argv) {
 		try {
 			ME.keyToggleDebug = Input.KEY_1;
-			//ME.keyRestart = Input.KEY_R;
+			ME.keyRestart = Input.KEY_R;
 			AppGameContainer container = new AppGameContainer(
 					new ScrollingPlatformerTest());
 			container.setDisplayMode(640, 480, false);

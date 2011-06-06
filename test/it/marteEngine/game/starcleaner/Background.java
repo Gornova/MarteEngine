@@ -22,4 +22,11 @@ public class Background extends Entity {
 		currentImage = new Image(refImage);
 	}
 	
+	public Background(float x, float y, Image image) throws SlickException {
+		super(x, y);
+		name = "background";
+		depth = -100;
+		currentImage = image;
+	}	
+	
 }

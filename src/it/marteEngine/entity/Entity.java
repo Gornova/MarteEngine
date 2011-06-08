@@ -279,7 +279,7 @@ public abstract class Entity implements Comparable<Entity> {
 			// draw entity center
 			if (width!=0 && height!=0){
 				float centerX = x + width/2;
-				float centerY = y + width/2;
+				float centerY = y + height/2;
 				g.setColor(Color.green);
 				g.drawRect(centerX, centerY, 1, 1);
 				g.setColor(Color.white);	

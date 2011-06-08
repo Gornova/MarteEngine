@@ -2,7 +2,7 @@ package it.marteEngine;
 
 import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.Entity;
-import it.marteEngine.test.scrollingPlatformer.Star;
+import it.marteEngine.test.fuzzy.Star;
 
 import java.util.ArrayList;
 import java.util.Collection;

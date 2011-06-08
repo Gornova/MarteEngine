@@ -1,4 +1,4 @@
-package it.marteEngine.test.scrollingPlatformer;
+package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.Camera;
 import it.marteEngine.ME;

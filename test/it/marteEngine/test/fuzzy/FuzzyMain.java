@@ -17,23 +17,23 @@ import org.newdawn.slick.util.Log;
  * 
  * @author Gornova
  */
-public class ScrollingPlatformerTest extends StateBasedGame {
+public class FuzzyMain extends StateBasedGame {
 
 	public static final int MENU_STATE = 0;
 	public static final int GAME_STATE = 1;
 
 	private static boolean ressourcesInited;
 
-	public ScrollingPlatformerTest() {
+	public FuzzyMain() {
 		super("ScrollingPlatformerTest MarteEngine");
 	}
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		initRessources();
-		ScrollingPlatformerGameWorld gameState = new ScrollingPlatformerGameWorld(
+		FuzzyGameWorld gameState = new FuzzyGameWorld(
 				GAME_STATE);
-		ScrollingPlatformerMenuWorld menuState = new ScrollingPlatformerMenuWorld(
+		FuzzyMenuWorld menuState = new FuzzyMenuWorld(
 				MENU_STATE);
 
 		addState(menuState);
@@ -60,7 +60,7 @@ public class ScrollingPlatformerTest extends StateBasedGame {
 			ME.keyToggleDebug = Input.KEY_1;
 			ME.keyRestart = Input.KEY_R;
 			AppGameContainer container = new AppGameContainer(
-					new ScrollingPlatformerTest());
+					new FuzzyMain());
 			container.setDisplayMode(640, 480, false);
 			container.setTargetFrameRate(60);
 			container.setShowFPS(false);

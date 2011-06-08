@@ -9,12 +9,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-public class PlatformerAnimatedEntity extends PlatformerEntity {
+public class FuzzyPlayer extends PlatformerEntity {
 
 	private boolean faceRight = true;
 	private Sound jumpSnd;
 	
-	public PlatformerAnimatedEntity(float x, float y, String ref)
+	public FuzzyPlayer(float x, float y, String ref)
 			throws SlickException {
 		super(x, y, ref);
 		addAnimation(ResourceManager.getSpriteSheet("left"), "left", true, 0, 0, 1, 2, 3);
@@ -54,7 +54,7 @@ public class PlatformerAnimatedEntity extends PlatformerEntity {
 	public void leftWorldBoundaries() {
 		if (y > 0){
 			ME.world.remove(this);
-			ScrollingPlatformerGameWorld.playerDead = true;
+			FuzzyGameWorld.playerDead = true;
 		}
 	}
 

@@ -15,12 +15,12 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
-public class ScrollingPlatformerMenuWorld extends World {
+public class FuzzyMenuWorld extends World {
 
 	private AngelCodeFont font;
 	public static boolean gotoGame = false;
 	
-	public ScrollingPlatformerMenuWorld(int id) {
+	public FuzzyMenuWorld(int id) {
 		super(id);
 		font = ResourceManager.getAngelCodeFont("font");
 	}
@@ -62,7 +62,7 @@ public class ScrollingPlatformerMenuWorld extends World {
 		super.update(container, game, delta);
 		
 		if (gotoGame){
-			game.enterState(ScrollingPlatformerTest.GAME_STATE, new FadeOutTransition(), new FadeInTransition());
+			game.enterState(FuzzyMain.GAME_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 	}
 	
@@ -106,7 +106,7 @@ public class ScrollingPlatformerMenuWorld extends World {
 			}
 			
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)){
-				ScrollingPlatformerMenuWorld.gotoGame = true;
+				FuzzyMenuWorld.gotoGame = true;
 			}
 		}
 		

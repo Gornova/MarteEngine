@@ -25,7 +25,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
 
-public class ScrollingPlatformerGameWorld extends World {
+public class FuzzyGameWorld extends World {
 
 	private int stars;
 	private int total = -1;
@@ -40,7 +40,7 @@ public class ScrollingPlatformerGameWorld extends World {
 	private boolean volumeOn = true;
 	private Rectangle volumeControl = new Rectangle(600, 5, 32, 34);
 	
-	public ScrollingPlatformerGameWorld(int id) {
+	public FuzzyGameWorld(int id) {
 		super(id);
 		
 		allpickedup = ResourceManager.getSound("allpickedup");
@@ -88,7 +88,7 @@ public class ScrollingPlatformerGameWorld extends World {
 					int x = h * img.getWidth();
 					int y = w * img.getHeight() ;
 					// create player & camera
-					PlatformerAnimatedEntity player = new PlatformerAnimatedEntity(x, y, "player");
+					FuzzyPlayer player = new FuzzyPlayer(x, y, "player");
 					add(player);
 					return player;
 				}
@@ -195,7 +195,7 @@ public class ScrollingPlatformerGameWorld extends World {
 		}
 		
 		if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
-			game.enterState(ScrollingPlatformerTest.MENU_STATE, new FadeOutTransition(), new FadeInTransition());
+			game.enterState(FuzzyMain.MENU_STATE, new FadeOutTransition(), new FadeInTransition());
 		}
 	}
 	

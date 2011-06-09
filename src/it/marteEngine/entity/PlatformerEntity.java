@@ -31,9 +31,23 @@ public class PlatformerEntity extends PhysicsEntity {
 			currentImage = new Image(ref);
 		}
 		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
-		
 		depth = 10;
+		defineControls();
+	}
+
+	public PlatformerEntity(float x, float y, int width, int height) throws SlickException {
+		super(x, y);
 		
+		setHitBox(0, 0, width, height);
+		depth = 10;
+		defineControls();
+	}
+	
+	/**
+	 * Define standard platformer controls (CMD_JUMP, CMD_RIGHT, CMD_LEFT)
+	 * Override it to change default controls
+	 */
+	public void defineControls() {
 		define(CMD_JUMP, Input.KEY_UP, Input.KEY_X, Input.KEY_W);
 		define(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
 		define(CMD_LEFT, Input.KEY_LEFT, Input.KEY_A);

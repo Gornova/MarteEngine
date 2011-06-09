@@ -28,8 +28,8 @@
 	<image key="volumeOff" file="volumeOff.png" />
 	<image key="menu" file="menu.png" />
 	<!-- sheets -->
-	<sheet key="left" file="walkLeft.png" width="32" height="32"/>
-	<sheet key="right" file="walkRight.png" width="32" height="32"/>
+	<sheet key="left" file="walkLeft.png" width="22" height="30"/>
+	<sheet key="right" file="walkRight.png" width="22" height="30"/>
 	<sheet key="slime" file="slime.png" width="40" height="22"/>
 	<!-- fonts -->
 	<angelcodefont key="font" fontFile="font.fnt" imageFile="font.png"/>

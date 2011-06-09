@@ -16,12 +16,12 @@ public class FuzzyPlayer extends PlatformerEntity {
 	
 	public FuzzyPlayer(float x, float y, String ref)
 			throws SlickException {
-		super(x, y, ref);
+		super(x, y, 22, 30);
 		addAnimation(ResourceManager.getSpriteSheet("left"), "left", true, 0, 0, 1, 2, 3);
 		addAnimation(ResourceManager.getSpriteSheet("right"), "right", true, 0, 0, 1, 2, 3);
 		
 		addType(PLAYER);
-		
+
 		jumpSnd = ResourceManager.getSound("jump");
 	}
 	

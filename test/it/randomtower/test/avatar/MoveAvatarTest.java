@@ -38,7 +38,7 @@ public class MoveAvatarTest extends StateBasedGame {
 		gameWorld.add(temple);
 		gameWorld.add(sword);
 
-		// set screen camera to follo player
+		// set screen camera to follow player
 		gameWorld.setCameraOn(player);
 		
 		ME.world = gameWorld;

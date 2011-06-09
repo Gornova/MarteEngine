@@ -394,4 +394,11 @@ public class World extends BasicGameState {
 		return null;
 	}
 
+	/**
+	 * @return get number of entities in this world
+	 */
+	public int getCount() {
+		return entities.size();
+	}
+
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- possible resource settings are valid, transparentColor is optional 
+	<sound key="" file="" />
+	<music key="" file="" />
+	<image key="" file="" transparentColor=""/> 
+	<sheet key="" file="" width="" height="" transparentColor=""/>
+	<angelcodefont key="" fontFile="" imageFile=""/>
+	<int key="" value="">
+	<float key="" value=""> 
+	<string key="" value="">
+-->
+	
+<resources>
+	<!-- basedir -->
+	<basedir path="data/scrollingPlatformer" />
+	<!-- sounds -->
+	<sound key="jump" file="jump.wav" />
+	<sound key="pickupstar" file="pickupstar.wav" />
+	<sound key="allpickedup" file="allstarscollected.wav" />
+	<!-- songs -->
+	<!-- images -->
+	<image key="block" file="block.png" />
+	<image key="player" file="blockRed.png" />
+	<image key="background" file="sky.png" />
+	<image key="star" file="star.png" />
+	<image key="particle" file="particle.tga" />
+	<image key="volumeOn" file="volumeOn.png" />
+	<image key="volumeOff" file="volumeOff.png" />
+	<image key="menu" file="menu.png" />
+	<!-- sheets -->
+	<sheet key="left" file="walkLeft.png" width="32" height="32"/>
+	<sheet key="right" file="walkRight.png" width="32" height="32"/>
+	<!-- fonts -->
+	<angelcodefont key="font" fontFile="font.fnt" imageFile="font.png"/>
+	<!-- Tiled map -->
+	<map key="map1" file="map1.tmx"/>
+	<map key="map2" file="map2.tmx"/>
+	<map key="map3" file="map3.tmx"/>
+</resources>

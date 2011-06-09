@@ -9,7 +9,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 <project name="MarteEngine" default="compile">
 
-	<property name="target.package" value="it.randomtower.test.tank" />
+	<property name="target.package" value="it.marteEngine.test.tank" />
 	<property name="target.class" value="TankTest" />
 	<property name="target.res" value="data/tank" />
 

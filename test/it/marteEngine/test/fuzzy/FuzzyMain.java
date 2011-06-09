@@ -45,9 +45,9 @@ public class FuzzyMain extends StateBasedGame {
 			return;
 		try {
 			ResourceManager
-					.loadResources("data/scrollingPlatformer/resources.xml");
+					.loadResources("data/fuzzy/resources.xml");
 		} catch (IOException e) {
-			Log.error("failed to load ressource file 'data/scrollingPlatformer/resources.xml': "
+			Log.error("failed to load ressource file 'data/fuzzy/resources.xml': "
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}

@@ -12,7 +12,7 @@
 	
 <resources>
 	<!-- basedir -->
-	<basedir path="data/scrollingPlatformer" />
+	<basedir path="data/fuzzy" />
 	<!-- sounds -->
 	<sound key="jump" file="jump.wav" />
 	<sound key="pickupstar" file="pickupstar.wav" />
@@ -30,6 +30,7 @@
 	<!-- sheets -->
 	<sheet key="left" file="walkLeft.png" width="32" height="32"/>
 	<sheet key="right" file="walkRight.png" width="32" height="32"/>
+	<sheet key="slime" file="slime.png" width="40" height="22"/>
 	<!-- fonts -->
 	<angelcodefont key="font" fontFile="font.fnt" imageFile="font.png"/>
 	<!-- Tiled map -->

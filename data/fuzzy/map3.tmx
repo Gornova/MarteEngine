@@ -9,12 +9,15 @@
  <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
   <image source="star.png" width="32" height="32"/>
  </tileset>
+ <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
+  <image source="slime0.png" width="40" height="22"/>
+ </tileset>
  <layer name="tile" width="80" height="40">
   <properties>
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2ZaU/DMAyGI84NNq6BOAQCcR+f9v//HI60iGAlzuG2TiY/0qt2bdpZT92004xRFDn2pAvonCPpAirYgexuIn39e/Nn3c0g802k67ffL30Nc3HuWvMnXUMOvjv1VwZ2p/7yCbnbRn/rAc6Bwe4uIVdeWvD3kcgnGv8Fea88ruRzqO/u0Jh7I+9vnkiovlnlcSWE7tle/eHeOIGcJnLGrMv3FqNVf70Q8xebi0u35xDqnRaxffhk/uZeO78+G7n+24ccGPr568ZMnUNDv7O4eUXy+XsMWRjanx1zDbmB3E64vjS0uxb8nZv//kLvH9bfA+Qb8jjhOvYXe6655Vj3AAXuv1B9dswL5BXyNuG67496L3DLxQhZDuDP9uiFQFYJd7jOMfytKvwN+f7GpcSfBM5fq6g/HuqPh/rjkfMbW3Kebt2fxTnEjmLbp6QHfy2j/nioPx7qj4f641Hjj/rPh9q39rItSPSf+uNR2oPUWH/fT105LCTnv1yHuf4kkPYXSmgcdQ5Jenj+xjxT80DpManxsfTgr2XUHw/1x8P5+wWXNa4qADIAAA==
+   H4sIAAAAAAAAC+2ZaU/DMAyGI84NNq6BOAQCcW7waf//z+FIiwhW4hxe62TyI71q16ad9dRNO80YRZHjQLqAzjmRLqCCPcj+JtLXvzd/1t0EMt1Eun77/dLXMBfnrjV/0jXk4LtTf2Vgd+ovn5C7XfS33sI5MNjdNeTGSwv+vhJZovEryGflcSWfQ333gMY8Gnl/00RC9U0qjyshdM/26g/3xhnkPJELZl2+txit+uuFmL/YXFy6PYdQ77SI7cMX8zf32vn11cj13yHkyNDPXzdm7Bwb+p3FzSuSz99TyMzQ/uyYW8gd5H7E9bmh3bXg79L89xd6/7D+niDfkOcR17G/2HPNLYe6Byhw/4Xqs2PeIO+QjxHXfX/Ue4FbzgbIfAv+bI9eCWSRcIfrHMLfItPfUO9vXEr8SeD8tYr646H+eKg/Hjm/sSXn6db9WZxD7Ci2fUx68Ncy6o+H+uOh/nioPx41/qj/fKh9ay+7gkT/qT8epT1IjfX3/dSVw0Jy/st1mOtPAml/oYTGUeeQpIfnb8wzNQ+UHpMaH0sP/lpG/fFQfzycv1825RfXADIAAA==
   </data>
  </layer>
  <layer name="player" width="80" height="40">
@@ -36,6 +39,14 @@
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3YwQkAMAgDQCd2/2d3KAVruJsgfpRYBdzo6QAAAEA8vQN4LX2vpM8HAAAA7Od/AcA2bhfAXw4hqVKPADIAAA==
+  </data>
+ </layer>
+ <layer name="enemies" width="80" height="40">
+  <properties>
+   <property name="type" value="enemies"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3YwQkAMAgDQDd2/1/pCkKrLXcTBAwEjAAAAG7J7gAAPK26I/aHn+gzAAAAAACbf/FcbgNwzgIUrcFiADIAAA==
   </data>
  </layer>
 </map>

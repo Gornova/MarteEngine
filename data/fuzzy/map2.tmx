@@ -9,6 +9,9 @@
  <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
   <image source="star.png" width="32" height="32"/>
  </tileset>
+ <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
+  <image source="slime0.png" width="40" height="22"/>
+ </tileset>
  <layer name="tile" width="80" height="40">
   <properties>
    <property name="type" value="entity"/>
@@ -36,6 +39,14 @@
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3YwQkAMAgEMCd2/2cnKD4K1dJkggPRAyMAAHhNdgcAALb09DxmAgAAAFDzQ4E/ne6+2wEAcNcCMuzDNwAyAAA=
+  </data>
+ </layer>
+ <layer name="enemies" width="80" height="40">
+  <properties>
+   <property name="type" value="enemies"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3YsQ0AAAgCMD72/80vlKG9gIkEEgAAWsx3AAAAAAAq+Y2AC7oGAADANgK6LWhaCK8AMgAA
   </data>
  </layer>
 </map>

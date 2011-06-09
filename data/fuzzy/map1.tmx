@@ -9,17 +9,20 @@
  <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
   <image source="star.png" width="32" height="32"/>
  </tileset>
+ <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
+  <image source="slime0.png" width="40" height="22"/>
+ </tileset>
  <layer name="tile" width="80" height="40">
   <properties>
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Z207DMAyGIzbYGGUDdom0S2C8/wOSSI3mWbZzbBOX/pKlzrAcvtqJkxmzalUbPVjbth6EYu2tHVoPAsi9z81o8L1e2wwnqN74ufE8j8aNqyeWGvlRwkxDn2tpKfzmEPUO/iO/mrG4BH5T5GZsm0vgxymGQSl7bfx62nud3Hg3mcbV3dwcoR/WebC9VvtH7nuB4021kvlR/R5M3/svpZb8PpG59o7WTqO9FbQfkhRvKbHo5nHKtJL5cfy0yc0Dr0Vz3Cdo4ReKxb255fAceQP71cAvJMhv7n5rrqdQX9a+rf1Uak+SFn44jyRGvm2qPe570E/VVlINp4Eflt+nqbUm52/Qn1KT4JoLz+OKnuHnR2tPGbZjxtjL+gdrqJgaZDB583i39pFhZ2KMvl+fR3OtX6VyuT6Ye4Yhfj7udhX9vl9cP/d23sVyeTSYe4Yhfi/j/75W9Ev3GI4hXN+vyGDMxljNuMb8nIXqP5+354r+Y6DfmD1hjnMTFsVviPje78R+Lcrlx0kbvxr3pxQ/quYoUa/8SgX5XQzNklr7a2kp/C7AOIY14rBn5eRybPxRub1klrFye7/EqkVO9yR/l7AVniV2Uk5jftw5Q7PgXQ73XCv+uHOGNsHYgnU79xyz5lFMY/lpi0vp/pBSKjtvpeffHKXcbeb+li2dFSlNHX+pcSkxKvm9darfYlP5pa5/qX6J0cov7F/5lfm18fsDyCzFHgAyAAA=
+   H4sIAAAAAAAAC+2Z204DIRCGia221rVVe9mkl9X1/R9QSJZ0OhmG4wKz7p/8yRYth28HGKhSq1a10ZP2tnUnBGuvfWjdCSDzPjeT4Xsd23THq974mf68Tnb1qyeWEvlRwkx9n0tpKfxqiHoH/5FfyVik+I3AtZXCb45+hta55PgLYZDLXhq/nvZeI9PfTaJdebdrjLAc5nmwvlb7R+p7gf2Ndc74qHYPqu/9l1JLfhdkU99R+zT5I6N+n7h4i4lFM45TonPG5+InTWYceC2qcZ8ghZ8vFvfqPodrzBvYrgR+PkF+tdstuZ5C3bS/tX8K1cdJCj88jzhGtm6qPtf3YDmVW3E5nAR+WHafptaalL/B8picBOdceBwjeoafn7VfErxz9LGX9Q/mUCE5yKDSxvGp/ZXgM9FH266dR7XWr1yZuT6oR4Y+fjbudgXLbbs4f+7tvItl5tGgHhn6+L1N//tesJy7xzAM4fo+IsOYDXHJuMb8jH35n52354LlR0+7IXtCjXMTFsVvCPje78zlUpTKzyVp/Ercn1L8qJwjR73yyxXkd1U0S2rtL6Wl8LsCuxiWiMOelTKXQ+OPmttLZhkqs/dzrFrM6Z5k7xK2zDPHjpvTmJ/rnCFZ8C7H9Vwq/lznDGmCsQXzdtdzyJpHMQ3lJy0uuftDSrHsrHPPvymKudtM/S2bOytSmjv+YuOSY5Tze+tcv8XG8otd/2LLOUYrP3/5yi+vXBq/P5sb/kUAMgAA
   </data>
  </layer>
  <layer name="player" width="80" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OMQEAAAwCINe/9GLoAQlIAICmawcAAAAAAAAAAAAAmPd2PnYDADIAAA==
+   H4sIAAAAAAAAC+3OMQEAAAwCINe/9GLoAQlIAAAAdlw7AAAAAAAAAAAAMOgBPcJRRQAyAAA=
   </data>
  </layer>
  <layer name="background" width="80" height="40" opacity="0.48">
@@ -36,6 +39,14 @@
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3XwQkAMAgEMCfu/s9+HaBF1GSCQ+TQCCA71QGAUXQKUKl7B/3K330uAADs5I4FAABgEn8um9h3AOClCwytV+oAMgAA
+  </data>
+ </layer>
+ <layer name="enemies" width="80" height="40">
+  <properties>
+   <property name="type" value="enemies"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3XsQ0AMAgDMD7m/40jWgkB9gWZoiQCAGC+7A4AAABwnF8GsI9uBwDgJ/sSAADeFc7fWUQAMgAA
   </data>
  </layer>
 </map>

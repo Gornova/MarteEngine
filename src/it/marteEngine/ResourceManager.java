@@ -409,7 +409,6 @@ public class ResourceManager {
 	public static void setSfxVolume(float volume) {
 		sfxVolume = volume;
 		SoundStore.get().setSoundVolume(sfxVolume);
-		Log.debug("sfx volume set to " + sfxVolume);
 	}
 
 	/**
@@ -421,7 +420,6 @@ public class ResourceManager {
 	public static void setMusicVolume(float volume) {
 		musicVolume = volume;
 		SoundStore.get().setMusicVolume(musicVolume);
-		Log.debug("music volume set to " + musicVolume);
 	}
 
 	public static float getMusicVolume() {

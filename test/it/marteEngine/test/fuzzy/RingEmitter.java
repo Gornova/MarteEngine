@@ -1,6 +1,6 @@
 
 
-package it.marteEngine.test.scrollingPlatformer;
+package it.marteEngine.test.fuzzy;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.particles.Particle;

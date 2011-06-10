@@ -47,7 +47,6 @@ public class PhysicsEntity extends Entity {
 	 * Moves this entity at it's current speed (speed.x, speed.y) and increases speed based on acceleration (acceleration.x, acceleration.y)
 	 * @param moveX include horizontal movement
 	 * @param moveY include vertical movement
-	 * @param delta
 	 */
 	public void motion(boolean moveX, boolean moveY) {
 		//if we should move horizontally

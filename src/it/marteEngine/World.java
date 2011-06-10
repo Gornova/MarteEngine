@@ -1,8 +1,6 @@
 package it.marteEngine;
 
-import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.Entity;
-import it.marteEngine.test.scrollingPlatformer.Star;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,15 +10,12 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
-//TODO addAll() muss intern add() aufrufen, um korrekt nach flags in die listen einzusortieren
 public class World extends BasicGameState {
 
 	public static final int BELOW = -1;
@@ -354,64 +349,6 @@ public class World extends BasicGameState {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-
-	/**
-	 * Load entity from a tiled map into current World
-	 * 
-	 * @param map
-	 */
-	public void loadEntityFromMap(TiledMap map, List<String> types) {
-		if (map == null) {
-			Log.error("unable to load map information");
-			return;
-		}
-		if (types == null || types.isEmpty()){
-			Log.error("no types defined to load");
-			return;
-		}
-		for (String type : types) {
-			// try to find a layer with property type set to entity
-			int layerIndex = -1;
-			for (int l = 0; l < map.getLayerCount(); l++) {
-				String value = map.getLayerProperty(l, "type", null);
-				if (value != null && value.equalsIgnoreCase(type)) {
-					layerIndex = l;
-					break;
-				}
-			}
-			if (layerIndex != -1) {
-				Log.debug("Entity layer found on map");
-				int loaded = 0;
-				for (int w = 0; w < map.getWidth(); w++) {
-					for (int h = 0; h < map.getHeight(); h++) {
-						Image img = map.getTileImage(w, h, layerIndex);
-						if (img != null) {
-							StaticActor te = new StaticActor(w * img.getWidth(), h
-									* img.getHeight(), img.getWidth(),
-									img.getHeight(), img);
-							if (type.equalsIgnoreCase("background")){
-								te.collidable = false;
-								te.depth=-100;
-								te.setAlpha(0.6f);
-							}
-							if (type.equalsIgnoreCase("star")){
-								Star star = new Star(w * img.getWidth(), h
-									* img.getHeight());
-								add(star);
-							} else {							
-								add(te);
-							}
-							loaded++;
-						} 
-					}
-				}
-				Log.debug("Loaded "+loaded + " entities");
-			} else {
-				Log.info("Entity layer not found on map");
-			}
-		}
-	}
-	
 
 	public List<Entity> findEntityWithType(String type) {
 		if (type == null) {

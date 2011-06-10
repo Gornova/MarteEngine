@@ -1,9 +1,11 @@
 package it.marteEngine.test.tiled;
 
-import java.util.Arrays;
-
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
+import it.marteEngine.actor.StaticActor;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -12,6 +14,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.util.Log;
 
 /**
  * World for Tiled test
@@ -35,7 +38,60 @@ public class TiledWorld extends World {
 		// load entities from map (see resource.xml of this example in
 		// data/tiled)
 		map = ResourceManager.getMap("test1");
+		// load entities from map defined with Tiled
 		loadEntityFromMap(map, Arrays.asList("entity"));
+	}
+
+	/**
+	 * Load entity from a tiled map into current World
+	 * 
+	 * @param map
+	 * @throws SlickException
+	 */
+	public void loadEntityFromMap(TiledMap map, List<String> types)
+			throws SlickException {
+		if (map == null) {
+			Log.error("unable to load map information");
+			return;
+		}
+		if (types == null || types.isEmpty()) {
+			Log.error("no types defined to load");
+			return;
+		}
+		// layer have property type, so check it
+		for (String type : types) {
+			// try to find a layer with property type set to entity
+			int layerIndex = -1;
+			for (int l = 0; l < map.getLayerCount(); l++) {
+				String value = map.getLayerProperty(l, "type", null);
+				if (value != null && value.equalsIgnoreCase(type)) {
+					layerIndex = l;
+					break;
+				}
+			}
+			if (layerIndex != -1) {
+				Log.debug("Entity layer found on map");
+				int loaded = 0;
+				for (int w = 0; w < map.getWidth(); w++) {
+					for (int h = 0; h < map.getHeight(); h++) {
+						Image img = map.getTileImage(w, h, layerIndex);
+						if (img != null) {
+							// load entity from Tiled map position and set Image
+							// for static actor using image reference stored
+							// into tiled map
+							StaticActor te = new StaticActor(
+									w * img.getWidth(), h * img.getHeight(),
+									img.getWidth(), img.getHeight(), img);
+							add(te);
+							loaded++;
+						}
+					}
+				}
+				Log.debug("Loaded " + loaded + " entities");
+			} else {
+				Log.info("Entity layer not found on map");
+			}
+		}
 	}
 
 	@Override

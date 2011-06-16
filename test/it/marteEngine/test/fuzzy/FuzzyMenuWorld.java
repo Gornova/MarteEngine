@@ -5,7 +5,6 @@ import it.marteEngine.World;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.game.starcleaner.Background;
 
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -17,12 +16,10 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class FuzzyMenuWorld extends World {
 
-	private AngelCodeFont font;
 	public static boolean gotoGame = false;
 	
 	public FuzzyMenuWorld(int id) {
 		super(id);
-		font = ResourceManager.getAngelCodeFont("font");
 	}
 
 	@Override
@@ -45,14 +42,14 @@ public class FuzzyMenuWorld extends World {
 			throws SlickException {
 		super.render(container, game, g);
 		
-		font.drawString(90, 50, "Fuzzy Platformer");
+		FuzzyMain.font.drawString(90, 50, "Fuzzy Platformer");
 		
 		drawScaled(g,0.5f,"http://randomtower.blogspot.com",200, 880);
 	}
 
 	private void drawScaled(Graphics g, float scale, String text, float x, float y) {
 		g.scale(scale, scale);
-		font.drawString(x,y, text);
+		FuzzyMain.font.drawString(x,y, text);
 		g.resetTransform();
 	}	
 	

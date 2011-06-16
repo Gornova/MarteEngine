@@ -19,10 +19,11 @@ public class Star extends Entity {
 
 	private NumTween fadeTween = new NumTween(1, 0, 60, TweenerMode.ONESHOT,
 			Ease.QUAD_OUT, false);
-	private NumTween moveUpTween = new NumTween(0, 20, 30, TweenerMode.ONESHOT,
+	private NumTween moveUpTween = new NumTween(0, 2, 10, TweenerMode.ONESHOT,
 			Ease.QUAD_IN, false);
 
 	private boolean toRemove = false;
+	private float ty;
 
 	public Star(float x, float y) {
 		super(x, y, ResourceManager.getImage("star"));
@@ -43,6 +44,7 @@ public class Star extends Entity {
 				pickupstar.play();
 			}
 			toRemove = true;
+			ty = y;
 		}
 
 		if (toRemove) {
@@ -61,7 +63,9 @@ public class Star extends Entity {
 		if (toRemove) {
 			// if to remove, apply effects
 			setAlpha(fadeTween.getValue());
-			y -= moveUpTween.getValue();
+			
+			ty -= moveUpTween.getValue();
+			FuzzyMain.font.drawString(x, ty, "100");
 		}
 	}
 

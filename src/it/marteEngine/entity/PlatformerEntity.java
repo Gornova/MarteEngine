@@ -86,7 +86,7 @@ public class PlatformerEntity extends PhysicsEntity {
 		{
 			//normal jump
 			if (onGround) { 
-				speed.y = -jumpSpeed; 
+				jump();
 			}
 		}
 		
@@ -111,6 +111,10 @@ public class PlatformerEntity extends PhysicsEntity {
 		
 		previousx = x;
 		previousy = y;
+	}
+
+	public void jump() {
+		speed.y = -jumpSpeed; 
 	}
 
 }

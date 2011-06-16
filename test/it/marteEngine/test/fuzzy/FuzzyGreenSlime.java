@@ -1,8 +1,13 @@
 package it.marteEngine.test.fuzzy;
 
+import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PhysicsEntity;
+import it.marteEngine.entity.PlatformerEntity;
+import it.marteEngine.tween.Ease;
+import it.marteEngine.tween.NumTween;
+import it.marteEngine.tween.Tween.TweenerMode;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -10,11 +15,15 @@ import org.newdawn.slick.SlickException;
 public class FuzzyGreenSlime extends PhysicsEntity {
 
 	public static final String SLIME = "slime";
-	// private Sound jumpSnd;
 
 	private float moveSpeed = 1;
 
 	protected boolean faceRight = false;
+
+	private NumTween fadeTween = new NumTween(1, 0, 10, TweenerMode.ONESHOT,
+			Ease.CUBE_OUT, false);
+
+	private boolean fade;
 
 	public FuzzyGreenSlime(float x, float y) throws SlickException {
 		super(x, y);
@@ -29,18 +38,32 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		super.update(container, delta);
-		
-		checkGround(true, false);
-		
-		if (speed.x > 0)
-			this.faceRight = true;
-		else
-			this.faceRight = false;		
-	}
+		if (!fade) {
+			super.update(container, delta);			
+			checkGround(true, false);
 
+			if (speed.x > 0)
+				this.faceRight = true;
+			else
+				this.faceRight = false;
+
+			Entity player = collide(PLAYER, x, y - 1);
+			if (player!=null ) {
+				fade = true;
+				((PlatformerEntity)player).jump();
+			}
+		} else {
+			fadeTween.update(delta);
+			setAlpha(fadeTween.getValue());
+			if (getAlpha() == 0){
+				ME.world.remove(this);
+			}
+		}
+	}
+	
 	/**
 	 * Check if falling
+	 * 
 	 * @param revertHorizontal
 	 * @param revertVertical
 	 */
@@ -49,8 +72,6 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 				+ this.speed.x + ((faceRight) ? this.width : 0), this.y
 				+ this.height + 1);
 		if (!blocked) {
-//			x = previousx;
-//			y = previousy;
 			if (revertHorizontal && speed.x != 0)
 				speed.x = -speed.x;
 			if (revertVertical && speed.y != 0)

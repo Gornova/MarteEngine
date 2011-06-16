@@ -114,6 +114,7 @@ public class FuzzyGameWorld extends World {
 				int loaded = 0;
 				for (int w = 0; w < map.getWidth(); w++) {
 					for (int h = 0; h < map.getHeight(); h++) {
+						int tid = map.getTileId(w, h, layerIndex);						
 						Image img = map.getTileImage(w, h, layerIndex);
 						if (type.equals("entity"))
 							blocked[w][h] = NO_SOLID;
@@ -132,9 +133,18 @@ public class FuzzyGameWorld extends World {
 								Star star = new Star(w * img.getWidth(), h
 										* img.getHeight());
 								add(star);
-							} else if (type.equalsIgnoreCase("enemies")){ 
-								// slime
-								add(new FuzzyGreenSlime(w *32, h*32));								
+							} else if (type.equalsIgnoreCase("enemies")){
+								String enemyType =map.getTileProperty(tid, "type", null); 
+								if (enemyType!=null){
+									if (enemyType.equalsIgnoreCase("slime")){
+										// slime								
+										add(new FuzzyGreenSlime(w *32, h*32));								
+									}
+									if (enemyType.equalsIgnoreCase("bat")){
+										// slime								
+										add(new FuzzyBat(w *32, h*32));								
+									}									
+								}
 							} else {
 								// blocks
 								StaticActor te = new StaticActor(w

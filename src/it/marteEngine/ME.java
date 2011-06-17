@@ -58,8 +58,6 @@ public class ME {
 	/** the frames per seconds we targeted in our main class */
 	public static int targetFrameRate;
 	
-	public static ParticleSystem ps;
-	
 	public static void setTargetFrameRate(GameContainer container, int targetframerate) {
 		container.setTargetFrameRate(targetframerate);
 		ME.targetFrameRate = targetframerate;

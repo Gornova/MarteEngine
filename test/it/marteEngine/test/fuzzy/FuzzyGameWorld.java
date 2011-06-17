@@ -52,7 +52,7 @@ public class FuzzyGameWorld extends World {
 
 		allpickedup = ResourceManager.getSound("allpickedup");
 
-		ME.ps = new ParticleSystem(ResourceManager.getImage("particle"));
+		particleSystem = new ParticleSystem(ResourceManager.getImage("particle"));
 	}
 
 	@Override

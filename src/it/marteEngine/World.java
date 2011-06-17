@@ -12,6 +12,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
@@ -44,6 +45,9 @@ public class World extends BasicGameState {
 
 	/** current camera **/
 	public Camera camera;
+	
+	/** the particle system for all particle emitters in this world **/
+	public ParticleSystem particleSystem;
 	
 	public int renderedEntities;
 
@@ -100,8 +104,8 @@ public class World extends BasicGameState {
 		}
 
 		// render particle system
-		if (ME.ps!=null){
-			ME.ps.render();
+		if (this.particleSystem != null){
+			this.particleSystem.render();
 		}		
 		
 		if (camera != null)
@@ -170,8 +174,8 @@ public class World extends BasicGameState {
 		}
 		
 		// update particle system
-		if (ME.ps!=null){
-			ME.ps.update(delta);
+		if (this.particleSystem != null){
+			this.particleSystem.update(delta);
 		}			
 		
 		// remove signed entities
@@ -391,6 +395,14 @@ public class World extends BasicGameState {
 			}
 		}
 		return null;
+	}
+
+	public ParticleSystem getParticleSystem() {
+		return particleSystem;
+	}
+
+	public void setParticleSystem(ParticleSystem particleSystem) {
+		this.particleSystem = particleSystem;
 	}
 
 }

@@ -37,7 +37,7 @@ public class Star extends Entity {
 				pickupstar.play();
 			}
 			emit = true;
-			ME.ps.addEmitter(emitter);
+			world.getParticleSystem().addEmitter(emitter);
 			setAlarm("stopEmit", 60, false, true);
 		}
 	}
@@ -53,7 +53,7 @@ public class Star extends Entity {
 	@Override
 	public void alarmTriggered(String name) {
 		if (name.equalsIgnoreCase("stopEmit")){
-			ME.ps.removeEmitter(emitter);
+			world.getParticleSystem().removeEmitter(emitter);
 			ME.world.remove(this);
 		}
 	}

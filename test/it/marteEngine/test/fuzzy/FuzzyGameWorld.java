@@ -41,7 +41,6 @@ public class FuzzyGameWorld extends World {
 	private boolean showTutorialPanel = true;
 	private Sound allpickedup;
 	public static boolean playerDead = false;
-	private boolean volumeOn = true;
 	private Rectangle volumeControl = new Rectangle(600, 5, 32, 34);
 	private int widthInTiles;
 	private int heightInTiles;
@@ -201,10 +200,10 @@ public class FuzzyGameWorld extends World {
 		String text = "Collected stars " + (total - stars) + "/" + total;
 		ME.showMessage(container, g, 5, 5, 200, 35, 5, Color.darkGray, text, 5);
 
-		if (volumeOn) {
-			g.drawImage(ResourceManager.getImage("volumeOn"), 600, 5);
-		} else {
+		if (!ME.playMusic) {
 			g.drawImage(ResourceManager.getImage("volumeOff"), 600, 5);
+		} else {
+			g.drawImage(ResourceManager.getImage("volumeOn"), 600, 5);
 		}
 
 		if (showTutorialPanel) {
@@ -234,13 +233,7 @@ public class FuzzyGameWorld extends World {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-		if (volumeOn) {
-			ResourceManager.setMusicVolume(1.0f);
-			ResourceManager.setSfxVolume(1.0f);
-		} else {
-			ResourceManager.setMusicVolume(0f);
-			ResourceManager.setSfxVolume(0f);
-		}
+		ME.muteMusic();
 
 		if (gameEnd) {
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
@@ -289,7 +282,7 @@ public class FuzzyGameWorld extends World {
 		if (container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			if (volumeControl.contains(container.getInput().getMouseX(),
 					container.getInput().getMouseY())) {
-				volumeOn = volumeOn ? false : true;
+				ME.playMusic = ME.playMusic ? false : true;
 			}
 		}
 

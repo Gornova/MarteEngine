@@ -30,13 +30,15 @@ public class ME {
 	public static Color borderColor = Color.red;
 	/** key for restarting game **/
 	public static int keyRestart = -1;
+	/** key for mute music and sounds */
+	public static int keyMuteMusic = -1;
+	public static boolean playMusic = true; 
 	
 
 	/** x scale factor for graphics, default 1 (nothing) **/
 	public static float scaleX = 1;
 	/** y scale factor for graphics, default 1 (nothing) **/
 	public static float scaleY = 1;
-
 
 	/** top z order **/
 	public static final Integer Z_LEVEL_TOP = 100;
@@ -92,6 +94,12 @@ public class ME {
 				//TODO: go to first state?
 			}
 		}	
+		if (keyMuteMusic !=-1){
+			if (container.getInput().isKeyPressed(keyMuteMusic)) {
+				playMusic = playMusic ? false : true;
+				muteMusic();
+			}
+		}
 
 	}
 
@@ -155,7 +163,16 @@ public class ME {
 		if (world!=null){
 			world.remove(entity);
 		}
-		
+	}
+	
+	public static void muteMusic(){
+		if (playMusic) {
+			ResourceManager.setMusicVolume(1.0f);
+			ResourceManager.setSfxVolume(1.0f);
+		} else {
+			ResourceManager.setMusicVolume(0f);
+			ResourceManager.setSfxVolume(0f);
+		}
 	}
 
 }

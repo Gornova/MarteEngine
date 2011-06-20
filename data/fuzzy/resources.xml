@@ -32,6 +32,7 @@
 	<sheet key="right" file="walkRight.png" width="22" height="30"/>
 	<sheet key="slime" file="slime.png" width="40" height="22"/>
 	<sheet key="batLeft" file="batLeft.png" width="32" height="32"/>
+	<sheet key="batRight" file="batRight.png" width="32" height="32"/>
 	<!-- fonts -->
 	<angelcodefont key="font" fontFile="font.fnt" imageFile="font.png"/>
 	<!-- Tiled map -->

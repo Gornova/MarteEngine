@@ -30,7 +30,7 @@
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Z204DIRCGia221rVVe9mkl9X1/R9QSJZ0OhmG4wKz7p/8yRYth28HGKhSq1a10ZP2tnUnBGuvfWjdCSDzPjeT4Xsd23THq974mf68Tnb1qyeWEvlRwkx9n0tpKfxqiHoH/5FfyVik+I3AtZXCb45+hta55PgLYZDLXhq/nvZeI9PfTaJdebdrjLAc5nmwvlb7R+p7gf2Ndc74qHYPqu/9l1JLfhdkU99R+zT5I6N+n7h4i4lFM45TonPG5+InTWYceC2qcZ8ghZ8vFvfqPodrzBvYrgR+PkF+tdstuZ5C3bS/tX8K1cdJCj88jzhGtm6qPtf3YDmVW3E5nAR+WHafptaalL/B8picBOdceBwjeoafn7VfErxz9LGX9Q/mUCE5yKDSxvGp/ZXgM9FH266dR7XWr1yZuT6oR4Y+fjbudgXLbbs4f+7tvItl5tGgHhn6+L1N//tesJy7xzAM4fo+IsOYDXHJuMb8jH35n52354LlR0+7IXtCjXMTFsVvCPje78zlUpTKzyVp/Ercn1L8qJwjR73yyxXkd1U0S2rtL6Wl8LsCuxiWiMOelTKXQ+OPmttLZhkqs/dzrFrM6Z5k7xK2zDPHjpvTmJ/rnCFZ8C7H9Vwq/lznDGmCsQXzdtdzyJpHMQ3lJy0uuftDSrHsrHPPvymKudtM/S2bOytSmjv+YuOSY5Tze+tcv8XG8otd/2LLOUYrP3/5yi+vXBq/P5sb/kUAMgAA
+   H4sIAAAAAAAAC+2Z207DMAyGIzbYGGUDdom0S6C8/wOSSI3mWY5zctN49Jd+qQssh69O4mTGrFq1jB6st0t3QrH21oelOwHk3udmMnyv4zLdiao3fq4/z5ND/eqJpUZ+lDDT2Gcp3Qu/FqLewX/kJxmLFL8RuLVK+M3Rz9Q67zn+UhjUstfGr6e918n1d1PoUN4dGiMsh3kerG+p/aP0vcD+5rpmfFS7B9P3/ktpSX6fyK6+o/Vp8ltF/TFx8ZYTi24cp0LXjC/ET5vcOPBa1OI+QQu/WCzuzXUOt5g3sF0N/GKC/Fq3K7meQn1Zf1v/CNXHSQs/PI84Rr5uqr7Q92A5lVtxOZwGflh+n6bWmpK/wfKcnATnXHgcI3qGnx+tnwq8C/Sxl/UP5lApOchgysbxbv1R4DPRR9+un0et1q9aubk+mFuGMX4+7naC5b5dnD/3dt7FcvNoMLcMY/xepv99FSzn7jEcQ7i+j8gwZlMsGdeYn3Ms//Pz9ixYfoy0m7IntDg3YVH8hoTv/c5crkWl/ELSxk/i/pTiR+UcNeqVX60gv4uhWVJrv5Tuhd8FOMRQIg6xeuJXMpdT44+a2xIse+JXIrf3c6zmntO98/N3CVvmmWPHzWnML3TO0Cx4lxN6loq/0DlDm2Bswbw99Jyy5lFMU/lpi0vu/pBSLjvv2vNviXLuNkt/y+bOipTmjr/cuOQY1fzeOtdvsbn8cte/3HKO0covXr7yqyvXxu8P9Rd1BgAyAAA=
   </data>
  </layer>
  <layer name="player" width="80" height="40">
@@ -59,7 +59,7 @@
    <property name="type" value="enemies"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3XwQkAMAgDQDeu+78cooIodxPkFZIIAID93nSAo3I6AAAAsIZfBnCPbgcAoJN9CQAA/wqVNEj9ADIAAA==
+   H4sIAAAAAAAAC+3XsQ0AMAgDMD4u/0+9oCNCFPuCLEQhAgBgvtMdAAAAYDl/GcB/dDsAvGV3ABioal+6RwAANrnZs63sADIAAA==
   </data>
  </layer>
 </map>

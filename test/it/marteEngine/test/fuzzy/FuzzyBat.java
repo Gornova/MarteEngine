@@ -2,10 +2,6 @@ package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
-import it.marteEngine.entity.PhysicsEntity;
-import it.marteEngine.tween.Ease;
-import it.marteEngine.tween.NumTween;
-import it.marteEngine.tween.Tween.TweenerMode;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -14,24 +10,20 @@ public class FuzzyBat extends Entity {
 
 	public static final String BAT = "bat";
 
-	private float moveSpeed = 1;
+	private float moveSpeed = 3;
 
 	protected boolean faceRight = true;
 
-	private NumTween fadeTween = new NumTween(1, 0, 10, TweenerMode.ONESHOT,
-			Ease.CUBE_OUT, false);
-
-	private boolean fade;
-
 	public FuzzyBat(float x, float y) throws SlickException {
 		super(x, y);
-		addAnimation(ResourceManager.getSpriteSheet("batLeft"), "move", true, 0,
+		addAnimation(ResourceManager.getSpriteSheet("batLeft"), "moveLeft", true, 0,
 				0, 1, 2 );
+		addAnimation(ResourceManager.getSpriteSheet("batRight"), "moveRight", true, 0,
+				0, 1, 2 );		
 		addType(BAT,SOLID);
 		setHitBox(0, 0, 32, 32);
-		// make Slime sloow
-		//maxSpeed.x = 1;
-		speed.x = 1;
+		speed.x = moveSpeed;
+		currentAnim = "moveRight"; 
 	}
 	
 	@Override
@@ -41,14 +33,16 @@ public class FuzzyBat extends Entity {
 		
 		if (faceRight && collide(SOLID,x+1,y)!=null){
 			faceRight = false;
+			currentAnim = "moveLeft";
 		} else if (!faceRight && collide(SOLID,x-1,y)!=null){
 			faceRight = true;
+			currentAnim = "moveRight";
 		}
 
 		if (faceRight){
-			speed.x = 1;
+			speed.x = moveSpeed; 
 		} else {
-			speed.x = -1;
+			speed.x = moveSpeed * -1;
 		}
 	}
 	

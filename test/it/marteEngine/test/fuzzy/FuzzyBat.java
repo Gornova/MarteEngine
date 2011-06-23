@@ -22,6 +22,10 @@ public class FuzzyBat extends Entity {
 
 	private LinearMotion motion;
 
+	private Bresenham myEyes = new Bresenham();
+
+	private int sight = 32*4;
+
 	public FuzzyBat(float x, float y) throws SlickException {
 		super(x, y);
 		addAnimation(ResourceManager.getSpriteSheet("batLeft"), "moveLeft", true, 0,
@@ -37,25 +41,25 @@ public class FuzzyBat extends Entity {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		distanceFromPlayer= getDistanceFromPlayer();
+		//distanceFromPlayer= getDistanceFromPlayer();
 
-		if (distanceFromPlayer!=null){
-			if (Math.abs(distanceFromPlayer.x) <=32*3 || Math.abs(distanceFromPlayer.y) <= 32*3 ){
-				if (motion==null){
-					setMoveTo(ME.world.find(Entity.PLAYER));
-				} else {
-					motion.update(delta);
-					if (!motion.isFinished()){
-						this.x = motion.getX();
-						this.y = motion.getY();
-					} else {
-						motion = null;
-					}
-					return ;
-				}
-			}
-		}
-		
+//		Entity p = ME.world.find(Entity.PLAYER);
+//		if (canSee(p,false,false)){
+//			if (motion==null){
+//				setMoveTo(ME.world.find(Entity.PLAYER));
+//			} else {
+//				if (!motion.isFinished()){
+//					motion.update(delta);
+//					this.x = motion.getX();
+//					this.y = motion.getY();
+//					updateAnimation(delta);
+//					return ;						
+//				} else {
+//					motion = null;
+//				}
+//			}
+//		}
+//		
 		
 		super.update(container, delta);
 		
@@ -86,7 +90,58 @@ public class FuzzyBat extends Entity {
 	}
 	
 	private void setMoveTo(Entity e){
-		motion = new LinearMotion(this.x, this.y, e.x, e.y, 100, Ease.QUAD_OUT);
+		if (Math.abs(getDistanceFromPlayer().x) > 32 && Math.abs(getDistanceFromPlayer().y) > 32){ 
+			motion = new LinearMotion(this.x, this.y, e.x, e.y, 100, Ease.QUAD_OUT);
+		}
 	}
 
+	/**
+	 * just use tilebased line of sight, using the blocked array of the level
+	 * @param target
+	 * @param onlyHorizontal - entity and target must be on the same y tile position
+	 * @param onlyVertical - entity and target must be on the same x tile position 
+	 * @return
+	 */
+	public boolean canSee(Entity target, boolean onlyHorizontal, boolean onlyVertical) {
+		Vector2f myTile = this.getTile(this);
+		Vector2f targetTile = this.getTile(target);
+		if (onlyHorizontal) {
+			if (myTile.y != targetTile.y)
+				return false;
+		}
+		if (onlyVertical) {
+			if (myTile.x != targetTile.x)
+				return false;
+		}
+		// is enemy looking in the right direction
+		if (this.faceRight && myTile.x > targetTile.x)
+			return false;
+		if (!this.faceRight && myTile.x < targetTile.x)
+			return false;
+		// now check with Bresenham if there is nothing solid blocking our view
+		FuzzyGameWorld level = ((FuzzyGameWorld) world);
+		int length = myEyes.plot((int)myTile.x, (int)myTile.y, (int)targetTile.x, (int)targetTile.y) * 32;
+		if (length > sight)
+			return false;	// too far away!
+		while (myEyes.next()) {
+			int linex = myEyes.getX();
+			int liney = myEyes.getY();
+			if (level.blocked(linex, liney))
+				return false;
+		}
+		return true;
+	}
+	
+	protected Vector2f getTile(Entity entity) {
+		int tilex, tiley;
+		if (entity.centered) {
+			tilex = (int) (entity.x / 32);
+			tiley = (int) (entity.y / 32);
+		} else {
+			tilex = (int) ((entity.x + entity.width/2) / 32);
+			tiley = (int) ((entity.y + entity.height/2) / 32);
+		}
+		return new Vector2f(tilex, tiley);
+	}	
+	
 }

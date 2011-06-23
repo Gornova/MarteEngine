@@ -196,6 +196,17 @@ public abstract class Entity implements Comparable<Entity> {
 			stateManager.update(container, delta);
 			return;
 		}
+		updateAnimation(delta);
+		if (speed != null) {
+			x += speed.x;
+			y += speed.y;
+		}
+		checkWorldBoundaries();
+		previousx = x;
+		previousy = y;
+	}
+
+	protected void updateAnimation(int delta) {
 		if (animations != null) {
 			if (currentAnim != null) {
 				Animation anim = animations.get(currentAnim);
@@ -204,13 +215,6 @@ public abstract class Entity implements Comparable<Entity> {
 				}
 			}
 		}
-		if (speed != null) {
-			x += speed.x;
-			y += speed.y;
-		}
-		checkWorldBoundaries();
-		previousx = x;
-		previousy = y;
 	}
 
 	/**

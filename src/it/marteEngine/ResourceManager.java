@@ -154,7 +154,7 @@ public class ResourceManager {
 		String file = map.getAttribute("file");
 		Log.debug("Trying to load tiled map file '" + file + "' at key '" + key
 				+ "'...");
-		TiledMap tiledMap = new TiledMap(baseDir + "/" + file);
+		TiledMap tiledMap = new TiledMap(baseDir + file);
 		maps.put(key, tiledMap);
 	}
 

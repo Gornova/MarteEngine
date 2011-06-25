@@ -45,7 +45,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 			faceRight = true;
 		}
 		
-		if (speed.y < 0 && !jumpSnd.playing()){
+		if (speed.y < 0 && !jumpSnd.playing() && onGround){
 			jumpSnd.play();
 		}
 	}

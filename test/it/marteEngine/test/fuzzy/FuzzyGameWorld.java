@@ -127,7 +127,7 @@ public class FuzzyGameWorld extends World {
 										img.getWidth(), img.getHeight(), img);
 								te.collidable = false;
 								te.depth = -100;
-								te.setAlpha(0.6f);
+								te.setAlpha(0.5f);
 								add(te);
 							} else if (type.equalsIgnoreCase("star")) {
 								// stars

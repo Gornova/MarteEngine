@@ -104,6 +104,11 @@ public class World extends BasicGameState {
 		if (ME.ps!=null){
 			ME.ps.render();
 		}		
+
+		if (ME.debugEnabled && camera != null){
+			if (camera.getMoveRect()!=null)
+				g.draw(camera.getMoveRect());
+		}
 		
 		if (camera != null)
 			g.translate(camera.cameraX, camera.cameraY);

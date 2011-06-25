@@ -71,7 +71,7 @@ public class FuzzyMain extends StateBasedGame {
 			AppGameContainer container = new AppGameContainer(
 					new FuzzyMain());
 			container.setDisplayMode(640, 480, false);
-			container.setTargetFrameRate(60);
+			container.setTargetFrameRate(50);
 			container.setShowFPS(false);
 			container.start();
 		} catch (SlickException e) {

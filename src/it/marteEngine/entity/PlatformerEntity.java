@@ -12,7 +12,7 @@ public class PlatformerEntity extends PhysicsEntity {
 	protected static final String CMD_LEFT = "left";
 	protected static final String CMD_RIGHT = "right";
 	protected static final String CMD_JUMP = "jump";
-	private boolean onGround = false;
+	protected boolean onGround = false;
 	private int moveSpeed = 1;
 	private int jumpSpeed = 6;
 

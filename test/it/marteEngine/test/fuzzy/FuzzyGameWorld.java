@@ -70,8 +70,10 @@ public class FuzzyGameWorld extends World {
 		loadEntityFromMap(map, Arrays.asList("entity", "background", "star", "enemies"));
 
 		PlatformerEntity player = loadPlayer(map, "player");
-		setCamera(new Camera(this, player, container.getWidth(),
-				container.getHeight()));
+		//old camera
+//		setCamera(new Camera(this, player, container.getWidth(),
+//				container.getHeight()));
+		setCamera(new Camera(this, player, container.getWidth(), container.getHeight(), 550, 170, player.maxSpeed));
 
 		add(new Background(0, 0), BELOW);
 	}
@@ -272,7 +274,7 @@ public class FuzzyGameWorld extends World {
 		if (stars == 0 && getCount() > 0) {
 			Log.info("Level end");
 			levelEnd = true;
-			if (levelIndex++ == levelNumbers) {
+			if (levelIndex+1 > levelNumbers) {
 				gameEnd = true;
 				levelEnd = false;
 			}

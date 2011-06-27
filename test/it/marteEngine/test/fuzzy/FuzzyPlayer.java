@@ -4,15 +4,24 @@ import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.PlatformerEntity;
 
+import java.io.IOException;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.ParticleIO;
+import org.newdawn.slick.particles.ParticleSystem;
+import org.newdawn.slick.util.Log;
 
 public class FuzzyPlayer extends PlatformerEntity {
 
 	private boolean faceRight = true;
 	private Sound jumpSnd;
+	private ParticleSystem jumpEffect;
+	private ConfigurableEmitter  emitter;
 	
 	public FuzzyPlayer(float x, float y, String ref)
 			throws SlickException {
@@ -23,6 +32,15 @@ public class FuzzyPlayer extends PlatformerEntity {
 		addType(PLAYER);
 		name = PLAYER;
 		jumpSnd = ResourceManager.getSound("jump");
+		maxSpeed = new Vector2f(3,8);
+		
+		try {
+			jumpEffect = ParticleIO.loadConfiguredSystem("data/fuzzy/jumpEmit.xml");
+			emitter = (ConfigurableEmitter) jumpEffect.getEmitter(0);
+		} catch (IOException e) {
+			Log.error("Error on loading system for jump emitter");
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -31,12 +49,21 @@ public class FuzzyPlayer extends PlatformerEntity {
 		currentAnim = faceRight ? "right" : "left";
 		
 		super.render(container, g);
+
+		if (jumpEffect!=null){
+			jumpEffect.render();
+		}
 	}
 	
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		super.update(container, delta);
+		
+		if (jumpEffect!=null){
+			jumpEffect.update(delta);
+			emitter.update(jumpEffect, delta);
+		}
 		
 		if (check(CMD_LEFT)) {
 			faceRight = false;

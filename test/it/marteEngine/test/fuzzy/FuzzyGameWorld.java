@@ -35,7 +35,7 @@ public class FuzzyGameWorld extends World {
 	private int total = -1;
 	private boolean levelEnd = false;
 
-	private int levelIndex = 1;
+	private int levelIndex = 3;
 	private int levelNumbers = 3;
 	private boolean gameEnd = false;
 	private boolean showTutorialPanel = true;
@@ -127,7 +127,7 @@ public class FuzzyGameWorld extends World {
 										img.getWidth(), img.getHeight(), img);
 								te.collidable = false;
 								te.depth = -100;
-								te.setAlpha(0.5f);
+								te.setAlpha(0.4f);
 								add(te);
 							} else if (type.equalsIgnoreCase("star")) {
 								// stars

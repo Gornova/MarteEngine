@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.newdawn.slick.AngelCodeFont;
+import org.newdawn.slick.BigImage;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
@@ -154,7 +155,7 @@ public class ResourceManager {
 		String file = map.getAttribute("file");
 		Log.debug("Trying to load tiled map file '" + file + "' at key '" + key
 				+ "'...");
-		TiledMap tiledMap = new TiledMap(baseDir + "/" + file);
+		TiledMap tiledMap = new TiledMap(baseDir + file);
 		maps.put(key, tiledMap);
 	}
 
@@ -243,14 +244,22 @@ public class ResourceManager {
 		if (images.get(key) != null)
 			throw new SlickException("Image for key " + key
 					+ " already existing!");
-		Image image;
 		if (baseDir != null && !file.startsWith(baseDir))
 			file = baseDir + file;
-		if (transparentColor != null)
-			image = new Image(file, transparentColor);
-		else
-			image = new Image(file);
-		images.put(key, image);
+		try {
+			Image image;
+			if (transparentColor != null)
+				image = new Image(file, transparentColor);
+			else
+				image = new Image(file);
+			images.put(key, image);
+		} catch (Exception e){
+			// for textures larger than 512x512 old cards throws error, try to use BigImage instead
+			Log.info("Texture too big for this hardware, try to use BigImage.. ignoring transparent color!");
+			BigImage image;
+			image = new BigImage(file);
+			images.put(key, image);			
+		}
 	}
 
 	public static Image getImage(String key) {

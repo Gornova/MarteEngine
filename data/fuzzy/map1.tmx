@@ -30,7 +30,7 @@
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Z207DMAyGIzbYGGUDdom0S6C8/wOSSI3mWY5zctN49Jd+qQssh69O4mTGrFq1jB6st0t3QrH21oelOwHk3udmMnyv4zLdiao3fq4/z5ND/eqJpUZ+lDDT2Gcp3Qu/FqLewX/kJxmLFL8RuLVK+M3Rz9Q67zn+UhjUstfGr6e918n1d1PoUN4dGiMsh3kerG+p/aP0vcD+5rpmfFS7B9P3/ktpSX6fyK6+o/Vp8ltF/TFx8ZYTi24cp0LXjC/ET5vcOPBa1OI+QQu/WCzuzXUOt5g3sF0N/GKC/Fq3K7meQn1Zf1v/CNXHSQs/PI84Rr5uqr7Q92A5lVtxOZwGflh+n6bWmpK/wfKcnATnXHgcI3qGnx+tnwq8C/Sxl/UP5lApOchgysbxbv1R4DPRR9+un0et1q9aubk+mFuGMX4+7naC5b5dnD/3dt7FcvNoMLcMY/xepv99FSzn7jEcQ7i+j8gwZlMsGdeYn3Ms//Pz9ixYfoy0m7IntDg3YVH8hoTv/c5crkWl/ELSxk/i/pTiR+UcNeqVX60gv4uhWVJrv5Tuhd8FOMRQIg6xeuJXMpdT44+a2xIse+JXIrf3c6zmntO98/N3CVvmmWPHzWnML3TO0Cx4lxN6loq/0DlDm2Bswbw99Jyy5lFMU/lpi0vu/pBSLjvv2vNviXLuNkt/y+bOipTmjr/cuOQY1fzeOtdvsbn8cte/3HKO0covXr7yqyvXxu8P9Rd1BgAyAAA=
+   H4sIAAAAAAAAC+2Z207DMAyGIzZgjLIBu0TaJTDe/wFJpEZ4luPm4Bw8+ku/NDKWJl/txE2NWbWqj+6st70HoVg7633vQQC5+7mZ7e/rZfaIGo2fG8/T7NC4RuKpkR+lC2H8XQ3dCr8Wou7Bf+MnHYsUPyoHWimHX41xxs5fe/yVsJOIkdH5UftCz/zAcuPdZBrX3aF5Ue2wzoP99do/cu8FHG+qS+ZHXXdvxt5/KfXk94Hs+jtYH2e/FvSfq9R1wc3jmOmS+YX4aZObB16LWpwnaOAXE4s785fDLfNGA78YQX6tryu5nkJ9Wn9Zfwv1x0kDPyqPOEa+b6q/0O9gO1VbcTXc6Pwo+X2aWmtyvoPtKTUJrrmout8L/31v/ZDhx8AYR1n/YA0VU4NMJm8eb9bvGT4RY/TX9XnUav0qlcv1yVwzXOLn4+5RsN1fF9fPIzzjcnJ5NJlrhkv8nuf/fRFs584xHEO4vuMzBBizMZaMa8zPean+83l7Emw/LFw3Zk9o8dyERfGbIn73U7ldi3L5haSFn9QZYogfVXOUaDR+UoL8zoZmSa39UroVfmfgEEOJOMQagV9JLsfGH5XbEixH4Fcit/dzrGrn9Oj8/FnClvnMseNyGvMLPWdoFjzLCX2Wir/Qc4Y2wdiCdXvoc8yaRzGN5actLrnzQ0qp7LxLn39zlHK2mfsum3tWpFQ7/lLjkmNU8r611rvYVH6p619qO8do5bfcvvIra9fG7xdc33qgADIAAA==
   </data>
  </layer>
  <layer name="player" width="80" height="40">
@@ -51,7 +51,7 @@
    <property name="type" value="star"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3XMQoAIAgAQF/s/8dWcQ4quwMhcNBBxCKAKk83AIxipwAn3byDskS0d8/33I7aAADwGncsAAAAk/jn8hPzDgDstADAfyYeADIAAA==
+   H4sIAAAAAAAAC+3XsQkAQAgDQCf+/ctvHUAQ4t0EKhK0CujedgFAFJkCbErKoMlekuYCAMAd7lgAAACS+HO5xL4DAJM+ophUlAAyAAA=
   </data>
  </layer>
  <layer name="enemies" width="80" height="40">
@@ -59,7 +59,7 @@
    <property name="type" value="enemies"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3XsQ0AMAgDMD4u/0+9oCNCFPuCLEQhAgBgvtMdAAAAYDl/GcB/dDsAvGV3ABioal+6RwAANrnZs63sADIAAA==
+   H4sIAAAAAAAAC+3XsQ0AMAgDMD5u/5+4okIl9gWZSKgCAPjfmQ4AAAAQzl8GsI/bznZ3OgAAhHm1L3U6AABJGt84tQwAMgAA
   </data>
  </layer>
 </map>

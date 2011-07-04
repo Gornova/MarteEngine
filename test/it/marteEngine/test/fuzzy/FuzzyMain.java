@@ -67,10 +67,11 @@ public class FuzzyMain extends StateBasedGame {
 			ME.keyToggleDebug = Input.KEY_1;
 			ME.keyRestart = Input.KEY_R;
 			ME.keyMuteMusic = Input.KEY_M;
+			ME.playMusic = false;
 			AppGameContainer container = new AppGameContainer(
 					new FuzzyMain());
 			container.setDisplayMode(640, 480, false);
-			container.setTargetFrameRate(60);
+			container.setTargetFrameRate(50);
 			container.setShowFPS(false);
 			container.start();
 		} catch (SlickException e) {

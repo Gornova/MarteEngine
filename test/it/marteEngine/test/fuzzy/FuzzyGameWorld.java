@@ -88,9 +88,11 @@ public class FuzzyGameWorld extends World {
 		add(new Background(0, 0), BELOW);
 		
 		time = 0;
-		
+
 		musicOne = ResourceManager.getMusic("song1");
-		musicOne.play();
+		if (ME.playMusic){
+			musicOne.play();
+		}
 	}
 	
 	private void computeWorldSize(int width, int height) {
@@ -241,8 +243,8 @@ public class FuzzyGameWorld extends World {
 		}
 
 		if (showTutorialPanel) {
-			String instructions = "Press WASD or ARROWS to move, X or UP to Jump";
-			ME.showMessage(container, g, 65, 440, 430, 35, 5, Color.darkGray,
+			String instructions = "Press WASD/ARROWS to move, X/UP to Jump, M mute/unmute music";
+			ME.showMessage(container, g, 40, 440, 550, 35, 5, Color.darkGray,
 					instructions, 5);
 		}
 
@@ -324,6 +326,10 @@ public class FuzzyGameWorld extends World {
 		if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
 			game.enterState(FuzzyMain.MENU_STATE, new FadeOutTransition(),
 					new FadeInTransition());
+		}
+		
+		if (ME.playMusic && !musicOne.playing()){
+			musicOne.play();
 		}
 		
 	}

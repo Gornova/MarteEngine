@@ -35,7 +35,7 @@ public class FuzzyGameWorld extends World {
 	private int total = -1;
 	private boolean levelEnd = false;
 
-	private int levelIndex = 3;
+	private int levelIndex = 1;
 	private int levelNumbers = 3;
 	private boolean gameEnd = false;
 	private boolean showTutorialPanel = true;

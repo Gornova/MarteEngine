@@ -62,18 +62,20 @@ public class FuzzyGameWorld extends World {
 		playerDead = false;
 
 		TiledMap map = ResourceManager.getMap("map" + levelIndex);
-		Log.info("Load map"+levelIndex);
+		Log.info("Load map" + levelIndex);
 		// make the world a bit bigger than the screen to force camera scrolling
 		computeWorldSize(map.getWidth(), map.getHeight());
 		blocked = new int[widthInTiles][heightInTiles];
 
-		loadEntityFromMap(map, Arrays.asList("entity", "background", "star", "enemies"));
+		loadEntityFromMap(map, Arrays.asList("entity", "background", "star",
+				"enemies", "spikes"));
 
 		PlatformerEntity player = loadPlayer(map, "player");
-		//old camera
-//		setCamera(new Camera(this, player, container.getWidth(),
-//				container.getHeight()));
-		setCamera(new Camera(this, player, container.getWidth(), container.getHeight(), 550, 170, player.maxSpeed));
+		// old camera
+		// setCamera(new Camera(this, player, container.getWidth(),
+		// container.getHeight()));
+		setCamera(new Camera(this, player, container.getWidth(),
+				container.getHeight(), 550, 170, player.maxSpeed));
 
 		add(new Background(0, 0), BELOW);
 	}
@@ -89,9 +91,10 @@ public class FuzzyGameWorld extends World {
 	 * Load entity from a tiled map into current World
 	 * 
 	 * @param map
-	 * @throws SlickException 
+	 * @throws SlickException
 	 */
-	public void loadEntityFromMap(TiledMap map, List<String> types) throws SlickException {
+	public void loadEntityFromMap(TiledMap map, List<String> types)
+			throws SlickException {
 		if (map == null) {
 			Log.error("unable to load map information");
 			return;
@@ -115,7 +118,7 @@ public class FuzzyGameWorld extends World {
 				int loaded = 0;
 				for (int w = 0; w < map.getWidth(); w++) {
 					for (int h = 0; h < map.getHeight(); h++) {
-						int tid = map.getTileId(w, h, layerIndex);						
+						int tid = map.getTileId(w, h, layerIndex);
 						Image img = map.getTileImage(w, h, layerIndex);
 						if (type.equals("entity"))
 							blocked[w][h] = NO_SOLID;
@@ -134,26 +137,39 @@ public class FuzzyGameWorld extends World {
 								Star star = new Star(w * img.getWidth(), h
 										* img.getHeight());
 								add(star);
-							} else if (type.equalsIgnoreCase("enemies")){
-								String enemyType =map.getTileProperty(tid, "type", null); 
-								if (enemyType!=null){
-									if (enemyType.equalsIgnoreCase("slime")){
-										// slime								
-										add(new FuzzyGreenSlime(w *32, h*32));								
+							} else if (type.equalsIgnoreCase("enemies")) {
+								String enemyType = map.getTileProperty(tid,
+										"type", null);
+								if (enemyType != null) {
+									if (enemyType.equalsIgnoreCase("slime")) {
+										// slime
+										add(new FuzzyGreenSlime(w * 32, h * 32));
+									} else if (enemyType
+											.equalsIgnoreCase("bat")) {
+										// slime
+										add(new FuzzyBat(w * 32, h * 32));
 									}
-									if (enemyType.equalsIgnoreCase("bat")){
-										// slime								
-										add(new FuzzyBat(w *32, h*32));								
-									}									
 								}
 							} else {
-								// blocks
-								StaticActor te = new StaticActor(w
-										* img.getWidth(), h * img.getHeight(),
-										img.getWidth(), img.getHeight(), img);
-								if (type.equals("entity"))
-									blocked[w][h] = SOLID;
-								add(te);
+								// spikes
+								String tileType = map.getTileProperty(tid,
+										"type", null);
+								if (tileType!= null && tileType.equals("spikes")) {
+									// spike
+									Spike spike = new Spike(w * img.getWidth(),
+											h * img.getHeight());
+									add(spike);
+								} else {
+									// blocks
+									StaticActor te = new StaticActor(w
+											* img.getWidth(), h
+											* img.getHeight(), img.getWidth(),
+											img.getHeight(), img);
+									if (type.equals("entity")) {
+										blocked[w][h] = SOLID;
+									}
+									add(te);
+								}
 							}
 							loaded++;
 						}
@@ -161,7 +177,7 @@ public class FuzzyGameWorld extends World {
 				}
 				Log.debug("Loaded " + loaded + " entities");
 			} else {
-				Log.info("Entity layer not found on map");
+				// Log.info("Entity layer not found on map");
 			}
 		}
 	}
@@ -274,7 +290,7 @@ public class FuzzyGameWorld extends World {
 		if (stars == 0 && getCount() > 0) {
 			Log.info("Level end");
 			levelEnd = true;
-			if (levelIndex+1 > levelNumbers) {
+			if (levelIndex + 1 > levelNumbers) {
 				gameEnd = true;
 				levelEnd = false;
 			}

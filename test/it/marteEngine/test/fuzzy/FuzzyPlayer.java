@@ -75,14 +75,22 @@ public class FuzzyPlayer extends PlatformerEntity {
 		if (speed.y < 0 && !jumpSnd.playing() && onGround){
 			jumpSnd.play();
 		}
+		
+		if(collide(Spike.SPIKE, x, y)!=null){
+			removePlayer();
+		}
 	}
 	
 	@Override
 	public void leftWorldBoundaries() {
 		if (y > 0){
-			ME.world.remove(this);
-			FuzzyGameWorld.playerDead = true;
+			removePlayer();
 		}
+	}
+
+	private void removePlayer() {
+		ME.world.remove(this);
+		FuzzyGameWorld.playerDead = true;
 	}
 
 }

@@ -21,6 +21,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 //TODO modify hitbox coordinates to a real shape without changing method interface.
@@ -864,6 +865,25 @@ public abstract class Entity implements Comparable<Entity> {
 
 	public String toCsv(){
 		return ""+(int)x+","+(int)y+","+name+","+type.iterator().next();
+	}
+
+	
+	/**
+	 * @param shape to check
+	 * @return entity that intersect with theri hitboxes given shape
+	 */
+	public List<Entity> intersect(Shape shape){
+		if (shape == null) return null;
+		List<Entity> result = new ArrayList<Entity>();
+		for (Entity entity : world.getEntities()) {
+			if (entity.collidable && !entity.equals(this)) {
+				Rectangle rec = new Rectangle(entity.x, entity.y, entity.width, entity.height);
+				if (shape.intersects(rec)){
+					result.add(entity);
+				}
+			}
+		}
+		return result;
 	}
 	
 }

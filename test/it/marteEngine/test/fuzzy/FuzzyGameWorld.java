@@ -8,7 +8,9 @@ import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.game.starcleaner.Background;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -45,6 +47,9 @@ public class FuzzyGameWorld extends World {
 	private int widthInTiles;
 	private int heightInTiles;
 	private int[][] blocked;
+	
+	private long time = 0;
+	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 
 	public FuzzyGameWorld(int id) {
 		super(id);
@@ -78,8 +83,10 @@ public class FuzzyGameWorld extends World {
 				container.getHeight(), 550, 170, player.maxSpeed));
 
 		add(new Background(0, 0), BELOW);
+		
+		time = 0;
 	}
-
+	
 	private void computeWorldSize(int width, int height) {
 		this.widthInTiles = width;
 		this.heightInTiles = height;
@@ -217,6 +224,9 @@ public class FuzzyGameWorld extends World {
 		// render gui
 		String text = "Collected stars " + (total - stars) + "/" + total;
 		ME.showMessage(container, g, 5, 5, 200, 35, 5, Color.darkGray, text, 5);
+		
+		text = "Time " + sdf.format(new Date(time));
+		ME.showMessage(container, g, 470, 5, 110, 35, 5, Color.darkGray, text, 5);
 
 		if (!ME.playMusic) {
 			g.drawImage(ResourceManager.getImage("volumeOff"), 600, 5);
@@ -277,7 +287,8 @@ public class FuzzyGameWorld extends World {
 			return;
 		}
 		super.update(container, game, delta);
-
+		time+=delta;
+		
 		if (container.getInput().isKeyPressed(Input.KEY_F1)) {
 			showTutorialPanel = showTutorialPanel ? false : true;
 		}

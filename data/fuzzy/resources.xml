@@ -18,6 +18,7 @@
 	<sound key="pickupstar" file="pickupstar.wav" />
 	<sound key="allpickedup" file="allstarscollected.wav" />
 	<!-- songs -->
+	<music key="song1" file ="2685__TexasMusicForge__Genes.ogg" />	
 	<!-- images -->
 	<image key="block" file="block.png" />
 	<image key="player" file="blockRed.png" />

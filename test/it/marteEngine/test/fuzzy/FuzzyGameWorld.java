@@ -18,6 +18,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
@@ -50,6 +51,8 @@ public class FuzzyGameWorld extends World {
 	
 	private long time = 0;
 	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+	
+	private Music musicOne;
 
 	public FuzzyGameWorld(int id) {
 		super(id);
@@ -85,6 +88,9 @@ public class FuzzyGameWorld extends World {
 		add(new Background(0, 0), BELOW);
 		
 		time = 0;
+		
+		musicOne = ResourceManager.getMusic("song1");
+		musicOne.play();
 	}
 	
 	private void computeWorldSize(int width, int height) {
@@ -319,6 +325,7 @@ public class FuzzyGameWorld extends World {
 			game.enterState(FuzzyMain.MENU_STATE, new FadeOutTransition(),
 					new FadeInTransition());
 		}
+		
 	}
 
 	private void nextLevel(GameContainer container, StateBasedGame game)

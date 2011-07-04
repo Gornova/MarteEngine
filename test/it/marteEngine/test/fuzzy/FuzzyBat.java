@@ -37,24 +37,24 @@ public class FuzzyBat extends Entity {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		distanceFromPlayer= getDistanceFromPlayer();
-
-		if (distanceFromPlayer!=null){
-			if (Math.abs(distanceFromPlayer.x) <=32*3 || Math.abs(distanceFromPlayer.y) <= 32*3 ){
-				if (motion==null){
-					setMoveTo(ME.world.find(Entity.PLAYER));
-				} else {
-					motion.update(delta);
-					if (!motion.isFinished()){
-						this.x = motion.getX();
-						this.y = motion.getY();
-					} else {
-						motion = null;
-					}
-					return ;
-				}
-			}
-		}
+//		distanceFromPlayer= getDistanceFromPlayer();
+//
+//		if (distanceFromPlayer!=null){
+//			if (Math.abs(distanceFromPlayer.x) <=32*3 || Math.abs(distanceFromPlayer.y) <= 32*3 ){
+//				if (motion==null){
+//					setMoveTo(ME.world.find(Entity.PLAYER));
+//				} else {
+//					motion.update(delta);
+//					if (!motion.isFinished()){
+//						this.x = motion.getX();
+//						this.y = motion.getY();
+//					} else {
+//						motion = null;
+//					}
+//					return ;
+//				}
+//			}
+//		}
 		
 		
 		super.update(container, delta);

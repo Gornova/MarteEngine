@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- possible resource settings are valid, transparentColor is optional 
+	<sound key="" file="" />
+	<music key="" file="" />
+	<image key="" file="" transparentColor=""/> 
+	<sheet key="" file="" width="" height="" transparentColor=""/>
+	<angelcodefont key="" fontFile="" imageFile=""/>
+	<int key="" value="">
+	<float key="" value=""> 
+	<string key="" value="">
+-->
+	
+<resources>
+	<!-- basedir -->
+	<basedir path="data/zombie" />
+	<!-- sounds -->
+	<!-- songs -->
+	<!-- images -->
+	<image key="player" file="player.gif" transparentColor=""/>
+	<image key="zombie" file="zombie-icons-64.png" />
+	
+	<image key="wait" file="face-sleep.png" />
+	<image key="alert" file="icon-exclamation.gif" />
+	<image key="move" file="move.png" />
+	<image key="attack" file="sword-icon.png" />
+	
+	<!-- sheets -->
+	<!-- fonts -->
+</resources>

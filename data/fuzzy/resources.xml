@@ -29,6 +29,7 @@
 	<image key="volumeOff" file="volumeOff.png" />
 	<image key="menu" file="menu.png" />
 	<image key="spike" file="spikes.png" />
+	<image key="heart" file="heart.png" />
 	<!-- sheets -->
 	<sheet key="left" file="walkLeft.png" width="22" height="30"/>
 	<sheet key="right" file="walkRight.png" width="22" height="30"/>

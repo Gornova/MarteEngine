@@ -23,6 +23,8 @@ public class FuzzyPlayer extends PlatformerEntity {
 	private ParticleSystem jumpEffect;
 	private ConfigurableEmitter  emitter;
 	
+	public static int life = 3;
+	
 	public FuzzyPlayer(float x, float y, String ref)
 			throws SlickException {
 		super(x, y, 22, 30);
@@ -77,7 +79,12 @@ public class FuzzyPlayer extends PlatformerEntity {
 		}
 		
 		if(collide(Spike.SPIKE, x, y)!=null){
-			removePlayer();
+			if (life > 0){
+				life -=1;
+				jump();
+			} else {
+				removePlayer();
+			}
 		}
 	}
 	

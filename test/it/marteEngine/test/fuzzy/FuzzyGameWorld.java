@@ -53,6 +53,8 @@ public class FuzzyGameWorld extends World {
 	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 	
 	private Music musicOne;
+	
+	private Image heart;
 
 	public FuzzyGameWorld(int id) {
 		super(id);
@@ -93,6 +95,9 @@ public class FuzzyGameWorld extends World {
 		if (ME.playMusic){
 			musicOne.play();
 		}
+		
+		heart = ResourceManager.getImage("heart");
+		FuzzyPlayer.life = 3;
 	}
 	
 	private void computeWorldSize(int width, int height) {
@@ -240,6 +245,11 @@ public class FuzzyGameWorld extends World {
 			g.drawImage(ResourceManager.getImage("volumeOff"), 600, 5);
 		} else {
 			g.drawImage(ResourceManager.getImage("volumeOn"), 600, 5);
+		}
+		
+		int base = 220;
+		for (int i = 1; i <= FuzzyPlayer.life; i++ ){
+			g.drawImage(heart, base + i*50, 5);
 		}
 
 		if (showTutorialPanel) {

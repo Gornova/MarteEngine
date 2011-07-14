@@ -6,6 +6,7 @@ import it.marteEngine.World;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -84,12 +85,12 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	private Color color = new Color(Color.white);
 
-	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
-	private Hashtable<String,Alarm> addableAlarms = new Hashtable<String, Alarm>();
+	private HashMap<String, Alarm> alarms = new HashMap<String, Alarm>();
+	private HashMap<String,Alarm> addableAlarms = new HashMap<String, Alarm>();
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
-	public Hashtable<String, Animation> animations = new Hashtable<String, Animation>();
+	public HashMap<String, Animation> animations = new HashMap<String, Animation>();
 	public String currentAnim;
 	public int duration = 200;
 	public int depth = -1;
@@ -797,7 +798,7 @@ public abstract class Entity implements Comparable<Entity> {
 					boolean retval = alarm.update(delta);
 					if (retval) {
 						alarmTriggered(alarm.getName());
-						if (alarm.isOneShotAlaram()) {
+						if (alarm.isOneShotAlarm()) {
 							alarm.setActive(false);
 						} else {
 							alarm.start();

@@ -101,7 +101,7 @@ public class Alarm {
 		return counter;
 	}
 
-	public boolean isOneShotAlaram() {
+	public boolean isOneShotAlarm() {
 		return oneShotAlaram;
 	}
 

@@ -7,17 +7,20 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 
-public class EmitterEntity extends Entity {
+public class ParticlesEntity extends Entity {
 	
 	public static final String EMITTERTYPE = "ParticleEmitter";
 
-//	private ParticleSystem system = null;
-	private ConfigurableEmitter emitter = null;
+	/** used for ParticlesEntities that come with their own system because they have multiple emitters from Pedigree */
+	private ParticleSystem system = null;
+//	private ConfigurableEmitter emitter = null;
+	private ParticleEmitter emitter = null;
 	
-	public EmitterEntity(float x, float y, Image particle, String emitterFile) {
+	public ParticlesEntity(float x, float y, Image particle, String emitterFile) {
 		this(x, y, particle, (ConfigurableEmitter) null);
 		try {
 			emitter = ParticleIO.loadEmitter(emitterFile);
@@ -26,42 +29,58 @@ public class EmitterEntity extends Entity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
-	public EmitterEntity(float x, float y, Image particle, ConfigurableEmitter emitter) {
+	public ParticlesEntity(float x, float y, Image particle, ConfigurableEmitter emitter) {
 		this(x, y, particle, emitter, 100);
 	}
 
-	public EmitterEntity(float x, float y, Image particle, ConfigurableEmitter emitter, int maxParticles) {
+	public ParticlesEntity(float x, float y, Image particle, ConfigurableEmitter emitter, int maxParticles) {
 		super(x, y);
 		if (emitter != null)
 			this.emitter = emitter.duplicate();
 		addType(EMITTERTYPE);
 	}
 	
+	public ParticlesEntity(float x, float y, ParticleEmitter particleEmitter) {
+		super(x,y);
+		this.emitter = particleEmitter;
+		addType(EMITTERTYPE);
+	}
+	
 	@Override
 	public void addedToWorld() {
-		if (emitter != null) {
+		if (emitter != null && system == null) {
 			world.particleSystem.addEmitter(emitter);
 			emitter.setEnabled(true);
+		} else if (system != null) {
+			system.reset();
+			system.setVisible(true);
 		}
 	}
 	
 	@Override
 	public void removedFromWorld() {
 		// some cleanup code
-		if (emitter != null)
+		if (emitter != null && system == null)
 			world.particleSystem.removeEmitter(emitter);
+		if (system != null) {
+			system.setVisible(false);
+			system = null;
+		}
 	}
 	
 	public void update(GameContainer container, int delta) throws SlickException {
 		//TODO what do we want to react on?
 		super.update(container, delta);
-		if (emitter != null) {
-			emitter.setPosition(x, y);
+		if (emitter != null && emitter instanceof ConfigurableEmitter) {
+			((ConfigurableEmitter)emitter).setPosition(x, y);
+		} else if (system != null) {
+			system.setPosition(x, y);
 		}
 		if (emitter.completed()) {
+			if (system != null)
+				system = null;
 			this.destroy();
 		}
 	}

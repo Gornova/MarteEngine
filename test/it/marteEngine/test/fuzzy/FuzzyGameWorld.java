@@ -250,7 +250,7 @@ public class FuzzyGameWorld extends World {
 		}
 
 		int base = 220;
-		for (int i = 1; i <= FuzzyPlayer.life; i++) {
+		for (int i = 0; i <= FuzzyPlayer.life - 1; i++) {
 			g.drawImage(heart, base + i * 50, 5);
 		}
 

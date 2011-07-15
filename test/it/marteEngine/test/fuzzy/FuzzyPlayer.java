@@ -98,8 +98,8 @@ public class FuzzyPlayer extends PlatformerEntity {
 	}
 
 	public void damage() {
+		life -= 1;
 		if (life > 0) {
-			life -= 1;
 			jump();
 		} else {
 			removePlayer();

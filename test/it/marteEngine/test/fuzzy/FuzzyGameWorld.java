@@ -5,6 +5,7 @@ import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
+import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.game.starcleaner.Background;
 
@@ -38,8 +39,8 @@ public class FuzzyGameWorld extends World {
 	private int total = -1;
 	private boolean levelEnd = false;
 
-	private int levelIndex = 1;
-	private int levelNumbers = 3;
+	private int levelIndex = 4;
+	private int levelNumbers = 5;
 	private boolean gameEnd = false;
 	private boolean showTutorialPanel = true;
 	private Sound allpickedup;
@@ -74,7 +75,7 @@ public class FuzzyGameWorld extends World {
 		TiledMap map = ResourceManager.getMap("map" + levelIndex);
 		Log.info("Load map" + levelIndex);
 		// make the world a bit bigger than the screen to force camera scrolling
-		computeWorldSize(map.getWidth(), map.getHeight());
+		computeWorldSize(map);
 		blocked = new int[widthInTiles][heightInTiles];
 
 		loadEntityFromMap(map, Arrays.asList("entity", "background", "star",
@@ -98,9 +99,15 @@ public class FuzzyGameWorld extends World {
 
 		heart = ResourceManager.getImage("heart");
 		FuzzyPlayer.life = 3;
+
+		define("layer", Input.KEY_L);
 	}
 
-	private void computeWorldSize(int width, int height) {
+	private void computeWorldSize(TiledMap map) {
+		if (map == null)
+			return;
+		int width = map.getWidth();
+		int height = map.getHeight();
 		this.widthInTiles = width;
 		this.heightInTiles = height;
 		this.setWidth(width * 32);
@@ -150,6 +157,7 @@ public class FuzzyGameWorld extends World {
 										img.getWidth(), img.getHeight(), img);
 								te.collidable = false;
 								te.depth = -100;
+								te.collidable = false;
 								te.setAlpha(0.4f);
 								add(te);
 							} else if (type.equalsIgnoreCase("star")) {
@@ -344,6 +352,11 @@ public class FuzzyGameWorld extends World {
 			musicOne.play();
 		}
 
+		if (pressed("layer")) {
+			Log.info("layer switch!");
+			switchLayer();
+		}
+
 	}
 
 	private void nextLevel(GameContainer container, StateBasedGame game)
@@ -374,6 +387,19 @@ public class FuzzyGameWorld extends World {
 		if (ty < 0 || ty >= heightInTiles)
 			return false;
 		return blocked[tx][ty] != NO_SOLID;
+	}
+
+	private void switchLayer() {
+		for (Entity entity : getEntities()) {
+			if (entity instanceof StaticActor) {
+				entity.collidable = entity.collidable ? false : true;
+				if (entity.collidable) {
+					entity.setAlpha(1);
+				} else {
+					entity.setAlpha(0.4f);
+				}
+			}
+		}
 	}
 
 }

@@ -5,11 +5,13 @@ import it.marteEngine.entity.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
@@ -50,6 +52,9 @@ public class World extends BasicGameState {
 	public Camera camera;
 
 	public int renderedEntities;
+
+	/** available commands for world **/
+	protected Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
 
 	public World(int id) {
 		this.id = id;
@@ -129,7 +134,7 @@ public class World extends BasicGameState {
 	private void renderEntity(Entity e, Graphics g, GameContainer container)
 			throws SlickException {
 		renderedEntities++;
-		if (ME.debugEnabled) {
+		if (ME.debugEnabled && e.collidable) {
 			g.setColor(ME.borderColor);
 			Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
 					+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
@@ -407,6 +412,68 @@ public class World extends BasicGameState {
 	 */
 	public int getCount() {
 		return entities.size();
+	}
+
+	/**
+	 * define commands to handle inputs
+	 * 
+	 * @param command
+	 *            name of the command
+	 * @param keys
+	 *            keys or mouse input from {@link Input} class
+	 */
+	public void define(String command, int... keys) {
+		commands.put(command, keys);
+	}
+
+	/**
+	 * Check if a command is down
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean check(String command) {
+		int[] checked = commands.get(command);
+		if (checked == null)
+			return false;
+		for (int i = 0; i < checked.length; i++) {
+			if (this.container.getInput().isKeyDown(checked[i])) {
+				return true;
+			} else if (checked[i] < 10) {
+				/**
+				 * 10 is max number of button on a mouse
+				 * 
+				 * @see Input
+				 */
+				if (this.container.getInput().isMousePressed(checked[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if a command is pressed
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean pressed(String command) {
+		int[] checked = commands.get(command);
+		if (checked == null)
+			return false;
+		for (int i = 0; i < checked.length; i++) {
+			if (this.container.getInput().isKeyPressed(checked[i])) {
+				return true;
+			} else if (checked[i] == Input.MOUSE_LEFT_BUTTON
+					|| checked[i] == Input.MOUSE_RIGHT_BUTTON) {
+				if (this.container.getInput().isMousePressed(checked[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

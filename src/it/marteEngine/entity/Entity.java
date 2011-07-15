@@ -274,7 +274,7 @@ public abstract class Entity implements Comparable<Entity> {
 			if (scale != 1.0f)
 				g.resetTransform();
 		}
-		if (ME.debugEnabled) {
+		if (ME.debugEnabled && collidable) {
 			g.setColor(ME.borderColor);
 			Rectangle hitBox = new Rectangle(x + hitboxOffsetX, y
 					+ hitboxOffsetY, hitboxWidth, hitboxHeight);

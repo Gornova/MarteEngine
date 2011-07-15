@@ -142,12 +142,12 @@ public class ResourceManager {
 		String type = sprite.getAttribute("type");
 
 		List<SpriteInfo> infos = spriteInfo.get(spriteSheetKey);
-		if (infos == null){
+		if (infos == null) {
 			infos = new ArrayList<SpriteInfo>();
 		}
 		infos.add(new SpriteInfo(id, type));
 		Collections.sort(infos);
-		spriteInfo.put(spriteSheetKey,infos);
+		spriteInfo.put(spriteSheetKey, infos);
 	}
 
 	public static void loadTiledMap(Element map) throws SlickException {
@@ -253,12 +253,13 @@ public class ResourceManager {
 			else
 				image = new Image(file);
 			images.put(key, image);
-		} catch (Exception e){
-			// for textures larger than 512x512 old cards throws error, try to use BigImage instead
+		} catch (Exception e) {
+			// for textures larger than 512x512 old cards throws error, try to
+			// use BigImage instead
 			Log.info("Texture too big for this hardware, try to use BigImage.. ignoring transparent color!");
 			BigImage image;
 			image = new BigImage(file);
-			images.put(key, image);			
+			images.put(key, image);
 		}
 	}
 
@@ -268,7 +269,7 @@ public class ResourceManager {
 			Log.error("No image for key " + key + " found!");
 		return image;
 	}
-	
+
 	private static void loadSpriteSheet(Element sprsheet) throws SlickException {
 		String key = sprsheet.getAttribute("key");
 		String file = sprsheet.getAttribute("file");
@@ -314,7 +315,7 @@ public class ResourceManager {
 			Log.error("No SpriteSheet for key " + key + " found!");
 		return spriteSheet;
 	}
-	
+
 	public static HashMap<String, SpriteSheet> getSpriteSheets() {
 		return sheets;
 	}
@@ -439,42 +440,43 @@ public class ResourceManager {
 		return sfxVolume;
 	}
 
-	public static List<SpriteInfo> getSpriteInfo(String spriteSheet){
-		List<SpriteInfo> infos = spriteInfo.get(spriteSheet) ;
-		if (infos==null){
-			Log.error("No sprite info found for spritesheet with key "+spriteSheet);
+	public static List<SpriteInfo> getSpriteInfo(String spriteSheet) {
+		List<SpriteInfo> infos = spriteInfo.get(spriteSheet);
+		if (infos == null) {
+			Log.error("No sprite info found for spritesheet with key "
+					+ spriteSheet);
 		}
 		return infos;
 	}
-	
-	public static SpriteInfo getSpriteInfo(String spriteSheet, String id){
+
+	public static SpriteInfo getSpriteInfo(String spriteSheet, String id) {
 		List<SpriteInfo> infos = getSpriteInfo(spriteSheet);
-		if (infos!=null){
+		if (infos != null) {
 			for (SpriteInfo spriteInfo : infos) {
-				if (spriteInfo.getId().equalsIgnoreCase(id)){
+				if (spriteInfo.getId().equalsIgnoreCase(id)) {
 					return spriteInfo;
 				}
 			}
 		}
 		return null;
 	}
-	
-	public static ArrayList<Image> getImagesAsListWithoutKeys(List<String> keys){
+
+	public static ArrayList<Image> getImagesAsListWithoutKeys(List<String> keys) {
 		ArrayList<Image> list = new ArrayList<Image>();
 		for (String key : images.keySet()) {
-			if (key!=null){
+			if (key != null) {
 				boolean found = false;
 				for (String without : keys) {
-					if (key.contains(without)){
+					if (key.contains(without)) {
 						found = true;
 					}
 				}
-				if (!found){
+				if (!found) {
 					list.add(images.get(key));
 				}
 			}
 		}
 		return list;
-	}	
-	
+	}
+
 }

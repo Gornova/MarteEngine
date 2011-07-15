@@ -12,7 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
 /**
- * Test for Tiled (http://mapeditor.org) support 
+ * Test for Tiled (http://mapeditor.org) support
  * 
  * @author Gornova
  */
@@ -27,7 +27,7 @@ public class TiledTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		// init test resources 
+		// init test resources
 		initRessources();
 		addState(new TiledWorld(1, container));
 	}
@@ -42,10 +42,10 @@ public class TiledTest extends StateBasedGame {
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-		
+
 		ressourcesInited = true;
-	}	
-	
+	}
+
 	public static void main(String[] argv) {
 		try {
 			AppGameContainer container = new AppGameContainer(new TiledTest());

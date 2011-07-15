@@ -14,7 +14,7 @@ public class ZombieWorld extends World {
 	public ZombieWorld(int id) {
 		super(id);
 	}
-	
+
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -25,23 +25,25 @@ public class ZombieWorld extends World {
 
 		Player player = new Player(500, 200, ResourceManager.getImage("player"));
 		add(player, GAME);
-		
-		//setCameraOn(player);
+
+		// setCameraOn(player);
 	}
-	
+
 	@Override
 	public void enter(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.enter(container, game);
 		ME.world = this;
 	}
-	
+
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		super.render(container, game, g);
-		
-		g.drawString("Use arrows or WASD to move into Zombie area and see state changing", 5, 580);
+
+		g.drawString(
+				"Use arrows or WASD to move into Zombie area and see state changing",
+				5, 580);
 	}
 
 }

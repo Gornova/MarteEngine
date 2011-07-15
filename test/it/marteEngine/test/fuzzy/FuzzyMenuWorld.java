@@ -14,11 +14,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-
 public class FuzzyMenuWorld extends World {
 
 	public static boolean gotoGame = false;
-	
+
 	public FuzzyMenuWorld(int id) {
 		super(id);
 	}
@@ -29,50 +28,53 @@ public class FuzzyMenuWorld extends World {
 		super.init(container, game);
 		add(new Background(0, 0, ResourceManager.getImage("menu")));
 		add(new Space(220, 400));
-		add(new TextEntity(160,100, ResourceManager.getAngelCodeFont("font"), "Alpha demo"));
+		add(new TextEntity(160, 100, ResourceManager.getAngelCodeFont("font"),
+				"Alpha demo"));
 	}
-	
+
 	@Override
 	public void enter(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.enter(container, game);
 		gotoGame = false;
 	}
-	
+
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		super.render(container, game, g);
-		
+
 		FuzzyMain.font.drawString(90, 50, "Fuzzy Platformer");
-		
-		drawScaled(g,0.5f,"http://randomtower.blogspot.com",200, 880);
+
+		drawScaled(g, 0.5f, "http://randomtower.blogspot.com", 200, 880);
 	}
 
-	private void drawScaled(Graphics g, float scale, String text, float x, float y) {
+	private void drawScaled(Graphics g, float scale, String text, float x,
+			float y) {
 		g.scale(scale, scale);
-		FuzzyMain.font.drawString(x,y, text);
+		FuzzyMain.font.drawString(x, y, text);
 		g.resetTransform();
-	}	
-	
+	}
+
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		super.update(container, game, delta);
-		
-		if (gotoGame){
-			game.enterState(FuzzyMain.GAME_STATE, new FadeOutTransition(), new FadeInTransition());
+
+		if (gotoGame) {
+			game.enterState(FuzzyMain.GAME_STATE, new FadeOutTransition(),
+					new FadeInTransition());
 		}
 	}
-	
-	private class Space extends Entity{
+
+	private class Space extends Entity {
 
 		private boolean up = false;
-		
+
 		public Space(float x, float y) {
 			super(x, y);
 		}
-		
+
 		@Override
 		public void addedToWorld() {
 			setAlarm("jump", 15, false, true);
@@ -82,33 +84,33 @@ public class FuzzyMenuWorld extends World {
 		public void render(GameContainer container, Graphics g)
 				throws SlickException {
 			super.render(container, g);
-			
-			drawScaled(g,0.6f,"Press Space to start",x, y);			
+
+			drawScaled(g, 0.6f, "Press Space to start", x, y);
 		}
 
 		@Override
 		public void alarmTriggered(String name) {
-			if (name.equalsIgnoreCase("jump")){
+			if (name.equalsIgnoreCase("jump")) {
 				up = up ? false : true;
 			}
 		}
-		
+
 		@Override
 		public void update(GameContainer container, int delta)
 				throws SlickException {
 			super.update(container, delta);
-			
-			if (up){
+
+			if (up) {
 				y--;
 			} else {
 				y++;
 			}
-			
-			if (container.getInput().isKeyPressed(Input.KEY_SPACE)){
+
+			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
 				FuzzyMenuWorld.gotoGame = true;
 			}
 		}
-		
+
 	}
-	
+
 }

@@ -63,7 +63,7 @@ public class Star extends Entity {
 		if (toRemove) {
 			// if to remove, apply effects
 			setAlpha(fadeTween.getValue());
-			
+
 			ty -= moveUpTween.getValue();
 			FuzzyMain.font.drawString(x, ty, "100");
 		}

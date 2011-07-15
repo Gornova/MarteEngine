@@ -12,15 +12,17 @@ public class LinearMotion extends Motion {
 	private float moveY;
 	private float speed = 1.0f;
 	private float distance = -1f;
-	
+
 	public LinearMotion(float fromX, float fromY, float toX, float toY,
 			float duration, int easeFunction) {
-		this(fromX,fromY,toX,toY,1.0f, TweenerMode.ONESHOT, duration,easeFunction);
+		this(fromX, fromY, toX, toY, 1.0f, TweenerMode.ONESHOT, duration,
+				easeFunction);
 	}
 
 	public LinearMotion(float fromX, float fromY, float toX, float toY,
 			float speed, float duration, int easeFunction) {
-		this(fromX, fromY, toX, toY, speed, TweenerMode.ONESHOT, duration, easeFunction);
+		this(fromX, fromY, toX, toY, speed, TweenerMode.ONESHOT, duration,
+				easeFunction);
 	}
 
 	public LinearMotion(float fromX, float fromY, float toX, float toY,
@@ -29,7 +31,8 @@ public class LinearMotion extends Motion {
 	}
 
 	public LinearMotion(float fromX, float fromY, float toX, float toY,
-			float speed, TweenerMode type, float duration, int easeFunction, boolean deltaMode) {
+			float speed, TweenerMode type, float duration, int easeFunction,
+			boolean deltaMode) {
 		super(duration, type, easeFunction, false, true);
 		this.distance = -1f;
 		this.x = this.fromX = fromX;
@@ -51,9 +54,9 @@ public class LinearMotion extends Motion {
 		x = fromX + moveX * t;
 		y = fromY + moveY * t;
 	}
-	
+
 	public Vector2f getPosition() {
-		return new Vector2f(x,y);
+		return new Vector2f(x, y);
 	}
 
 }

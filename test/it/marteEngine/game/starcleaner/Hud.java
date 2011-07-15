@@ -12,15 +12,15 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.RoundedRectangle;
 
-
 /**
- * The HUD class responsible for showing score and so on.
- * Also the Game Maker like controller class which deals with input that should be handled for the world.
- * This way we avoid adding input dealing code to the WorldGameState class.
- * Just add some visible or invisible controller class to your world and handle input there.
+ * The HUD class responsible for showing score and so on. Also the Game Maker
+ * like controller class which deals with input that should be handled for the
+ * world. This way we avoid adding input dealing code to the WorldGameState
+ * class. Just add some visible or invisible controller class to your world and
+ * handle input there.
  * 
  * @author Thomas
- *
+ * 
  */
 public class Hud extends Entity {
 
@@ -28,7 +28,7 @@ public class Hud extends Entity {
 	private static final String CMD_PREVIOUS = "previousLevel";
 
 	private AngelCodeFont font;
-	
+
 	public Hud(float x, float y) {
 		super(x, y);
 		this.name = "HUD";
@@ -38,8 +38,9 @@ public class Hud extends Entity {
 		this.define(CMD_NEXT, Input.KEY_N);
 		this.define(CMD_PREVIOUS, Input.KEY_P);
 	}
-	
-	public void render(GameContainer container, Graphics g) throws SlickException {
+
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
 		IngameState state = (IngameState) this.world;
 		RoundedRectangle r = new RoundedRectangle(x, y,
 				container.getWidth() - 1, 40, 20);
@@ -51,15 +52,17 @@ public class Hud extends Entity {
 		g.fill(r);
 		g.draw(r);
 		g.setColor(Color.white);
-		g.drawString("Score: " + state.score, x+5, y+1);
-		g.drawString("Seconds left: " + state.timeLeft, x+205, y+1);
-		g.drawString("Stars left: " + state.getNrOfEntities(Star.STAR_TYPE), x + 465, y+1);
-		
+		g.drawString("Score: " + state.score, x + 5, y + 1);
+		g.drawString("Seconds left: " + state.timeLeft, x + 205, y + 1);
+		g.drawString("Stars left: " + state.getNrOfEntities(Star.STAR_TYPE),
+				x + 465, y + 1);
+
 		g.setFont(oldFont);
 
 	}
 
-	public void update(GameContainer container, int delta) throws SlickException {
+	public void update(GameContainer container, int delta)
+			throws SlickException {
 		if (check(CMD_NEXT)) {
 			Globals.levelDone = true;
 			Globals.playerCheated = true;

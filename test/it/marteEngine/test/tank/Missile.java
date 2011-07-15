@@ -17,13 +17,13 @@ public class Missile extends Entity {
 
 	public Missile(float x, float y, int angle) {
 		super(x, y);
-		this.angle =angle;
+		this.angle = angle;
 		setGraphic(ResourceManager.getImage("missile"));
-		
+
 		addType(SOLID);
 		setHitBox(0, 0, 8, 8);
 	}
-	
+
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
@@ -32,14 +32,14 @@ public class Missile extends Entity {
 		Vector2f vectorSpeed = calculateVector(angle, 8);
 		dx += vectorSpeed.x;
 		dy += vectorSpeed.y;
-		x+=dx;
-		y+=dy;
-		
+		x += dx;
+		y += dy;
+
 		collide(SOLID, x, y);
-		
+
 		super.update(container, delta);
 	}
-	
+
 	@Override
 	public void collisionResponse(Entity other) {
 		ME.world.remove(this);

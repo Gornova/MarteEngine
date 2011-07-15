@@ -24,24 +24,21 @@ public class FuzzyMain extends StateBasedGame {
 	public static final int GAME_STATE = 1;
 
 	private static boolean ressourcesInited;
-	
+
 	public static AngelCodeFont font;
 
-
 	public FuzzyMain() {
-		super("ScrollingPlatformerTest MarteEngine");
+		super("Fuzzy");
 	}
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		initRessources();
-		
+
 		font = ResourceManager.getAngelCodeFont("font");
-		
-		FuzzyGameWorld gameState = new FuzzyGameWorld(
-				GAME_STATE);
-		FuzzyMenuWorld menuState = new FuzzyMenuWorld(
-				MENU_STATE);
+
+		FuzzyGameWorld gameState = new FuzzyGameWorld(GAME_STATE);
+		FuzzyMenuWorld menuState = new FuzzyMenuWorld(MENU_STATE);
 
 		addState(menuState);
 		addState(gameState);
@@ -51,8 +48,7 @@ public class FuzzyMain extends StateBasedGame {
 		if (ressourcesInited)
 			return;
 		try {
-			ResourceManager
-					.loadResources("data/fuzzy/resources.xml");
+			ResourceManager.loadResources("data/fuzzy/resources.xml");
 		} catch (IOException e) {
 			Log.error("failed to load ressource file 'data/fuzzy/resources.xml': "
 					+ e.getMessage());
@@ -67,9 +63,8 @@ public class FuzzyMain extends StateBasedGame {
 			ME.keyToggleDebug = Input.KEY_1;
 			ME.keyRestart = Input.KEY_R;
 			ME.keyMuteMusic = Input.KEY_M;
-			ME.playMusic = true;
-			AppGameContainer container = new AppGameContainer(
-					new FuzzyMain());
+			ME.playMusic = false;
+			AppGameContainer container = new AppGameContainer(new FuzzyMain());
 			container.setDisplayMode(640, 480, false);
 			container.setTargetFrameRate(50);
 			container.setShowFPS(false);

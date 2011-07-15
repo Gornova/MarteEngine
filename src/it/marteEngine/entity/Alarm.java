@@ -3,9 +3,12 @@ package it.marteEngine.entity;
 import it.marteEngine.ME;
 
 public class Alarm {
-	/** we want some alarms to ignore the trigger time. They can only be triggered by Entity.triggerAlarm() */
+	/**
+	 * we want some alarms to ignore the trigger time. They can only be
+	 * triggered by Entity.triggerAlarm()
+	 */
 	public static final int FOREVER = -666;
-	
+
 	/** the name of this alarm */
 	private String name;
 	/** is this alarm active or not */
@@ -20,23 +23,34 @@ public class Alarm {
 	private boolean dead = false;
 	/** this alarm is only triggered by calling trigger() */
 	private boolean triggeredExternal = false;
-	
-	
+
 	/**
 	 * create a new Alarm object
-	 * @param name the name of this alarm
-	 * @param triggerTime after how many update calls should this alarm trigger
-	 * @param oneShot shall this alarm remove itself after one trigger or shall it run for ever
+	 * 
+	 * @param name
+	 *            the name of this alarm
+	 * @param triggerTime
+	 *            after how many update calls should this alarm trigger
+	 * @param oneShot
+	 *            shall this alarm remove itself after one trigger or shall it
+	 *            run for ever
 	 */
 	public Alarm(String name, int triggerTime, boolean oneShot) {
 		this(name, triggerTime, oneShot, false);
 	}
+
 	/**
 	 * create a new Alarm object
-	 * @param name the name of this alarm
-	 * @param triggerTime after how many update calls should this alarm trigger
-	 * @param oneShot shall this alarm remove itself after one trigger or shall it run for ever
-	 * @param useDelta do we count update calls or delta time in milliseconds?
+	 * 
+	 * @param name
+	 *            the name of this alarm
+	 * @param triggerTime
+	 *            after how many update calls should this alarm trigger
+	 * @param oneShot
+	 *            shall this alarm remove itself after one trigger or shall it
+	 *            run for ever
+	 * @param useDelta
+	 *            do we count update calls or delta time in milliseconds?
 	 */
 	public Alarm(String name, int triggerTime, boolean oneShot, boolean useDelta) {
 		this.name = name;
@@ -45,7 +59,7 @@ public class Alarm {
 		this.oneShotAlaram = oneShot;
 		this.active = false;
 	}
-	
+
 	public void start() {
 		if (this.triggerTime != FOREVER) {
 			if (this.counter >= this.triggerTime)
@@ -56,11 +70,11 @@ public class Alarm {
 		this.triggeredExternal = false;
 		this.active = true;
 	}
-	
+
 	public void pause() {
 		this.active = false;
 	}
-	
+
 	public void resume() {
 		this.active = true;
 	}
@@ -72,6 +86,7 @@ public class Alarm {
 	public void trigger() {
 		this.triggeredExternal = true;
 	}
+
 	/**
 	 * called by World if alarm is active. Don't mess around with it.
 	 */
@@ -120,5 +135,5 @@ public class Alarm {
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	}
-	
+
 }

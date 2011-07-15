@@ -23,7 +23,7 @@ public class PongTest extends StateBasedGame {
 	public static final int INTRO_STATE = 0;
 	public static final int GAME_STATE = 1;
 	private static boolean ressourcesInited;
-	
+
 	public PongTest() {
 		super("Pong Slick Marte Engine clone 1.0");
 	}
@@ -33,7 +33,7 @@ public class PongTest extends StateBasedGame {
 		initRessources();
 
 		addState(new PongIntroState(INTRO_STATE));
-		addState(new PongGameState(GAME_STATE));		
+		addState(new PongGameState(GAME_STATE));
 	}
 
 	public static void initRessources() throws SlickException {
@@ -46,10 +46,10 @@ public class PongTest extends StateBasedGame {
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-		
+
 		ressourcesInited = true;
-	}	
-	
+	}
+
 	public static void main(String[] argv) {
 		try {
 			ME.keyToggleDebug = Input.KEY_1;

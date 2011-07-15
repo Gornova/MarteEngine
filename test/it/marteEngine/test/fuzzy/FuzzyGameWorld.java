@@ -48,12 +48,12 @@ public class FuzzyGameWorld extends World {
 	private int widthInTiles;
 	private int heightInTiles;
 	private int[][] blocked;
-	
+
 	private long time = 0;
 	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-	
+
 	private Music musicOne;
-	
+
 	private Image heart;
 
 	public FuzzyGameWorld(int id) {
@@ -88,18 +88,18 @@ public class FuzzyGameWorld extends World {
 				container.getHeight(), 550, 170, player.maxSpeed));
 
 		add(new Background(0, 0), BELOW);
-		
+
 		time = 0;
 
 		musicOne = ResourceManager.getMusic("song1");
-		if (ME.playMusic){
+		if (ME.playMusic) {
 			musicOne.play();
 		}
-		
+
 		heart = ResourceManager.getImage("heart");
 		FuzzyPlayer.life = 3;
 	}
-	
+
 	private void computeWorldSize(int width, int height) {
 		this.widthInTiles = width;
 		this.heightInTiles = height;
@@ -174,7 +174,8 @@ public class FuzzyGameWorld extends World {
 								// spikes
 								String tileType = map.getTileProperty(tid,
 										"type", null);
-								if (tileType!= null && tileType.equals("spikes")) {
+								if (tileType != null
+										&& tileType.equals("spikes")) {
 									// spike
 									Spike spike = new Spike(w * img.getWidth(),
 											h * img.getHeight());
@@ -237,19 +238,20 @@ public class FuzzyGameWorld extends World {
 		// render gui
 		String text = "Collected stars " + (total - stars) + "/" + total;
 		ME.showMessage(container, g, 5, 5, 200, 35, 5, Color.darkGray, text, 5);
-		
+
 		text = "Time " + sdf.format(new Date(time));
-		ME.showMessage(container, g, 470, 5, 110, 35, 5, Color.darkGray, text, 5);
+		ME.showMessage(container, g, 470, 5, 110, 35, 5, Color.darkGray, text,
+				5);
 
 		if (!ME.playMusic) {
 			g.drawImage(ResourceManager.getImage("volumeOff"), 600, 5);
 		} else {
 			g.drawImage(ResourceManager.getImage("volumeOn"), 600, 5);
 		}
-		
+
 		int base = 220;
-		for (int i = 1; i <= FuzzyPlayer.life; i++ ){
-			g.drawImage(heart, base + i*50, 5);
+		for (int i = 1; i <= FuzzyPlayer.life; i++) {
+			g.drawImage(heart, base + i * 50, 5);
 		}
 
 		if (showTutorialPanel) {
@@ -305,8 +307,8 @@ public class FuzzyGameWorld extends World {
 			return;
 		}
 		super.update(container, game, delta);
-		time+=delta;
-		
+		time += delta;
+
 		if (container.getInput().isKeyPressed(Input.KEY_F1)) {
 			showTutorialPanel = showTutorialPanel ? false : true;
 		}
@@ -337,11 +339,11 @@ public class FuzzyGameWorld extends World {
 			game.enterState(FuzzyMain.MENU_STATE, new FadeOutTransition(),
 					new FadeInTransition());
 		}
-		
-		if (ME.playMusic && !musicOne.playing()){
+
+		if (ME.playMusic && !musicOne.playing()) {
 			musicOne.play();
 		}
-		
+
 	}
 
 	private void nextLevel(GameContainer container, StateBasedGame game)

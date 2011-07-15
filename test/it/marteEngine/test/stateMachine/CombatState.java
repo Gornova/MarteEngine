@@ -34,10 +34,10 @@ public class CombatState implements State {
 	}
 
 	public void update(GameContainer container, int delta) {
-		Input input = container.getInput();		
+		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
 			entity.stateManager.enter(IdleState.class);
 		}
 	}
-	
+
 }

@@ -39,7 +39,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		if (!fade) {
-			super.update(container, delta);			
+			super.update(container, delta);
 			checkGround(true, false);
 
 			if (speed.x > 0)
@@ -48,19 +48,19 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 				this.faceRight = false;
 
 			Entity player = collide(PLAYER, x, y - 1);
-			if (player!=null ) {
+			if (player != null) {
 				fade = true;
-				((PlatformerEntity)player).jump();
+				((PlatformerEntity) player).jump();
 			}
 		} else {
 			fadeTween.update(delta);
 			setAlpha(fadeTween.getValue());
-			if (getAlpha() == 0){
+			if (getAlpha() == 0) {
 				ME.world.remove(this);
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if falling
 	 * 

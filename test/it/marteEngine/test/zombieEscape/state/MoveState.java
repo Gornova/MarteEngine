@@ -54,12 +54,12 @@ public class MoveState implements State {
 			e.x -= cur.x;
 			e.y -= cur.y;
 		}
-		
-		timer +=delta;
-		if (timer >= 1000){
+
+		timer += delta;
+		if (timer >= 1000) {
 			timer = 0;
 			List<Entity> onSight = e.intersect(radarCircle);
-			if (onSight!= null && onSight.isEmpty()){
+			if (onSight != null && onSight.isEmpty()) {
 				e.stateManager.enter(WaitState.class);
 			}
 		}

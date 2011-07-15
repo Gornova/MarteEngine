@@ -21,7 +21,7 @@ public class Zombie extends Entity {
 		stateManager.add(new WaitState(this));
 		stateManager.add(new AlertState(this));
 		stateManager.add(new MoveState(this));
-		
+
 	}
 
 }

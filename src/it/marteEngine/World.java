@@ -22,7 +22,7 @@ public class World extends BasicGameState {
 	public static final int BELOW = -1;
 	public static final int GAME = 0;
 	public static final int ABOVE = 1;
-	
+
 	/** the game container this world belongs to */
 	public GameContainer container = null;
 
@@ -33,19 +33,22 @@ public class World extends BasicGameState {
 	public int width = 0;
 	/** height of the world, useful for vertical wrapping entities */
 	public int height = 0;
-	
+
 	/** internal list for entities **/
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Entity> removable = new ArrayList<Entity>();
 	private List<Entity> addable = new ArrayList<Entity>();
-	
-	/** two lists to contain objects that are rendered before and after camera stuff is rendered */
+
+	/**
+	 * two lists to contain objects that are rendered before and after camera
+	 * stuff is rendered
+	 */
 	private List<Entity> belowCamera = new ArrayList<Entity>();
 	private List<Entity> aboveCamera = new ArrayList<Entity>();
 
 	/** current camera **/
 	public Camera camera;
-	
+
 	public int renderedEntities;
 
 	public World(int id) {
@@ -78,7 +81,7 @@ public class World extends BasicGameState {
 
 		renderedEntities = 0;
 		// first render entities below camera
-		for (Entity e:belowCamera) {
+		for (Entity e : belowCamera) {
 			if (!e.visible)
 				continue;
 			renderEntity(e, g, container);
@@ -90,7 +93,7 @@ public class World extends BasicGameState {
 		// render entities
 		for (Entity e : entities) {
 			if (!e.visible)
-				continue;	// next entity. this one stays invisible
+				continue; // next entity. this one stays invisible
 			if (camera != null) {
 				if (camera.contains(e)) {
 					renderEntity(e, g, container);
@@ -101,29 +104,30 @@ public class World extends BasicGameState {
 		}
 
 		// render particle system
-		if (ME.ps!=null){
+		if (ME.ps != null) {
 			ME.ps.render();
-		}		
+		}
 
-		if (ME.debugEnabled && camera != null){
-			if (camera.getMoveRect()!=null)
+		if (ME.debugEnabled && camera != null) {
+			if (camera.getMoveRect() != null)
 				g.draw(camera.getMoveRect());
 		}
-		
+
 		if (camera != null)
 			g.translate(camera.cameraX, camera.cameraY);
 
 		// finally render entities above camera
-		for (Entity e:aboveCamera) {
+		for (Entity e : aboveCamera) {
 			if (!e.visible)
 				continue;
 			renderEntity(e, g, container);
 		}
-		
+
 		ME.render(container, game, g);
 	}
 
-	private void renderEntity(Entity e, Graphics g, GameContainer container) throws SlickException {
+	private void renderEntity(Entity e, Graphics g, GameContainer container)
+			throws SlickException {
 		renderedEntities++;
 		if (ME.debugEnabled) {
 			g.setColor(ME.borderColor);
@@ -134,7 +138,7 @@ public class World extends BasicGameState {
 		}
 		e.render(container, g);
 	}
-	
+
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if (container == null)
@@ -170,16 +174,16 @@ public class World extends BasicGameState {
 			e.updateAlarms(delta);
 			if (e.active)
 				e.update(container, delta);
-				// check for wrapping or out of world entities
-				//TODO: comment for a test
-				//e.checkWorldBoundaries();
+			// check for wrapping or out of world entities
+			// TODO: comment for a test
+			// e.checkWorldBoundaries();
 		}
-		
+
 		// update particle system
-		if (ME.ps!=null){
+		if (ME.ps != null) {
 			ME.ps.update(delta);
-		}			
-		
+		}
+
 		// remove signed entities
 		for (Entity entity : removable) {
 			entities.remove(entity);
@@ -187,12 +191,12 @@ public class World extends BasicGameState {
 			aboveCamera.remove(entity);
 			entity.removedFromWorld();
 		}
-		
+
 		// update camera
 		if (camera != null) {
 			camera.update(container, delta);
 		}
-		
+
 		ME.update(container, game, delta);
 	}
 
@@ -207,10 +211,10 @@ public class World extends BasicGameState {
 	 * @param e
 	 *            entity to add
 	 */
-	public void add(Entity e, int ...flags) {
+	public void add(Entity e, int... flags) {
 		e.setWorld(this);
 		if (flags.length == 1) {
-			switch(flags[0]) {
+			switch (flags[0]) {
 			case BELOW:
 				belowCamera.add(e);
 				break;
@@ -225,7 +229,7 @@ public class World extends BasicGameState {
 			addable.add(e);
 	}
 
-	public void addAll(Collection<Entity> e, int ...flags) {
+	public void addAll(Collection<Entity> e, int... flags) {
 		for (Entity entity : e) {
 			this.add(entity, flags);
 		}
@@ -254,8 +258,7 @@ public class World extends BasicGameState {
 		}
 		return 0;
 	}
-	
-	
+
 	public List<Entity> getEntities(String type) {
 		if (entities.size() > 0) {
 			List<Entity> res = new ArrayList<Entity>();
@@ -334,8 +337,8 @@ public class World extends BasicGameState {
 
 	public void setCameraOn(Entity entity) {
 		if (camera == null) {
-			this.setCamera(new Camera(this,entity, this.container.getWidth(),
-				this.container.getHeight()));
+			this.setCamera(new Camera(this, entity, this.container.getWidth(),
+					this.container.getHeight()));
 		}
 		this.camera.setFollow(entity);
 	}

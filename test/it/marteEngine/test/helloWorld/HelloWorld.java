@@ -25,7 +25,7 @@ public class HelloWorld extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		initRessources();
-		
+
 		StaticActor helloWorld = new StaticActor(300, 250, 35, 35,
 				ResourceManager.getImage("hello"));
 		World world = new World(0, container);

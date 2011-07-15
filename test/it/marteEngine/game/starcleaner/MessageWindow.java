@@ -16,12 +16,13 @@ import org.newdawn.slick.SlickException;
 public class MessageWindow extends Entity {
 
 	public static final String MESSAGEWINDOW = "messageWindow";
-	
+
 	private AngelCodeFont font = null;
 	private ArrayList<String> messageLines;
 	private Image background;
-	
-	public MessageWindow(ArrayList<String> message, int x, int y, boolean centerOnScreen) {
+
+	public MessageWindow(ArrayList<String> message, int x, int y,
+			boolean centerOnScreen) {
 		super(x, y);
 		background = ResourceManager.getImage("message");
 		this.name = MESSAGEWINDOW;
@@ -36,8 +37,9 @@ public class MessageWindow extends Entity {
 			this.y = StarCleaner.HEIGHT / 2 - background.getHeight() / 2;
 		}
 	}
-	
-	public void render(GameContainer container, Graphics g) throws SlickException {
+
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
 		if (!visible)
 			return;
 		super.render(container, g);
@@ -45,7 +47,7 @@ public class MessageWindow extends Entity {
 		Font oldFont = g.getFont();
 		g.setFont(font);
 		int startx = (int) x + 5;
-		int starty = (int)y + 5;
+		int starty = (int) y + 5;
 		for (String line : messageLines) {
 			g.drawString(line, startx, starty);
 			starty += 25;

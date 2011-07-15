@@ -32,8 +32,7 @@ public class ME {
 	public static int keyRestart = -1;
 	/** key for mute music and sounds */
 	public static int keyMuteMusic = -1;
-	public static boolean playMusic = true; 
-	
+	public static boolean playMusic = true;
 
 	/** x scale factor for graphics, default 1 (nothing) **/
 	public static float scaleX = 1;
@@ -52,35 +51,37 @@ public class ME {
 	public static Hashtable<String, Object> attributes = new Hashtable<String, Object>();
 
 	public static World world;
-	
+
 	/** do we base time calculations on delta timing or on frames per second? */
 	public static boolean useDeltaTiming = false;
 	/** value of current delta of update call. might be helpful here */
 	public static int delta;
 	/** the frames per seconds we targeted in our main class */
 	public static int targetFrameRate;
-	
+
 	public static ParticleSystem ps;
-	
-	public static void setTargetFrameRate(GameContainer container, int targetframerate) {
+
+	public static void setTargetFrameRate(GameContainer container,
+			int targetframerate) {
 		container.setTargetFrameRate(targetframerate);
 		ME.targetFrameRate = targetframerate;
 
 	}
-	
-	/** 
+
+	/**
 	 * Update entities and add new entities and remove old entities
+	 * 
 	 * @param container
 	 * @param delta
 	 * @throws SlickException
 	 */
-	public static void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
+	public static void update(GameContainer container, StateBasedGame game,
+			int delta) throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
 		if (world == null)
 			throw new SlickException("no world set");
-		
+
 		// special key handling
 		if (keyToggleDebug != -1) {
 			if (container.getInput().isKeyPressed(keyToggleDebug)) {
@@ -91,10 +92,10 @@ public class ME {
 			if (container.getInput().isKeyPressed(keyRestart)) {
 				ME.world.clear();
 				ME.world.init(container, game);
-				//TODO: go to first state?
+				// TODO: go to first state?
 			}
-		}	
-		if (keyMuteMusic !=-1){
+		}
+		if (keyMuteMusic != -1) {
 			if (container.getInput().isKeyPressed(keyMuteMusic)) {
 				playMusic = playMusic ? false : true;
 				muteMusic();
@@ -105,17 +106,18 @@ public class ME {
 
 	/**
 	 * Render entities following camera, show debug information if in debug mode
+	 * 
 	 * @param container
 	 * @param g
 	 * @throws SlickException
 	 */
-	public static void render(GameContainer container, StateBasedGame game, Graphics g)
-			throws SlickException {
+	public static void render(GameContainer container, StateBasedGame game,
+			Graphics g) throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
 		if (world == null)
-			throw new SlickException("no world set");		
-		
+			throw new SlickException("no world set");
+
 		if (scaleX != 1 || scaleY != 1)
 			g.scale(scaleX, scaleY);
 
@@ -126,10 +128,12 @@ public class ME {
 		else
 			ypos = container.getHeight() - 40;
 		if (debugEnabled) {
-			String text = "Entities: " + world.getEntities().size() + ", rendered Entities: " + world.renderedEntities;
-			//int xpos= container.getWidth() - 350;/*130*/
+			String text = "Entities: " + world.getEntities().size()
+					+ ", rendered Entities: " + world.renderedEntities;
+			// int xpos= container.getWidth() - 350;/*130*/
 			int xpos = 0;
-			showMessage(container, g, xpos, ypos,container.getWidth() - 1, 40, 20,Color.lightGray,text,350);
+			showMessage(container, g, xpos, ypos, container.getWidth() - 1, 40,
+					20, Color.lightGray, text, 350);
 			container.setShowFPS(true);
 
 		} else {
@@ -138,19 +142,22 @@ public class ME {
 	}
 
 	public static void showMessage(GameContainer container, Graphics g,
-			int xpos,int ypos, int width, int height, int radius, Color c, String text, int spaceText) {
-		RoundedRectangle r = new RoundedRectangle(xpos, ypos,width, height, radius);
+			int xpos, int ypos, int width, int height, int radius, Color c,
+			String text, int spaceText) {
+		RoundedRectangle r = new RoundedRectangle(xpos, ypos, width, height,
+				radius);
 		c.a = 0.6f;
 		g.setColor(c);
 		g.fill(r);
 		g.draw(r);
 		g.setColor(Color.white);
 		g.resetFont();
-		g.drawString(text,xpos+spaceText, ypos + 9);
+		g.drawString(text, xpos + spaceText, ypos + 9);
 	}
 
 	/**
 	 * Set scale factor for graphics
+	 * 
 	 * @param sx
 	 * @param sy
 	 */
@@ -160,12 +167,12 @@ public class ME {
 	}
 
 	public static void remove(Entity entity) {
-		if (world!=null){
+		if (world != null) {
 			world.remove(entity);
 		}
 	}
-	
-	public static void muteMusic(){
+
+	public static void muteMusic() {
 		if (playMusic) {
 			ResourceManager.setMusicVolume(1.0f);
 			ResourceManager.setSfxVolume(1.0f);

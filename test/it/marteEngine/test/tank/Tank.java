@@ -53,7 +53,7 @@ public class Tank extends Entity {
 		} else if (check(ROTATE_RIGHT)) {
 			angle += ROTATE_SPEED;
 		}
-		
+
 		// update entity logic
 		super.update(container, delta);
 		// update turret logic

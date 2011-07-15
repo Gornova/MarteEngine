@@ -12,15 +12,16 @@ public class Bullet extends Entity {
 	public float fireSpeed = 0.5f;
 	public static final String NAME = "BULLET";
 
-	public Bullet(float x, float y, String ref, int angle) throws SlickException {
+	public Bullet(float x, float y, String ref, int angle)
+			throws SlickException {
 		super(x, y);
-		this.angle =angle;
+		this.angle = angle;
 		currentImage = new Image(ref);
-		
+
 		addType(SOLID);
 		setHitBox(0, 0, 8, 8);
 	}
-	
+
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
@@ -29,12 +30,12 @@ public class Bullet extends Entity {
 		Vector2f vectorSpeed = calculateVector(angle, 8);
 		dx += vectorSpeed.x;
 		dy += vectorSpeed.y;
-		x+=dx;
-		y+=dy;
-		
+		x += dx;
+		y += dy;
+
 		collide(SOLID, x, y);
-		
+
 		super.update(container, delta);
 	}
-	
+
 }

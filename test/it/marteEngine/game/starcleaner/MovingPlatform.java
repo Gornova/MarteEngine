@@ -10,17 +10,16 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-
 public class MovingPlatform extends PhysicsEntity {
 
-//	private static String[] carry = {SOLID, PLAYER};
-	private static String[] carry = {PLAYER};
-	
+	// private static String[] carry = {SOLID, PLAYER};
+	private static String[] carry = { PLAYER };
+
 	private boolean direction = false;
 	private Image oneBlock = ResourceManager.getImage("platform");
-	
+
 	private int movement = 2;
-	
+
 	public MovingPlatform(float x, float y) {
 		super(x, y);
 		name = "platform";
@@ -28,28 +27,31 @@ public class MovingPlatform extends PhysicsEntity {
 		direction = (new Random()).nextBoolean();
 		setHitBox(0, 0, 80, 40);
 	}
-	
-	public void update(GameContainer container, int delta) throws SlickException {
-		//move in the correct direction
-		speed.x = direction ? movement : - movement;
-		
-		//move stuff that's on top of us, for each type of entity we can carry
+
+	public void update(GameContainer container, int delta)
+			throws SlickException {
+		// move in the correct direction
+		speed.x = direction ? movement : -movement;
+
+		// move stuff that's on top of us, for each type of entity we can carry
 		for (String obj : carry) {
 			moveontop(obj, speed.x);
 		}
-		//move ourselves
+		// move ourselves
 		motion(true, true);
-		
-		//if we've stopped moving, switch directions!
-		if ( speed.x == 0 ) { direction = !direction; }
+
+		// if we've stopped moving, switch directions!
+		if (speed.x == 0) {
+			direction = !direction;
+		}
 	}
-	
-	
-	public void render(GameContainer container, Graphics g) throws SlickException {
+
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
 		if (!visible)
 			return;
 		g.drawImage(oneBlock, x, y);
-		g.drawImage(oneBlock, x+40, y);
+		g.drawImage(oneBlock, x + 40, y);
 		super.render(container, g);
 	}
 }

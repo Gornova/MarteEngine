@@ -18,8 +18,7 @@ public class PongBarActor extends Entity {
 
 	public boolean attacking = false;
 
-	public PongBarActor(float x, float y, String name, int up,
-			int down) {
+	public PongBarActor(float x, float y, String name, int up, int down) {
 		super(x, y);
 
 		// set id
@@ -71,7 +70,7 @@ public class PongBarActor extends Entity {
 	}
 
 	public void moveUp() {
-		if (collide(SOLID, x, y - mySpeed.y)== null && y - mySpeed.y > 0) {
+		if (collide(SOLID, x, y - mySpeed.y) == null && y - mySpeed.y > 0) {
 			y -= mySpeed.y;
 		}
 	}

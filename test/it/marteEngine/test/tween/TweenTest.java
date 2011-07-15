@@ -29,9 +29,9 @@ public class TweenTest extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		initRessources();
-		TweenWorld inGameState = new TweenWorld(0,container);
+		TweenWorld inGameState = new TweenWorld(0, container);
 		addState(inGameState);
-		
+
 	}
 
 	public static void initRessources() throws SlickException {
@@ -44,10 +44,10 @@ public class TweenTest extends StateBasedGame {
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-		
+
 		ressourcesInited = true;
-	}	
-	
+	}
+
 	public static void main(String[] argv) {
 		try {
 			ME.keyToggleDebug = Input.KEY_1;

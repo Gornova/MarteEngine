@@ -9,7 +9,6 @@ import it.marteEngine.entity.Entity;
 public class Spike extends Entity {
 
 	public static final String SPIKE = "spike";
-	
 
 	public Spike(float x, float y) {
 		super(x, y, ResourceManager.getImage("spike"));
@@ -17,7 +16,7 @@ public class Spike extends Entity {
 
 		addType(SPIKE);
 	}
-	
+
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {

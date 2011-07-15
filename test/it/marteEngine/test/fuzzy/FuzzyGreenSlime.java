@@ -52,6 +52,13 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 				fade = true;
 				((PlatformerEntity) player).jump();
 			}
+			player = collide(PLAYER, x + moveSpeed, y);
+			if (damagePlayer(player))
+				return;
+			player = collide(PLAYER, x - moveSpeed, y);
+			if (damagePlayer(player))
+				return;
+
 		} else {
 			fadeTween.update(delta);
 			setAlpha(fadeTween.getValue());
@@ -91,4 +98,22 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 		}
 	}
 
+	private boolean damagePlayer(Entity player) {
+		if (player != null) {
+			FuzzyPlayer pl = (FuzzyPlayer) ME.world.find(PLAYER);
+			pl.damage();
+			// change direction
+			if (faceRight) {
+				this.x -= 5;
+				faceRight = false;
+				this.speed.x = -moveSpeed;
+			} else {
+				this.x += 5;
+				faceRight = true;
+				this.speed.x = +moveSpeed;
+			}
+			return true;
+		}
+		return false;
+	}
 }

@@ -32,6 +32,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 		addAnimation(ResourceManager.getSpriteSheet("right"), "right", true, 0,
 				0, 1, 2, 3);
 
+		clearTypes();
 		addType(PLAYER);
 		name = PLAYER;
 		jumpSnd = ResourceManager.getSound("jump");

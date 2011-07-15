@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tileset.png" width="192" height="576"/>
+ </tileset>
+ <tileset firstgid="109" name="blockRed" tilewidth="32" tileheight="32">
+  <image source="blockRed.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
+  <image source="star.png" width="32" height="32"/>
+ </tileset>
+ <layer name="enemies" width="80" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
+  </data>
+ </layer>
+ <layer name="tile" width="80" height="40">
+  <properties>
+   <property name="type" value="entity"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3VMQqAMBAEwGgKtdB8w/+/0IBYiqDEkDADCwvXHNdcCAAAAADvDTnjTWLFvVqx5mw3SRX3asX+csbJ/b5xv2fXj4iFeu+mnDlnKdR7d/3YVKgDAAAAAAD87QD+bbfxADIAAA==
+  </data>
+ </layer>
+ <layer name="player" width="80" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OMQEAAAwCIPOsf8DF0AMSkAAAAGy5dgAAAAAAAAAAAGDMA6gnFLoAMgAA
+  </data>
+ </layer>
+ <layer name="star" width="80" height="40">
+  <properties>
+   <property name="type" value="star"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OIQEAAAgDsCemv6TBLYItwRIAAAAA4Lu5DgAAAAAAAABQLWTI5qMAMgAA
+  </data>
+ </layer>
+ <layer name="background" width="80" height="40" opacity="0.39">
+  <properties>
+   <property name="type" value="background"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3WPQqAMAyA0dzHH1B7/7NpB6FdFKtQhPcgW4bwTYkAAIA2Q+8Dfm7pfcDP6feOfu2m0K9VbreFfi3Odin0e6psp18t/3LjzU7ZTr9abrEeM19MCv0AAAAAAACA7+wv4Si4ADIAAA==
+  </data>
+ </layer>
+</map>

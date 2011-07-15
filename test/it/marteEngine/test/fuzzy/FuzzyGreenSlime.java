@@ -52,12 +52,10 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 				fade = true;
 				((PlatformerEntity) player).jump();
 			}
-			player = collide(PLAYER, x + moveSpeed, y);
-			if (damagePlayer(player))
-				return;
-			player = collide(PLAYER, x - moveSpeed, y);
-			if (damagePlayer(player))
-				return;
+			player = collide(PLAYER, x + 1, y);
+			damagePlayer(player);
+			player = collide(PLAYER, x - 1, y);
+			damagePlayer(player);
 
 		} else {
 			fadeTween.update(delta);

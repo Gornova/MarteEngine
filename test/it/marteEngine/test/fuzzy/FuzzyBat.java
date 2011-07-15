@@ -3,6 +3,7 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.tween.Ease;
 import it.marteEngine.tween.LinearMotion;
 
@@ -70,6 +71,15 @@ public class FuzzyBat extends Entity {
 			faceRight = true;
 			currentAnim = "moveRight";
 		}
+
+		Entity player = collide(PLAYER, x, y - 1);
+		if (player != null) {
+			((PlatformerEntity) player).jump();
+		}
+		player = collide(PLAYER, x + 1, y);
+		damagePlayer(player);
+		player = collide(PLAYER, x - 1, y);
+		damagePlayer(player);
 
 		if (faceRight) {
 			speed.x = moveSpeed;
@@ -149,6 +159,25 @@ public class FuzzyBat extends Entity {
 			tiley = (int) ((entity.y + entity.height / 2) / 32);
 		}
 		return new Vector2f(tilex, tiley);
+	}
+
+	private boolean damagePlayer(Entity player) {
+		if (player != null) {
+			FuzzyPlayer pl = (FuzzyPlayer) ME.world.find(PLAYER);
+			pl.damage();
+			// change direction
+			if (faceRight) {
+				this.x -= 5;
+				faceRight = false;
+				this.speed.x = -moveSpeed;
+			} else {
+				this.x += 5;
+				faceRight = true;
+				this.speed.x = +moveSpeed;
+			}
+			return true;
+		}
+		return false;
 	}
 
 }

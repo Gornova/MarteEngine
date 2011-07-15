@@ -81,12 +81,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 		}
 
 		if (collide(Spike.SPIKE, x, y) != null) {
-			if (life > 0) {
-				life -= 1;
-				jump();
-			} else {
-				removePlayer();
-			}
+			damage();
 		}
 	}
 
@@ -100,6 +95,15 @@ public class FuzzyPlayer extends PlatformerEntity {
 	private void removePlayer() {
 		ME.world.remove(this);
 		FuzzyGameWorld.playerDead = true;
+	}
+
+	public void damage() {
+		if (life > 0) {
+			life -= 1;
+			jump();
+		} else {
+			removePlayer();
+		}
 	}
 
 }

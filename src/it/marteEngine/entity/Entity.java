@@ -349,6 +349,35 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
+	 * Add animation to entity, first animation added is current animation. Can
+	 * Flip the frames horizontally o vertically
+	 * 
+	 * @Param name
+	 * @Param loop
+	 * @Param fliphorizontal
+	 * @Param flipvertical
+	 * @Param row
+	 * @Param frames
+	 * 
+	 * @author Sabathorn
+	 */
+	public void addFlippedAnimation(String name, boolean loop,
+			boolean fliphorizontal, boolean flipvertical, int row,
+			int... frames) {
+		Animation anim = new Animation(false);
+		anim.setLooping(loop);
+		for (int i = 0; i < frames.length; i++) {
+			anim.addFrame(
+					sheet.getSprite(frames[i], row).getFlippedCopy(
+							fliphorizontal, flipvertical), duration);
+		}
+		if (animations.size() == 0) {
+			currentAnim = name;
+		}
+		animations.put(name, anim);
+	}
+
+	/**
 	 * define commands to handle inputs
 	 * 
 	 * @param command

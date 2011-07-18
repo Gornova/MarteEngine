@@ -86,7 +86,6 @@ Main objective of this build configuration is to help in build distribuiable pac
 	<target name="webstart" depends="clean,proguard">
 		<delete dir="${webstart.dir}" />
 		<mkdir dir="${webstart.dir}" />
-		<copy file="${script.dir}/htaccess" tofile="${webstart.dir}/.htaccess" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${webstart.dir}/${target.class}.jar" />
 		<copy file="${script.dir}/template.jnlp" tofile="${webstart.dir}/${target.class}.jnlp">
 			<filterchain>

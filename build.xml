@@ -43,9 +43,9 @@ Main objective of this build configuration is to help in build distribuiable pac
 	<property name="wamp.libdir" value="C:/Programmi/wamp/www/mygamelib/" />
 	<property name="applet.jarname" value="${target.class}.jar" />
 	<property name="launch4j.dir" location="C:/Programmi/launch4j-3.0.1-win32/launch4j" />
-
+	
 	<!-- Set up the environment including preparing the natives. -->
-	<target name="setup" depends="setup-check" unless="setup.exists">
+	<target name="setup" depends="setup-check">
 		<delete dir="${lib.dir}/native" />
 		<mkdir dir="${lib.dir}/native" />
 		<unzip src="${lib.dir}/natives-win32.jar" dest="${lib.dir}/native" />
@@ -89,7 +89,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 	</target>	
 
 	<!-- Create a webstart directory in order to deploy. -->
-	<target name="webstart" depends="clean,proguard">
+	<target name="webstart" depends="clean">
 		<delete dir="${webstart.dir}" />
 		<mkdir dir="${webstart.dir}" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${webstart.dir}/${target.class}.jar" />
@@ -110,7 +110,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 
 	<!-- Build a .exe wrapper for project -->
-	<target name="exej" depends="clean,proguard">
+	<target name="exej" depends="clean">
 		<delete file="${target.dir}/${target.class}.jar" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${target.dir}/${target.class}.jar" />
 		<delete file="${target.dir}/${target.class}_opt.jar" />
@@ -156,13 +156,13 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</condition>
 	</target>
 
+	<!-- Determine if target dir exist or not-->
 	<target name="target-check">
 		<condition property="target.exists">
 			<available file="${target.dir}" type="dir" />
 		</condition>
 	</target>
 	
-
 	<!-- Determines whether a keystore exists. -->
 	<target name="check-keystore">
 		<input message="Username:" addproperty="keystore.alias" />
@@ -230,6 +230,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</jar>
 	</target>
 
+	<!-- You can use proguard to optimize your jar final size, just add as depends on exej, applet or webstart-->
 	<taskdef resource="proguard/ant/task.properties" classpath="external/proguard/proguard.jar" />
 	<target name="proguard" depends="jar">
 		<proguard>
@@ -243,8 +244,9 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</proguard>
 	</target>
 
+
 	<!-- Create a webstart directory in order to deploy. -->
-	<target name="applet" depends="clean,proguard">
+	<target name="applet" depends="clean">
 		<delete dir="${applet.dir}" />
 		<mkdir dir="${applet.dir}" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${applet.dir}/${target.class}.jar" />

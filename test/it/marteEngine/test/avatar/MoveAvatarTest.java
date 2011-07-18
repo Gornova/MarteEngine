@@ -1,5 +1,6 @@
 package it.marteEngine.test.avatar;
 
+import it.marteEngine.Camera;
 import it.marteEngine.ME;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
@@ -39,8 +40,9 @@ public class MoveAvatarTest extends StateBasedGame {
 		gameWorld.add(sword);
 
 		// set screen camera to follo player
-		gameWorld.setCameraOn(player);
-
+		gameWorld.setCamera(new Camera(gameWorld, player, container.getWidth(),
+				container.getHeight(), container.getWidth() - 100, container
+						.getHeight() - 100, player.mySpeed));
 		ME.world = gameWorld;
 
 		addState(gameWorld);

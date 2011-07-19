@@ -196,6 +196,7 @@ public class World extends BasicGameState {
 			aboveCamera.remove(entity);
 			entity.removedFromWorld();
 		}
+		removable.clear();
 
 		// update camera
 		if (camera != null) {

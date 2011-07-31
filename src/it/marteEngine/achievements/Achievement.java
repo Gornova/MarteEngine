@@ -1,13 +1,11 @@
 package it.marteEngine.achievements;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class Achievement {
 	
-	private static HashMap<String,Achievement> achievements = new HashMap<String, Achievement>();
+	private static ArrayList<Achievement> achievements = new ArrayList<Achievement>();
 	
 	/** the name of this achievement */
 	private String name;
@@ -35,18 +33,17 @@ public class Achievement {
 	
 	
 	public static boolean addAchievement(String name, String category, String description, int startValue, int targetValue) {
-		if (achievements.get(name) != null)
+		if (getAchievement(name) != null)
 			return false;
 		Achievement achievement = new Achievement(name, category, description, startValue, targetValue);
-		achievements.put(name, achievement);
+		achievements.add(achievement);
 		return true;
 	}
 	
 	public static List<Achievement> increaseAchievements(String category, int increment) {
-		List<Achievement> all = getAllAchievements();
 		List<Achievement> unlocked = new ArrayList<Achievement>();
 		
-		for (Achievement achievement : all) {
+		for (Achievement achievement : achievements) {
 			if (achievement.category.equalsIgnoreCase(category)) {
 				achievement.counter += increment;
 				if (achievement.counter >= achievement.target) {
@@ -61,13 +58,16 @@ public class Achievement {
 	}
 	
 	public static final Achievement getAchievement(String name) {
-		return achievements.get(name);
+		for (Achievement achievement : achievements) {
+			if (achievement.name.equals(name))
+				return achievement;
+		}
+		return null;
 	}
 	
 	public static final List<Achievement> getAchievementsForCategory(String category) {
 		ArrayList<Achievement> categoryList = new ArrayList<Achievement>();
-		List<Achievement> all = getAllAchievements();
-		for (Achievement achievement : all) {
+		for (Achievement achievement : achievements) {
 			if (achievement.category.equalsIgnoreCase(category))
 				categoryList.add(achievement);
 		}
@@ -78,8 +78,7 @@ public class Achievement {
 
 	public static final List<Achievement> getUnlockedAchievements() {
 		ArrayList<Achievement> unlockedList = new ArrayList<Achievement>();
-		List<Achievement> all = getAllAchievements();
-		for (Achievement achievement : all) {
+		for (Achievement achievement : achievements) {
 			if (achievement.unlocked)
 				unlockedList.add(achievement);
 		}
@@ -91,8 +90,7 @@ public class Achievement {
 
 	public static final List<Achievement> getLockedAchievements() {
 		ArrayList<Achievement> lockedList = new ArrayList<Achievement>();
-		List<Achievement> all = getAllAchievements();
-		for (Achievement achievement : all) {
+		for (Achievement achievement : achievements) {
 			if (!achievement.unlocked)
 				lockedList.add(achievement);
 		}
@@ -102,13 +100,8 @@ public class Achievement {
 	}
 
 	public static final List<Achievement> getAllAchievements() {
-		ArrayList<Achievement> list = new ArrayList<Achievement>();
-		Set<String> keys = achievements.keySet();
-		for (String key : keys) {
-			list.add(achievements.get(key));
-		}
-		if (list.size() > 0)
-			return list;
+		if (achievements.size() > 0)
+			return achievements;
 		return null;
 	}
 	

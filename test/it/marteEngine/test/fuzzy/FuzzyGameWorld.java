@@ -39,10 +39,12 @@ public class FuzzyGameWorld extends World {
 	private int total = -1;
 	private boolean levelEnd = false;
 
-	private int levelIndex = 4;
-	private int levelNumbers = 5;
+	// level game starts from
+	private int levelIndex = 1;
+	// number of levels (always levelIndex+1)
+	private int levelNumbers = 7;
 	private boolean gameEnd = false;
-	private boolean showTutorialPanel = true;
+	private boolean showTutorialPanel = false;
 	private Sound allpickedup;
 	public static boolean playerDead = false;
 	private Rectangle volumeControl = new Rectangle(600, 5, 32, 34);
@@ -72,10 +74,10 @@ public class FuzzyGameWorld extends World {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.init(container, game);
-
+		starsNumber = 0;
 		playerDead = false;
 
-		TiledMap map = ResourceManager.getMap("map" + levelIndex);
+		TiledMap map = ResourceManager.getMap("level" + levelIndex);
 		Log.info("Load map" + levelIndex);
 		// make the world a bit bigger than the screen to force camera scrolling
 		computeWorldSize(map);
@@ -244,8 +246,8 @@ public class FuzzyGameWorld extends World {
 			for (int h = 0; h < map.getHeight(); h++) {
 				Image img = map.getTileImage(w, h, layerIndex);
 				if (img != null) {
-					int x = h * img.getWidth();
-					int y = w * img.getHeight();
+					int x = w * img.getWidth();
+					int y = h * img.getHeight();
 					// create player & camera
 					FuzzyPlayer player = new FuzzyPlayer(x, y, "player");
 					add(player);
@@ -395,6 +397,7 @@ public class FuzzyGameWorld extends World {
 	private void reloadLevel(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		clear();
+		starsNumber = 0;
 		stars = -1;
 		total = -1;
 		levelEnd = false;

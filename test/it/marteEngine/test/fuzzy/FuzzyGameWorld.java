@@ -35,7 +35,7 @@ public class FuzzyGameWorld extends World {
 	private static final int TILESIZE = 32;
 	public static final int NO_SOLID = -1;
 	private static final int SOLID = 1;
-	private int stars;
+	public static int stars;
 	private int total = -1;
 	private boolean levelEnd = false;
 
@@ -56,6 +56,9 @@ public class FuzzyGameWorld extends World {
 	private Music musicOne;
 
 	private Image heart;
+	private int starsNumber;
+
+	public static int points = 0;
 
 	public FuzzyGameWorld(int id) {
 		super(id);
@@ -101,6 +104,15 @@ public class FuzzyGameWorld extends World {
 		FuzzyPlayer.life = 3;
 
 		define("layer", Input.KEY_L);
+
+		if (stars <= 0) {
+			stars = starsNumber;
+		}
+		if (total <= 0) {
+			total = stars;
+		}
+
+		points = 0;
 	}
 
 	private void computeWorldSize(TiledMap map) {
@@ -130,6 +142,7 @@ public class FuzzyGameWorld extends World {
 			Log.error("no types defined to load");
 			return;
 		}
+		starsNumber = 0;
 		for (String type : types) {
 			// try to find a layer with property type set to entity
 			int layerIndex = -1;
@@ -161,6 +174,7 @@ public class FuzzyGameWorld extends World {
 								te.setAlpha(0.4f);
 								add(te);
 							} else if (type.equalsIgnoreCase("star")) {
+								starsNumber++;
 								// stars
 								Star star = new Star(w * img.getWidth(), h
 										* img.getHeight());
@@ -176,6 +190,10 @@ public class FuzzyGameWorld extends World {
 											.equalsIgnoreCase("bat")) {
 										// slime
 										add(new FuzzyBat(w * 32, h * 32));
+									} else if (enemyType
+											.equalsIgnoreCase("arrowTrap")) {
+										// slime
+										add(new ArrowTrap(w * 32, h * 32));
 									}
 								}
 							} else {
@@ -244,22 +262,26 @@ public class FuzzyGameWorld extends World {
 		super.render(container, game, g);
 
 		// render gui
-		String text = "Collected stars " + (total - stars) + "/" + total;
-		ME.showMessage(container, g, 5, 5, 200, 35, 5, Color.darkGray, text, 5);
+		String text = "Stars " + (total - stars) + "/" + total;
+		ME.showMessage(container, g, 5, 5, 95, 35, 5, Color.darkGray, text, 5);
+
+		int base = 120;
+		for (int i = 0; i <= FuzzyPlayer.life - 1; i++) {
+			g.drawImage(heart, base + i * 50, 5);
+		}
+
+		text = "Points " + points;
+		ME.showMessage(container, g, 270, 5, 140, 35, 5, Color.darkGray, text,
+				5);
 
 		text = "Time " + sdf.format(new Date(time));
-		ME.showMessage(container, g, 470, 5, 110, 35, 5, Color.darkGray, text,
+		ME.showMessage(container, g, 480, 5, 110, 35, 5, Color.darkGray, text,
 				5);
 
 		if (!ME.playMusic) {
 			g.drawImage(ResourceManager.getImage("volumeOff"), 600, 5);
 		} else {
 			g.drawImage(ResourceManager.getImage("volumeOn"), 600, 5);
-		}
-
-		int base = 220;
-		for (int i = 0; i <= FuzzyPlayer.life - 1; i++) {
-			g.drawImage(heart, base + i * 50, 5);
 		}
 
 		if (showTutorialPanel) {
@@ -321,11 +343,6 @@ public class FuzzyGameWorld extends World {
 			showTutorialPanel = showTutorialPanel ? false : true;
 		}
 
-		stars = getNrOfEntities(Star.STAR);
-		if (total < 0) {
-			total = stars;
-		}
-
 		if (stars == 0 && getCount() > 0) {
 			Log.info("Level end");
 			levelEnd = true;
@@ -362,16 +379,23 @@ public class FuzzyGameWorld extends World {
 	private void nextLevel(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		clear();
+		stars = -1;
 		levelIndex++;
-		total = -1;
-		levelEnd = false;
-		playerDead = false;
-		init(container, game);
+		if (levelIndex < levelNumbers) {
+			total = -1;
+			levelEnd = false;
+			playerDead = false;
+			init(container, game);
+		} else {
+			// TODO: go to end title?
+			Log.info("Level ends!");
+		}
 	}
 
 	private void reloadLevel(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		clear();
+		stars = -1;
 		total = -1;
 		levelEnd = false;
 		playerDead = false;

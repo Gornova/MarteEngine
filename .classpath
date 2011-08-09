@@ -4,13 +4,13 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="data"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/slick.jar" sourcepath="lib/slick-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="MarteEngine/lib/native"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
-	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/slick.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

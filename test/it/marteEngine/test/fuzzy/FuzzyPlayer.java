@@ -84,6 +84,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 		if (collide(Spike.SPIKE, x, y) != null) {
 			damage();
 		}
+
 	}
 
 	@Override

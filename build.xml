@@ -13,7 +13,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 	<property name="target.class" value="TankTest" />
 	<property name="target.res" value="data/tank" />
 
-	<property name="engine.version" value="0.2" />
+	<property name="engine.version" value="0.3" />
 
 	<property name="webstart.title" value="MarteEngine Pong Test Example" />
 	<property name="webstart.description" value="MarteEngine Pong for 2 players on same pc" />
@@ -292,7 +292,8 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</tstamp>
 
 		<manifest file="MANIFEST.MF">
-			<attribute name="Implementation-Version" value="${engine.version}-b${build.number}" />
+			<attribute name="MarteEngine-Version" value="${engine.version}" />
+			<attribute name="MarteEngine-Build-Number" value="b${build.number}" />
 			<attribute name="Built-Date" value="${TODAY}" />
 		</manifest>
 

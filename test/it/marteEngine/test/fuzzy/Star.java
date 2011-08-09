@@ -45,6 +45,8 @@ public class Star extends Entity {
 			}
 			toRemove = true;
 			ty = y;
+			FuzzyGameWorld.stars -= 1;
+			FuzzyGameWorld.points += 100;
 		}
 
 		if (toRemove) {

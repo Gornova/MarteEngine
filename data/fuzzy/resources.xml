@@ -17,6 +17,7 @@
 	<sound key="jump" file="jump.wav" />
 	<sound key="pickupstar" file="pickupstar.wav" />
 	<sound key="allpickedup" file="allstarscollected.wav" />
+	<sound key="fireArrow" file="65734__Erdie__bow02.wav" />
 	<!-- songs -->
 	<music key="song1" file ="2685__TexasMusicForge__Genes.ogg" />	
 	<!-- images -->
@@ -30,6 +31,8 @@
 	<image key="menu" file="menu.png" />
 	<image key="spike" file="spikes.png" />
 	<image key="heart" file="heart.png" />
+	<image key="arrow" file="arrow.png" />
+	<image key="arrowTrap" file="arrowTrap.png" />
 	<!-- sheets -->
 	<sheet key="left" file="walkLeft.png" width="22" height="30"/>
 	<sheet key="right" file="walkRight.png" width="22" height="30"/>

@@ -85,6 +85,10 @@ public class FuzzyMenuWorld extends World {
 			game.enterState(FuzzyMain.GAME_STATE, new FadeOutTransition(),
 					new FadeInTransition());
 		}
+
+		if (ME.playMusic && !music.playing()) {
+			music.play();
+		}
 	}
 
 	private class Space extends Entity {

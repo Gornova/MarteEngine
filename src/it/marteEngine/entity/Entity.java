@@ -847,7 +847,7 @@ public abstract class Entity implements Comparable<Entity> {
 			}
 			if (deadAlarms != null) {
 				for (String deadAlarm : deadAlarms) {
-					alarms.put(deadAlarm, null);
+					alarms.remove(deadAlarm);
 				}
 			}
 		}

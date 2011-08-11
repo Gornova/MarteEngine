@@ -9,9 +9,9 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 <project name="MarteEngine" default="compile">
 
-	<property name="target.package" value="it.marteEngine.test.tank" />
-	<property name="target.class" value="TankTest" />
-	<property name="target.res" value="data/tank" />
+	<property name="target.package" value="it.marteEngine.test.fuzzy" />
+	<property name="target.class" value="FuzzyMain" />
+	<property name="target.res" value="data/fuzzy" />
 
 	<property name="engine.version" value="0.3" />
 
@@ -110,7 +110,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 
 	<!-- Build a .exe wrapper for project -->
-	<target name="exej" depends="clean">
+	<target name="exej" depends="proguard">
 		<delete file="${target.dir}/${target.class}.jar" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${target.dir}/${target.class}.jar" />
 		<delete file="${target.dir}/${target.class}_opt.jar" />
@@ -234,7 +234,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 	<taskdef resource="proguard/ant/task.properties" classpath="external/proguard/proguard.jar" />
 	<target name="proguard" depends="jar">
 		<proguard>
-		  -libraryjars ${java.home}/lib/rt.jar;lib/lwjgl.jar;lib/slick.jar
+		  -libraryjars ${java.home}/lib/rt.jar;lib/lwjgl.jar;lib/slick.jar;lib/jorbis-0.0.15.jar
 		  -injars      target/${target.class}.jar
 		  -outjars     target/${target.class}_opt.jar
 

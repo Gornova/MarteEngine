@@ -63,7 +63,7 @@ public class FuzzyMain extends StateBasedGame {
 			ME.keyToggleDebug = Input.KEY_1;
 			ME.keyRestart = Input.KEY_R;
 			ME.keyMuteMusic = Input.KEY_M;
-			ME.playMusic = false;
+			ME.playMusic = true;
 			AppGameContainer container = new AppGameContainer(new FuzzyMain());
 			container.setDisplayMode(640, 480, false);
 			container.setTargetFrameRate(50);

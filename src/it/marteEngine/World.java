@@ -274,7 +274,7 @@ public class World extends BasicGameState {
 			}
 			return res;
 		}
-		return null;
+		return new ArrayList<Entity>();
 	}
 
 	/**

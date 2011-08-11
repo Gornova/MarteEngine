@@ -41,7 +41,7 @@ public class FuzzyGameWorld extends World {
 	private boolean levelEnd = false;
 
 	// level game starts from
-	private int levelIndex = 8;
+	private int levelIndex = 1;
 	// number of levels (always levelIndex+1)
 	private int levelNumbers = 11;
 	// prefix for map names
@@ -105,7 +105,7 @@ public class FuzzyGameWorld extends World {
 
 		time = 0;
 
-		heart = ResourceManager.getImage("heart");
+		heart = ResourceManager.getImage("heart").copy();
 		FuzzyPlayer.life = 3;
 
 		define("layer", Input.KEY_L);

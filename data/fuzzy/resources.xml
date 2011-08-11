@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- possible resource settings are valid, transparentColor is optional 
-	<sound key="" file="" />
-	<music key="" file="" />
-	<image key="" file="" transparentColor=""/> 
-	<sheet key="" file="" width="" height="" transparentColor=""/>
-	<angelcodefont key="" fontFile="" imageFile=""/>
-	<int key="" value="">
-	<float key="" value=""> 
-	<string key="" value="">
--->
-	
+<!-- possible resource settings are valid, transparentColor is optional <sound 
+	key="" file="" /> <music key="" file="" /> <image key="" file="" transparentColor=""/> 
+	<sheet key="" file="" width="" height="" transparentColor=""/> <angelcodefont 
+	key="" fontFile="" imageFile=""/> <int key="" value=""> <float key="" value=""> 
+	<string key="" value=""> -->
+
 <resources>
 	<!-- basedir -->
 	<basedir path="data/fuzzy" />
@@ -19,7 +14,8 @@
 	<sound key="allpickedup" file="allstarscollected.wav" />
 	<sound key="fireArrow" file="65734__Erdie__bow02.wav" />
 	<!-- songs -->
-	<music key="song1" file ="2685__TexasMusicForge__Genes.ogg" />	
+	<music key="song0" file="1375__sleep__90_bpm_nylon2.wav" />
+	<music key="song1" file="2685__TexasMusicForge__Genes.ogg" />
 	<!-- images -->
 	<image key="block" file="block.png" />
 	<image key="player" file="blockRed.png" />
@@ -33,21 +29,24 @@
 	<image key="heart" file="heart.png" />
 	<image key="arrow" file="arrow.png" />
 	<image key="arrowTrap" file="arrowTrap.png" />
+	<image key="boss1" file="boss1.png" />
+
 	<!-- sheets -->
-	<sheet key="left" file="walkLeft.png" width="22" height="30"/>
-	<sheet key="right" file="walkRight.png" width="22" height="30"/>
-	<sheet key="slime" file="slime.png" width="40" height="22"/>
-	<sheet key="batLeft" file="batLeft.png" width="32" height="32"/>
-	<sheet key="batRight" file="batRight.png" width="32" height="32"/>
+	<sheet key="left" file="walkLeft.png" width="22" height="30" />
+	<sheet key="right" file="walkRight.png" width="22" height="30" />
+	<sheet key="slime" file="slime.png" width="40" height="22" />
+	<sheet key="batLeft" file="batLeft.png" width="32" height="32" />
+	<sheet key="batRight" file="batRight.png" width="32" height="32" />
+	<sheet key="bubbleSheet" file="bubbleSheet.png" width="66" height="66" />
 	<!-- fonts -->
-	<angelcodefont key="font" fontFile="font.fnt" imageFile="font.png"/>
+	<angelcodefont key="font" fontFile="font.fnt" imageFile="font.png" />
 	<!-- Tiled map -->
-	<map key="level1" file="level1.tmx"/>
-	<map key="level2" file="level2.tmx"/>
-	<map key="level3" file="level3.tmx"/>
-	<map key="level4" file="level4.tmx"/>
-	<map key="level5" file="level5.tmx"/>
-	<map key="level6" file="level6.tmx"/>
-	
-	<map key="map4" file="map4.tmx"/>
+	<map key="level1" file="level1.tmx" />
+	<map key="level2" file="level2.tmx" />
+	<map key="level3" file="level3.tmx" />
+	<map key="level4" file="level4.tmx" />
+	<map key="level5" file="level5.tmx" />
+	<map key="level6" file="level6.tmx" />
+
+	<map key="map4" file="map4.tmx" />
 </resources>

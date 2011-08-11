@@ -1,5 +1,6 @@
 package it.marteEngine.test.fuzzy;
 
+import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.Entity;
@@ -9,6 +10,7 @@ import it.marteEngine.game.starcleaner.Background;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -17,6 +19,8 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 public class FuzzyMenuWorld extends World {
 
 	public static boolean gotoGame = false;
+
+	private Music music;
 
 	public FuzzyMenuWorld(int id) {
 		super(id);
@@ -30,6 +34,8 @@ public class FuzzyMenuWorld extends World {
 		add(new Space(220, 400));
 		add(new TextEntity(160, 100, ResourceManager.getAngelCodeFont("font"),
 				"Alpha demo 3"));
+
+		music = ResourceManager.getMusic("song0");
 	}
 
 	@Override
@@ -37,6 +43,20 @@ public class FuzzyMenuWorld extends World {
 			throws SlickException {
 		super.enter(container, game);
 		gotoGame = false;
+		if (ME.playMusic) {
+			music.play();
+		}
+	}
+
+	@Override
+	public void leave(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		super.leave(container, game);
+
+		if (music.playing()) {
+			music.stop();
+		}
+
 	}
 
 	@Override

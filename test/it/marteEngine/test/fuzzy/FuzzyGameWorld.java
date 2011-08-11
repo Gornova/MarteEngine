@@ -36,13 +36,16 @@ public class FuzzyGameWorld extends World {
 	public static final int NO_SOLID = -1;
 	private static final int SOLID = 1;
 	public static int stars;
-	private int total = -1;
+	public static int total = -1;
 	private boolean levelEnd = false;
 
 	// level game starts from
 	private int levelIndex = 1;
 	// number of levels (always levelIndex+1)
 	private int levelNumbers = 7;
+	// prefix for map names
+	private static final String LEVEL_PREFIX = "level";
+
 	private boolean gameEnd = false;
 	private boolean showTutorialPanel = false;
 	private Sound allpickedup;
@@ -74,10 +77,11 @@ public class FuzzyGameWorld extends World {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.init(container, game);
+		stars = 0;
 		starsNumber = 0;
 		playerDead = false;
 
-		TiledMap map = ResourceManager.getMap("level" + levelIndex);
+		TiledMap map = ResourceManager.getMap(LEVEL_PREFIX + levelIndex);
 		Log.info("Load map" + levelIndex);
 		// make the world a bit bigger than the screen to force camera scrolling
 		computeWorldSize(map);
@@ -196,6 +200,10 @@ public class FuzzyGameWorld extends World {
 											.equalsIgnoreCase("arrowTrap")) {
 										// slime
 										add(new ArrowTrap(w * 32, h * 32));
+									} else if (enemyType
+											.equalsIgnoreCase("boss1")) {
+										// slime
+										add(new FuzzyBoss(w * 32, h * 32));
 									}
 								}
 							} else {
@@ -208,7 +216,16 @@ public class FuzzyGameWorld extends World {
 									Spike spike = new Spike(w * img.getWidth(),
 											h * img.getHeight());
 									add(spike);
+								}
+								if (tileType != null
+										&& tileType.equals("fuzzyBlock")) {
+									// fuzzyBlock
+									Fuzzyblock fz = new Fuzzyblock(w
+											* img.getWidth(), h
+											* img.getHeight(), img);
+									add(fz);
 								} else {
+
 									// blocks
 									StaticActor te = new StaticActor(w
 											* img.getWidth(), h
@@ -427,6 +444,10 @@ public class FuzzyGameWorld extends World {
 				}
 			}
 		}
+	}
+
+	public static void addPoints(int i) {
+		FuzzyGameWorld.points += 100;
 	}
 
 }

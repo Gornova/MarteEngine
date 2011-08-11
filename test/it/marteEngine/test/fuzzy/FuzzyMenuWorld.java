@@ -29,7 +29,7 @@ public class FuzzyMenuWorld extends World {
 		add(new Background(0, 0, ResourceManager.getImage("menu")));
 		add(new Space(220, 400));
 		add(new TextEntity(160, 100, ResourceManager.getAngelCodeFont("font"),
-				"Alpha demo"));
+				"Alpha demo 3"));
 	}
 
 	@Override

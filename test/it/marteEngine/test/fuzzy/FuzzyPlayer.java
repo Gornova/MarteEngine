@@ -81,7 +81,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 			jumpSnd.play();
 		}
 
-		if (collide(Spike.SPIKE, x, y) != null) {
+		if (collide(Spike.SPIKE, x, y + 1) != null) {
 			damage();
 		}
 

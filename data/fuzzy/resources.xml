@@ -45,8 +45,12 @@
 	<map key="level2" file="level2.tmx" />
 	<map key="level3" file="level3.tmx" />
 	<map key="level4" file="level4.tmx" />
-	<map key="level5" file="level5.tmx" />
+ 	<map key="level5" file="level5.tmx" />
 	<map key="level6" file="level6.tmx" />
-
+	<map key="level7" file="level7.tmx" />
+	<map key="level8" file="level8.tmx" />
+	<map key="level9" file="level9.tmx" />
+	<map key="level10" file="level10.tmx" />
+	
 	<map key="map4" file="map4.tmx" />
 </resources>

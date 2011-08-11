@@ -1,10 +1,10 @@
 package it.marteEngine.test.fuzzy;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.SlickException;
-
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
 
 public class Spike extends Entity {
 

@@ -2,6 +2,16 @@
 <map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
   <image source="tileset.png" width="192" height="576"/>
+  <tile id="53">
+   <properties>
+    <property name="type" value="fuzzyBlock"/>
+   </properties>
+  </tile>
+  <tile id="102">
+   <properties>
+    <property name="type" value="boss1"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="109" name="blockRed" tilewidth="32" tileheight="32">
   <image source="blockRed.png" width="32" height="32"/>
@@ -22,7 +32,7 @@
    <property name="type" value="enemies"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OMQ0AAAgDsDnG/4eLEZJWQRMAAAAAAJrmOgAAAAAAAAC8sz5dXzYAMgAA
+   H4sIAAAAAAAAC+3OMQEAAAgDoLW1fwMz7PIQEpAAAPwy1wEAAAAAAAAAAACA0gKdIFh8ADIAAA==
   </data>
  </layer>
  <layer name="tile" width="80" height="40">
@@ -30,12 +40,12 @@
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3VMQqAMBAEwGgKtdB8w/+/0IBYiqDEkDADCwvXHNdcCAAAAADvDTnjTWLFvVqx5mw3SRX3asX+csbJ/b5xv2fXj4iFeu+mnDlnKdR7d/3YVKgDAAAAAAD87QD+bbfxADIAAA==
+   H4sIAAAAAAAAC+3YwQ2AIBBFQcqxAvsvzQpEwjdE2ZnEgwdieFkO2BqJY+Gzo1X70u8f31lNv4x+Gf0y+mX0y+iX0S+jX0a/zNO+3rrLVu43uubsvFfsdzdrMzNYrV/vrM6c4537+f8HAAAAAAAAfMEFUZtCDwAyAAA=
   </data>
  </layer>
  <layer name="player" width="80" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OMQEAAAwCIPOsf8DF0AMSkAAAAGy5dgAAAAAAAAAAAGDMA6gnFLoAMgAA
+   H4sIAAAAAAAAC+3OQQkAAAgEsCts/68pDkG2BEsAAICGuQ4AAAAAAAAAAADwxgK1uA60ADIAAA==
   </data>
  </layer>
  <layer name="star" width="80" height="40">
@@ -51,7 +61,7 @@
    <property name="type" value="background"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3WPQqAMAyA0dzHH1B7/7NpB6FdFKtQhPcgW4bwTYkAAIA2Q+8Dfm7pfcDP6feOfu2m0K9VbreFfi3Odin0e6psp18t/3LjzU7ZTr9abrEeM19MCv0AAAAAAACA7+wv4Si4ADIAAA==
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
   </data>
  </layer>
 </map>

@@ -5,6 +5,7 @@ import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
+import it.marteEngine.entity.Alarm;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.game.starcleaner.Background;
@@ -40,14 +41,15 @@ public class FuzzyGameWorld extends World {
 	private boolean levelEnd = false;
 
 	// level game starts from
-	private int levelIndex = 1;
+	private int levelIndex = 8;
 	// number of levels (always levelIndex+1)
-	private int levelNumbers = 7;
+	private int levelNumbers = 11;
 	// prefix for map names
 	private static final String LEVEL_PREFIX = "level";
+	private static final String FADE_TUTORIAL = "fadeTutorial";
 
 	private boolean gameEnd = false;
-	private boolean showTutorialPanel = false;
+	private boolean showTutorialPanel = true;
 	private Sound allpickedup;
 	public static boolean playerDead = false;
 	private Rectangle volumeControl = new Rectangle(600, 5, 32, 34);
@@ -62,6 +64,7 @@ public class FuzzyGameWorld extends World {
 
 	private Image heart;
 	private int starsNumber;
+	private Alarm fadeTutorial;
 
 	public static int points = 0;
 
@@ -71,6 +74,7 @@ public class FuzzyGameWorld extends World {
 		allpickedup = ResourceManager.getSound("allpickedup");
 
 		ME.ps = new ParticleSystem(ResourceManager.getImage("particle"));
+
 	}
 
 	@Override
@@ -101,11 +105,6 @@ public class FuzzyGameWorld extends World {
 
 		time = 0;
 
-		musicOne = ResourceManager.getMusic("song1");
-		if (ME.playMusic) {
-			musicOne.play();
-		}
-
 		heart = ResourceManager.getImage("heart");
 		FuzzyPlayer.life = 3;
 
@@ -119,6 +118,18 @@ public class FuzzyGameWorld extends World {
 		}
 
 		points = 0;
+
+		musicOne = ResourceManager.getMusic("song1");
+	}
+
+	@Override
+	public void enter(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		super.enter(container, game);
+
+		if (ME.playMusic) {
+			musicOne.play();
+		}
 	}
 
 	private void computeWorldSize(TiledMap map) {
@@ -199,7 +210,7 @@ public class FuzzyGameWorld extends World {
 									} else if (enemyType
 											.equalsIgnoreCase("arrowTrap")) {
 										// slime
-										add(new ArrowTrap(w * 32, h * 32));
+										add(new FuzzyArrowTrap(w * 32, h * 32));
 									} else if (enemyType
 											.equalsIgnoreCase("boss1")) {
 										// slime
@@ -220,7 +231,7 @@ public class FuzzyGameWorld extends World {
 								if (tileType != null
 										&& tileType.equals("fuzzyBlock")) {
 									// fuzzyBlock
-									Fuzzyblock fz = new Fuzzyblock(w
+									FuzzyBlock fz = new FuzzyBlock(w
 											* img.getWidth(), h
 											* img.getHeight(), img);
 									add(fz);
@@ -307,6 +318,10 @@ public class FuzzyGameWorld extends World {
 			String instructions = "Press WASD/ARROWS to move, X/UP to Jump, M mute/unmute music";
 			ME.showMessage(container, g, 40, 440, 550, 35, 5, Color.darkGray,
 					instructions, 5);
+			if (fadeTutorial == null) {
+				fadeTutorial = new Alarm(FADE_TUTORIAL, 100, true);
+				fadeTutorial.start();
+			}
 		}
 
 		if (levelEnd) {
@@ -391,6 +406,11 @@ public class FuzzyGameWorld extends World {
 		if (pressed("layer")) {
 			Log.info("layer switch!");
 			switchLayer();
+		}
+
+		if (fadeTutorial != null && fadeTutorial.update(delta)) {
+			fadeTutorial = null;
+			showTutorialPanel = false;
 		}
 
 	}

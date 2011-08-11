@@ -11,9 +11,27 @@
  </tileset>
  <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
   <image source="slime0.png" width="40" height="22"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="slime"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="112" name="arrowTrap" tilewidth="32" tileheight="32">
   <image source="arrowTrap.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="arrowTrap"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="113" name="bat" tilewidth="32" tileheight="32">
+  <image source="bat.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="bat"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="tile" width="80" height="40">
   <properties>

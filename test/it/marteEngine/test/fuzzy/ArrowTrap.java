@@ -5,9 +5,7 @@ import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
-import it.marteEngine.tween.Ease;
-import it.marteEngine.tween.NumTween;
-import it.marteEngine.tween.Tween.TweenerMode;
+import it.marteEngine.tween.Tweener;
 
 import java.util.List;
 
@@ -37,12 +35,14 @@ public class ArrowTrap extends Entity {
 
 	private int shootTimer = 0;
 
-	private boolean fade;
-
-	private NumTween fadeTween = new NumTween(1, 0, 10, TweenerMode.ONESHOT,
-			Ease.CUBE_OUT, false);
-
 	private static Sound fireSnd;
+
+	private boolean toRemove;
+
+	/** To handle effects **/
+	private Tweener tweener = FuzzyFactory.getFadeMoveTweener();
+
+	private float ty;
 
 	public ArrowTrap(float x, float y) throws SlickException {
 		super(x, y);
@@ -60,7 +60,6 @@ public class ArrowTrap extends Entity {
 		}
 
 		fireSnd = ResourceManager.getSound("fireArrow");
-
 	}
 
 	@Override
@@ -69,25 +68,44 @@ public class ArrowTrap extends Entity {
 
 		super.update(container, delta);
 
-		if (!fade) {
+		if (!toRemove) {
 			super.update(container, delta);
-
+			ty = y;
 			Entity player = collide(PLAYER, x, y - 1);
 			if (player != null) {
-				fade = true;
+				toRemove = true;
 				((PlatformerEntity) player).jump();
+				FuzzyGameWorld.addPoints(100);
 			}
 			// shooting time!
 			shoot(delta);
 
 		} else {
-			fadeTween.update(delta);
-			setAlpha(fadeTween.getValue());
-			if (getAlpha() == 0) {
-				ME.world.remove(this);
-			}
+			tweener.update(delta);
 		}
 
+		if (getAlpha() == 0f) {
+			ME.world.remove(this);
+		}
+	}
+
+	@Override
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
+		super.render(container, g);
+
+		if (ME.debugEnabled) {
+			g.setColor(Color.red);
+			g.draw(sight);
+			g.setColor(Color.black);
+		}
+
+		if (toRemove) {
+			// if to remove, apply effects
+			setAlpha(tweener.getTween(FuzzyFactory.FADE).getValue());
+			ty -= tweener.getTween(FuzzyFactory.MOVE_UP).getValue();
+			FuzzyMain.font.drawString(x, ty, "100");
+		}
 	}
 
 	private void shoot(int delta) throws SlickException {
@@ -109,15 +127,4 @@ public class ArrowTrap extends Entity {
 		}
 	}
 
-	@Override
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
-		super.render(container, g);
-
-		if (ME.debugEnabled) {
-			g.setColor(Color.red);
-			g.draw(sight);
-			g.setColor(Color.black);
-		}
-	}
 }

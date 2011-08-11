@@ -3,9 +3,7 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
-import it.marteEngine.tween.Ease;
-import it.marteEngine.tween.NumTween;
-import it.marteEngine.tween.Tween.TweenerMode;
+import it.marteEngine.tween.Tweener;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,10 +15,8 @@ public class Star extends Entity {
 	public static final String STAR = "star";
 	private Sound pickupstar;
 
-	private NumTween fadeTween = new NumTween(1, 0, 60, TweenerMode.ONESHOT,
-			Ease.QUAD_OUT, false);
-	private NumTween moveUpTween = new NumTween(0, 2, 10, TweenerMode.ONESHOT,
-			Ease.QUAD_IN, false);
+	/** To handle effects **/
+	private Tweener tweener = FuzzyFactory.getFadeMoveTweener();
 
 	private boolean toRemove = false;
 	private float ty;
@@ -45,13 +41,12 @@ public class Star extends Entity {
 			}
 			toRemove = true;
 			ty = y;
+			FuzzyGameWorld.addPoints(100);
 			FuzzyGameWorld.stars -= 1;
-			FuzzyGameWorld.points += 100;
 		}
 
 		if (toRemove) {
-			fadeTween.update(delta);
-			moveUpTween.update(delta);
+			tweener.update(delta);
 		}
 		if (getAlpha() == 0f) {
 			ME.world.remove(this);
@@ -64,9 +59,8 @@ public class Star extends Entity {
 		super.render(container, g);
 		if (toRemove) {
 			// if to remove, apply effects
-			setAlpha(fadeTween.getValue());
-
-			ty -= moveUpTween.getValue();
+			setAlpha(tweener.getTween(FuzzyFactory.FADE).getValue());
+			ty -= tweener.getTween(FuzzyFactory.MOVE_UP).getValue();
 			FuzzyMain.font.drawString(x, ty, "100");
 		}
 	}

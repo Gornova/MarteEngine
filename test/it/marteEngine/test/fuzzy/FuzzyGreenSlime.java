@@ -5,11 +5,10 @@ import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PhysicsEntity;
 import it.marteEngine.entity.PlatformerEntity;
-import it.marteEngine.tween.Ease;
-import it.marteEngine.tween.NumTween;
-import it.marteEngine.tween.Tween.TweenerMode;
+import it.marteEngine.tween.Tweener;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 public class FuzzyGreenSlime extends PhysicsEntity {
@@ -20,10 +19,12 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 
 	protected boolean faceRight = false;
 
-	private NumTween fadeTween = new NumTween(1, 0, 10, TweenerMode.ONESHOT,
-			Ease.CUBE_OUT, false);
+	private boolean toRemove;
 
-	private boolean fade;
+	/** To handle effects **/
+	private Tweener tweener = FuzzyFactory.getFadeMoveTweener();
+
+	private float ty;
 
 	public FuzzyGreenSlime(float x, float y) throws SlickException {
 		super(x, y);
@@ -38,10 +39,10 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		if (!fade) {
+		if (!toRemove) {
 			super.update(container, delta);
 			checkGround(true, false);
-
+			ty = y;
 			if (speed.x > 0)
 				this.faceRight = true;
 			else
@@ -49,8 +50,9 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 
 			Entity player = collide(PLAYER, x, y - 1);
 			if (player != null) {
-				fade = true;
+				toRemove = true;
 				((PlatformerEntity) player).jump();
+				FuzzyGameWorld.addPoints(100);
 			}
 			player = collide(PLAYER, x + 1, y);
 			damagePlayer(player);
@@ -58,11 +60,23 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 			damagePlayer(player);
 
 		} else {
-			fadeTween.update(delta);
-			setAlpha(fadeTween.getValue());
-			if (getAlpha() == 0) {
-				ME.world.remove(this);
-			}
+			tweener.update(delta);
+		}
+
+		if (getAlpha() == 0f) {
+			ME.world.remove(this);
+		}
+	}
+
+	@Override
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
+		super.render(container, g);
+		if (toRemove) {
+			// if to remove, apply effects
+			setAlpha(tweener.getTween(FuzzyFactory.FADE).getValue());
+			ty -= tweener.getTween(FuzzyFactory.MOVE_UP).getValue();
+			FuzzyMain.font.drawString(x, ty, "100");
 		}
 	}
 

@@ -20,8 +20,10 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 //TODO modify hitbox coordinates to a real shape without changing method interface.
@@ -123,6 +125,13 @@ public abstract class Entity implements Comparable<Entity> {
 	/** hitbox height of entity **/
 	public int hitboxHeight;
 
+	/** this entity hitBox */
+	public Polygon hitBox;
+	
+	/** the original points of the hitBox, used for scaling. */
+	private float[] hitBoxOrig = new float[0];
+
+
 	/** stateManager for entity **/
 	public StateManager stateManager;
 
@@ -167,16 +176,17 @@ public abstract class Entity implements Comparable<Entity> {
 			whalf = animations.get(currentAnim).getWidth() / 2;
 			hhalf = animations.get(currentAnim).getHeight() / 2;
 		}
+		if(null == hitBox){return;}
 		if (on) {
 			// modify hitbox position accordingly - move it a bit up and left
-			this.hitboxOffsetX -= whalf;
-			this.hitboxOffsetY -= hhalf;
+			hitBox.setX(hitBox.getX() - whalf);
+			hitBox.setY(hitBox.getY() - hhalf);
 			this.centered = true;
 		} else {
 			if (centered == true) {
 				// reset hitbox position to top left origin
-				this.hitboxOffsetX += whalf;
-				this.hitboxOffsetY += hhalf;
+				hitBox.setX(hitBox.getX() + whalf);
+				hitBox.setY(hitBox.getY() + hhalf);
 			}
 			this.centered = false;
 		}
@@ -205,6 +215,14 @@ public abstract class Entity implements Comparable<Entity> {
 		checkWorldBoundaries();
 		previousx = x;
 		previousy = y;
+
+	/* from this point  hitBox related updates  */
+		if(null == hitBox ){ return;}
+		hitBox = new Polygon(hitBoxOrig);
+		Transform trans = new Transform(Transform.createTranslateTransform(x, y),Transform.createScaleTransform(scale, scale));
+		//can't sync with animations (Fails only with AngleAlphaScaleMoveEntity in Tests
+		trans.concatenate(Transform.createRotateTransform((float)(angle * Math.PI/360)));
+		hitBox = new Polygon(hitBox.transform(trans).getPoints());
 	}
 
 	protected void updateAnimation(int delta) {
@@ -276,8 +294,6 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		if (ME.debugEnabled && collidable) {
 			g.setColor(ME.borderColor);
-			Rectangle hitBox = new Rectangle(x + hitboxOffsetX, y
-					+ hitboxOffsetY, hitboxWidth, hitboxHeight);
 			g.draw(hitBox);
 			g.setColor(Color.white);
 			g.drawRect(x, y, 1, 1);
@@ -474,11 +490,16 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void setHitBox(float xOffset, float yOffset, int width, int height,
 			boolean collidable) {
-		this.hitboxOffsetX = xOffset;
-		this.hitboxOffsetY = yOffset;
-		this.hitboxWidth = width;
-		this.hitboxHeight = height;
-		this.collidable = true;
+
+			hitBox = new Polygon();
+			hitBox.addPoint(xOffset, yOffset); 				//Top-Left
+			hitBox.addPoint(xOffset+width, yOffset); 		//Top Right
+			hitBox.addPoint(xOffset+width,yOffset+height);  //Bottom-Right
+			hitBox.addPoint(xOffset,yOffset+height); 		//Bottom-Left
+			hitBox.setLocation(xOffset, yOffset);
+
+			hitBoxOrig = hitBox.getPoints();
+			collidable = true;
 
 		this.width = width;
 		this.height = height;
@@ -516,14 +537,14 @@ public abstract class Entity implements Comparable<Entity> {
 		for (Entity entity : world.getEntities()) {
 			if (entity.collidable && entity.type.contains(type)) {
 				if (!entity.equals(this)
-						&& x + hitboxOffsetX + hitboxWidth > entity.x
-								+ entity.hitboxOffsetX
-						&& y + hitboxOffsetY + hitboxHeight > entity.y
-								+ entity.hitboxOffsetY
-						&& x + hitboxOffsetX < entity.x + entity.hitboxOffsetX
-								+ entity.hitboxWidth
-						&& y + hitboxOffsetY < entity.y + entity.hitboxOffsetY
-								+ entity.hitboxHeight) {
+						&& x + hitBox.getX() + hitBox.getWidth() > entity.x
+								+ entity.hitBox.getX()
+						&& y + hitBox.getY() + hitBox.getHeight() > entity.y
+								+ entity.hitBox.getY()
+						&& x + hitBox.getX() < entity.x + entity.hitBox.getX()
+								+ entity.hitBox.getWidth()
+						&& y + hitBox.getY() < entity.y + entity.hitBox.getY()
+								+ entity.hitBox.getHeight()) {
 					this.collisionResponse(entity);
 					entity.collisionResponse(this);
 					return entity;
@@ -545,14 +566,14 @@ public abstract class Entity implements Comparable<Entity> {
 	public Entity collideWith(Entity other, float x, float y) {
 		if (other.collidable) {
 			if (!other.equals(this)
-					&& x + hitboxOffsetX + hitboxWidth > other.x
-							+ other.hitboxOffsetX
-					&& y + hitboxOffsetY + hitboxHeight > other.y
-							+ other.hitboxOffsetY
-					&& x + hitboxOffsetX < other.x + other.hitboxOffsetX
-							+ other.hitboxWidth
-					&& y + hitboxOffsetY < other.y + other.hitboxOffsetY
-							+ other.hitboxHeight) {
+					&& x + hitBox.getX() + hitBox.getWidth() > other.x
+							+ other.hitBox.getY()
+					&& y + hitBox.getY() + hitBox.getHeight() > other.y
+							+ other.hitBox.getY()
+					&& x + hitBox.getX() < other.x + other.hitBox.getX()
+							+ other.hitBox.getWidth()
+					&& y + hitBox.getY() < other.y + other.hitBox.getY()
+							+ other.hitBox.getHeight()) {
 				this.collisionResponse(other);
 				other.collisionResponse(this);
 				return other;
@@ -569,14 +590,14 @@ public abstract class Entity implements Comparable<Entity> {
 		for (Entity entity : world.getEntities()) {
 			if (entity.collidable && entity.type.contains(type)) {
 				if (!entity.equals(this)
-						&& x + hitboxOffsetX + hitboxWidth > entity.x
-								+ entity.hitboxOffsetX
-						&& y + hitboxOffsetY + hitboxHeight > entity.y
-								+ entity.hitboxOffsetY
-						&& x + hitboxOffsetX < entity.x + entity.hitboxOffsetX
-								+ entity.hitboxWidth
-						&& y + hitboxOffsetY < entity.y + entity.hitboxOffsetY
-								+ entity.hitboxHeight) {
+						&& x + hitBox.getX() + hitBox.getWidth() > entity.x
+								+ entity.hitBox.getX()
+						&& y + hitBox.getY() + hitBox.getHeight() > entity.y
+								+ entity.hitBox.getY()
+						&& x + hitBox.getX() < entity.x + entity.hitBox.getX()
+								+ entity.hitBox.getWidth()
+						&& y + hitBox.getY() < entity.y + entity.hitBox.getY()
+								+ entity.hitBox.getHeight()) {
 					this.collisionResponse(entity);
 					entity.collisionResponse(this);
 					if (collidingEntities == null)
@@ -597,9 +618,9 @@ public abstract class Entity implements Comparable<Entity> {
 	 *            The y-position of the point.
 	 */
 	public boolean collidePoint(float x, float y) {
-		if (x >= this.x - hitboxOffsetX && y >= this.y - hitboxOffsetY
-				&& x < this.x - hitboxOffsetX + width
-				&& y < this.y - hitboxOffsetY + height) {
+		if (x >= this.x - hitBox.getX() && y >= this.y - hitBox.getY()
+				&& x < this.x - hitBox.getX() + width
+				&& y < this.y - hitBox.getY() + height) {
 			this.collisionResponse(null);
 			return true;
 		}

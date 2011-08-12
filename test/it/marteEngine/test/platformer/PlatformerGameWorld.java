@@ -3,8 +3,8 @@ package it.marteEngine.test.platformer;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.PlatformerEntity;
-import it.marteEngine.entity.Solid;
 import it.marteEngine.game.starcleaner.Background;
+import it.marteEngine.game.starcleaner.Solid;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

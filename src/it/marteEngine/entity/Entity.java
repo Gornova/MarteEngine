@@ -116,15 +116,6 @@ public abstract class Entity implements Comparable<Entity> {
 	/** true if this entity should be visible, false otherwise */
 	public boolean visible = true;
 
-	/** x offset for collision box */
-	public float hitboxOffsetX;
-	/** y offset for collision box */
-	public float hitboxOffsetY;
-	/** hitbox width of entity **/
-	public int hitboxWidth;
-	/** hitbox height of entity **/
-	public int hitboxHeight;
-
 	/** this entity hitBox */
 	public Polygon hitBox;
 	
@@ -179,14 +170,12 @@ public abstract class Entity implements Comparable<Entity> {
 		if(null == hitBox){return;}
 		if (on) {
 			// modify hitbox position accordingly - move it a bit up and left
-			hitBox.setX(hitBox.getX() - whalf);
-			hitBox.setY(hitBox.getY() - hhalf);
+			hitBox.setLocation(hitBox.getX() - whalf, hitBox.getY() - hhalf);
 			this.centered = true;
 		} else {
 			if (centered == true) {
 				// reset hitbox position to top left origin
-				hitBox.setX(hitBox.getX() + whalf);
-				hitBox.setY(hitBox.getY() + hhalf);
+				hitBox.setLocation(hitBox.getX() + whalf, hitBox.getY() + hhalf);
 			}
 			this.centered = false;
 		}
@@ -208,6 +197,7 @@ public abstract class Entity implements Comparable<Entity> {
 			return;
 		}
 		updateAnimation(delta);
+		
 		if (speed != null) {
 			x += speed.x;
 			y += speed.y;
@@ -215,14 +205,15 @@ public abstract class Entity implements Comparable<Entity> {
 		checkWorldBoundaries();
 		previousx = x;
 		previousy = y;
-
-	/* from this point  hitBox related updates  */
-		if(null == hitBox ){ return;}
-		hitBox = new Polygon(hitBoxOrig);
-		Transform trans = new Transform(Transform.createTranslateTransform(x, y),Transform.createScaleTransform(scale, scale));
-		//can't sync with animations (Fails only with AngleAlphaScaleMoveEntity in Tests
-		trans.concatenate(Transform.createRotateTransform((float)(angle * Math.PI/360)));
-		hitBox = new Polygon(hitBox.transform(trans).getPoints());
+		
+		/* from this point hitBox related updates  */
+		if(null != hitBox ){ 
+			hitBox = new Polygon(hitBoxOrig);
+			Transform trans = new Transform(Transform.createTranslateTransform(x, y),Transform.createScaleTransform(scale, scale));
+			trans.concatenate(Transform.createRotateTransform((float)(angle * Math.PI/180)));
+			hitBox = new Polygon(hitBox.transform(trans).getPoints());
+		}
+	
 	}
 
 	protected void updateAnimation(int delta) {
@@ -234,6 +225,7 @@ public abstract class Entity implements Comparable<Entity> {
 				}
 			}
 		}
+		
 	}
 
 	/**
@@ -294,7 +286,9 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		if (ME.debugEnabled && collidable) {
 			g.setColor(ME.borderColor);
-			g.draw(hitBox);
+			if(null != hitBox){
+				g.draw(hitBox);
+			}
 			g.setColor(Color.white);
 			g.drawRect(x, y, 1, 1);
 			// draw entity center

@@ -10,6 +10,7 @@ import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.game.starcleaner.Background;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,7 +25,8 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.particles.ParticleSystem;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -43,14 +45,13 @@ public class FuzzyGameWorld extends World {
 	// level game starts from
 	private int levelIndex = 1;
 	// number of levels (always levelIndex+1)
-	private int levelNumbers = 11;
+	private int levelNumbers = 12;
 	// prefix for map names
 	private static final String LEVEL_PREFIX = "level";
 	private static final String FADE_TUTORIAL = "fadeTutorial";
 
 	private boolean gameEnd = false;
 	private boolean showTutorialPanel = true;
-	private Sound allpickedup;
 	public static boolean playerDead = false;
 	private Rectangle volumeControl = new Rectangle(600, 5, 32, 34);
 	private int widthInTiles;
@@ -61,26 +62,32 @@ public class FuzzyGameWorld extends World {
 	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 
 	private Music musicOne;
+	private Sound soundVictory;
 
 	private Image heart;
 	private int starsNumber;
 	private Alarm fadeTutorial;
+	private boolean victory;
 
 	public static int points = 0;
 
 	public FuzzyGameWorld(int id) {
 		super(id);
 
-		allpickedup = ResourceManager.getSound("allpickedup");
-
-		ME.ps = new ParticleSystem(ResourceManager.getImage("particle"));
-
+		try {
+			ME.ps = ParticleIO
+					.loadConfiguredSystem("/data/fuzzy/invulnerableEmitter.xml");
+			ME.renderParticle = false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.init(container, game);
+
 		stars = 0;
 		starsNumber = 0;
 		playerDead = false;
@@ -119,7 +126,13 @@ public class FuzzyGameWorld extends World {
 
 		points = 0;
 
-		musicOne = ResourceManager.getMusic("song1");
+		if (ResourceManager.getInt("bossLevel") == levelIndex) {
+			musicOne = ResourceManager.getMusic("song2");
+		} else
+			musicOne = ResourceManager.getMusic("song1");
+
+		soundVictory = ResourceManager.getSound("victory");
+		victory = true;
 	}
 
 	@Override
@@ -129,6 +142,7 @@ public class FuzzyGameWorld extends World {
 
 		if (ME.playMusic) {
 			musicOne.play();
+			musicOne.setVolume(0.5f);
 		}
 	}
 
@@ -218,7 +232,6 @@ public class FuzzyGameWorld extends World {
 									}
 								}
 							} else {
-								// spikes
 								String tileType = map.getTileProperty(tid,
 										"type", null);
 								if (tileType != null
@@ -227,11 +240,24 @@ public class FuzzyGameWorld extends World {
 									Spike spike = new Spike(w * img.getWidth(),
 											h * img.getHeight());
 									add(spike);
-								}
-								if (tileType != null
+								} else if (tileType != null
 										&& tileType.equals("fuzzyBlock")) {
 									// fuzzyBlock
 									FuzzyBlock fz = new FuzzyBlock(w
+											* img.getWidth(), h
+											* img.getHeight(), img);
+									add(fz);
+								} else if (tileType != null
+										&& tileType.equals("tappo")) {
+									// FuzzyDestroyableBlock
+									FuzzyDestroyableBlock fd = new FuzzyDestroyableBlock(
+											w * img.getWidth(), h
+													* img.getHeight(), img);
+									add(fd);
+								} else if (tileType != null
+										&& tileType.equals("targetBlock")) {
+									// targetBlock
+									TargetBlock fz = new TargetBlock(w
 											* img.getWidth(), h
 											* img.getHeight(), img);
 									add(fz);
@@ -327,9 +353,9 @@ public class FuzzyGameWorld extends World {
 		if (levelEnd) {
 			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray,
 					"LEVEL COMPLETED, press space to continue", 5);
-			if (!allpickedup.playing()) {
-				allpickedup.play();
-			}
+			// if (!allpickedup.playing()) {
+			// allpickedup.play();
+			// }
 		}
 		if (gameEnd) {
 			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray,
@@ -346,6 +372,7 @@ public class FuzzyGameWorld extends World {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		ME.muteMusic();
+		ME.renderParticle = true;
 
 		if (gameEnd) {
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
@@ -357,6 +384,13 @@ public class FuzzyGameWorld extends World {
 			return;
 		}
 		if (levelEnd) {
+			if (musicOne.playing()) {
+				musicOne.stop();
+			}
+			if (victory && !soundVictory.playing()) {
+				victory = false;
+				soundVictory.play();
+			}
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
 				Log.info("Load next level...");
 				nextLevel(container, game);
@@ -468,6 +502,14 @@ public class FuzzyGameWorld extends World {
 
 	public static void addPoints(int i) {
 		FuzzyGameWorld.points += 100;
+	}
+
+	public Vector2f getPlayerCenter() {
+		Entity ent = find(FuzzyPlayer.PLAYER);
+		if (ent != null) {
+			return new Vector2f(ent.x + ent.width / 2, ent.y + ent.height / 2);
+		}
+		return null;
 	}
 
 }

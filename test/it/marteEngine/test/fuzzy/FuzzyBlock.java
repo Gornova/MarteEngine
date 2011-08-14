@@ -15,7 +15,7 @@ public class FuzzyBlock extends Entity {
 
 	private boolean fade;
 
-	private Tween fadeTween = FuzzyFactory.getFadeTween();
+	private Tween fadeTween = FuzzyFactory.getFadeTween(FuzzyFactory.time);
 
 	public FuzzyBlock(float x, float y, Image image) {
 		super(x, y, image);

@@ -32,7 +32,7 @@
    <property name="type" value="enemies"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OMQEAAAgDoLW1fwMz7PIQEpAAAPwy1wEAAAAAAAAAAACA0gKdIFh8ADIAAA==
+   H4sIAAAAAAAAC+3OMQ0AAAgDsLnFvwNE7CAhrYImwHdzHQAAAAAAAAAAAAAAoLJfdg0vADIAAA==
   </data>
  </layer>
  <layer name="tile" width="80" height="40">

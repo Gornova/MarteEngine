@@ -109,7 +109,7 @@ public class World extends BasicGameState {
 		}
 
 		// render particle system
-		if (ME.ps != null) {
+		if (ME.ps != null && ME.renderParticle) {
 			ME.ps.render();
 		}
 

@@ -136,9 +136,7 @@ public class World extends BasicGameState {
 		renderedEntities++;
 		if (ME.debugEnabled && e.collidable) {
 			g.setColor(ME.borderColor);
-			Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
-					+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
-			g.draw(hitBox);
+			g.draw(e.hitBox);
 			g.setColor(Color.white);
 		}
 		e.render(container, g);

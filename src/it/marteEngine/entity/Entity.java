@@ -783,28 +783,45 @@ public abstract class Entity implements Comparable<Entity> {
 		return alarm;
 	}
 
-	public void restartAlarm(String name) {
+	public boolean restartAlarm(String name) {
 		Alarm alarm = alarms.get(name);
-		if (alarm != null)
+		if (alarm != null) {
 			alarm.start();
+			return true;
+		}
+		return false;
 	}
 
-	public void pauseAlarm(String name) {
+	public boolean pauseAlarm(String name) {
 		Alarm alarm = alarms.get(name);
-		if (alarm != null)
+		if (alarm != null) {
 			alarm.pause();
+			return true;
+		}
+		return false;
+
 	}
 
-	public void resumeAlarm(String name) {
+	public boolean resumeAlarm(String name) {
 		Alarm alarm = alarms.get(name);
-		if (alarm != null)
+		if (alarm != null) {
 			alarm.resume();
+			return true;
+		}
+		return false;
 	}
 
-	public void destroyAlarm(String name) {
+	public boolean destroyAlarm(String name) {
 		Alarm alarm = alarms.get(name);
-		if (alarm != null)
+		if (alarm != null) {
 			alarm.setDead(true);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean existAlarm(String name) {
+		return alarms.get(name) == null ? false : true;
 	}
 
 	/**

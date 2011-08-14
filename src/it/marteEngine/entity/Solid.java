@@ -1,6 +1,4 @@
-package it.marteEngine.game.starcleaner;
-
-import it.marteEngine.entity.Entity;
+package it.marteEngine.entity;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;

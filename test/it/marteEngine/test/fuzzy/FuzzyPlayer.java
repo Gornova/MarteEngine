@@ -18,10 +18,13 @@ import org.newdawn.slick.util.Log;
 
 public class FuzzyPlayer extends PlatformerEntity {
 
+	private static final String INVULNERABLE_ALARM = "invulnerableAlarm";
 	private boolean faceRight = true;
 	private Sound jumpSnd;
+	private Sound hurtSnd;
 	private ParticleSystem jumpEffect;
 	private ConfigurableEmitter emitter;
+	private boolean invulnerable;
 
 	public static int life = 3;
 
@@ -36,6 +39,8 @@ public class FuzzyPlayer extends PlatformerEntity {
 		addType(PLAYER);
 		name = PLAYER;
 		jumpSnd = ResourceManager.getSound("jump");
+		hurtSnd = ResourceManager.getSound("hurt");
+
 		maxSpeed = new Vector2f(3, 8);
 
 		try {
@@ -57,6 +62,9 @@ public class FuzzyPlayer extends PlatformerEntity {
 
 		if (jumpEffect != null) {
 			jumpEffect.render();
+		}
+		if (ME.ps != null && invulnerable) {
+			ME.ps.render(x + width / 2, y + height);
 		}
 	}
 
@@ -100,11 +108,32 @@ public class FuzzyPlayer extends PlatformerEntity {
 	}
 
 	public void damage() {
-		life -= 1;
-		if (life > 0) {
-			jump();
-		} else {
-			removePlayer();
+		if (!invulnerable) {
+			if (!hurtSnd.playing()) {
+				hurtSnd.play();
+			}
+			life -= 1;
+			if (life > 0) {
+				jump();
+			} else {
+				removePlayer();
+			}
+		}
+	}
+
+	public void invulnerable(int time) {
+		if (!invulnerable) {
+			invulnerable = true;
+			Log.info("true!!");
+			setAlarm(INVULNERABLE_ALARM, time, true, true);
+		}
+	}
+
+	@Override
+	public void alarmTriggered(String name) {
+		if (name.equalsIgnoreCase(INVULNERABLE_ALARM)) {
+			invulnerable = false;
+			Log.info("false!!");
 		}
 	}
 

@@ -60,6 +60,7 @@ public class ME {
 	public static int targetFrameRate;
 
 	public static ParticleSystem ps;
+	public static boolean renderParticle = false;
 
 	public static void setTargetFrameRate(GameContainer container,
 			int targetframerate) {
@@ -100,6 +101,10 @@ public class ME {
 				playMusic = playMusic ? false : true;
 				muteMusic();
 			}
+		}
+
+		if (ME.ps != null) {
+			ME.ps.update(delta);
 		}
 
 	}

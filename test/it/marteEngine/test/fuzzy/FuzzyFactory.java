@@ -13,26 +13,31 @@ public class FuzzyFactory {
 
 	public static final String FADE = "fade";
 	public static final String MOVE_UP = "moveUp";
+	public static float time = 10;
 
 	private FuzzyFactory() {
 	}
 
-	public static Tween getFadeTween() {
-		NumTween tween = new NumTween(1, 0, 10, TweenerMode.ONESHOT,
+	public static Tween getFadeTween(float t) {
+		NumTween tween = new NumTween(1, 0, t, TweenerMode.ONESHOT,
 				Ease.CUBE_OUT, false);
 		tween.setName(FADE);
 		return tween;
 	}
 
-	public static Tween getMoveUpTween() {
-		NumTween tween = new NumTween(0, 5, 10, TweenerMode.ONESHOT,
+	public static Tween getMoveUpTween(float t) {
+		NumTween tween = new NumTween(0, 5, t, TweenerMode.ONESHOT,
 				Ease.QUAD_IN, false);
 		tween.setName(MOVE_UP);
 		return tween;
 	}
 
 	public static Tweener getFadeMoveTweener() {
-		return new Tweener(getFadeTween(), getMoveUpTween());
+		return new Tweener(getFadeTween(time), getMoveUpTween(time));
+	}
+
+	public static Tweener getFadeMoveTweener(int t) {
+		return new Tweener(getFadeTween(t), getMoveUpTween(t));
 	}
 
 }

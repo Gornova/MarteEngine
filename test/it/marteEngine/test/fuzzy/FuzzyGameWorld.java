@@ -76,7 +76,7 @@ public class FuzzyGameWorld extends World {
 
 		try {
 			ME.ps = ParticleIO
-					.loadConfiguredSystem("/data/fuzzy/invulnerableEmitter.xml");
+					.loadConfiguredSystem("data/fuzzy/invulnerableEmitter.xml");
 			ME.renderParticle = false;
 		} catch (IOException e) {
 			e.printStackTrace();

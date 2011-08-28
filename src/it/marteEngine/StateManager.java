@@ -45,7 +45,7 @@ public class StateManager {
 	}
 
 	/** Useful if you need to know what state you are currently in. */
-	public Object currentState() {
+	public State currentState() {
 		return currentState;
 	}
 

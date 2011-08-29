@@ -3,11 +3,10 @@ package it.marteEngine.game.starcleaner;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 
-
 public class Spikes extends Entity {
 
 	public static final String SPIKES = "Spikes";
-	
+
 	public Spikes(float x, float y, boolean up) {
 		super(x, y);
 		this.name = SPIKES;

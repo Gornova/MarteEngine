@@ -17,7 +17,8 @@ public class StarCleaner extends StateBasedGame {
 	public static final int HEIGHT = 480;
 	public static final int TILESIZE = 40;
 
-	// static finals for the game state ids, defined here to avoid duplicate gamestate definitions
+	// static finals for the game state ids, defined here to avoid duplicate
+	// gamestate definitions
 	public static final int TITLE_STATE = 1;
 	public static final int INGAME_STATE = 2;
 	public static final int NEXTLEVEL_STATE = 3;
@@ -25,18 +26,17 @@ public class StarCleaner extends StateBasedGame {
 	public static final int CREDITS_STATE = 5;
 	public static final int INSTRUCTIONS_STATE = 6;
 	public static final int OPTIONS_STATE = 7;
-	
+
 	/** volume for SFX and music */
 	public static float musicVolume = 1.0f;
 	public static float sfxVolume = 1.0f;
-	
+
 	public static boolean wizardMode = false;
-	
+
 	public static boolean ressourcesInited = false;
-	
-	
+
 	private AppGameContainer container;
-	
+
 	public StarCleaner() {
 		super("Star Cleaner");
 		Globals.game = this;
@@ -48,13 +48,13 @@ public class StarCleaner extends StateBasedGame {
 			this.container = (AppGameContainer) container;
 		}
 		addState(new TitleState(TITLE_STATE));
-//		addState(new CreditsState());
-//		addState(new InstructionsState());
+		// addState(new CreditsState());
+		// addState(new InstructionsState());
 		addState(new IngameState(INGAME_STATE));
-//		addState(new NextLevelState());
-//		addState(new GameOverState());
-//		addState(new OptionsState());
-		
+		// addState(new NextLevelState());
+		// addState(new GameOverState());
+		// addState(new OptionsState());
+
 		applyGameOptions();
 	}
 
@@ -92,7 +92,7 @@ public class StarCleaner extends StateBasedGame {
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-		
+
 		ressourcesInited = true;
 	}
 
@@ -103,13 +103,13 @@ public class StarCleaner extends StateBasedGame {
 		if (args.length == 1 && args[0].equals("wizard"))
 			wizardMode = true;
 
-//		ME.debugEnabled = true;
-		
+		// ME.debugEnabled = true;
+
 		try {
-//			Log.setVerbose(false);
+			// Log.setVerbose(false);
 			AppGameContainer container = new AppGameContainer(new StarCleaner());
 			container.setDisplayMode(WIDTH, HEIGHT, false);
-//			container.setShowFPS(false);
+			// container.setShowFPS(false);
 			// switch off mouse cursor
 			container.start();
 		} catch (SlickException e) {

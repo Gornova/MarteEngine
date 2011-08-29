@@ -18,18 +18,19 @@ public class TankTurret extends Entity {
 	private static final String FIRE = "fire";
 	// parent is Tank reference
 	private Tank parent;
-	
+
 	public TankTurret(Tank parent) {
-		super(parent.x,parent.y);
+		super(parent.x, parent.y);
 		// position turret on top of parent position
 		this.parent = parent;
-		this.setGraphic(ResourceManager.getSpriteSheet("tank").getSubImage(2, 0));
-		
+		this.setGraphic(ResourceManager.getSpriteSheet("tank")
+				.getSubImage(2, 0));
+
 		this.setCentered(true);
-		
-		define(FIRE,Input.MOUSE_LEFT_BUTTON);
+
+		define(FIRE, Input.MOUSE_LEFT_BUTTON);
 	}
-	
+
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
@@ -42,18 +43,18 @@ public class TankTurret extends Entity {
 		float mx = input.getMouseX();
 		float my = input.getMouseY();
 		// TODO Going to add the offset here! HACK
-		//mx -= 20;
-		//my -= 15;
+		// mx -= 20;
+		// my -= 15;
 		angle = (int) calculateAngle(x, y, mx, my);
-	
+
 		// add new Missile when player fire
-		if (check(FIRE)){
+		if (check(FIRE)) {
 			Missile m = new Missile(x, y, angle);
 			m.setCentered(true);
 			ME.world.add(m);
 		}
-		
+
 		super.update(container, delta);
 	}
-	
+
 }

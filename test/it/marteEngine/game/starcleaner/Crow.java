@@ -9,12 +9,12 @@ import org.newdawn.slick.SlickException;
 public class Crow extends Entity {
 
 	public static final String CROW = "crow";
-	
+
 	private int frame = 0;
-	private int nextFrame = 500;	// change frames every 500 msecs
+	private int nextFrame = 500; // change frames every 500 msecs
 	private int frameCount = 0;
 	private float speed = 0.1f;
-	
+
 	public Crow(float x, float y) {
 		super(x, y);
 		depth = 20;
@@ -26,7 +26,8 @@ public class Crow extends Entity {
 		setHitBox(4, 8, 32, 24);
 	}
 
-	public void update(GameContainer container, int delta) throws SlickException {
+	public void update(GameContainer container, int delta)
+			throws SlickException {
 		super.update(container, delta);
 		frameCount += delta;
 		if (frameCount >= nextFrame) {

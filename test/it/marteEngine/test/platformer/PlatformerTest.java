@@ -29,8 +29,7 @@ public class PlatformerTest extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		initRessources();
-		PlatformerGameWorld gameState = new PlatformerGameWorld(
-				GAME_STATE);
+		PlatformerGameWorld gameState = new PlatformerGameWorld(GAME_STATE);
 
 		addState(gameState);
 	}
@@ -45,10 +44,10 @@ public class PlatformerTest extends StateBasedGame {
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-		
+
 		ressourcesInited = true;
-	}	
-	
+	}
+
 	public static void main(String[] argv) {
 		try {
 			ME.keyToggleDebug = Input.KEY_1;

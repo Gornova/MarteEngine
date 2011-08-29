@@ -1,6 +1,5 @@
 package it.marteEngine.game.starcleaner;
 
-
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 
@@ -23,9 +22,12 @@ public class Title extends Entity {
 		define(CMD_START, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
 	}
 
-	public void update(GameContainer container, int delta) throws SlickException {
+	public void update(GameContainer container, int delta)
+			throws SlickException {
 		super.update(container, delta);
 		if (check(CMD_START))
-			Globals.game.enterState(StarCleaner.INGAME_STATE, new FadeOutTransition(Color.white), new FadeInTransition(Color.white));
+			Globals.game.enterState(StarCleaner.INGAME_STATE,
+					new FadeOutTransition(Color.white), new FadeInTransition(
+							Color.white));
 	}
 }

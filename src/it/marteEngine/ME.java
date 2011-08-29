@@ -29,13 +29,14 @@ public class ME {
 	public static Color borderColor = Color.red;
 	/** key for restarting game **/
 	public static int keyRestart = -1;
-	
+	/** key for mute music and sounds */
+	public static int keyMuteMusic = -1;
+	public static boolean playMusic = true;
 
 	/** x scale factor for graphics, default 1 (nothing) **/
 	public static float scaleX = 1;
 	/** y scale factor for graphics, default 1 (nothing) **/
 	public static float scaleY = 1;
-
 
 	/** top z order **/
 	public static final Integer Z_LEVEL_TOP = 100;
@@ -49,33 +50,37 @@ public class ME {
 	public static HashMap<String, Object> attributes = new HashMap<String, Object>();
 
 	public static World world;
-	
+
 	/** do we base time calculations on delta timing or on frames per second? */
 	public static boolean useDeltaTiming = false;
 	/** value of current delta of update call. might be helpful here */
 	public static int delta;
 	/** the frames per seconds we targeted in our main class */
 	public static int targetFrameRate;
-	
-	public static void setTargetFrameRate(GameContainer container, int targetframerate) {
+
+	public static boolean renderParticle = false;
+
+	public static void setTargetFrameRate(GameContainer container,
+			int targetframerate) {
 		container.setTargetFrameRate(targetframerate);
 		ME.targetFrameRate = targetframerate;
 
 	}
-	
-	/** 
+
+	/**
 	 * Update entities and add new entities and remove old entities
+	 * 
 	 * @param container
 	 * @param delta
 	 * @throws SlickException
 	 */
-	public static void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
+	public static void update(GameContainer container, StateBasedGame game,
+			int delta) throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
 		if (world == null)
 			throw new SlickException("no world set");
-		
+
 		// special key handling
 		if (keyToggleDebug != -1) {
 			if (container.getInput().isKeyPressed(keyToggleDebug)) {
@@ -88,23 +93,29 @@ public class ME {
 				ME.world.init(container, game);
 				//TODO: go to first state?
 			}
-		}	
-
+		}
+		if (keyMuteMusic != -1) {
+			if (container.getInput().isKeyPressed(keyMuteMusic)) {
+				playMusic = playMusic ? false : true;
+				muteMusic();
+			}
+		}
 	}
 
 	/**
 	 * Render entities following camera, show debug information if in debug mode
+	 * 
 	 * @param container
 	 * @param g
 	 * @throws SlickException
 	 */
-	public static void render(GameContainer container, StateBasedGame game, Graphics g)
-			throws SlickException {
+	public static void render(GameContainer container, StateBasedGame game,
+			Graphics g) throws SlickException {
 		if (container == null)
 			throw new SlickException("no container set");
 		if (world == null)
-			throw new SlickException("no world set");		
-		
+			throw new SlickException("no world set");
+
 		if (scaleX != 1 || scaleY != 1)
 			g.scale(scaleX, scaleY);
 
@@ -135,11 +146,12 @@ public class ME {
 		g.draw(r);
 		g.setColor(Color.white);
 		g.resetFont();
-		g.drawString(text,xpos+spaceText, ypos + 9);
+		g.drawString(text, xpos + spaceText, ypos + 9);
 	}
 
 	/**
 	 * Set scale factor for graphics
+	 * 
 	 * @param sx
 	 * @param sy
 	 */
@@ -149,10 +161,19 @@ public class ME {
 	}
 
 	public static void remove(Entity entity) {
-		if (world!=null){
+		if (world != null) {
 			world.remove(entity);
 		}
-		
+	}
+
+	public static void muteMusic() {
+		if (playMusic) {
+			ResourceManager.setMusicVolume(1.0f);
+			ResourceManager.setSfxVolume(1.0f);
+		} else {
+			ResourceManager.setMusicVolume(0f);
+			ResourceManager.setSfxVolume(0f);
+		}
 	}
 
 }

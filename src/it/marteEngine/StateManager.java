@@ -35,8 +35,8 @@ public class StateManager {
 	/** Transition to the designated state. */
 	public void enter(Class<?> c) {
 		for (State s : states) {
-			if (s.getClass().getCanonicalName().equalsIgnoreCase(
-					c.getCanonicalName())) {
+			if (s.getClass().getCanonicalName()
+					.equalsIgnoreCase(c.getCanonicalName())) {
 				currentState = s;
 				currentState.init();
 				return;

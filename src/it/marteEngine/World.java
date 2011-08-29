@@ -5,11 +5,13 @@ import it.marteEngine.entity.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -22,7 +24,7 @@ public class World extends BasicGameState {
 	public static final int BELOW = -1;
 	public static final int GAME = 0;
 	public static final int ABOVE = 1;
-	
+
 	/** the game container this world belongs to */
 	public GameContainer container = null;
 
@@ -33,13 +35,16 @@ public class World extends BasicGameState {
 	public int width = 0;
 	/** height of the world, useful for vertical wrapping entities */
 	public int height = 0;
-	
+
 	/** internal list for entities **/
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Entity> removable = new ArrayList<Entity>();
 	private List<Entity> addable = new ArrayList<Entity>();
-	
-	/** two lists to contain objects that are rendered before and after camera stuff is rendered */
+
+	/**
+	 * two lists to contain objects that are rendered before and after camera
+	 * stuff is rendered
+	 */
 	private List<Entity> belowCamera = new ArrayList<Entity>();
 	private List<Entity> aboveCamera = new ArrayList<Entity>();
 
@@ -48,8 +53,12 @@ public class World extends BasicGameState {
 	
 	/** the particle system for all particle emitters in this world **/
 	public ParticleSystem particleSystem;
+	public boolean renderParticle = true;
 	
 	public int renderedEntities;
+
+	/** available commands for world **/
+	protected Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
 
 	public World(int id) {
 		this.id = id;
@@ -81,7 +90,7 @@ public class World extends BasicGameState {
 
 		renderedEntities = 0;
 		// first render entities below camera
-		for (Entity e:belowCamera) {
+		for (Entity e : belowCamera) {
 			if (!e.visible)
 				continue;
 			renderEntity(e, g, container);
@@ -93,7 +102,7 @@ public class World extends BasicGameState {
 		// render entities
 		for (Entity e : entities) {
 			if (!e.visible)
-				continue;	// next entity. this one stays invisible
+				continue; // next entity. this one stays invisible
 			if (camera != null) {
 				if (camera.contains(e)) {
 					renderEntity(e, g, container);
@@ -104,26 +113,33 @@ public class World extends BasicGameState {
 		}
 
 		// render particle system
-		if (this.particleSystem != null){
+		if (this.particleSystem != null && renderParticle) {
 			this.particleSystem.render();
 		}		
 		
+
+		if (ME.debugEnabled && camera != null) {
+			if (camera.getMoveRect() != null)
+				g.draw(camera.getMoveRect());
+		}
+
 		if (camera != null)
 			g.translate(camera.cameraX, camera.cameraY);
 
 		// finally render entities above camera
-		for (Entity e:aboveCamera) {
+		for (Entity e : aboveCamera) {
 			if (!e.visible)
 				continue;
 			renderEntity(e, g, container);
 		}
-		
+
 		ME.render(container, game, g);
 	}
 
-	private void renderEntity(Entity e, Graphics g, GameContainer container) throws SlickException {
+	private void renderEntity(Entity e, Graphics g, GameContainer container)
+			throws SlickException {
 		renderedEntities++;
-		if (ME.debugEnabled) {
+		if (ME.debugEnabled && e.collidable) {
 			g.setColor(ME.borderColor);
 			Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
 					+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
@@ -132,7 +148,7 @@ public class World extends BasicGameState {
 		}
 		e.render(container, g);
 	}
-	
+
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if (container == null)
@@ -185,7 +201,8 @@ public class World extends BasicGameState {
 			aboveCamera.remove(entity);
 			entity.removedFromWorld();
 		}
-		
+		removable.clear();
+
 		// update camera
 		if (camera != null) {
 			camera.update(container, delta);
@@ -205,10 +222,10 @@ public class World extends BasicGameState {
 	 * @param e
 	 *            entity to add
 	 */
-	public void add(Entity e, int ...flags) {
+	public void add(Entity e, int... flags) {
 		e.setWorld(this);
 		if (flags.length == 1) {
-			switch(flags[0]) {
+			switch (flags[0]) {
 			case BELOW:
 				belowCamera.add(e);
 				break;
@@ -223,7 +240,7 @@ public class World extends BasicGameState {
 			addable.add(e);
 	}
 
-	public void addAll(Collection<Entity> e, int ...flags) {
+	public void addAll(Collection<Entity> e, int... flags) {
 		for (Entity entity : e) {
 			this.add(entity, flags);
 		}
@@ -252,8 +269,7 @@ public class World extends BasicGameState {
 		}
 		return 0;
 	}
-	
-	
+
 	public List<Entity> getEntities(String type) {
 		if (entities.size() > 0) {
 			List<Entity> res = new ArrayList<Entity>();
@@ -263,7 +279,7 @@ public class World extends BasicGameState {
 			}
 			return res;
 		}
-		return null;
+		return new ArrayList<Entity>();
 	}
 
 	/**
@@ -403,6 +419,75 @@ public class World extends BasicGameState {
 
 	public void setParticleSystem(ParticleSystem particleSystem) {
 		this.particleSystem = particleSystem;
+	}
+	
+	/**
+	 * @return get number of entities in this world
+	 */
+	public int getCount() {
+		return entities.size();
+	}
+
+	/**
+	 * define commands to handle inputs
+	 * 
+	 * @param command
+	 *            name of the command
+	 * @param keys
+	 *            keys or mouse input from {@link Input} class
+	 */
+	public void define(String command, int... keys) {
+		commands.put(command, keys);
+	}
+
+	/**
+	 * Check if a command is down
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean check(String command) {
+		int[] checked = commands.get(command);
+		if (checked == null)
+			return false;
+		for (int i = 0; i < checked.length; i++) {
+			if (this.container.getInput().isKeyDown(checked[i])) {
+				return true;
+			} else if (checked[i] < 10) {
+				/**
+				 * 10 is max number of button on a mouse
+				 * 
+				 * @see Input
+				 */
+				if (this.container.getInput().isMousePressed(checked[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if a command is pressed
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean pressed(String command) {
+		int[] checked = commands.get(command);
+		if (checked == null)
+			return false;
+		for (int i = 0; i < checked.length; i++) {
+			if (this.container.getInput().isKeyPressed(checked[i])) {
+				return true;
+			} else if (checked[i] == Input.MOUSE_LEFT_BUTTON
+					|| checked[i] == Input.MOUSE_RIGHT_BUTTON) {
+				if (this.container.getInput().isMousePressed(checked[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

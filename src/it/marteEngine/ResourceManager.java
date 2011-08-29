@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.newdawn.slick.AngelCodeFont;
+import org.newdawn.slick.BigImage;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
@@ -141,12 +142,12 @@ public class ResourceManager {
 		String type = sprite.getAttribute("type");
 
 		List<SpriteInfo> infos = spriteInfo.get(spriteSheetKey);
-		if (infos == null){
+		if (infos == null) {
 			infos = new ArrayList<SpriteInfo>();
 		}
 		infos.add(new SpriteInfo(id, type));
 		Collections.sort(infos);
-		spriteInfo.put(spriteSheetKey,infos);
+		spriteInfo.put(spriteSheetKey, infos);
 	}
 
 	public static void loadTiledMap(Element map) throws SlickException {
@@ -154,7 +155,7 @@ public class ResourceManager {
 		String file = map.getAttribute("file");
 		Log.debug("Trying to load tiled map file '" + file + "' at key '" + key
 				+ "'...");
-		TiledMap tiledMap = new TiledMap(baseDir + "/" + file);
+		TiledMap tiledMap = new TiledMap(baseDir + file);
 		maps.put(key, tiledMap);
 	}
 
@@ -243,14 +244,23 @@ public class ResourceManager {
 		if (images.get(key) != null)
 			throw new SlickException("Image for key " + key
 					+ " already existing!");
-		Image image;
 		if (baseDir != null && !file.startsWith(baseDir))
 			file = baseDir + file;
-		if (transparentColor != null)
-			image = new Image(file, transparentColor);
-		else
-			image = new Image(file);
-		images.put(key, image);
+		try {
+			Image image;
+			if (transparentColor != null)
+				image = new Image(file, transparentColor);
+			else
+				image = new Image(file);
+			images.put(key, image);
+		} catch (Exception e) {
+			// for textures larger than 512x512 old cards throws error, try to
+			// use BigImage instead
+			Log.info("Texture too big for this hardware, try to use BigImage.. ignoring transparent color!");
+			BigImage image;
+			image = new BigImage(file);
+			images.put(key, image);
+		}
 	}
 
 	public static Image getImage(String key) {
@@ -305,7 +315,7 @@ public class ResourceManager {
 			Log.error("No SpriteSheet for key " + key + " found!");
 		return spriteSheet;
 	}
-	
+
 	public static HashMap<String, SpriteSheet> getSpriteSheets() {
 		return sheets;
 	}
@@ -430,19 +440,20 @@ public class ResourceManager {
 		return sfxVolume;
 	}
 
-	public static List<SpriteInfo> getSpriteInfo(String spriteSheet){
-		List<SpriteInfo> infos = spriteInfo.get(spriteSheet) ;
-		if (infos==null){
-			Log.error("No sprite info found for spritesheet with key "+spriteSheet);
+	public static List<SpriteInfo> getSpriteInfo(String spriteSheet) {
+		List<SpriteInfo> infos = spriteInfo.get(spriteSheet);
+		if (infos == null) {
+			Log.error("No sprite info found for spritesheet with key "
+					+ spriteSheet);
 		}
 		return infos;
 	}
-	
-	public static SpriteInfo getSpriteInfo(String spriteSheet, String id){
+
+	public static SpriteInfo getSpriteInfo(String spriteSheet, String id) {
 		List<SpriteInfo> infos = getSpriteInfo(spriteSheet);
-		if (infos!=null){
+		if (infos != null) {
 			for (SpriteInfo spriteInfo : infos) {
-				if (spriteInfo.getId().equalsIgnoreCase(id)){
+				if (spriteInfo.getId().equalsIgnoreCase(id)) {
 					return spriteInfo;
 				}
 			}
@@ -460,12 +471,12 @@ public class ResourceManager {
 						found = true;
 					}
 				}
-				if (!found){
+				if (!found) {
 					list.add(images.get(key));
 				}
 			}
 		}
 		return list;
 	}	
-	
+
 }

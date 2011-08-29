@@ -9,14 +9,15 @@ public class TextEntity extends Entity {
 
 	private Font font = null;
 	private String text = null;
-	
+
 	public TextEntity(float x, float y, Font font, String text) {
 		super(x, y);
 		this.font = font;
 		this.setText(text);
 	}
-	
-	public void render(GameContainer container, Graphics g)	throws SlickException {
+
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
 		if (font == null) {
 			font = container.getDefaultFont();
 			this.calculateHitBox();
@@ -42,7 +43,7 @@ public class TextEntity extends Entity {
 		this.text = text;
 		this.calculateHitBox();
 	}
-	
+
 	private void calculateHitBox() {
 		if (font != null && text != null) {
 			int w = font.getWidth(text);

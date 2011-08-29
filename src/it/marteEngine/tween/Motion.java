@@ -1,9 +1,8 @@
 package it.marteEngine.tween;
 
-
 /**
  * base class for motion tweens
- *
+ * 
  */
 public abstract class Motion extends Tween {
 
@@ -33,6 +32,5 @@ public abstract class Motion extends Tween {
 	public void setY(float y) {
 		this.y = y;
 	}
-
 
 }

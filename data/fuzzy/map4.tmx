@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tileset.png" width="192" height="576"/>
+  <tile id="53">
+   <properties>
+    <property name="type" value="fuzzyBlock"/>
+   </properties>
+  </tile>
+  <tile id="102">
+   <properties>
+    <property name="type" value="boss1"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="109" name="blockRed" tilewidth="32" tileheight="32">
+  <image source="blockRed.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
+  <image source="star.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="111" name="arrowTrap" tilewidth="32" tileheight="32">
+  <image source="arrowTrap.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="arrowTrap"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="enemies" width="80" height="40">
+  <properties>
+   <property name="type" value="enemies"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OMQ0AAAgDsLnFvwNE7CAhrYImwHdzHQAAAAAAAAAAAAAAoLJfdg0vADIAAA==
+  </data>
+ </layer>
+ <layer name="tile" width="80" height="40">
+  <properties>
+   <property name="type" value="entity"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3YwQ2AIBBFQcqxAvsvzQpEwjdE2ZnEgwdieFkO2BqJY+Gzo1X70u8f31lNv4x+Gf0y+mX0y+iX0S+jX0a/zNO+3rrLVu43uubsvFfsdzdrMzNYrV/vrM6c4537+f8HAAAAAAAAfMEFUZtCDwAyAAA=
+  </data>
+ </layer>
+ <layer name="player" width="80" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OQQkAAAgEsCts/68pDkG2BEsAAICGuQ4AAAAAAAAAAADwxgK1uA60ADIAAA==
+  </data>
+ </layer>
+ <layer name="star" width="80" height="40">
+  <properties>
+   <property name="type" value="star"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OIQEAAAgDsCemv6TBLYItwRIAAAAA4Lu5DgAAAAAAAABQLWTI5qMAMgAA
+  </data>
+ </layer>
+ <layer name="background" width="80" height="40" opacity="0.39">
+  <properties>
+   <property name="type" value="background"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
+  </data>
+ </layer>
+</map>

@@ -1,6 +1,5 @@
 package it.marteEngine.tween;
 
-
 /**
  * Tween can change Entity status
  * 
@@ -8,7 +7,9 @@ package it.marteEngine.tween;
  */
 public abstract class Tween {
 
-	public enum TweenerMode { ONESHOT, LOOPING, PERSIST };
+	public enum TweenerMode {
+		ONESHOT, LOOPING, PERSIST
+	};
 
 	protected String name = null;
 	protected TweenerMode mode = TweenerMode.PERSIST;
@@ -16,9 +17,9 @@ public abstract class Tween {
 	protected Tweener parent = null;
 	protected boolean active = true;
 	protected boolean finished = false;
-	
+
 	protected float t = 0f;
-	
+
 	/** how much time proceeded */
 	private float time = 0f;
 	/** when is this tweener done */
@@ -106,31 +107,35 @@ public abstract class Tween {
 	}
 
 	public float getValue() {
-		return t;	// after the ease function has been applied
+		return t; // after the ease function has been applied
 	}
-	
+
 	/**
 	 * how many percent is this tween done? value between 0 and 1
+	 * 
 	 * @return a value between 0 and 1 where 1 means hundred percent
 	 */
 	public float getPercentage() {
 		return time / target;
 	}
-	
+
 	/**
 	 * sets the progress of this tween.
-	 * @param val must be a value between 0 and 1.
+	 * 
+	 * @param val
+	 *            must be a value between 0 and 1.
 	 */
 	public void setPercentage(float val) {
 		time = target * val;
 	}
+
 	/**
 	 * @return true if tween is active
 	 */
 	public boolean isActive() {
 		return active;
 	}
-	
+
 	public TweenerMode getMode() {
 		return mode;
 	}

@@ -29,9 +29,9 @@ public class TankTest extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		initRessources();
-		TankGame inGameState = new TankGame(0,container);
+		TankGame inGameState = new TankGame(0, container);
 		addState(inGameState);
-		
+
 	}
 
 	public static void initRessources() throws SlickException {
@@ -44,10 +44,10 @@ public class TankTest extends StateBasedGame {
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-		
+
 		ressourcesInited = true;
-	}	
-	
+	}
+
 	public static void main(String[] argv) {
 		try {
 			ME.keyToggleDebug = Input.KEY_1;

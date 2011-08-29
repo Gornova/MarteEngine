@@ -41,7 +41,7 @@ public class ResizeSquare extends Entity {
 
 		// define labels for the key
 		defineControls();
-		
+
 	}
 
 	public void setupImage() {
@@ -95,38 +95,38 @@ public class ResizeSquare extends Entity {
 		// updateRotation();
 
 		// calculate heading of turret
-//		Input input = container.getInput();
-//		float mx = input.getMouseX();
-//		float my = input.getMouseY();
+		// Input input = container.getInput();
+		// float mx = input.getMouseX();
+		// float my = input.getMouseY();
 		// TODO Going to add the offset here! HACK
 		// mx -= 20;
 		// my -= 15;
-		//angle = (int) calculateAngle(x, y, mx, my);
+		// angle = (int) calculateAngle(x, y, mx, my);
 
 		// add new Missile when player fire
-//		if (check(ATTACK1)) {
-//			Bullet b = new Bullet(x, y, "data/bullet.png", angle);
-//			b.setCentered(true);
-//			ME.world.add(b);			
-//		}
+		// if (check(ATTACK1)) {
+		// Bullet b = new Bullet(x, y, "data/bullet.png", angle);
+		// b.setCentered(true);
+		// ME.world.add(b);
+		// }
 
 		super.update(container, delta);
 
 	}
 
-//	private void updateSpeed() {
-//		if (value == 8) {
-//			mySpeed.set(FASTEST);
-//		} else if (value == 16) {
-//			mySpeed.set(FAST);
-//		} else if (value == 32) {
-//			mySpeed.set(NORMAL);
-//		} else if (value == 64) {
-//			mySpeed.set(SLOW);
-//		} else if (value == 128) {
-//			mySpeed.set(SLOWEST);
-//		}
-//	}
+	// private void updateSpeed() {
+	// if (value == 8) {
+	// mySpeed.set(FASTEST);
+	// } else if (value == 16) {
+	// mySpeed.set(FAST);
+	// } else if (value == 32) {
+	// mySpeed.set(NORMAL);
+	// } else if (value == 64) {
+	// mySpeed.set(SLOW);
+	// } else if (value == 128) {
+	// mySpeed.set(SLOWEST);
+	// }
+	// }
 
 	public void sizeDown() {
 		if (value / 2 >= 8) {
@@ -164,15 +164,15 @@ public class ResizeSquare extends Entity {
 		}
 	}
 
-//	private void updateRotation() {
-//		Input input = world.container.getInput();
-//		int mx = input.getMouseX();
-//		int my = input.getMouseY();
-//		Vector2f position = new Vector2f(x, y);
-//		rotation = (float) Math.toDegrees(Math.atan2(position.x - mx + value
-//				/ 2, position.y - my + value / 2)
-//				* -1) + 180;
-//		Log.info("rotation " + rotation);
-//	}
+	// private void updateRotation() {
+	// Input input = world.container.getInput();
+	// int mx = input.getMouseX();
+	// int my = input.getMouseY();
+	// Vector2f position = new Vector2f(x, y);
+	// rotation = (float) Math.toDegrees(Math.atan2(position.x - mx + value
+	// / 2, position.y - my + value / 2)
+	// * -1) + 180;
+	// Log.info("rotation " + rotation);
+	// }
 
 }

@@ -1,6 +1,5 @@
 package it.marteEngine;
 
-
 public class SpriteInfo implements Comparable<SpriteInfo> {
 
 	private String id;

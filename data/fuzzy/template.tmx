@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="blockRed" tilewidth="32" tileheight="32">
+  <image source="blockRed.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tileset.png" width="192" height="576"/>
+ </tileset>
+ <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
+  <image source="star.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
+  <image source="slime0.png" width="40" height="22"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="slime"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="112" name="arrowTrap" tilewidth="32" tileheight="32">
+  <image source="arrowTrap.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="arrowTrap"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="113" name="bat" tilewidth="32" tileheight="32">
+  <image source="bat.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="bat"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="tile" width="80" height="40">
+  <properties>
+   <property name="type" value="entity"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
+  </data>
+ </layer>
+ <layer name="player" width="80" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
+  </data>
+ </layer>
+ <layer name="background" width="80" height="40" opacity="0.48">
+  <properties>
+   <property name="type" value="background"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
+  </data>
+ </layer>
+ <layer name="star" width="80" height="40">
+  <properties>
+   <property name="type" value="star"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
+  </data>
+ </layer>
+ <layer name="enemies" width="80" height="40">
+  <properties>
+   <property name="type" value="enemies"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAHg2usW81gAyAAA=
+  </data>
+ </layer>
+</map>

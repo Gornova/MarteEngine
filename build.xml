@@ -9,12 +9,12 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 <project name="MarteEngine" default="compile">
 
-	<property name="target.package" value="it.marteEngine.test.tank" />
-	<property name="target.class" value="TankTest" />
-	<property name="target.res" value="data/tank" />
+	<property name="target.package" value="it.marteEngine.test.fuzzy" />
+	<property name="target.class" value="FuzzyMain" />
+	<property name="target.res" value="data/fuzzy" />
 
-	<property name="engine.version" value="0.2"/>
-	
+	<property name="engine.version" value="0.3" />
+
 	<property name="webstart.title" value="MarteEngine Pong Test Example" />
 	<property name="webstart.description" value="MarteEngine Pong for 2 players on same pc" />
 	<property name="webstart.homepage" value="http://randomtower.blogspot.com" />
@@ -43,14 +43,15 @@ Main objective of this build configuration is to help in build distribuiable pac
 	<property name="wamp.libdir" value="C:/Programmi/wamp/www/mygamelib/" />
 	<property name="applet.jarname" value="${target.class}.jar" />
 	<property name="launch4j.dir" location="C:/Programmi/launch4j-3.0.1-win32/launch4j" />
-
+	
 	<!-- Set up the environment including preparing the natives. -->
-	<target name="setup" depends="setup-check" unless="setup.exists">
+	<target name="setup" depends="setup-check">
 		<delete dir="${lib.dir}/native" />
 		<mkdir dir="${lib.dir}/native" />
 		<unzip src="${lib.dir}/natives-win32.jar" dest="${lib.dir}/native" />
 		<unzip src="${lib.dir}/natives-mac.jar" dest="${lib.dir}/native" />
 		<unzip src="${lib.dir}/natives-linux.jar" dest="${lib.dir}/native" />
+
 	</target>
 
 	<!-- Compile and archive -->
@@ -73,7 +74,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 	</target>
 
 	<!-- Clean up the environment. -->
-	<target name="clean">
+	<target name="clean" depends="makeTarget">
 		<delete includeEmptyDirs="true">
 			<fileset dir="${obj.dir}" includes="**/*" defaultExcludes="no" />
 		</delete>
@@ -81,12 +82,16 @@ Main objective of this build configuration is to help in build distribuiable pac
 			<fileset dir="${target.dir}" includes="**/*" defaultExcludes="no" />
 		</delete>
 	</target>
+	
+	<!-- Make target dir -->
+	<target name="makeTarget" depends="target-check" unless="target.exists">
+		<mkdir dir="${target.dir}" />
+	</target>	
 
 	<!-- Create a webstart directory in order to deploy. -->
-	<target name="webstart" depends="clean,proguard">
+	<target name="webstart" depends="clean">
 		<delete dir="${webstart.dir}" />
 		<mkdir dir="${webstart.dir}" />
-		<copy file="${script.dir}/htaccess" tofile="${webstart.dir}/.htaccess" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${webstart.dir}/${target.class}.jar" />
 		<copy file="${script.dir}/template.jnlp" tofile="${webstart.dir}/${target.class}.jnlp">
 			<filterchain>
@@ -105,7 +110,7 @@ Main objective of this build configuration is to help in build distribuiable pac
 
 
 	<!-- Build a .exe wrapper for project -->
-	<target name="exej" depends="clean,proguard">
+	<target name="exej" depends="proguard">
 		<delete file="${target.dir}/${target.class}.jar" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${target.dir}/${target.class}.jar" />
 		<delete file="${target.dir}/${target.class}_opt.jar" />
@@ -151,7 +156,13 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</condition>
 	</target>
 
-
+	<!-- Determine if target dir exist or not-->
+	<target name="target-check">
+		<condition property="target.exists">
+			<available file="${target.dir}" type="dir" />
+		</condition>
+	</target>
+	
 	<!-- Determines whether a keystore exists. -->
 	<target name="check-keystore">
 		<input message="Username:" addproperty="keystore.alias" />
@@ -180,23 +191,6 @@ Main objective of this build configuration is to help in build distribuiable pac
 	<target name="webstart-signjar" depends="webstart-keystore">
 		<signjar jar="${webstart.dir}/${target.class}.jar" keystore="${target.dir}/${keystore.alias}.ks" storepass="${keystore.pass}" alias="${keystore.alias}" />
 	</target>
-
-	<!-- Compile the code put results into obj.dir. -->
-	<!--
-	<target name="compile">
-		<mkdir dir="${obj.dir}" />
-		<javac destdir="${obj.dir}" debug="on">
-			<src path="${src.dir}" />
-			<classpath>
-				<pathelement path="${lib.dir}/slick.jar" />
-				<pathelement path="${lib.dir}/lwjgl.jar" />
-			</classpath>
-		</javac>
-		<copy todir="${obj.dir}">
-			<fileset dir="${res.dir}" />
-		</copy>
-	</target>
-	-->
 
 	<!-- Compile the code put results into obj.dir. -->
 	<target name="compile" depends="clean">
@@ -236,10 +230,11 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</jar>
 	</target>
 
+	<!-- You can use proguard to optimize your jar final size, just add as depends on exej, applet or webstart-->
 	<taskdef resource="proguard/ant/task.properties" classpath="external/proguard/proguard.jar" />
 	<target name="proguard" depends="jar">
 		<proguard>
-		  -libraryjars ${java.home}/lib/rt.jar;lib/lwjgl.jar;lib/slick.jar
+		  -libraryjars ${java.home}/lib/rt.jar;lib/lwjgl.jar;lib/slick.jar;lib/jorbis-0.0.15.jar
 		  -injars      target/${target.class}.jar
 		  -outjars     target/${target.class}_opt.jar
 
@@ -249,8 +244,9 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</proguard>
 	</target>
 
+
 	<!-- Create a webstart directory in order to deploy. -->
-	<target name="applet" depends="clean,proguard">
+	<target name="applet" depends="clean">
 		<delete dir="${applet.dir}" />
 		<mkdir dir="${applet.dir}" />
 		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${applet.dir}/${target.class}.jar" />
@@ -296,7 +292,8 @@ Main objective of this build configuration is to help in build distribuiable pac
 		</tstamp>
 
 		<manifest file="MANIFEST.MF">
-			<attribute name="Implementation-Version" value="${engine.version}-b${build.number}" />
+			<attribute name="MarteEngine-Version" value="${engine.version}" />
+			<attribute name="MarteEngine-Build-Number" value="b${build.number}" />
 			<attribute name="Built-Date" value="${TODAY}" />
 		</manifest>
 

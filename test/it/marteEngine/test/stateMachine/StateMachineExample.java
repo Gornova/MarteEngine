@@ -20,17 +20,18 @@ public class StateMachineExample extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		
-		World state = new World(0,container); 
-		
-		Entity e = new StaticActor(100, 100, 100,100 ,"data/cross.png");
-		e.speed = new Vector2f(8,8);
-		e.stateManager.addAll(new IdleState(e),new MovingState(e),new CombatState(e));
+
+		World state = new World(0, container);
+
+		Entity e = new StaticActor(100, 100, 100, 100, "data/cross.png");
+		e.speed = new Vector2f(8, 8);
+		e.stateManager.addAll(new IdleState(e), new MovingState(e),
+				new CombatState(e));
 		state.add(e);
-		
+
 		addState(state);
-	}	
-	
+	}
+
 	public static void main(String[] argv) {
 		try {
 			ME.keyRestart = Input.KEY_R;

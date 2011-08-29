@@ -12,16 +12,19 @@ import it.marteEngine.test.fuzzy.RingEmitter;
 public class ParticlesWorld extends World {
 
 	private ParticlesEntity whirl, simpleEmitter, ringEmitter;
+	private int whirlx, whirly;
 	
 	public ParticlesWorld(int id, GameContainer container) {
 		super(id, container);
 		particleSystem = new ParticleSystem("data/data/particle.tga", 1000);	// max particles = 1000
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);
+		particleSystem.setPosition(0, 0);
 		
-		whirl = new ParticlesEntity(container.getWidth()/2, container.getHeight()/2, null, "data/data/teleportemitter.xml");
+		whirlx = 300; whirly = 100;
+		whirl = new ParticlesEntity(whirlx, whirly, "data/data/teleportemitter.xml");
 		this.add(whirl);
 
-		simpleEmitter = new ParticlesEntity(container.getInput().getMouseX(), container.getInput().getMouseY(), null, "data/data/simpleEmitter.xml");
+		simpleEmitter = new ParticlesEntity(container.getInput().getMouseX(), container.getInput().getMouseY(), "data/data/simpleEmitter.xml");
 		this.add(simpleEmitter);
 		
 		ringEmitter = new ParticlesEntity(400, 400, new RingEmitter(400,400));
@@ -37,7 +40,7 @@ public class ParticlesWorld extends World {
 		
 		if (whirl.visible == false) {
 			// whirl over. restart again
-			whirl = new ParticlesEntity(container.getWidth()/2, container.getHeight()/2, null, "data/data/teleportemitter.xml");
+			whirl = new ParticlesEntity(whirlx, whirly, "data/data/teleportemitter.xml");
 			this.add(whirl);
 			
 		}

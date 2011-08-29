@@ -1,5 +1,6 @@
 package it.marteEngine.test.avatar;
 
+import it.marteEngine.Camera;
 import it.marteEngine.ME;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
@@ -19,8 +20,8 @@ public class MoveAvatarTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		
-		World gameWorld = new World(0,container);
+
+		World gameWorld = new World(0, container);
 		// make the world a bit bigger than the screen to force camera scrolling
 		gameWorld.setWidth(2000);
 		gameWorld.setHeight(2000);		
@@ -39,13 +40,13 @@ public class MoveAvatarTest extends StateBasedGame {
 		gameWorld.add(sword);
 
 		// set screen camera to follo player
-		gameWorld.setCameraOn(player);
-		
+		gameWorld.setCamera(new Camera(gameWorld, player, container.getWidth(),
+				container.getHeight(), container.getWidth() - 100, container
+						.getHeight() - 100, player.mySpeed));
 		ME.world = gameWorld;
 
 		addState(gameWorld);
 	}
-	
 
 	public static void main(String[] argv) {
 		try {

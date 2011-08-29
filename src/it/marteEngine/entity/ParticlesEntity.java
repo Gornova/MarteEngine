@@ -20,22 +20,21 @@ public class ParticlesEntity extends Entity {
 //	private ConfigurableEmitter emitter = null;
 	private ParticleEmitter emitter = null;
 	
-	public ParticlesEntity(float x, float y, Image particle, String emitterFile) {
-		this(x, y, particle, (ConfigurableEmitter) null);
+	public ParticlesEntity(float x, float y, String emitterFile) {
+		this(x, y, (ParticleEmitter) null);
 		try {
 			emitter = ParticleIO.loadEmitter(emitterFile);
+			emitter.resetState();
 			emitter.setEnabled(false);
+			((ConfigurableEmitter)emitter).setPosition(x, y, false);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
-	public ParticlesEntity(float x, float y, Image particle, ConfigurableEmitter emitter) {
-		this(x, y, particle, emitter, 100);
-	}
-
-	public ParticlesEntity(float x, float y, Image particle, ConfigurableEmitter emitter, int maxParticles) {
+	public ParticlesEntity(float x, float y, ConfigurableEmitter emitter) {
 		super(x, y);
 		if (emitter != null)
 			this.emitter = emitter.duplicate();
@@ -52,6 +51,7 @@ public class ParticlesEntity extends Entity {
 	public void addedToWorld() {
 		if (emitter != null && system == null) {
 			world.particleSystem.addEmitter(emitter);
+			emitter.resetState();
 			emitter.setEnabled(true);
 		} else if (system != null) {
 			system.reset();
@@ -74,7 +74,7 @@ public class ParticlesEntity extends Entity {
 		//TODO what do we want to react on?
 		super.update(container, delta);
 		if (emitter != null && emitter instanceof ConfigurableEmitter) {
-			((ConfigurableEmitter)emitter).setPosition(x, y);
+			((ConfigurableEmitter)emitter).setPosition(x, y, false);
 		} else if (system != null) {
 			system.setPosition(x, y);
 		}

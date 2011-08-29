@@ -14,14 +14,14 @@ public class Background extends Entity {
 		depth = -100;
 		currentImage = ResourceManager.getImage("background");
 	}
-	
+
 	public Background(float x, float y, String refImage) throws SlickException {
 		super(x, y);
 		name = "background";
 		depth = -100;
 		currentImage = new Image(refImage);
 	}
-	
+
 	public Background(float x, float y, Image image) throws SlickException {
 		super(x, y);
 		name = "background";

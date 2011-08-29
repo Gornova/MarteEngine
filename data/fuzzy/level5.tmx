@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="blockRed" tilewidth="32" tileheight="32">
+  <image source="blockRed.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tileset.png" width="192" height="576"/>
+  <tile id="53">
+   <properties>
+    <property name="type" value="fuzzyBlock"/>
+   </properties>
+  </tile>
+  <tile id="97">
+   <properties>
+    <property name="type" value="spikes"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
+  <image source="star.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
+  <image source="slime0.png" width="40" height="22"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="slime"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="112" name="arrowTrap" tilewidth="32" tileheight="32">
+  <image source="arrowTrap.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="arrowTrap"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="113" name="bat" tilewidth="32" tileheight="32">
+  <image source="bat.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="bat"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="tile" width="80" height="40">
+  <properties>
+   <property name="type" value="entity"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2ZTQ7CIBCFjbqwLqynULt05YG8/x1kIQmZMANTflvel7yEBCgw4QGjhwMAAAAAAAAAAABG42H0ZPRqOC9QnqPRSaFzhjHtftvD3roZzQrdPd/YUzxGwHomhxd6p8TevBhNRteM3xwJe+b4zhIQZiT/cqT4Gv5NA/5NA/7lifE1/CuzBOrhX5lQ/Dj/avLQ2Lx0IQq1keq5Oh/SGeXrEzNPC+ffKUG9nQXuGr8RCsXMhfOvJo+f//OT8vqWuGuke4tTLL69Tfu7bbjyW7OgBpR6Z8Tcv24brtx7/Eq9M2LuX7cNV+49fjXeGTG+35JnKTVyBc19vbX41coVpBiu8ewneUbroOPWzBU0d/hWqJ3r7y2GLXL9PcWwVa4v/SefIvq7EB1Hqg/11YxbGrvvc4vmo3QcqT7UN6Rc/AC/AySbADIAAA==
+  </data>
+ </layer>
+ <layer name="player" width="80" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OAQkAAAwDoL1/6ccYA01gAgAAAAAAADRcOwAAAAAAwIwHRYrl+AAyAAA=
+  </data>
+ </layer>
+ <layer name="background" width="80" height="40" opacity="0.48">
+  <properties>
+   <property name="type" value="background"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2X207DMAyGK+Bi42LwGqicxknjIBhcAO//RDiiliwrWeLWXeLJn/QLaJdk+7DTpescx3Ecx3Ecx6Gs2U+nDOrNsru+4trrzq6/vmvHnTWHfSKHjsZnTLmTeJxSKxcTxk6hlRqf+j5q+As1EdsvJKkF9xX+rrFXlHjYhydp/cT81SL3f2vVH0+r1PaXuteyM8rc/kL9x+opV1vuLw93a40WnrVIS8+MEvj3m9pniVafGS+QV8hb4n4LtUfR9HYJuSp87TXkBnLLrm8hn5CvxLhSfzg/hq+jAe6Hu5D4vYPcF772AfIIeWLXvyE/kN/EuFJ/OD+Gr6PFLj/ot3Sv0dzfU/5K2Ze/FGP2xQVkCTlVWP8Q6k/KCnIGOVeYy4o/TY4gx5AT9rsE6/vflHqk/Tu2ly34G3O+K4H279hetuCPMnX/W5IEsGdp/Ul62ZI/6feTGNTfYrgWnNH6k/SyFX9a5zbqD50FaM1JetmKP0TTH+/lWP/mPn+L/vBMHmMuf6vhPu9fib/YeTqM30CeM/No+Qtrbbv/MzlHe/9L1SHtX4m/2Hk6jH+HfGTm0fC3GdbC9xRjrvrjDmthdf9zf2X8AQAtAnIAMgAA
+  </data>
+ </layer>
+ <layer name="star" width="80" height="40">
+  <properties>
+   <property name="type" value="star"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3XsQ0AQAgDMSb+/UtW+A4i7AlOSpUqAAAAyPemAxhlfwAAALZI+KgJjQAAANziq8KfBreHfMIAMgAA
+  </data>
+ </layer>
+ <layer name="enemies" width="80" height="40">
+  <properties>
+   <property name="type" value="enemies"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3YQQ4AEAwEQD/G/y8+4CChkTLzgE0v6CoFAAAA4C01KLcF5QI59dsDAEBSUfv6TIb3OsOMxNo5E3oqwLvsCADr3Jlwx2qfPfUXNMvRi/nRAFaDTioAMgAA
+  </data>
+ </layer>
+</map>

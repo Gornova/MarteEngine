@@ -47,7 +47,7 @@ public class FuzzyMenuWorld extends World {
 			music.play();
 			music.setVolume(0.5f);
 		}
-		ME.renderParticle = false;
+		this.renderParticle = false;
 	}
 
 	@Override

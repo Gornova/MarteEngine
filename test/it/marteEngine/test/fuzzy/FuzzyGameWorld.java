@@ -371,7 +371,7 @@ public class FuzzyGameWorld extends World {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		ME.muteMusic();
-		ME.renderParticle = true;
+		this.renderParticle = true;
 
 		if (gameEnd) {
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {

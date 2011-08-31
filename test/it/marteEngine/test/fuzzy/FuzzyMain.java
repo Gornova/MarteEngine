@@ -22,6 +22,7 @@ public class FuzzyMain extends StateBasedGame {
 
 	public static final int MENU_STATE = 0;
 	public static final int GAME_STATE = 1;
+	public static final int WIN_STATE = 2;
 
 	private static boolean ressourcesInited;
 
@@ -39,9 +40,11 @@ public class FuzzyMain extends StateBasedGame {
 
 		FuzzyGameWorld gameState = new FuzzyGameWorld(GAME_STATE);
 		FuzzyMenuWorld menuState = new FuzzyMenuWorld(MENU_STATE);
+		FuzzyWinWorld winState = new FuzzyWinWorld(WIN_STATE);
 
 		addState(menuState);
 		addState(gameState);
+		addState(winState);
 	}
 
 	public static void initRessources() throws SlickException {

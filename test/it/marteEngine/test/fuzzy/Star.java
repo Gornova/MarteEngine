@@ -16,7 +16,7 @@ public class Star extends Entity {
 	private Sound pickupstar;
 
 	/** To handle effects **/
-	private Tweener tweener = FuzzyFactory.getFadeMoveTweener();
+	private Tweener tweener;
 
 	private boolean toRemove = false;
 	private float ty;
@@ -28,6 +28,8 @@ public class Star extends Entity {
 		addType(STAR);
 
 		pickupstar = ResourceManager.getSound("pickupstar");
+
+		tweener = FuzzyFactory.getMoveTweener(200, x, y, 5, 5);
 	}
 
 	@Override
@@ -59,9 +61,15 @@ public class Star extends Entity {
 		super.render(container, g);
 		if (toRemove) {
 			// if to remove, apply effects
-			setAlpha(tweener.getTween(FuzzyFactory.FADE).getValue());
-			ty -= tweener.getTween(FuzzyFactory.MOVE_UP).getValue();
-			FuzzyMain.font.drawString(x, ty, "100");
+			if (tweener.getTween(FuzzyFactory.FADE) != null) {
+				setAlpha(tweener.getTween(FuzzyFactory.FADE).getValue());
+			}
+			if (tweener.getTween(FuzzyFactory.MOVEX) != null) {
+				x = tweener.getTween(FuzzyFactory.MOVEX).getValue();
+			}
+			if (tweener.getTween(FuzzyFactory.MOVEY) != null) {
+				y = tweener.getTween(FuzzyFactory.MOVEY).getValue();
+			}
 		}
 	}
 

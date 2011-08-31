@@ -13,6 +13,9 @@ public class FuzzyFactory {
 
 	public static final String FADE = "fade";
 	public static final String MOVE_UP = "moveUp";
+	public static final String MOVEX = "movex";
+	public static final String MOVEY = "movey";
+
 	public static float time = 10;
 
 	private FuzzyFactory() {
@@ -38,6 +41,17 @@ public class FuzzyFactory {
 
 	public static Tweener getFadeMoveTweener(int t) {
 		return new Tweener(getFadeTween(t), getMoveUpTween(t));
+	}
+
+	public static Tweener getMoveTweener(float t, float fromx, float fromy,
+			float tox, float toy) {
+		NumTween tweenx = new NumTween(fromx, tox, t, TweenerMode.ONESHOT,
+				Ease.CUBE_OUT, false);
+		tweenx.setName(MOVEX);
+		NumTween tweeny = new NumTween(fromy, toy, t, TweenerMode.ONESHOT,
+				Ease.CUBE_OUT, false);
+		tweeny.setName(MOVEY);
+		return new Tweener(getFadeTween(t), tweenx, tweeny);
 	}
 
 }

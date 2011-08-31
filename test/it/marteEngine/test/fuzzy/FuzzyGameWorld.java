@@ -300,6 +300,8 @@ public class FuzzyGameWorld extends World {
 	 */
 	private PlatformerEntity loadPlayer(TiledMap map, String layerName)
 			throws SlickException {
+		if (map == null)
+			return null;
 		int layerIndex = map.getLayerIndex(layerName);
 		for (int w = 0; w < map.getWidth(); w++) {
 			for (int h = 0; h < map.getHeight(); h++) {
@@ -371,6 +373,7 @@ public class FuzzyGameWorld extends World {
 			ME.showMessage(container, g, 100, 200, 430, 35, 5, Color.darkGray,
 					"YOU LOSE, press space to continue", 5);
 		}
+
 	}
 
 	@Override
@@ -466,8 +469,10 @@ public class FuzzyGameWorld extends World {
 			playerDead = false;
 			init(container, game);
 		} else {
-			// TODO: go to end title?
-			Log.info("Level ends!");
+			// level finished, player have won!
+			game.enterState(FuzzyMain.WIN_STATE, new FadeOutTransition(),
+					new FadeInTransition());
+			return;
 		}
 	}
 

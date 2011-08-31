@@ -51,7 +51,7 @@
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3XUQqAIBAFwK7T/S/YV1Ch6bIRws5Af7rkY9XaNgAAAACgsv3l6Y0b1almlN113KhOq24Fq/fPzL7ovX9kbmb9q2Z3ypwdM3Oz6/86v8iZmu2DbN+s2juRe2f1M+Qvzwxm7h3Z5VTMzr7Lk11b5F6smF30u1OP3UX+2WTXNpuN7PpkAwAAfOEAu96COgAyAAA=
+   H4sIAAAAAAAAC+3XYQqEIBAG0K7T/S+4vxaiXXNsCsR5D6Igk/wYzbYNAAAAAKhsvzha7Xr9VNPL7tiu18+/fiuYvX4i86L1/iPPZsY/a3ZfmbUj8mx2/G/kF62LbB1k62bW2omsmU/OoZVEs5Ddr9EsqmdnDo6TWVvv23jM63yuYHTfebX/PF9XMPLPdndvurroupW9v7LKYwcAAJ7zAcpvVbcAMgAA
   </data>
  </layer>
  <layer name="player" width="80" height="40">

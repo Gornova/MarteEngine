@@ -350,7 +350,7 @@ public class FuzzyGameWorld extends World {
 			ME.showMessage(container, g, 40, 440, 550, 35, 5, Color.darkGray,
 					instructions, 5);
 			if (fadeTutorial == null) {
-				fadeTutorial = new Alarm(FADE_TUTORIAL, 100, true);
+				fadeTutorial = new Alarm(FADE_TUTORIAL, 600, true);
 				fadeTutorial.start();
 			}
 		}

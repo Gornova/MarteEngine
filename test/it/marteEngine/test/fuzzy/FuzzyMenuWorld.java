@@ -22,6 +22,8 @@ public class FuzzyMenuWorld extends World {
 
 	private Music music;
 
+	private boolean showContinue;
+
 	public FuzzyMenuWorld(int id) {
 		super(id);
 	}
@@ -33,9 +35,15 @@ public class FuzzyMenuWorld extends World {
 		add(new Background(0, 0, ResourceManager.getImage("menu")));
 		add(new Space(220, 400));
 		add(new TextEntity(160, 100, ResourceManager.getAngelCodeFont("font"),
-				"Alpha demo 3"));
+				"Beta demo 2"));
 
 		music = ResourceManager.getMusic("song0");
+
+		int levelSave = FuzzyUtil.loadLevel();
+		if (levelSave != -1) {
+			showContinue = true;
+		}
+
 	}
 
 	@Override
@@ -111,7 +119,12 @@ public class FuzzyMenuWorld extends World {
 				throws SlickException {
 			super.render(container, g);
 
-			drawScaled(g, 0.6f, "Press Space to start", x, y);
+			if (!showContinue) {
+				drawScaled(g, 0.6f, "Press Space to start", x, y);
+			} else {
+				drawScaled(g, 0.6f, "Press Space to continue", x, y);
+			}
+
 		}
 
 		@Override

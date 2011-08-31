@@ -92,6 +92,11 @@ public class FuzzyGameWorld extends World {
 		starsNumber = 0;
 		playerDead = false;
 
+		int lastLevel = FuzzyUtil.loadLevel();
+		if (lastLevel != -1) {
+			levelIndex = lastLevel;
+		}
+
 		TiledMap map = ResourceManager.getMap(LEVEL_PREFIX + levelIndex);
 		Log.info("Load map" + levelIndex);
 		// make the world a bit bigger than the screen to force camera scrolling
@@ -454,6 +459,7 @@ public class FuzzyGameWorld extends World {
 		clear();
 		stars = -1;
 		levelIndex++;
+		FuzzyUtil.saveLevel(levelIndex);
 		if (levelIndex < levelNumbers) {
 			total = -1;
 			levelEnd = false;

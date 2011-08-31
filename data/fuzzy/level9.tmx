@@ -12,6 +12,22 @@
  <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
   <image source="slime0.png" width="40" height="22"/>
  </tileset>
+ <tileset firstgid="112" name="bat" tilewidth="32" tileheight="32">
+  <image source="bat.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="bat"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="113" name="arrowTrap" tilewidth="32" tileheight="32">
+  <image source="arrowTrap.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="arrowTrap"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="tile" width="80" height="40">
   <properties>
    <property name="type" value="entity"/>
@@ -46,7 +62,7 @@
    <property name="type" value="enemies"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3YsQ0AAAgCMD72/80vlKG9gIkEEgAAWsx3AAAAAAAq+Y2AC7oGAADANgK6LWhaCK8AMgAA
+   H4sIAAAAAAAAC+3YMRIAEAwEQD/G/xtPoBHEbpvm0mQmVwoAAFH6ZF5DUgAAAAC/aKcDbJBxpxWZeqNZRwack+nWAADc4tc/Fl7mNwJuNgBdxr23ADIAAA==
   </data>
  </layer>
 </map>

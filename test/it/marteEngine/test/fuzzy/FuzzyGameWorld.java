@@ -68,6 +68,7 @@ public class FuzzyGameWorld extends World {
 	private int starsNumber;
 	private Alarm fadeTutorial;
 	private boolean victory;
+	private int deadCounter;
 
 	public static int points = 0;
 
@@ -407,7 +408,8 @@ public class FuzzyGameWorld extends World {
 		}
 		if (playerDead) {
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
-				Log.info("Load next level...");
+				deadCounter++;
+				Log.info("Dead : Load next level...");
 				reloadLevel(container, game);
 			}
 			return;

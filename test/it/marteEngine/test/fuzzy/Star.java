@@ -63,12 +63,20 @@ public class Star extends Entity {
 			// if to remove, apply effects
 			if (tweener.getTween(FuzzyFactory.FADE) != null) {
 				setAlpha(tweener.getTween(FuzzyFactory.FADE).getValue());
+			} else {
+				ME.world.remove(this);
+
 			}
 			if (tweener.getTween(FuzzyFactory.MOVEX) != null) {
 				x = tweener.getTween(FuzzyFactory.MOVEX).getValue();
+			} else {
+				ME.world.remove(this);
 			}
 			if (tweener.getTween(FuzzyFactory.MOVEY) != null) {
 				y = tweener.getTween(FuzzyFactory.MOVEY).getValue();
+			} else {
+				ME.world.remove(this);
+
 			}
 		}
 	}

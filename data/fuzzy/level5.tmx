@@ -48,7 +48,7 @@
    <property name="type" value="entity"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2ZTQ7CIBCFjbqwLqynULt05YG8/x1kIQmZMANTflvel7yEBCgw4QGjhwMAAAAAAAAAAABG42H0ZPRqOC9QnqPRSaFzhjHtftvD3roZzQrdPd/YUzxGwHomhxd6p8TevBhNRteM3xwJe+b4zhIQZiT/cqT4Gv5NA/5NA/7lifE1/CuzBOrhX5lQ/Dj/avLQ2Lx0IQq1keq5Oh/SGeXrEzNPC+ffKUG9nQXuGr8RCsXMhfOvJo+f//OT8vqWuGuke4tTLL69Tfu7bbjyW7OgBpR6Z8Tcv24brtx7/Eq9M2LuX7cNV+49fjXeGTG+35JnKTVyBc19vbX41coVpBiu8ewneUbroOPWzBU0d/hWqJ3r7y2GLXL9PcWwVa4v/SefIvq7EB1Hqg/11YxbGrvvc4vmo3QcqT7UN6Rc/AC/AySbADIAAA==
+   H4sIAAAAAAAAC+2ZQQ7CIBBFjbqwLqynULt05YG8/x2kiSSEdBimMEDpf8lPmkALTOYDo4cDAAAAAAAAAAAA9sbD6EnoVXFeQJ+j0Umgc4Yxbb71kFs3o1Gg+8I3eorHHrCeyeGF1tHIzYvRYHTN+M09Yfecpb0E8OzJvxQpvoZ/04B/04B/aWJ8Df+GmZh2+DcMFz/Kv5I6NLYunTxptseskerPjeNC+XdIUGt7gbvGb4S4mLlQ/pXU8eN/fqG6vibuGv3cohTLUm6H8p96fksWVAGte0bM+ev2oZ5bj5/WPSPm/HX7UM+tx0/rniH1/ZY866NdK0jP663Fr0StwMVwjWc/qZNaiT9uqVpBeoZvhZK1fo8xLF3r9xbDGrX+HL/Qf/Ip8n8X8scJtXPvSsbVZI6fzfvc8utRf5xQO/cup1z8AOyOAH8AMgAA
   </data>
  </layer>
  <layer name="player" width="80" height="40">

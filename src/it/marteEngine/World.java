@@ -368,7 +368,7 @@ public class World extends BasicGameState {
 	public List<Entity> findEntityWithType(String type) {
 		if (type == null) {
 			Log.error("Parameter must be not null");
-			return null;
+			return new ArrayList<Entity>();
 		}
 		List<Entity> result = new ArrayList<Entity>();
 		for (Entity entity : entities) {

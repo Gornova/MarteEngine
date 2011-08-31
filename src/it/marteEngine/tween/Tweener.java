@@ -13,6 +13,7 @@ import java.util.List;
 public class Tweener {
 
 	private List<Tween> tweens = new ArrayList<Tween>();
+	private List<Tween> removeable = new ArrayList<Tween>();
 
 	private boolean active = true;
 
@@ -42,10 +43,10 @@ public class Tweener {
 	public boolean remove(Tween tween) {
 		if (tween == null || tween.getParent() != this)
 			return false;
-		boolean result = tweens.remove(tween);
+		removeable.add(tween);
 		tween.setActive(false);
 		tween.setParent(null);
-		return result;
+		return true;
 	}
 
 	public void clearTweens() {
@@ -80,6 +81,8 @@ public class Tweener {
 				if (tween.isFinished())
 					tween.finish();
 			}
+			tweens.removeAll(removeable);
+			removeable.clear();
 		}
 	}
 

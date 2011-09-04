@@ -30,9 +30,11 @@ public class ME {
 	public static Color borderColor = Color.red;
 	/** key for restarting game **/
 	public static int keyRestart = -1;
-	/** key for mute music and sounds */
+	/** key for mute music and sounds **/
 	public static int keyMuteMusic = -1;
 	public static boolean playMusic = true;
+	/** key for full screen mode **/
+	public static int keyFullScreen = -1;
 
 	/** x scale factor for graphics, default 1 (nothing) **/
 	public static float scaleX = 1;
@@ -100,6 +102,12 @@ public class ME {
 			if (container.getInput().isKeyPressed(keyMuteMusic)) {
 				playMusic = playMusic ? false : true;
 				muteMusic();
+			}
+		}
+		if (keyFullScreen != -1) {
+			if (container.getInput().isKeyPressed(keyFullScreen)) {
+				container
+						.setFullscreen(container.isFullscreen() ? false : true);
 			}
 		}
 

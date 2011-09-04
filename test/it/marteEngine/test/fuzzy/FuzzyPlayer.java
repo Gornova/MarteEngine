@@ -90,7 +90,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 		}
 
 		if (collide(Spike.SPIKE, x, y + 1) != null) {
-			damage();
+			damage(-1);
 		}
 
 	}
@@ -107,7 +107,10 @@ public class FuzzyPlayer extends PlatformerEntity {
 		FuzzyGameWorld.playerDead = true;
 	}
 
-	public void damage() {
+	public void damage(int time) {
+		if (time > 0) {
+			invulnerable(time);
+		}
 		if (!invulnerable) {
 			if (!hurtSnd.playing()) {
 				hurtSnd.play();
@@ -124,7 +127,6 @@ public class FuzzyPlayer extends PlatformerEntity {
 	public void invulnerable(int time) {
 		if (!invulnerable) {
 			invulnerable = true;
-			Log.info("true!!");
 			setAlarm(INVULNERABLE_ALARM, time, true, true);
 		}
 	}
@@ -133,7 +135,6 @@ public class FuzzyPlayer extends PlatformerEntity {
 	public void alarmTriggered(String name) {
 		if (name.equalsIgnoreCase(INVULNERABLE_ALARM)) {
 			invulnerable = false;
-			Log.info("false!!");
 		}
 	}
 

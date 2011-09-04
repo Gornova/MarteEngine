@@ -64,6 +64,9 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 		}
 
 		if (getAlpha() == 0f) {
+			if (!FuzzyGameWorld.killSound.playing()) {
+				FuzzyGameWorld.killSound.play();
+			}
 			ME.world.remove(this);
 		}
 	}
@@ -113,7 +116,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 	private boolean damagePlayer(Entity player) {
 		if (player != null) {
 			FuzzyPlayer pl = (FuzzyPlayer) ME.world.find(PLAYER);
-			pl.damage();
+			pl.damage(-1);
 			// change direction
 			if (faceRight) {
 				this.x -= 5;

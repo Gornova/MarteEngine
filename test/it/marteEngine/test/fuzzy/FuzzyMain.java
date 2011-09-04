@@ -23,10 +23,12 @@ public class FuzzyMain extends StateBasedGame {
 	public static final int MENU_STATE = 0;
 	public static final int GAME_STATE = 1;
 	public static final int WIN_STATE = 2;
+	public static final int SELECT_STATE = 3;
 
 	private static boolean ressourcesInited;
 
 	public static AngelCodeFont font;
+	public static Integer gotoLevel = -1;
 
 	public FuzzyMain() {
 		super("Fuzzy");
@@ -41,10 +43,13 @@ public class FuzzyMain extends StateBasedGame {
 		FuzzyGameWorld gameState = new FuzzyGameWorld(GAME_STATE);
 		FuzzyMenuWorld menuState = new FuzzyMenuWorld(MENU_STATE);
 		FuzzyWinWorld winState = new FuzzyWinWorld(WIN_STATE);
+		FuzzySelectLevellWorld selectState = new FuzzySelectLevellWorld(
+				SELECT_STATE);
 
 		addState(menuState);
 		addState(gameState);
 		addState(winState);
+		addState(selectState);
 	}
 
 	public static void initRessources() throws SlickException {
@@ -66,6 +71,7 @@ public class FuzzyMain extends StateBasedGame {
 			ME.keyToggleDebug = Input.KEY_1;
 			// ME.keyRestart = Input.KEY_R;
 			ME.keyMuteMusic = Input.KEY_M;
+			ME.keyFullScreen = Input.KEY_F12;
 			ME.playMusic = true;
 			AppGameContainer container = new AppGameContainer(new FuzzyMain());
 			container.setDisplayMode(640, 480, false);
@@ -76,5 +82,4 @@ public class FuzzyMain extends StateBasedGame {
 			e.printStackTrace();
 		}
 	}
-
 }

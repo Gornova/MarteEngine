@@ -71,8 +71,7 @@ public class FuzzyBoss extends Entity {
 			ty = y;
 			Entity player = collide(PLAYER, x, y);
 			if (player != null) {
-				((FuzzyPlayer) player).damage();
-				((FuzzyPlayer) player).invulnerable(30);
+				((FuzzyPlayer) player).damage(30);
 			}
 
 			if (ME.world.getNrOfEntities(TargetBlock.TARGET_BLOCK) == 0) {

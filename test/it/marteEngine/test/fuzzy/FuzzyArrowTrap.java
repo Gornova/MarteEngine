@@ -85,6 +85,9 @@ public class FuzzyArrowTrap extends Entity {
 		}
 
 		if (getAlpha() == 0f) {
+			if (!FuzzyGameWorld.killSound.playing()) {
+				FuzzyGameWorld.killSound.play();
+			}
 			ME.world.remove(this);
 		}
 	}

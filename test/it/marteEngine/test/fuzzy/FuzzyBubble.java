@@ -42,8 +42,7 @@ public class FuzzyBubble extends Entity {
 
 		Entity player = collide(PLAYER, x, y);
 		if (player != null) {
-			((FuzzyPlayer) player).damage();
-			((FuzzyPlayer) player).invulnerable(30);
+			((FuzzyPlayer) player).damage(30);
 		}
 
 		if (motion != null) {

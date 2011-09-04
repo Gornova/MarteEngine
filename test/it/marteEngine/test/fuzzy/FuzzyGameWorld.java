@@ -43,7 +43,7 @@ public class FuzzyGameWorld extends World {
 	private boolean levelEnd = false;
 
 	// level game starts from
-	private int levelIndex = 1;
+	private int levelIndex = -1;
 	// number of levels (always levelIndex+1)
 	private int levelNumbers = 12;
 	// prefix for map names
@@ -72,6 +72,8 @@ public class FuzzyGameWorld extends World {
 
 	public static int points = 0;
 
+	public static Sound killSound = ResourceManager.getSound("kill");
+
 	public FuzzyGameWorld(int id) {
 		super(id);
 
@@ -89,13 +91,27 @@ public class FuzzyGameWorld extends World {
 			throws SlickException {
 		super.init(container, game);
 
+		heart = ResourceManager.getImage("heart").copy();
+
+	}
+
+	@Override
+	public void enter(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		super.enter(container, game);
+
+		clear();
+
 		stars = 0;
 		starsNumber = 0;
 		playerDead = false;
 
-		int lastLevel = FuzzyUtil.loadLevel();
-		if (lastLevel != -1) {
-			levelIndex = lastLevel;
+		// int lastLevel = FuzzyUtil.loadLevel();
+		// if (lastLevel != -1) {
+		// levelIndex = lastLevel;
+		// }
+		if (FuzzyMain.gotoLevel > 0 && levelIndex == -1) {
+			levelIndex = FuzzyMain.gotoLevel;
 		}
 
 		TiledMap map = ResourceManager.getMap(LEVEL_PREFIX + levelIndex);
@@ -118,7 +134,6 @@ public class FuzzyGameWorld extends World {
 
 		time = 0;
 
-		heart = ResourceManager.getImage("heart").copy();
 		FuzzyPlayer.life = 3;
 
 		define("layer", Input.KEY_L);
@@ -139,12 +154,6 @@ public class FuzzyGameWorld extends World {
 
 		soundVictory = ResourceManager.getSound("victory");
 		victory = true;
-	}
-
-	@Override
-	public void enter(GameContainer container, StateBasedGame game)
-			throws SlickException {
-		super.enter(container, game);
 
 		if (ME.playMusic) {
 			musicOne.play();
@@ -409,7 +418,7 @@ public class FuzzyGameWorld extends World {
 		if (playerDead) {
 			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
 				deadCounter++;
-				Log.info("Dead : Load next level...");
+				Log.info("Dead : Load this level...");
 				reloadLevel(container, game);
 			}
 			return;
@@ -439,7 +448,7 @@ public class FuzzyGameWorld extends World {
 		}
 
 		if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-			game.enterState(FuzzyMain.MENU_STATE, new FadeOutTransition(),
+			game.enterState(FuzzyMain.SELECT_STATE, new FadeOutTransition(),
 					new FadeInTransition());
 		}
 
@@ -464,12 +473,12 @@ public class FuzzyGameWorld extends World {
 		clear();
 		stars = -1;
 		levelIndex++;
-		FuzzyUtil.saveLevel(levelIndex);
+		FuzzyUtil.saveLevel(levelIndex, deadCounter);
 		if (levelIndex < levelNumbers) {
 			total = -1;
 			levelEnd = false;
 			playerDead = false;
-			init(container, game);
+			enter(container, game);
 		} else {
 			// level finished, player have won!
 			game.enterState(FuzzyMain.WIN_STATE, new FadeOutTransition(),
@@ -486,7 +495,8 @@ public class FuzzyGameWorld extends World {
 		total = -1;
 		levelEnd = false;
 		playerDead = false;
-		init(container, game);
+		FuzzyUtil.saveLevel(levelIndex, deadCounter);
+		enter(container, game);
 	}
 
 	public boolean blocked(float x, float y) {
@@ -525,4 +535,13 @@ public class FuzzyGameWorld extends World {
 		return null;
 	}
 
+	@Override
+	public void leave(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		super.leave(container, game);
+
+		if (musicOne.playing()) {
+			musicOne.stop();
+		}
+	}
 }

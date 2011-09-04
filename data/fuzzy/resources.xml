@@ -15,6 +15,7 @@
 	<sound key="heart" file="22440__Lunardrive__Single_Heartbeat_Clean_HQ_BeatSmith.wav" />
 	<sound key="hurt" file="hurt.wav" />
 	<sound key="victory" file="allstarscollected.wav" />
+	<sound key="kill" file="kill.wav" />	
 	<!-- songs -->
 	<music key="song0" file="1375__sleep__90_bpm_nylon2.wav" />
 	<music key="song1" file="2685__TexasMusicForge__Genes.ogg" />

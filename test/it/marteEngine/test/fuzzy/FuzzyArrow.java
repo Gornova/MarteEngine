@@ -13,7 +13,8 @@ public class FuzzyArrow extends Entity {
 
 	protected boolean faceRight = false;
 
-	public FuzzyArrow(float x, float y, boolean faceRight) throws SlickException {
+	public FuzzyArrow(float x, float y, boolean faceRight)
+			throws SlickException {
 		super(x, y);
 		this.faceRight = faceRight;
 		if (faceRight) {
@@ -43,7 +44,7 @@ public class FuzzyArrow extends Entity {
 		if (ent != null) {
 			if (ent instanceof FuzzyPlayer) {
 				FuzzyPlayer fp = (FuzzyPlayer) ent;
-				fp.damage();
+				fp.damage(-1);
 			}
 			ME.world.remove(this);
 			return;

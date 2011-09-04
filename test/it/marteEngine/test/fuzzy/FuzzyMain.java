@@ -68,7 +68,7 @@ public class FuzzyMain extends StateBasedGame {
 
 	public static void main(String[] argv) {
 		try {
-			ME.keyToggleDebug = Input.KEY_1;
+			// ME.keyToggleDebug = Input.KEY_1;
 			// ME.keyRestart = Input.KEY_R;
 			ME.keyMuteMusic = Input.KEY_M;
 			ME.keyFullScreen = Input.KEY_F12;

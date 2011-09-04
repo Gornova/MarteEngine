@@ -3,7 +3,6 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
-import it.marteEngine.entity.TextEntity;
 import it.marteEngine.game.starcleaner.Background;
 
 import org.newdawn.slick.GameContainer;
@@ -18,7 +17,7 @@ public class FuzzyMenuWorld extends World {
 
 	public static boolean gotoGame = false;
 
-	private Music music;
+	public static Music music;
 
 	private boolean showContinue;
 
@@ -35,8 +34,6 @@ public class FuzzyMenuWorld extends World {
 
 		add(new Background(0, 0, ResourceManager.getImage("menu")));
 		add(new FuzzySpaceEntity(180, 400, showContinue));
-		add(new TextEntity(160, 100, ResourceManager.getAngelCodeFont("font"),
-				"Beta demo 2"));
 	}
 
 	@Override

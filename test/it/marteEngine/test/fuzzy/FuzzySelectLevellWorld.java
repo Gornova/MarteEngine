@@ -73,6 +73,10 @@ public class FuzzySelectLevellWorld extends World {
 
 		add(new FuzzyLevelButton(240, 400, FuzzyMain.font, "Boss",
 				levelIndex >= 11 ? true : false));
+
+		if (!FuzzyMenuWorld.music.playing()) {
+			FuzzyMenuWorld.music.play();
+		}
 	}
 
 	@Override

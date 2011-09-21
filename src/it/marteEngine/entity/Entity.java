@@ -20,10 +20,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
-import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 //TODO modify hitbox coordinates to a real shape without changing method interface.
@@ -516,7 +514,7 @@ public abstract class Entity implements Comparable<Entity> {
 			return null;
 		// offset
 		for (Entity entity : world.getEntities()) {
-			if (entity.collidable && entity.type.contains(type)) {
+			if (entity.collidable && entity.isType(type)) {
 				if (!entity.equals(this)
 						&& x + hitboxOffsetX + hitboxWidth > entity.x
 								+ entity.hitboxOffsetX
@@ -569,7 +567,7 @@ public abstract class Entity implements Comparable<Entity> {
 			return null;
 		ArrayList<Entity> collidingEntities = null;
 		for (Entity entity : world.getEntities()) {
-			if (entity.collidable && entity.type.contains(type)) {
+			if (entity.collidable && entity.isType(type)) {
 				if (!entity.equals(this)
 						&& x + hitboxOffsetX + hitboxWidth > entity.x
 								+ entity.hitboxOffsetX
@@ -698,7 +696,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isType(String type) {
-		return type.contains(type);
+		return this.type.contains(type);
 	}
 
 	/**

@@ -221,15 +221,15 @@ public class World extends BasicGameState {
 		e.setWorld(this);
 		if (flags.length == 1) {
 			switch (flags[0]) {
-			case BELOW:
-				belowCamera.add(e);
-				break;
-			case GAME:
-				addable.add(e);
-				break;
-			case ABOVE:
-				aboveCamera.add(e);
-				break;
+				case BELOW :
+					belowCamera.add(e);
+					break;
+				case GAME :
+					addable.add(e);
+					break;
+				case ABOVE :
+					aboveCamera.add(e);
+					break;
 			}
 		} else
 			addable.add(e);
@@ -257,7 +257,7 @@ public class World extends BasicGameState {
 		if (entities.size() > 0) {
 			int number = 0;
 			for (Entity entity : entities) {
-				if (entity.getType().contains(type))
+				if (entity.isType(type))
 					number++;
 			}
 			return number;
@@ -269,7 +269,7 @@ public class World extends BasicGameState {
 		if (entities.size() > 0) {
 			List<Entity> res = new ArrayList<Entity>();
 			for (Entity entity : entities) {
-				if (entity.getType().contains(type))
+				if (entity.isType(type))
 					res.add(entity);
 			}
 			return res;
@@ -372,7 +372,7 @@ public class World extends BasicGameState {
 		}
 		List<Entity> result = new ArrayList<Entity>();
 		for (Entity entity : entities) {
-			if (entity.getType().contains(type)) {
+			if (entity.isType(type)) {
 				result.add(entity);
 			}
 		}

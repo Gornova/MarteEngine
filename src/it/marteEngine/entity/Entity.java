@@ -302,6 +302,21 @@ public abstract class Entity implements Comparable<Entity> {
 			}
 		}
 	}
+	
+	
+	/**
+	 * Set center of rotation
+	 * 
+	 * @param int x
+	 * @param int y
+
+	 */
+	
+	public void setCenterOfRotation(int x, int y) {
+		setCenterOfRotation = true;
+		corX = x;
+		corY = y;
+	}
 
 	/**
 	 * Set an image as graphic

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="blockRed" tilewidth="32" tileheight="32">
+  <image source="blockRed.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tileset.png" width="192" height="576"/>
+  <tile id="53">
+   <properties>
+    <property name="type" value="fuzzyBlock"/>
+   </properties>
+  </tile>
+  <tile id="97">
+   <properties>
+    <property name="type" value="spikes"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="110" name="star" tilewidth="32" tileheight="32">
+  <image source="star.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="111" name="slime0" tilewidth="40" tileheight="22">
+  <image source="slime0.png" width="40" height="22"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="slime"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="112" name="bat" tilewidth="32" tileheight="32">
+  <image source="bat.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="type" value="bat"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="tile" width="80" height="40">
+  <properties>
+   <property name="type" value="entity"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2Z4U7DIBDHiVY3Z93UfTTZR3W+gA/k+7+DkPTijRzHAVcKs//kn1S2tfDrHRxozKpVy+jGeli6Ex1ra71buhNI7n3eTob3ep7colrj5/rzMDnUr5Z49siP0pmw/9kcuhZ+NUS9g//GTzsWKX5UDtRSDr85+ikdf+/xV8JOI0Za50etC0vmhy+KH67BOPt1d2hcVDv1jMEst37kvgvg94OMx8C5ZHzUM3am7fWXEvQXx4GEnQa/N8/ufnvrw+TngvvnKnVecOM4ZLpkfCF+vcmNw5+Lapwn9MDPxeF35Dtb85fDNfOmB34SYX61n6s5n2K9W39Yfyrdj1MP/Kg5nWME96buF/odbpfWb37NVVOl8QfrNDXX5HyG26X1G1VzUXU/yP/7zvo+w5tAH1uZ/3ANJalBRpM3jhfr1wwfiT7CcyGPas1fpXK5PppLhjF+EHcbxXZ4rl8/t7DH5eTyaDSXDGP8HqfvPim2c+cYjiGe3/0zBByzEmvGtc/POVb/Qd4eFdv3kedK1oQa+yZfFL9R8Luvmdt7US6/kHrhp3WGGOJH1Rwlao2fljC/k6FZUnO/lq6F3wk5xFAjDn21wK8kl6XxR+W2BssW+JXIrf0cq7lzunV+cJYwMNccOy6nfX6hfcZSip19SoTPckLXWvEX2mf0JhxbuG4PXUvmPIqplF9rcRkTd35IKZUduHT/m6OUs80U4//5cHtFSnPHX2pccoxSzjZTXHL2mMovdf5LbecYrfzi7Su/svbe+P0CgIpB5QAyAAA=
+  </data>
+ </layer>
+ <layer name="player" width="80" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OMQEAAAwCINe/9GLoAQlIAAAAdlw7AAAAAAAAAAAAMOgBPcJRRQAyAAA=
+  </data>
+ </layer>
+ <layer name="background" width="80" height="40" opacity="0.48">
+  <properties>
+   <property name="type" value="background"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2a6QrCMAyA80BeeOGFVn+o7/9EZoxCGHZ2bXqk5oOATEjDt67XBqC0xAHjWLoIwVwxbqWLYOSEcca4lC5EKAbjjvEoXIdUntD7e5cuRCjqL46U/v5hrk3pr4W59lcfyOFPcj+kfeDbWoX6W2AsMVbMbUvuh7R2U0EN0qC1PyuoQfGnhee3JFz+7LjtE7n3od0z/YJ+/thi7DD2TLm5/Bno57iXR+Teh0rwZ2v0idz7KOqvVtRfT+jYJNWfaz099boldGyq3V+u85fQNtRfHLX7c7Xrmo+nXueqUf21h/qLQ8L6r2bUHw/qL47a/I2913edx4Tsb4a5WvmOwID7vb79j0bo2cswV5dD8vsay9i47FoPhjxDw1xdDq7z3jlDjlBy+UvJpmDbKf3NIE/fqMXfcDwa85fLjQ+p/LnmVnqd+rPjkXUz5m+dsG4f6P1LVYeBdr+ZW5PfJe9jC6i/ONRfHOoP4AMgxbX9ADIAAA==
+  </data>
+ </layer>
+ <layer name="star" width="80" height="40">
+  <properties>
+   <property name="type" value="star"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3XsQkAQAgDQCf+/ctvHUAQ4t0EKhK0CujedgFAFJkCbErKoMlekuYCAMAd7lgAAACS+HO5xL4DAJM+ophUlAAyAAA=
+  </data>
+ </layer>
+ <layer name="enemies" width="80" height="40">
+  <properties>
+   <property name="type" value="enemies"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3XsQ0AMAgDMD5u/5+4okIl9gWZSKgCAPjfmQ4AAAAQzl8GsI/bznZ3OgAAhHm1L3U6AABJGt84tQwAMgAA
+  </data>
+ </layer>
+</map>

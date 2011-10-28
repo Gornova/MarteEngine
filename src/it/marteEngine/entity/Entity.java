@@ -104,6 +104,10 @@ public abstract class Entity implements Comparable<Entity> {
 	/** collision type for entity **/
 	private HashSet<String> type = new HashSet<String>();
 
+
+	/** Boolean to determine if a custom center has been set **/
+	public boolean setCenterOfRotation;
+
 	/**
 	 * true for active entities, false otherwise. for active entities update()
 	 * is called
@@ -255,10 +259,17 @@ public abstract class Entity implements Comparable<Entity> {
 			if (centered) {
 				xpos -= w;
 				ypos -= h;
+				if (setCenterOfRotation == true) {
+					currentImage.setCenterOfRotation(corX, corY);
+				} else {
 				currentImage.setCenterOfRotation(w, h);
+				}
 			} else
+				if (setCenterOfRotation == true) {
+					currentImage.setCenterOfRotation(corX, corY);
+				} else {
 				currentImage.setCenterOfRotation(0, 0);
-
+				}
 			if (angle != 0) {
 				currentImage.setRotation(angle);
 			}
@@ -290,6 +301,21 @@ public abstract class Entity implements Comparable<Entity> {
 				g.setColor(Color.white);
 			}
 		}
+	}
+	
+	
+	/**
+	 * Set center of rotation
+	 * 
+	 * @param int x
+	 * @param int y
+
+	 */
+	
+	public void setCenterOfRotation(int x, int y) {
+		setCenterOfRotation = true;
+		corX = x;
+		corY = y;
 	}
 
 	/**

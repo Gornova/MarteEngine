@@ -45,6 +45,7 @@
 	<!-- fonts -->
 	<angelcodefont key="font" fontFile="font.fnt" imageFile="font.png" />
 	<!-- Tiled map -->
+	<map key="level0" file="level0.tmx" />	
 	<map key="level1" file="level1.tmx" />
 	<map key="level2" file="level2.tmx" />
 	<map key="level3" file="level3.tmx" />

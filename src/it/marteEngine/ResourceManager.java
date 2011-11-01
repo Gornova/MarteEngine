@@ -269,7 +269,7 @@ public class ResourceManager {
 			Log.error("No image for key " + key + " found!");
 		return image;
 	}
-
+	
 	private static void loadSpriteSheet(Element sprsheet) throws SlickException {
 		String key = sprsheet.getAttribute("key");
 		String file = sprsheet.getAttribute("file");
@@ -460,14 +460,14 @@ public class ResourceManager {
 		}
 		return null;
 	}
-
-	public static ArrayList<Image> getImagesAsListWithoutKeys(List<String> keys) {
+	
+	public static ArrayList<Image> getImagesAsListWithoutKeys(List<String> keys){
 		ArrayList<Image> list = new ArrayList<Image>();
 		for (String key : images.keySet()) {
-			if (key != null) {
+			if (key!=null){
 				boolean found = false;
 				for (String without : keys) {
-					if (key.contains(without)) {
+					if (key.contains(without)){
 						found = true;
 					}
 				}
@@ -477,6 +477,6 @@ public class ResourceManager {
 			}
 		}
 		return list;
-	}
+	}	
 
 }

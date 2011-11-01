@@ -6,6 +6,7 @@ import it.marteEngine.World;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -68,7 +69,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean wrapVertical = false;
 
 	/** speed vector (x,y): specifies x and y movement per update call in pixels **/
-	public Vector2f speed = new Vector2f(0, 0);
+	public Vector2f speed = new Vector2f(0,0);
 
 	/**
 	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
@@ -85,12 +86,12 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	private Color color = new Color(Color.white);
 
-	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
-	private Hashtable<String, Alarm> addableAlarms = new Hashtable<String, Alarm>();
+	private HashMap<String, Alarm> alarms = new HashMap<String, Alarm>();
+	private HashMap<String,Alarm> addableAlarms = new HashMap<String, Alarm>();
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
-	public Hashtable<String, Animation> animations = new Hashtable<String, Animation>();
+	public HashMap<String, Animation> animations = new HashMap<String, Animation>();
 	public String currentAnim;
 	public int duration = 200;
 	public int depth = -1;
@@ -293,12 +294,12 @@ public abstract class Entity implements Comparable<Entity> {
 			g.setColor(Color.white);
 			g.drawRect(x, y, 1, 1);
 			// draw entity center
-			if (width != 0 && height != 0) {
-				float centerX = x + width / 2;
-				float centerY = y + height / 2;
+			if (width!=0 && height!=0){
+				float centerX = x + width/2;
+				float centerY = y + height/2;
 				g.setColor(Color.green);
 				g.drawRect(centerX, centerY, 1, 1);
-				g.setColor(Color.white);
+				g.setColor(Color.white);	
 			}
 		}
 	}
@@ -344,9 +345,8 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		animations.put(name, anim);
 	}
-
-	public Animation addAnimation(SpriteSheet sheet, String name, boolean loop,
-			int row, int... frames) {
+	
+	public Animation addAnimation(SpriteSheet sheet, String name, boolean loop, int row, int... frames) {
 		Animation anim = new Animation(false);
 		anim.setLooping(loop);
 		for (int i = 0; i < frames.length; i++) {
@@ -504,11 +504,11 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean addType(String... types) {
 		return type.addAll(Arrays.asList(types));
 	}
-
+	
 	/**
 	 * Reset type information for this entity
 	 */
-	public void clearTypes() {
+	public void clearTypes(){
 		type.clear();
 	}
 
@@ -742,9 +742,9 @@ public abstract class Entity implements Comparable<Entity> {
 	public float getDistance(Entity other) {
 		return getDistance(new Vector2f(other.x, other.y));
 	}
-
+	
 	public float getDistance(Vector2f otherPos) {
-		Vector2f myPos = new Vector2f(x, y);
+		Vector2f myPos = new Vector2f(x,y);
 		return myPos.distance(otherPos);
 	}
 
@@ -780,7 +780,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/***************** some methods to deal with alarms ************************************/
-
+	
 	/**
 	 * Create an Alarm with given parameters and add to current Entity
 	 */
@@ -860,7 +860,7 @@ public abstract class Entity implements Comparable<Entity> {
 					boolean retval = alarm.update(delta);
 					if (retval) {
 						alarmTriggered(alarm.getName());
-						if (alarm.isOneShotAlaram()) {
+						if (alarm.isOneShotAlarm()) {
 							alarm.setActive(false);
 						} else {
 							alarm.start();

@@ -14,11 +14,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
-//TODO addAll() muss intern add() aufrufen, um korrekt nach flags in die listen einzusortieren
 public class World extends BasicGameState {
 
 	public static final int BELOW = -1;
@@ -50,7 +50,11 @@ public class World extends BasicGameState {
 
 	/** current camera **/
 	public Camera camera;
-
+	
+	/** the particle system for all particle emitters in this world **/
+	public ParticleSystem particleSystem;
+	public boolean renderParticle = true;
+	
 	public int renderedEntities;
 
 	/** available commands for world **/
@@ -109,9 +113,10 @@ public class World extends BasicGameState {
 		}
 
 		// render particle system
-		if (ME.ps != null && ME.renderParticle) {
-			ME.ps.render();
-		}
+		if (this.particleSystem != null && renderParticle) {
+			this.particleSystem.render();
+		}		
+		
 
 		if (ME.debugEnabled && camera != null) {
 			if (camera.getMoveRect() != null)
@@ -179,16 +184,16 @@ public class World extends BasicGameState {
 			e.updateAlarms(delta);
 			if (e.active)
 				e.update(container, delta);
-			// check for wrapping or out of world entities
-			// TODO: comment for a test
-			// e.checkWorldBoundaries();
+				// check for wrapping or out of world entities
+				//TODO: comment for a test
+				//e.checkWorldBoundaries();
 		}
-
+		
 		// update particle system
-		if (ME.ps != null) {
-			ME.ps.update(delta);
-		}
-
+		if (this.particleSystem != null){
+			this.particleSystem.update(delta);
+		}			
+		
 		// remove signed entities
 		for (Entity entity : removable) {
 			entities.remove(entity);
@@ -202,7 +207,7 @@ public class World extends BasicGameState {
 		if (camera != null) {
 			camera.update(container, delta);
 		}
-
+		
 		ME.update(container, game, delta);
 	}
 
@@ -221,13 +226,13 @@ public class World extends BasicGameState {
 		e.setWorld(this);
 		if (flags.length == 1) {
 			switch (flags[0]) {
-				case BELOW :
+				case BELOW:
 					belowCamera.add(e);
 					break;
-				case GAME :
+				case GAME:
 					addable.add(e);
 					break;
-				case ABOVE :
+				case ABOVE:
 					aboveCamera.add(e);
 					break;
 			}
@@ -343,8 +348,8 @@ public class World extends BasicGameState {
 
 	public void setCameraOn(Entity entity) {
 		if (camera == null) {
-			this.setCamera(new Camera(this, entity, this.container.getWidth(),
-					this.container.getHeight()));
+			this.setCamera(new Camera(this,entity, this.container.getWidth(),
+				this.container.getHeight()));
 		}
 		this.camera.setFollow(entity);
 	}
@@ -408,6 +413,14 @@ public class World extends BasicGameState {
 		return null;
 	}
 
+	public ParticleSystem getParticleSystem() {
+		return particleSystem;
+	}
+
+	public void setParticleSystem(ParticleSystem particleSystem) {
+		this.particleSystem = particleSystem;
+	}
+	
 	/**
 	 * @return get number of entities in this world
 	 */

@@ -2,7 +2,7 @@ package it.marteEngine;
 
 import it.marteEngine.entity.Entity;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -49,8 +49,8 @@ public class ME {
 	public static final String WALK_UP = "walk_Up";
 	public static final String WALK_DOWN = "walk_Down";
 
-	/** utility hashtable for game attributes **/
-	public static Hashtable<String, Object> attributes = new Hashtable<String, Object>();
+	/** utility hashmap for game attributes **/
+	public static HashMap<String, Object> attributes = new HashMap<String, Object>();
 
 	public static World world;
 
@@ -95,7 +95,7 @@ public class ME {
 			if (container.getInput().isKeyPressed(keyRestart)) {
 				ME.world.clear();
 				ME.world.init(container, game);
-				// TODO: go to first state?
+				//TODO: go to first state?
 			}
 		}
 		if (keyMuteMusic != -1) {
@@ -141,12 +141,10 @@ public class ME {
 		else
 			ypos = container.getHeight() - 40;
 		if (debugEnabled) {
-			String text = "Entities: " + world.getEntities().size()
-					+ ", rendered Entities: " + world.renderedEntities;
-			// int xpos= container.getWidth() - 350;/*130*/
+			String text = "Entities: " + world.getEntities().size() + ", rendered Entities: " + world.renderedEntities;
+			//int xpos= container.getWidth() - 350;/*130*/
 			int xpos = 0;
-			showMessage(container, g, xpos, ypos, container.getWidth() - 1, 40,
-					20, Color.lightGray, text, 350);
+			showMessage(container, g, xpos, ypos,container.getWidth() - 1, 40, 20,Color.lightGray,text,350);
 			container.setShowFPS(true);
 
 		} else {
@@ -155,10 +153,8 @@ public class ME {
 	}
 
 	public static void showMessage(GameContainer container, Graphics g,
-			int xpos, int ypos, int width, int height, int radius, Color c,
-			String text, int spaceText) {
-		RoundedRectangle r = new RoundedRectangle(xpos, ypos, width, height,
-				radius);
+			int xpos,int ypos, int width, int height, int radius, Color c, String text, int spaceText) {
+		RoundedRectangle r = new RoundedRectangle(xpos, ypos,width, height, radius);
 		c.a = 0.6f;
 		g.setColor(c);
 		g.fill(r);

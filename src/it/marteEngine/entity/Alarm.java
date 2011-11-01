@@ -38,7 +38,6 @@ public class Alarm {
 	public Alarm(String name, int triggerTime, boolean oneShot) {
 		this(name, triggerTime, oneShot, false);
 	}
-
 	/**
 	 * create a new Alarm object
 	 * 
@@ -116,7 +115,7 @@ public class Alarm {
 		return counter;
 	}
 
-	public boolean isOneShotAlaram() {
+	public boolean isOneShotAlarm() {
 		return oneShotAlaram;
 	}
 

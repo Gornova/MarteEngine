@@ -114,16 +114,20 @@ public class FuzzyGameWorld extends World {
 			levelIndex = FuzzyMain.gotoLevel;
 		}
 
-		TiledMap map = ResourceManager.getMap(LEVEL_PREFIX + levelIndex);
+		// todo: hack
+		// TiledMap map = ResourceManager.getMap(LEVEL_PREFIX + levelIndex);
+		TiledMap map = ResourceManager.getMap(LEVEL_PREFIX + 0);
 		Log.info("Load map" + levelIndex);
 		// make the world a bit bigger than the screen to force camera scrolling
 		computeWorldSize(map);
 		blocked = new int[widthInTiles][heightInTiles];
 
-		loadEntityFromMap(map, Arrays.asList("entity", "background", "star",
-				"enemies", "spikes"));
+		// PlatformerEntity player = loadEntityFromMap(map, Arrays.asList(
+		// "entity", "background", "star", "enemies", "spikes"));
+		PlatformerEntity player = loadEntityFromMap(map,
+				Arrays.asList("tile", "entities", "background"));
 
-		PlatformerEntity player = loadPlayer(map, "player");
+		// PlatformerEntity player = loadPlayer(map, "player");
 		// old camera
 		// setCamera(new Camera(this, player, container.getWidth(),
 		// container.getHeight()));
@@ -176,119 +180,121 @@ public class FuzzyGameWorld extends World {
 	 * Load entity from a tiled map into current World
 	 * 
 	 * @param map
+	 * @return
 	 * @throws SlickException
 	 */
-	public void loadEntityFromMap(TiledMap map, List<String> types)
+	public PlatformerEntity loadEntityFromMap(TiledMap map, List<String> types)
 			throws SlickException {
 		if (map == null) {
 			Log.error("unable to load map information");
-			return;
+			return null;
 		}
 		if (types == null || types.isEmpty()) {
 			Log.error("no types defined to load");
-			return;
+			return null;
 		}
 		starsNumber = 0;
+		FuzzyPlayer player = new FuzzyPlayer(0, 0, "player");
+
 		for (String type : types) {
-			// try to find a layer with property type set to entity
-			int layerIndex = -1;
-			for (int l = 0; l < map.getLayerCount(); l++) {
-				String value = map.getLayerProperty(l, "type", null);
-				if (value != null && value.equalsIgnoreCase(type)) {
-					layerIndex = l;
-					break;
-				}
-			}
+			// TODO
+			int layerIndex = map.getLayerIndex(type);
 			if (layerIndex != -1) {
-				Log.debug("Entity layer found on map");
+				Log.debug(type + " layer found on map");
 				int loaded = 0;
 				for (int w = 0; w < map.getWidth(); w++) {
 					for (int h = 0; h < map.getHeight(); h++) {
 						int tid = map.getTileId(w, h, layerIndex);
 						Image img = map.getTileImage(w, h, layerIndex);
-						if (type.equals("entity"))
+						if (type.equals("tile"))
 							blocked[w][h] = NO_SOLID;
 						if (img != null) {
-							if (type.equalsIgnoreCase("background")) {
-								// background
-								StaticActor te = new StaticActor(w
+							// TODO non carica il background
+							// if (type.equalsIgnoreCase("background")) {
+							// background
+							// StaticActor te = new StaticActor(w
+							// * img.getWidth(), h * img.getHeight(),
+							// img.getWidth(), img.getHeight(), img);
+							// te.depth = -100;
+							// te.setAlpha(0.4f);
+							// te.visible = true;
+							// add(te);
+							// } else {
+							String tileType = map.getTileProperty(tid, "type",
+									null);
+							if (tileType != null && tileType.equals("spike")) {
+								// spike
+								Spike spike = new Spike(w * img.getWidth(), h
+										* img.getHeight());
+								add(spike);
+							} else if (tileType != null
+									&& tileType.equals("fuzzyBlock")) {
+								// fuzzyBlock
+								FuzzyBlock fz = new FuzzyBlock(w
 										* img.getWidth(), h * img.getHeight(),
-										img.getWidth(), img.getHeight(), img);
-								te.collidable = false;
-								te.depth = -100;
-								te.collidable = false;
-								te.setAlpha(0.4f);
-								add(te);
-							} else if (type.equalsIgnoreCase("star")) {
+										img);
+								add(fz);
+							} else if (tileType != null
+									&& tileType.equals("tappo")) {
+								// FuzzyDestroyableBlock
+								FuzzyDestroyableBlock fd = new FuzzyDestroyableBlock(
+										w * img.getWidth(),
+										h * img.getHeight(), img);
+								add(fd);
+							} else if (tileType != null
+									&& tileType.equals("targetBlock")) {
+								// targetBlock
+								TargetBlock fz = new TargetBlock(w
+										* img.getWidth(), h * img.getHeight(),
+										img);
+								add(fz);
+							} else if (tileType != null
+									&& tileType.equals("blockRed")) {
+								int x = w * img.getWidth();
+								int y = h * img.getHeight();
+								// create player & camera
+								player = new FuzzyPlayer(x, y, "player");
+								add(player);
+							} else if (tileType != null
+									&& tileType.equals("star")) {
 								starsNumber++;
 								// stars
 								Star star = new Star(w * img.getWidth(), h
 										* img.getHeight());
 								add(star);
-							} else if (type.equalsIgnoreCase("enemies")) {
-								String enemyType = map.getTileProperty(tid,
-										"type", null);
-								if (enemyType != null) {
-									if (enemyType.equalsIgnoreCase("slime")) {
-										// slime
-										add(new FuzzyGreenSlime(w * 32, h * 32));
-									} else if (enemyType
-											.equalsIgnoreCase("bat")) {
-										// slime
-										add(new FuzzyBat(w * 32, h * 32));
-									} else if (enemyType
-											.equalsIgnoreCase("arrowTrap")) {
-										// slime
-										add(new FuzzyArrowTrap(w * 32, h * 32));
-									} else if (enemyType
-											.equalsIgnoreCase("boss1")) {
-										// slime
-										add(new FuzzyBoss(w * 32, h * 32));
-									}
-								}
+							} else if (tileType != null
+									&& tileType.equals("arrowTrap")) {
+								// arrowtrap
+								add(new FuzzyArrowTrap(w * 32, h * 32));
+							} else if (tileType != null
+									&& tileType.equals("bat")) {
+								// bat
+								add(new FuzzyBat(w * 32, h * 32));
+							} else if (tileType != null
+									&& tileType.equals("slime")) {
+								// slime
+								add(new FuzzyGreenSlime(w * 32, h * 32));
+							} else if (tileType != null
+									&& tileType.equals("boss")) {
+								add(new FuzzyBoss(w * 32, h * 32));
 							} else {
-								String tileType = map.getTileProperty(tid,
-										"type", null);
-								if (tileType != null
-										&& tileType.equals("spikes")) {
-									// spike
-									Spike spike = new Spike(w * img.getWidth(),
-											h * img.getHeight());
-									add(spike);
-								} else if (tileType != null
-										&& tileType.equals("fuzzyBlock")) {
-									// fuzzyBlock
-									FuzzyBlock fz = new FuzzyBlock(w
-											* img.getWidth(), h
-											* img.getHeight(), img);
-									add(fz);
-								} else if (tileType != null
-										&& tileType.equals("tappo")) {
-									// FuzzyDestroyableBlock
-									FuzzyDestroyableBlock fd = new FuzzyDestroyableBlock(
-											w * img.getWidth(), h
-													* img.getHeight(), img);
-									add(fd);
-								} else if (tileType != null
-										&& tileType.equals("targetBlock")) {
-									// targetBlock
-									TargetBlock fz = new TargetBlock(w
-											* img.getWidth(), h
-											* img.getHeight(), img);
-									add(fz);
-								} else {
-
-									// blocks
-									StaticActor te = new StaticActor(w
-											* img.getWidth(), h
-											* img.getHeight(), img.getWidth(),
-											img.getHeight(), img);
-									if (type.equals("entity")) {
-										blocked[w][h] = SOLID;
-									}
-									add(te);
+								// blocks
+								StaticActor te = new StaticActor(w
+										* img.getWidth(), h * img.getHeight(),
+										img.getWidth(), img.getHeight(), img);
+								if (type.equals("tile")) {
+									blocked[w][h] = SOLID;
 								}
+								if (type.equalsIgnoreCase("background")) {
+									// TODO COLOR
+									// te.depth = -100;
+									te.setAlpha(0.4f);
+									te.collidable = false;
+									// te.color = null;
+								}
+								add(te);
 							}
+							// }
 							loaded++;
 						}
 					}
@@ -298,8 +304,8 @@ public class FuzzyGameWorld extends World {
 				// Log.info("Entity layer not found on map");
 			}
 		}
+		return player;
 	}
-
 	/**
 	 * Load player position from layer with given name
 	 * 
@@ -513,12 +519,19 @@ public class FuzzyGameWorld extends World {
 	private void switchLayer() {
 		for (Entity entity : getEntities()) {
 			if (entity instanceof StaticActor) {
-				entity.collidable = entity.collidable ? false : true;
 				if (entity.collidable) {
+					entity.collidable = false;
 					entity.setAlpha(1);
 				} else {
+					entity.collidable = true;
 					entity.setAlpha(0.4f);
 				}
+				// entity.collidable = entity.collidable ? false : true;
+				// if (entity.collidable) {
+				// entity.setAlpha(1);
+				// } else {
+				// entity.setAlpha(0.4f);
+				// }
 			}
 		}
 	}

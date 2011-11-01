@@ -45,6 +45,11 @@ public abstract class Entity implements Comparable<Entity> {
 	/** y position **/
 	public float y;
 
+	/** center of rotation x position **/
+	public float corX;
+	/** center of rotation y position **/
+	public float corY;
+	
 	/** x,y is the center of the image/animation, otherwise it's top left corner */
 	public boolean centered = false;
 
@@ -254,12 +259,12 @@ public abstract class Entity implements Comparable<Entity> {
 			}
 			int w = currentImage.getWidth() / 2;
 			int h = currentImage.getHeight() / 2;
-			if (centered) {
+			if (centered && corX == 0 && corY == 0) {
 				xpos -= w;
 				ypos -= h;
 				currentImage.setCenterOfRotation(w, h);
 			} else
-				currentImage.setCenterOfRotation(0, 0);
+				currentImage.setCenterOfRotation(corX, corY);
 
 			if (angle != 0) {
 				currentImage.setRotation(angle);
@@ -495,6 +500,20 @@ public abstract class Entity implements Comparable<Entity> {
 		this.height = height;
 	}
 
+	/**
+	 * set center of rotation
+	 * 
+	 * @param x
+	 *            x coordinate to rotate 
+	 * @param y
+	 *            y coordinate to rotate
+	 */
+	public void setCenterOfRotation(float corX, float corY) {
+		this.corX = corX;
+		this.corY = corY;
+	}
+	
+	
 	/**
 	 * Add collision types to entity
 	 * 

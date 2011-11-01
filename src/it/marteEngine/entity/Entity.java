@@ -45,6 +45,11 @@ public abstract class Entity implements Comparable<Entity> {
 	/** y position **/
 	public float y;
 
+	/** center of rotation x position **/
+	public float corX;
+	/** center of rotation y position **/
+	public float corY;
+	
 	/** x,y is the center of the image/animation, otherwise it's top left corner */
 	public boolean centered = false;
 
@@ -103,10 +108,6 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/** collision type for entity **/
 	private HashSet<String> type = new HashSet<String>();
-
-
-	/** Boolean to determine if a custom center has been set **/
-	public boolean setCenterOfRotation;
 
 	/**
 	 * true for active entities, false otherwise. for active entities update()
@@ -253,23 +254,18 @@ public abstract class Entity implements Comparable<Entity> {
 			if (angle != 0)
 				g.resetTransform();
 		} else if (currentImage != null) {
+			if (color!= null){
 			currentImage.setAlpha(color.a);
+			}
 			int w = currentImage.getWidth() / 2;
 			int h = currentImage.getHeight() / 2;
-			if (centered) {
+			if (centered && corX == 0 && corY == 0) {
 				xpos -= w;
 				ypos -= h;
-				if (setCenterOfRotation == true) {
-					currentImage.setCenterOfRotation(corX, corY);
-				} else {
 				currentImage.setCenterOfRotation(w, h);
-				}
 			} else
-				if (setCenterOfRotation == true) {
-					currentImage.setCenterOfRotation(corX, corY);
-				} else {
-				currentImage.setCenterOfRotation(0, 0);
-				}
+				currentImage.setCenterOfRotation(corX, corY);
+
 			if (angle != 0) {
 				currentImage.setRotation(angle);
 			}
@@ -279,9 +275,18 @@ public abstract class Entity implements Comparable<Entity> {
 				else
 					g.translate(xpos, ypos);
 				g.scale(scale, scale);
-				g.drawImage(currentImage, 0, 0);
-			} else
-				g.drawImage(currentImage, xpos, ypos);
+				if (color.equals(Color.white)) {
+					g.drawImage(currentImage, 0, 0);
+				} else {
+					g.drawImage(currentImage, 0, 0, color);
+				}
+			} else {
+				if (color.equals(Color.white)) {
+					g.drawImage(currentImage, xpos, ypos);
+				} else {
+					g.drawImage(currentImage, 0, 0, color);
+				}
+			}
 			if (scale != 1.0f)
 				g.resetTransform();
 		}
@@ -301,21 +306,6 @@ public abstract class Entity implements Comparable<Entity> {
 				g.setColor(Color.white);
 			}
 		}
-	}
-	
-	
-	/**
-	 * Set center of rotation
-	 * 
-	 * @param int x
-	 * @param int y
-
-	 */
-	
-	public void setCenterOfRotation(int x, int y) {
-		setCenterOfRotation = true;
-		corX = x;
-		corY = y;
 	}
 
 	/**
@@ -510,6 +500,20 @@ public abstract class Entity implements Comparable<Entity> {
 		this.height = height;
 	}
 
+	/**
+	 * set center of rotation
+	 * 
+	 * @param x
+	 *            x coordinate to rotate 
+	 * @param y
+	 *            y coordinate to rotate
+	 */
+	public void setCenterOfRotation(float corX, float corY) {
+		this.corX = corX;
+		this.corY = corY;
+	}
+	
+	
 	/**
 	 * Add collision types to entity
 	 * 

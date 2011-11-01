@@ -20,6 +20,7 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.loading.LoadingList;
 import org.newdawn.slick.openal.SoundStore;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
@@ -46,15 +47,28 @@ public class ResourceManager {
 	private static HashMap<String, TiledMap> maps = new HashMap<String, TiledMap>();
 
 	public static void loadResources(String ref) throws IOException {
-		loadResources(ResourceLoader.getResourceAsStream(ref));
+		loadResources(ResourceLoader.getResourceAsStream(ref), false);
+	}
+        
+        public static void loadResources(String ref, boolean deferred) throws IOException {
+		loadResources(ResourceLoader.getResourceAsStream(ref), true);
 	}
 
 	public static void loadResources(File ref) throws IOException {
-		loadResources(new FileInputStream(ref));
+		loadResources(new FileInputStream(ref), false);
 	}
-
-	public static void loadResources(InputStream ref) throws IOException {
-		try {
+        
+        public static void loadResources(File ref, boolean deferred) throws IOException {
+		loadResources(new FileInputStream(ref), true);
+	}
+        
+        public static void loadResources(InputStream ref) throws IOException {
+            loadResources(ref, false);
+        }
+        
+	public static void loadResources(InputStream ref, boolean deferred) throws IOException {
+            if (deferred) LoadingList.setDeferredLoading(true);
+            try {
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
 			Document document = builder.parse(ref);

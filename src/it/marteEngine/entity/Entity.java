@@ -69,16 +69,16 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean wrapVertical = false;
 
 	/** speed vector (x,y): specifies x and y movement per update call in pixels **/
-	public Vector2f speed = new Vector2f(0,0);
+	public Vector2f speed = new Vector2f(0, 0);
 
 	/**
 	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
 	 * used for direction!
 	 */
-	protected int angle = 0;
+	protected int angle = 0, previousAngle = 0;
 
 	/** scale used for both horizontal and vertical scaling. */
-	public float scale = 1.0f;
+	public float scale = 1.0f, previousScale = 1.0f;
 
 	/**
 	 * color of the entity, mainly used for alpha transparency, but could also
@@ -87,7 +87,7 @@ public abstract class Entity implements Comparable<Entity> {
 	private Color color = new Color(Color.white);
 
 	private HashMap<String, Alarm> alarms = new HashMap<String, Alarm>();
-	private HashMap<String,Alarm> addableAlarms = new HashMap<String, Alarm>();
+	private HashMap<String, Alarm> addableAlarms = new HashMap<String, Alarm>();
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
@@ -228,6 +228,7 @@ public abstract class Entity implements Comparable<Entity> {
 			stateManager.render(g);
 			return;
 		}
+		boolean reset = false;
 		float xpos = x, ypos = y;
 		if (currentAnim != null) {
 			Animation anim = animations.get(currentAnim);
@@ -241,10 +242,14 @@ public abstract class Entity implements Comparable<Entity> {
 			}
 			if (angle != 0) {
 				g.rotate(x, y, angle);
+				previousAngle = angle;
+				reset = true;
 			}
 			anim.draw(xpos, ypos, w * scale, h * scale, color);
-			if (angle != 0)
+			if (reset) {
 				g.resetTransform();
+				reset = false;
+			}
 		} else if (currentImage != null) {
 			currentImage.setAlpha(color.a);
 			int w = currentImage.getWidth() / 2;
@@ -256,10 +261,13 @@ public abstract class Entity implements Comparable<Entity> {
 			} else
 				currentImage.setCenterOfRotation(0, 0);
 
-			if (angle != 0) {
+			if (angle != previousAngle) {
 				currentImage.setRotation(angle);
+				previousAngle = angle;
 			}
 			if (scale != 1.0f) {
+				previousScale = scale;
+				reset = true;
 				if (centered)
 					g.translate(xpos - (w * scale - w), ypos - (h * scale - h));
 				else
@@ -268,8 +276,10 @@ public abstract class Entity implements Comparable<Entity> {
 				g.drawImage(currentImage, 0, 0);
 			} else
 				g.drawImage(currentImage, xpos, ypos);
-			if (scale != 1.0f)
+			if (reset) {
 				g.resetTransform();
+				reset = false;
+			}
 		}
 		if (ME.debugEnabled) {
 			g.setColor(ME.borderColor);
@@ -279,12 +289,12 @@ public abstract class Entity implements Comparable<Entity> {
 			g.setColor(Color.white);
 			g.drawRect(x, y, 1, 1);
 			// draw entity center
-			if (width!=0 && height!=0){
-				float centerX = x + width/2;
-				float centerY = y + height/2;
+			if (width != 0 && height != 0) {
+				float centerX = x + width / 2;
+				float centerY = y + height / 2;
 				g.setColor(Color.green);
 				g.drawRect(centerX, centerY, 1, 1);
-				g.setColor(Color.white);	
+				g.setColor(Color.white);
 			}
 		}
 	}
@@ -330,8 +340,9 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		animations.put(name, anim);
 	}
-	
-	public Animation addAnimation(SpriteSheet sheet, String name, boolean loop, int row, int... frames) {
+
+	public Animation addAnimation(SpriteSheet sheet, String name, boolean loop,
+			int row, int... frames) {
 		Animation anim = new Animation(false);
 		anim.setLooping(loop);
 		for (int i = 0; i < frames.length; i++) {
@@ -342,7 +353,7 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		animations.put(name, anim);
 		return anim;
-	}	
+	}
 
 	/**
 	 * define commands to handle inputs
@@ -446,7 +457,7 @@ public abstract class Entity implements Comparable<Entity> {
 		this.hitboxWidth = width;
 		this.hitboxHeight = height;
 		this.collidable = true;
-		
+
 		this.width = width;
 		this.height = height;
 	}
@@ -460,11 +471,11 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean addType(String... types) {
 		return type.addAll(Arrays.asList(types));
 	}
-	
+
 	/**
 	 * Reset type information for this entity
 	 */
-	public void clearTypes(){
+	public void clearTypes() {
 		type.clear();
 	}
 
@@ -663,7 +674,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isType(String type) {
-		return type.contains(type);
+		return this.type.contains(type);
 	}
 
 	/**
@@ -698,9 +709,9 @@ public abstract class Entity implements Comparable<Entity> {
 	public float getDistance(Entity other) {
 		return getDistance(new Vector2f(other.x, other.y));
 	}
-	
+
 	public float getDistance(Vector2f otherPos) {
-		Vector2f myPos = new Vector2f(x,y);
+		Vector2f myPos = new Vector2f(x, y);
 		return myPos.distance(otherPos);
 	}
 
@@ -736,7 +747,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/***************** some methods to deal with alarms ************************************/
-	
+
 	/**
 	 * Create an Alarm with given parameters and add to current Entity
 	 */
@@ -818,15 +829,15 @@ public abstract class Entity implements Comparable<Entity> {
 				}
 			}
 		}
-		if (addableAlarms != null && !addableAlarms.isEmpty()){
-			
+		if (addableAlarms != null && !addableAlarms.isEmpty()) {
+
 			Iterator<String> itr = addableAlarms.keySet().iterator();
-			while (itr.hasNext()){
+			while (itr.hasNext()) {
 				String name = itr.next();
 				alarms.put(name, addableAlarms.get(name));
 			}
-		}		
-		if(!addableAlarms.isEmpty()){
+		}
+		if (!addableAlarms.isEmpty()) {
 			addableAlarms.clear();
 		}
 	}
@@ -864,10 +875,11 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
-	public String toCsv(){
-		return ""+(int)x+","+(int)y+","+name+","+type.iterator().next();
+	public String toCsv() {
+		return "" + (int) x + "," + (int) y + "," + name + ","
+				+ type.iterator().next();
 	}
-	
+
 	/**
 	 * @param shape
 	 *            to check
@@ -879,7 +891,8 @@ public abstract class Entity implements Comparable<Entity> {
 		List<Entity> result = new ArrayList<Entity>();
 		for (Entity entity : world.getEntities()) {
 			if (entity.collidable && !entity.equals(this)) {
-				Rectangle rec = new Rectangle(entity.x + entity.hitboxOffsetX, entity.y + entity.hitboxOffsetY, entity.hitboxWidth,
+				Rectangle rec = new Rectangle(entity.x + entity.hitboxOffsetX,
+						entity.y + entity.hitboxOffsetY, entity.hitboxWidth,
 						entity.hitboxHeight);
 				if (shape.intersects(rec)) {
 					result.add(entity);

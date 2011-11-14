@@ -34,5 +34,9 @@ public abstract class Motion extends Tween {
 	public void setY(float y) {
 		this.y = y;
 	}
+	
+	public Vector2f getPosition() {
+		return new Vector2f(x, y);
+	}
 
 }

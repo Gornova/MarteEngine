@@ -597,13 +597,13 @@ public abstract class Entity implements Comparable<Entity> {
 		return collidingEntities;
 	}
 
-	/**
-	 * Checks if this Entity collides with the specified point.
-	 * 
-	 * @param x
-	 *            The x-position of the point.
-	 * @param y
-	 *            The y-position of the point.
+  	/**
+   	 * Checks if this Entity contains the specified point.
+	 * The {@link #collisionResponse(Entity)} is called to notify this entity of the collision.
+	 *
+	 * @param x The x coordinate of the point to check
+	 * @param y The y coordinate of the point to chekc
+	 * @return If this entity contains the specified point
 	 */
 	public boolean collidePoint(float x, float y) {
 		if (x >= this.x - hitboxOffsetX && y >= this.y - hitboxOffsetY

@@ -502,12 +502,21 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * check collision with another entity of given type
-	 * 
-	 * @param type
-	 * @param x
-	 * @param y
-	 * @return
+	 * Check for a collision with another entity of the given type.
+	 * Two entities collide when the hitbox of another entity intersects
+	 * with the hitbox of this entity.
+	 * <p/>
+	 * The hitbox starts at the provided x,y coordinates. The size of the hitbox
+	 * is set in the {@link #setHitBox(float, float, int, int)} method.
+	 * <p/>
+	 * If a collision is found then both the entities are notified of the collision
+	 * by the {@link #collisionResponse(Entity)} method.
+	 *
+	 * @param type The collision type of entities to check collision against
+	 * @param x    The x coordinate where the hitbox of this entity starts
+	 * @param y    The y coordinate where the hitbox of this entity starts
+	 * @return The entity that is colliding with this entity at the x,y coordinates
+	 *         NULL if there was no collision
 	 */
 	public Entity collide(String type, float x, float y) {
 		if (type == null || type.isEmpty())

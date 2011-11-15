@@ -171,7 +171,7 @@ public class XMLResourceLoader {
       fontSize = 12;
     }
 
-    Log.debug(formatLoadMsg("Unicode", key, ttfFile));
+    Log.debug(formatLoadMsg("Unicode font", key, ttfFile));
     UnicodeFont unicodeFont = new UnicodeFont(baseDir + ttfFile, fontSize, false, false);
     unicodeFont.getEffects().add(new ColorEffect());
     unicodeFont.addAsciiGlyphs();

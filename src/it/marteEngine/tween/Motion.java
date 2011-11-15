@@ -1,5 +1,7 @@
 package it.marteEngine.tween;
 
+import org.newdawn.slick.geom.Vector2f;
+
 /**
  * base class for motion tweens
  * 

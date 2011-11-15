@@ -41,8 +41,8 @@ public class SFX {
    * @param songName The music to play as defined in the ResourceManager
    */
   public static void playMusic(String songName) {
-    if (ResourceManager.hasSound(songName)) {
-      ResourceManager.getSound(songName).play();
+    if (ResourceManager.hasMusic(songName)) {
+      ResourceManager.getMusic(songName).play();
     } else {
       Log.warn("No music for " + songName);
     }

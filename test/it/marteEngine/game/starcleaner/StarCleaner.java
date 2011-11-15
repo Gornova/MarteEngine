@@ -4,6 +4,7 @@ import it.marteEngine.ResourceManager;
 
 import java.io.IOException;
 
+import it.marteEngine.SFX;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -78,8 +79,8 @@ public class StarCleaner extends StateBasedGame {
 	}
 
 	private void applyGameOptions() {
-		ResourceManager.setMusicVolume(1.0f);
-		ResourceManager.setSfxVolume(1.0f);
+		SFX.setMusicVolume(1.0f);
+		SFX.setSfxVolume(1.0f);
 	}
 
 	public static void initRessources() throws SlickException {

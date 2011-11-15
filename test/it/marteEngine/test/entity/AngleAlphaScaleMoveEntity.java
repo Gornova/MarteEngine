@@ -3,6 +3,7 @@ package it.marteEngine.test.entity;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -28,9 +29,10 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 		super(x, y);
 
 		// load and get the image that we are showing
-		if (ResourceManager.getImage("ship") == null) {
+		if (!ResourceManager.hasImage("ship")) {
 			try {
-				ResourceManager.loadImage("ship", "data/triangle.png", null);
+        Image image = new Image("data/triangle.png");
+        ResourceManager.addImage("ship", image);
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

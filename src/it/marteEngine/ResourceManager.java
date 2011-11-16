@@ -18,6 +18,7 @@ public class ResourceManager {
   private static final Map<String, Sound> sounds = new HashMap<String, Sound>();
   private static final Map<String, Image> images = new HashMap<String, Image>();
   private static final Map<String, SpriteSheet> sheets = new HashMap<String, SpriteSheet>();
+  private static final Map<String, Animation> animations = new HashMap<String, Animation>();
   private static final Map<String, Font> fonts = new HashMap<String, Font>();
   private static final Map<String, String> parameters = new HashMap<String, String>();
   private static final Map<String, TiledMap> tiledMaps = new HashMap<String, TiledMap>();
@@ -46,6 +47,13 @@ public class ResourceManager {
       throw new RuntimeException("SpriteSheet for key " + key + " already exist!");
     }
     sheets.put(key, sheet);
+  }
+
+  public static void addAnimation(String key, Animation anim) {
+    if (hasAnimation(key)) {
+      throw new RuntimeException("Animation for key " + key + " already exist!");
+    }
+    animations.put(key, anim);
   }
 
   public static void addFont(String key, Font font) {
@@ -91,6 +99,10 @@ public class ResourceManager {
     return sheets.containsKey(key);
   }
 
+  public static boolean hasAnimation(String key) {
+    return animations.containsKey(key);
+  }
+
   public static boolean hasFont(String key) {
     return fonts.containsKey(key);
   }
@@ -125,6 +137,13 @@ public class ResourceManager {
     return spriteSheet;
   }
 
+  public static Animation getAnimation(String key) {
+    Animation anim = animations.get(key);
+    if (anim == null)
+      throw new RuntimeException("No Animation for key " + key + " " + animations.keySet());
+    return anim;
+  }
+
   public static Font getFont(String key) {
     Font font = fonts.get(key);
     if (font == null)
@@ -146,6 +165,14 @@ public class ResourceManager {
     return sound;
   }
 
+  public static int getInt(String key) {
+    return Integer.parseInt(getParameter(key));
+  }
+
+  public static float getFloat(String key) {
+    return Float.parseFloat(getParameter(key));
+  }
+
   public static String getParameter(String key) {
     String val = parameters.get(key);
     if (val == null)
@@ -158,13 +185,5 @@ public class ResourceManager {
     if (map == null)
       throw new RuntimeException("No tilemap for key " + key + " " + tiledMaps.keySet());
     return map;
-  }
-
-  public static int getInt(String key) {
-    return Integer.parseInt(getParameter(key));
-  }
-
-  public static float getFloat(String key) {
-    return Float.parseFloat(getParameter(key));
   }
 }

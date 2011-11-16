@@ -12,77 +12,65 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The XMLResourceLoader parses an xml document.
  * and reads the following known elements:
- * (required) basedir path
+ * basedir path (required)
  * sound key file
  * music key file
  * image key file
  * sheet key file width height transparent-color(optional)
- * angelcodefont key font-file image-file
- * ttf key font-file image-file
+ * anim key imgName frameDuration
+ * angelcodefont key fontFile imageFile
+ * unicodefont   key fonFile imagFile fontSize(optional default=12)
  * map key file
  * param key value
  * The file parameter is relative to the basedir.
  */
 public class XMLResourceLoader {
+  private Element[] NO_ELEMENTS = new Element[0];
   private String baseDir;
+  private Element rootElement;
 
   public void load(InputStream in) throws IOException {
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document document = builder.parse(in);
-      Element rootElement = document.getDocumentElement();
-      validateResourceFile(rootElement);
+      rootElement = document.getDocumentElement();
+      validateResourceFile();
 
-      // first look for basedir
-      NodeList list = rootElement.getElementsByTagName("basedir");
-      for (int i = 0; i < list.getLength(); i++) {
-        Element element = (Element) list.item(i);
-        setBaseDirectory(element.getAttribute("path"));
-      }
+      Element[] elements = getElementsByTagName("basedir");
+      setBaseDirectory(elements[0].getAttribute("path"));
 
-      // load sounds
-      list = rootElement.getElementsByTagName("sound");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadSound((Element) list.item(i));
+      for (Element element : getElementsByTagName("sound")) {
+        loadSound(element);
       }
-      // load songs
-      list = rootElement.getElementsByTagName("music");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadMusic((Element) list.item(i));
+      for (Element element : getElementsByTagName("music")) {
+        loadMusic(element);
       }
-      // load images
-      list = rootElement.getElementsByTagName("image");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadImage((Element) list.item(i));
+      for (Element element : getElementsByTagName("image")) {
+        loadImage(element);
       }
-      // load sheets
-      list = rootElement.getElementsByTagName("sheet");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadSpriteSheet((Element) list.item(i));
+      for (Element element : getElementsByTagName("sheet")) {
+        loadSpriteSheet(element);
       }
-
-      // load fonts
-      list = rootElement.getElementsByTagName("angelcodefont");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadAngelCodeFont((Element) list.item(i));
+      for (Element element : getElementsByTagName("anim")) {
+        loadAnimation(element);
       }
-      list = rootElement.getElementsByTagName("unicodefont");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadUnicodeFont((Element) list.item(i));
+      for (Element element : getElementsByTagName("angelcodefont")) {
+        loadAngelCodeFont(element);
       }
-      // load maps
-      list = rootElement.getElementsByTagName("map");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadTiledMap((Element) list.item(i));
+      for (Element element : getElementsByTagName("unicodefont")) {
+        loadUnicodeFont(element);
       }
-      // load parameters
-      list = rootElement.getElementsByTagName("param");
-      for (int i = 0; i < list.getLength(); i++) {
-        loadParameter((Element) list.item(i));
+      for (Element element : getElementsByTagName("map")) {
+        loadTiledMap(element);
+      }
+      for (Element element : getElementsByTagName("param")) {
+        loadParameter(element);
       }
     } catch (IOException e) {
       Log.error(e);
@@ -93,8 +81,25 @@ public class XMLResourceLoader {
     }
   }
 
-  private void validateResourceFile(Element element) throws IOException {
-    if (!element.getNodeName().equals("resources")) {
+  private Element[] getElementsByTagName(String elementName) {
+    NodeList nodes = rootElement.getElementsByTagName(elementName);
+    int nodeCount = nodes.getLength();
+
+    if (nodeCount != 0) {
+      Element[] elements = new Element[nodeCount];
+
+      for (int i = 0; i < nodeCount; i++) {
+        Element element = (Element) nodes.item(i);
+        elements[i] = element;
+      }
+      return elements;
+    } else {
+      return NO_ELEMENTS;
+    }
+  }
+
+  private void validateResourceFile() throws IOException {
+    if (!rootElement.getNodeName().equals("resources")) {
       throw new IOException("Not a resource configuration file");
     }
   }
@@ -145,6 +150,17 @@ public class XMLResourceLoader {
 
     Log.debug(String.format("Loading spritesheet key=%s width=%s height=%s file=%s", file, width, height, key));
     ResourceManager.addSpriteSheet(key, new SpriteSheet(baseDir + file, width, height, transparentColor));
+  }
+
+  private void loadAnimation(Element element) {
+    String key = element.getAttribute("key");
+    String imgName = element.getAttribute("imgName");
+    int frameDuration = Integer.parseInt(element.getAttribute("frameDuration"));
+
+    SpriteSheet sheet = ResourceManager.getSpriteSheet(imgName);
+    Animation anim = new Animation(sheet, frameDuration);
+    anim.setAutoUpdate(false);
+    ResourceManager.addAnimation(key, anim);
   }
 
   private void loadAngelCodeFont(Element element) throws SlickException {

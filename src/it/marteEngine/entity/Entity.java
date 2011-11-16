@@ -378,6 +378,17 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
+	 * Add animation to entity.
+	 * The first animation added is set as the current animation.
+	 */
+	public void addAnimation(String animName, Animation animation) {
+		if (animations.isEmpty()) {
+			currentAnim = animName;
+		}
+		animations.put(animName, animation);
+	}
+  
+	/**
 	 * define commands to handle inputs
 	 * 
 	 * @param command

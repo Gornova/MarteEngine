@@ -12,31 +12,31 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.StringTokenizer;
 
 /**
  * The XMLResourceLoader parses an xml document.
  * and reads the following known elements:
- * basedir path (required)
+ * basedir path(req)
  * sound key file
  * music key file
- * image key file transparentColor(optional)
- * sheet key file width height transparentColor(optional)
- * anim key imgName frameDuration frames(optional)
+ * image key file transparentColor(opt)
+ * sheet key file width height transparentColor(opt)
+ * anim key imgName frameDuration frames(opt) flipVertical(opt) flipHorizontal(opt)
  * angelcodefont key fontFile imageFile
- * unicodefont   key file fontSize(optional default=12)
+ * unicodefont   key file fontSize(opt)
  * map key file
  * param key value
+ * <p/>
+ * A parameter followed by (req) means Required and by (opt) means Optional.
  * The file parameter is relative to the basedir.
- *
+ * <p/>
  * Examples:
  * <sound key="jump" file="jump.wav" />
  * <music key="sleepy" file="sleep.wav" />
  * <image key="ship" file="ship.png" />
  * <sheet key="monster1" file="invader.png" width="25" height="25" transparentColor="000000" />
- * <anim key="homer" imgName="homeranim" frameDuration="250" frames="1,2,3,4,5" />
+ * <anim key="homer" imgName="homeranim" frameDuration="250" row="0" frames="1,2,3,4,5" flipVertical="true" flipHorizontal="true"/>
  * <unicodefont key="default" file="gbb.ttf" fontSize="20" />
  * <angelcodefont key="font" fontFile="font.fnt" imageFile="font.png" />
  * <map key="level1" file="level1.tmx" />
@@ -183,28 +183,61 @@ public class XMLResourceLoader {
     String key = element.getAttribute("key");
     String imgName = element.getAttribute("imgName");
     int frameDuration = Integer.parseInt(element.getAttribute("frameDuration"));
+    boolean flipHorizontal = false, flipVertical = false;
+    int[] frames = null;
+    int row = 0;
 
-    int frames[] = null;
     if (element.hasAttribute("frames")) {
-      frames = readFrames(element);
+      frames = readFrameIndexes(element);
+    }
+    if (element.hasAttribute("flipHorizontal")) {
+      flipHorizontal = Boolean.parseBoolean(element.getAttribute("flipHorizontal"));
+    }
+    if (element.hasAttribute("flipVertical")) {
+      flipVertical = Boolean.parseBoolean(element.getAttribute("flipVertical"));
+    }
+    if (element.hasAttribute("row")) {
+      row = Integer.parseInt(element.getAttribute("row"));
     }
 
     SpriteSheet sheet = ResourceManager.getSpriteSheet(imgName);
     Animation anim;
-    if (frames != null) {
-      anim = new Animation();
-      for (int frameIndex : frames) {
-        Image img = sheet.getSubImage(frameIndex, 0);
-        anim.addFrame(img, frameDuration);
+
+    if (frames == null && !flipHorizontal && !flipVertical) {
+      // Create Animation from the entire row
+      anim = new Animation(false);
+      for (int i = 0; i < sheet.getHorizontalCount(); i++) {
+        anim.addFrame(sheet.getSubImage(i, row), frameDuration);
       }
     } else {
-      anim = new Animation(sheet, frameDuration);
+      if (frames != null) {
+        anim = buildAnimationFromFrames(sheet, row, frames, frameDuration, flipHorizontal, flipVertical);
+      } else {
+        int[] allFrames = new int[sheet.getHorizontalCount()];
+        anim = buildAnimationFromFrames(sheet, row, allFrames, frameDuration, flipHorizontal, flipVertical);
+      }
     }
-    anim.setAutoUpdate(false);
     ResourceManager.addAnimation(key, anim);
   }
 
-  private int[] readFrames(Element element) {
+  /**
+   * Create an animation from a set of frames in the spritesheet at a given row.
+   */
+  private Animation buildAnimationFromFrames(SpriteSheet sheet, int row, int[] frames, int frameDuration, boolean flipHorizontal, boolean flipVertical) {
+    Animation animation = new Animation(false);
+    for (int frameIndex : frames) {
+      Image img = sheet.getSubImage(frameIndex, row);
+      if (flipHorizontal || flipVertical) {
+        img = img.getFlippedCopy(flipHorizontal, flipVertical);
+        animation.addFrame(img, frameDuration);
+      } else {
+        animation.addFrame(img, frameDuration);
+      }
+    }
+    return animation;
+  }
+
+  private int[] readFrameIndexes(Element element) {
     String framesAsText = element.getAttribute("frames");
     StringTokenizer tokenizer = new StringTokenizer(framesAsText, ",");
 
@@ -244,7 +277,7 @@ public class XMLResourceLoader {
     unicodeFont.getEffects().add(new ColorEffect());
     unicodeFont.addAsciiGlyphs();
     unicodeFont.loadGlyphs();
-    unicodeFont.setDisplayListCaching(false);
+    unicodeFont.setDisplayListCaching(true);
     ResourceManager.addFont(key, unicodeFont);
   }
 

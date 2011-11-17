@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * The XMLResourceLoader parses an xml document.
@@ -21,14 +22,25 @@ import java.util.List;
  * basedir path (required)
  * sound key file
  * music key file
- * image key file
- * sheet key file width height transparent-color(optional)
- * anim key imgName frameDuration
+ * image key file transparentColor(optional)
+ * sheet key file width height transparentColor(optional)
+ * anim key imgName frameDuration frames(optional)
  * angelcodefont key fontFile imageFile
- * unicodefont   key fonFile imagFile fontSize(optional default=12)
+ * unicodefont   key file fontSize(optional default=12)
  * map key file
  * param key value
  * The file parameter is relative to the basedir.
+ *
+ * Examples:
+ * <sound key="jump" file="jump.wav" />
+ * <music key="sleepy" file="sleep.wav" />
+ * <image key="ship" file="ship.png" />
+ * <sheet key="monster1" file="invader.png" width="25" height="25" transparentColor="000000" />
+ * <anim key="homer" imgName="homeranim" frameDuration="250" frames="1,2,3,4,5" />
+ * <unicodefont key="default" file="gbb.ttf" fontSize="20" />
+ * <angelcodefont key="font" fontFile="font.fnt" imageFile="font.png" />
+ * <map key="level1" file="level1.tmx" />
+ * <param key="bossLevel" value="11" />
  */
 public class XMLResourceLoader {
   private Element[] NO_ELEMENTS = new Element[0];
@@ -132,8 +144,23 @@ public class XMLResourceLoader {
   private void loadImage(Element element) throws SlickException {
     String key = element.getAttribute("key");
     String file = element.getAttribute("file");
+    String transparentColorAsText = element.getAttribute("transparentColor");
+
+    Color transparentColor = null;
+    if (transparentColorAsText != null && !transparentColorAsText.isEmpty()) {
+      transparentColor = Color.decode(transparentColorAsText);
+    }
+
+    Image image;
+    try {
+      image = new Image(baseDir + file, transparentColor);
+    } catch (SlickException ex) {
+      // For textures larger than 512x512 old cards throws error
+      Log.info("Using BigImage.");
+      image = new BigImage(baseDir + file);
+    }
     Log.debug(formatLoadMsg("image", key, file));
-    ResourceManager.addImage(key, new Image(baseDir + file));
+    ResourceManager.addImage(key, image);
   }
 
   private void loadSpriteSheet(Element element) throws SlickException {
@@ -148,7 +175,7 @@ public class XMLResourceLoader {
       transparentColor = Color.decode(transparentColorAsText);
     }
 
-    Log.debug(String.format("Loading spritesheet key=%s width=%s height=%s file=%s", file, width, height, key));
+    Log.debug(String.format("Loading spritesheet key=%s file=%s width=%s height=%s", key, file, width, height));
     ResourceManager.addSpriteSheet(key, new SpriteSheet(baseDir + file, width, height, transparentColor));
   }
 
@@ -157,10 +184,35 @@ public class XMLResourceLoader {
     String imgName = element.getAttribute("imgName");
     int frameDuration = Integer.parseInt(element.getAttribute("frameDuration"));
 
+    int frames[] = null;
+    if (element.hasAttribute("frames")) {
+      frames = readFrames(element);
+    }
+
     SpriteSheet sheet = ResourceManager.getSpriteSheet(imgName);
-    Animation anim = new Animation(sheet, frameDuration);
+    Animation anim;
+    if (frames != null) {
+      anim = new Animation();
+      for (int frameIndex : frames) {
+        Image img = sheet.getSubImage(frameIndex, 0);
+        anim.addFrame(img, frameDuration);
+      }
+    } else {
+      anim = new Animation(sheet, frameDuration);
+    }
     anim.setAutoUpdate(false);
     ResourceManager.addAnimation(key, anim);
+  }
+
+  private int[] readFrames(Element element) {
+    String framesAsText = element.getAttribute("frames");
+    StringTokenizer tokenizer = new StringTokenizer(framesAsText, ",");
+
+    int frames[] = new int[tokenizer.countTokens()];
+    for (int i = 0; tokenizer.hasMoreTokens(); i++) {
+      frames[i] = Integer.parseInt(tokenizer.nextToken().trim());
+    }
+    return frames;
   }
 
   private void loadAngelCodeFont(Element element) throws SlickException {
@@ -168,7 +220,7 @@ public class XMLResourceLoader {
     String fontFile = element.getAttribute("fontFile");
     String imageFile = element.getAttribute("imageFile");
 
-    Log.debug(String.format("Loading Angelcode font file key=%s imagefile=%s fontfile=%s", key, imageFile, fontFile));
+    Log.debug(String.format("Loading Angelcode font key=%s imagefile=%s fontfile=%s", key, imageFile, fontFile));
     // load AngelCodeFonts with caching enabled to speed up rendering
     AngelCodeFont font = new AngelCodeFont(baseDir + fontFile, baseDir + imageFile, true);
     ResourceManager.addFont(key, font);

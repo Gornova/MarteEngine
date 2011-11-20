@@ -93,7 +93,7 @@ public class World extends BasicGameState {
 		}
 		// center to camera position
 		if (camera != null)
-			g.translate(-camera.cameraX, -camera.cameraY);
+			g.translate(-camera.getCameraX(), -camera.getCameraY());
 
 		// render entities
 		for (Entity e : entities) {
@@ -119,7 +119,7 @@ public class World extends BasicGameState {
 		}
 
 		if (camera != null)
-			g.translate(camera.cameraX, camera.cameraY);
+			g.translate(camera.getCameraX(), camera.getCameraY());
 
 		// finally render entities above camera
 		for (Entity e : aboveCamera) {
@@ -338,15 +338,14 @@ public class World extends BasicGameState {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
-		this.camera.setMyWorld(this);
+		this.camera.setWorld(this);
 	}
 
 	public void setCameraOn(Entity entity) {
 		if (camera == null) {
-			this.setCamera(new Camera(this, entity, this.container.getWidth(),
-					this.container.getHeight()));
+			setCamera(new Camera(this, entity, container.getWidth(), container.getHeight()));
 		}
-		this.camera.setFollow(entity);
+		camera.follow(entity);
 	}
 
 	public int getWidth() {
@@ -429,9 +428,6 @@ public class World extends BasicGameState {
 
 	/**
 	 * Check if a command is down
-	 * 
-	 * @param key
-	 * @return
 	 */
 	public boolean check(String command) {
 		int[] checked = commands.get(command);
@@ -456,9 +452,6 @@ public class World extends BasicGameState {
 
 	/**
 	 * Check if a command is pressed
-	 * 
-	 * @param key
-	 * @return
 	 */
 	public boolean pressed(String command) {
 		int[] checked = commands.get(command);

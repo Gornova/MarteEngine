@@ -13,6 +13,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class MoveAvatarTest extends StateBasedGame {
+    private World gameWorld;
+    private TopDownActor player;
 
 	public MoveAvatarTest() {
 		super("Move Avatar Test");
@@ -20,16 +22,15 @@ public class MoveAvatarTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-
-		World gameWorld = new World(0, container);
+		gameWorld = new World(0, container);
 		// make the world a bit bigger than the screen to force camera scrolling
 		gameWorld.setWidth(2000);
 		gameWorld.setHeight(2000);
 
 		// create player
-		TopDownActor player = new TopDownActor(400, 400, "data/link.png");
+		player = new TopDownActor(400, 400, "data/link.png");
 		// create sword relative to player
-		Sword sword = new Sword(player.x, player.x, "data/sword.png", player);
+		Sword sword = new Sword(player.x, player.y, "data/sword.png", player);
 		// create temple
 		StaticActor temple = new StaticActor(150, 150, 48, 48,
 				"data/tiles.png", 0, 6);
@@ -39,7 +40,7 @@ public class MoveAvatarTest extends StateBasedGame {
 		gameWorld.add(temple);
 		gameWorld.add(sword);
 
-		// set screen camera to follo player
+		// set screen camera to follow the player
 		gameWorld.setCamera(new Camera(gameWorld, player, container.getWidth(),
 				container.getHeight(), container.getWidth() - 100, container
 						.getHeight() - 100, player.mySpeed));
@@ -47,6 +48,15 @@ public class MoveAvatarTest extends StateBasedGame {
 
 		addState(gameWorld);
 	}
+
+    @Override
+    public void keyPressed(int key, char c) {
+      if(key == Input.KEY_F) {
+        gameWorld.camera.stopFollowingEntity();
+      } else if(key == Input.KEY_S) {
+        gameWorld.camera.follow(player);
+      }
+    }
 
 	public static void main(String[] argv) {
 		try {
@@ -61,5 +71,4 @@ public class MoveAvatarTest extends StateBasedGame {
 			e.printStackTrace();
 		}
 	}
-
 }

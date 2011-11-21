@@ -93,7 +93,7 @@ public class World extends BasicGameState {
 		}
 		// center to camera position
 		if (camera != null)
-			g.translate(-camera.getCameraX(), -camera.getCameraY());
+			g.translate(-camera.getX(), -camera.getY());
 
 		// render entities
 		for (Entity e : entities) {
@@ -119,7 +119,7 @@ public class World extends BasicGameState {
 		}
 
 		if (camera != null)
-			g.translate(camera.getCameraX(), camera.getCameraY());
+			g.translate(camera.getX(), camera.getY());
 
 		// finally render entities above camera
 		for (Entity e : aboveCamera) {

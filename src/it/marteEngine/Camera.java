@@ -34,6 +34,13 @@ public class Camera {
     }
 
     /**
+     * Create a camera with smooth movement.
+     */
+    public Camera(World world, int cameraWidth, int cameraHeight, Vector2f speed) {
+      this(world, null, cameraWidth, cameraHeight, -1, -1, speed);
+    }
+
+    /**
      * Create a camera without smooth movement. Instead the camera will
      * jump in 1 frame towards the entity coordinates.
      * Call {@link #setSpeed} to allow smooth movement.
@@ -53,7 +60,7 @@ public class Camera {
     /**
      * Create a camera that follows an entity.
      * <p/>
-     * The horBorderPixel and vertBorderPixel define a move region around the entity?
+     * The horBorderPixel and vertBorderPixel define a move region around the entity.
      * The camera does not move when the entity is within the move rectangle.
      * The camera starts moving when the entity is at the edge of the move rectangle.
      */
@@ -65,8 +72,6 @@ public class Camera {
       this.cameraHeight = cameraHeight;
       this.horBorderPixel = horBorderPixel;
       this.vertBorderPixel = vertBorderPixel;
-
-
       this.speed = speed;
       this.world = world;
 
@@ -204,47 +209,44 @@ public class Camera {
      * @see #setSpeed(float)
      */
     public void moveTo(float targetX, float targetY) {
+      final boolean canMoveHorizontal = cameraCanMoveHorizontally();
+      final boolean canMoveVertical = cameraCanMoveVertically();
       if (targetX < 0) targetX = 0;
       if (targetY < 0) targetY = 0;
-      if (!cameraCanMoveHorizontally()) targetX = 0;
-      if (!cameraCanMoveVertically()) targetY = 0;
+      if (!canMoveHorizontal) targetX = 0;
+      if (!canMoveVertical) targetY = 0;
 
       // Make sure the camera fits into the world
-      if (cameraCanMoveHorizontally() && !isWithinWorldBounds(targetX + cameraWidth, 0)) {
+      if (canMoveHorizontal && !isWithinWorldBounds(targetX + cameraWidth, 0)) {
         targetX = world.getWidth() - cameraWidth;
       }
-      if (cameraCanMoveVertically() && !isWithinWorldBounds(0, targetY + cameraHeight)) {
+      if (canMoveVertical && !isWithinWorldBounds(0, targetY + cameraHeight)) {
         targetY = world.getHeight() - cameraHeight;
       }
-      if (cameraCanMoveHorizontally() && !isWithinWorldBounds(targetX, 0)) {
+      if (canMoveHorizontal && !isWithinWorldBounds(targetX, 0)) {
         targetX = 0;
       }
-      if (cameraCanMoveVertically() && !isWithinWorldBounds(0, targetY)) {
+      if (canMoveVertical && !isWithinWorldBounds(0, targetY)) {
         targetY = 0;
       }
 
-      if (speed.x != 0) {
-        if (Math.abs(targetX - cameraX) > speed.x) {
-          if (targetX > cameraX)
+      if (speed.x != 0 && Math.abs(targetX - cameraX) > speed.x) {
+          if (targetX > cameraX) {
             cameraX += speed.x * 2;
-          else
+          } else {
             cameraX -= speed.x * 2;
-        } else
-          cameraX = targetX;
+          }
       } else {
         cameraX = targetX;
       }
 
-      if (speed.y != 0) {
-        if (Math.abs(targetY - cameraY) > speed.y) {
-          if (targetY > cameraY)
+      if (speed.y != 0 && Math.abs(targetY - cameraY) > speed.y) {
+          if (targetY > cameraY) {
             cameraY += speed.y * 2;
-          else
+          } else  {
             cameraY -= speed.y * 2;
-        } else
-          cameraY = targetY;
+          }
       } else {
-        // move camera directly to new position
         cameraY = targetY;
       }
     }
@@ -310,11 +312,11 @@ public class Camera {
       return new Point((int) (x + cameraX), (int) (y + cameraY));
     }
 
-    public float getCameraX() {
+    public float getX() {
       return cameraX;
     }
 
-    public float getCameraY() {
+    public float getY() {
       return cameraY;
     }
 

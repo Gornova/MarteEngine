@@ -5,7 +5,6 @@ import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.tween.Tweener;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -34,7 +33,7 @@ public class FuzzyBat extends Entity {
 		addType(BAT, SOLID);
 		setHitBox(0, 0, 32, 32);
 		speed.x = moveSpeed;
-		currentAnim = "moveRight";
+		setAnimation("moveRight");
 	}
 
 	@Override
@@ -46,10 +45,10 @@ public class FuzzyBat extends Entity {
 
 			if (faceRight && collide(SOLID, x + 1, y) != null) {
 				faceRight = false;
-				currentAnim = "moveLeft";
+				setAnimation("moveLeft");
 			} else if (!faceRight && collide(SOLID, x - 1, y) != null) {
 				faceRight = true;
-				currentAnim = "moveRight";
+				setAnimation("moveRight");
 			}
 			ty = y;
 			Entity player = collide(PLAYER, x, y - 1);

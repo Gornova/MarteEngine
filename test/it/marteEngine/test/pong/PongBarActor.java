@@ -3,7 +3,6 @@ package it.marteEngine.test.pong;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -82,17 +81,10 @@ public class PongBarActor extends Entity {
 	}
 
 	public boolean isUpMoving() {
-		if (currentAnim.equalsIgnoreCase(ME.WALK_UP)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(ME.WALK_UP);
 	}
 
 	public boolean isDownMoving() {
-		if (currentAnim.equalsIgnoreCase(ME.WALK_DOWN)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(ME.WALK_DOWN);
 	}
-
 }

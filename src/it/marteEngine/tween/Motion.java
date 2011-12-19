@@ -1,5 +1,7 @@
 package it.marteEngine.tween;
 
+import org.newdawn.slick.geom.Vector2f;
+
 /**
  * base class for motion tweens
  * 
@@ -33,6 +35,10 @@ public abstract class Motion extends Tween {
 
 	public void setY(float y) {
 		this.y = y;
+	}
+	
+	public Vector2f getPosition() {
+		return new Vector2f(x, y);
 	}
 
 }

@@ -60,17 +60,17 @@
 	<map key="map4" file="map4.tmx" />
 	
 	<!-- Boss Path -->
-	<int key="bossLevel" value="11" />
-	<int key="pathNum" value="5" />
-	<float key="x0" value="300" />
-	<float key="y0" value="70" />	
-	<float key="x1" value="500" />
-	<float key="y1" value="190" />	
-	<float key="x2" value="430" />
-	<float key="y2" value="330" />	
-	<float key="x3" value="180" />
-	<float key="y3" value="330" />	
-	<float key="x4" value="70" />
-	<float key="y4" value="200" />
+	<param key="bossLevel" value="11" />
+	<param key="pathNum" value="5" />
+	<param key="x0" value="300" />
+	<param key="y0" value="70" />
+	<param key="x1" value="500" />
+	<param key="y1" value="190" />
+	<param key="x2" value="430" />
+	<param key="y2" value="330" />
+	<param key="x3" value="180" />
+	<param key="y3" value="330" />
+	<param key="x4" value="70" />
+	<param key="y4" value="200" />
 	
 </resources>

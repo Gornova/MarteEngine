@@ -2,7 +2,6 @@ package it.marteEngine.actor;
 
 import it.marteEngine.ME;
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -85,36 +84,32 @@ public class TopDownActor extends Entity {
 		boolean verticalMovement = true;
 
 		if (check(ME.WALK_UP)) {
-			currentAnim = ME.WALK_UP;
-
+			setAnimation(ME.WALK_UP);
 			moveUp();
 		} else if (check(ME.WALK_DOWN)) {
-			currentAnim = ME.WALK_DOWN;
-
+			setAnimation(ME.WALK_DOWN);
 			moveDown();
 		} else
 			verticalMovement = false;
 
 		if (check(ME.WALK_RIGHT)) {
-			currentAnim = ME.WALK_RIGHT;
-
+			setAnimation(ME.WALK_RIGHT);
 			moveRight();
 		} else if (check(ME.WALK_LEFT)) {
-			currentAnim = ME.WALK_LEFT;
-
+			setAnimation(ME.WALK_LEFT);
 			moveLeft();
 		} else
 			horizontalMovement = false;
 
 		if (!horizontalMovement && !verticalMovement) {
-			if (currentAnim.equalsIgnoreCase(ME.WALK_DOWN)) {
-				currentAnim = STAND_DOWN;
-			} else if (currentAnim.equalsIgnoreCase(ME.WALK_UP)) {
-				currentAnim = STAND_UP;
-			} else if (currentAnim.equalsIgnoreCase(ME.WALK_RIGHT)) {
-				currentAnim = STAND_RIGHT;
-			} else if (currentAnim.equalsIgnoreCase(ME.WALK_LEFT)) {
-				currentAnim = STAND_LEFT;
+			if (isCurrentAnim(ME.WALK_DOWN)) {
+				setAnimation(STAND_DOWN);
+			} else if (isCurrentAnim(ME.WALK_UP)) {
+				setAnimation(STAND_UP);
+			} else if (isCurrentAnim(ME.WALK_RIGHT)) {
+				setAnimation(STAND_RIGHT);
+			} else if (isCurrentAnim(ME.WALK_LEFT)) {
+				setAnimation(STAND_LEFT);
 			}
 		}
 	}
@@ -150,59 +145,34 @@ public class TopDownActor extends Entity {
 	}
 
 	public boolean isRightMoving() {
-		if (currentAnim.equalsIgnoreCase(ME.WALK_RIGHT)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(ME.WALK_RIGHT);
 	}
 
 	public boolean isLeftMoving() {
-		if (currentAnim.equalsIgnoreCase(ME.WALK_LEFT)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(ME.WALK_LEFT);
 	}
 
 	public boolean isUpMoving() {
-		if (currentAnim.equalsIgnoreCase(ME.WALK_UP)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(ME.WALK_UP);
 	}
 
 	public boolean isDownMoving() {
-		if (currentAnim.equalsIgnoreCase(ME.WALK_DOWN)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(ME.WALK_DOWN);
 	}
 
 	public boolean isRightStanding() {
-		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_RIGHT)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(TopDownActor.STAND_RIGHT);
 	}
 
 	public boolean isLeftStanding() {
-		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_LEFT)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(TopDownActor.STAND_LEFT);
 	}
 
 	public boolean isUpStanding() {
-		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_UP)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(TopDownActor.STAND_UP);
 	}
 
 	public boolean isDownStanding() {
-		if (currentAnim.equalsIgnoreCase(TopDownActor.STAND_DOWN)) {
-			return true;
-		}
-		return false;
+		return isCurrentAnim(TopDownActor.STAND_DOWN);
 	}
-
 }

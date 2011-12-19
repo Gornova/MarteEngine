@@ -6,14 +6,13 @@ import it.marteEngine.entity.Entity;
 import it.marteEngine.tween.Ease;
 import it.marteEngine.tween.LinearMotion;
 import it.marteEngine.tween.Tweener;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FuzzyBoss extends Entity {
 
@@ -42,7 +41,7 @@ public class FuzzyBoss extends Entity {
 
 		loadPath();
 
-		setAlarm(MOVE_FIRE_ALARM, 60, false, true);
+		addAlarm(MOVE_FIRE_ALARM, 60, false, true);
 	}
 
 	/**

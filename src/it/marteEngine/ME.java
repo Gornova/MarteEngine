@@ -187,11 +187,11 @@ public class ME {
 
 	public static void muteMusic() {
 		if (playMusic) {
-			ResourceManager.setMusicVolume(1.0f);
-			ResourceManager.setSfxVolume(1.0f);
+			SFX.setMusicVolume(1.0f);
+			SFX.setSfxVolume(1.0f);
 		} else {
-			ResourceManager.setMusicVolume(0f);
-			ResourceManager.setSfxVolume(0f);
+			SFX.setMusicVolume(0f);
+			SFX.setSfxVolume(0f);
 		}
 	}
 

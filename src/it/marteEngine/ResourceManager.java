@@ -1,482 +1,198 @@
 package it.marteEngine;
 
-import java.io.File;
-import java.io.FileInputStream;
+import org.newdawn.slick.*;
+import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.util.ResourceLoader;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.newdawn.slick.AngelCodeFont;
-import org.newdawn.slick.BigImage;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.openal.SoundStore;
-import org.newdawn.slick.tiled.TiledMap;
-import org.newdawn.slick.util.Log;
-import org.newdawn.slick.util.ResourceLoader;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
+/**
+ * A single instance to all resources used in a game.
+ * Each of these resources is mapped to a key eg "SELECT_SOUND" -> Sound object.
+ * If an attempt is made to overwrite an existing resource an IllegalArgumentException is thrown.
+ * An exception is the user defined parameters. These values can be overwritten.
+ */
 public class ResourceManager {
-	private static String baseDir = null;
+    private static final Map<String, Music> songs = new HashMap<String, Music>();
+    private static final Map<String, Sound> sounds = new HashMap<String, Sound>();
+    private static final Map<String, Image> images = new HashMap<String, Image>();
+    private static final Map<String, SpriteSheet> sheets = new HashMap<String, SpriteSheet>();
+    private static final Map<String, Animation> animations = new HashMap<String, Animation>();
+    private static final Map<String, Font> fonts = new HashMap<String, Font>();
+    private static final Map<String, String> parameters = new HashMap<String, String>();
+    private static final Map<String, TiledMap> tiledMaps = new HashMap<String, TiledMap>();
 
-	private static float sfxVolume = 1.0f;
-	private static float musicVolume = 1.0f;
+    private ResourceManager() {
+    }
 
-	private static HashMap<String, Sound> sounds = new HashMap<String, Sound>();
-	private static HashMap<String, Music> songs = new HashMap<String, Music>();
-	private static HashMap<String, Image> images = new HashMap<String, Image>();
-	private static HashMap<String, SpriteSheet> sheets = new HashMap<String, SpriteSheet>();
-	private static HashMap<String, List<SpriteInfo>> spriteInfo = new HashMap<String, List<SpriteInfo>>();
-	private static HashMap<String, AngelCodeFont> fonts = new HashMap<String, AngelCodeFont>();
-	private static HashMap<String, Integer> ints = new HashMap<String, Integer>();
-	private static HashMap<String, Float> floats = new HashMap<String, Float>();
-	private static HashMap<String, String> strings = new HashMap<String, String>();
-	private static HashMap<String, TiledMap> maps = new HashMap<String, TiledMap>();
+    /**
+     * @see it.marteEngine.XMLResourceLoader
+     */
+    public static void loadResources(String ref) throws IOException {
+        loadResources(ResourceLoader.getResourceAsStream(ref));
+    }
 
-	public static void loadResources(String ref) throws IOException {
-		loadResources(ResourceLoader.getResourceAsStream(ref));
-	}
+    /**
+     * @see it.marteEngine.XMLResourceLoader
+     */
+    public static void loadResources(InputStream in) throws IOException {
+        XMLResourceLoader resourceLoader = new XMLResourceLoader();
+        resourceLoader.load(in);
+    }
 
-	public static void loadResources(File ref) throws IOException {
-		loadResources(new FileInputStream(ref));
-	}
+    public static void addImage(String key, Image image) {
+        if (hasImage(key)) {
+            throw new IllegalArgumentException("Image for key " + key + " already exist!");
+        }
+        images.put(key, image);
+    }
 
-	public static void loadResources(InputStream ref) throws IOException {
-		try {
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
-			Document document = builder.parse(ref);
+    public static void addSpriteSheet(String key, SpriteSheet sheet) {
+        if (hasSpriteSheet(key)) {
+            throw new IllegalArgumentException("SpriteSheet for key " + key + " already exist!");
+        }
+        sheets.put(key, sheet);
+    }
 
-			Element element = document.getDocumentElement();
-			if (!element.getNodeName().equals("resources")) {
-				throw new IOException("Not a resource configuration file");
-			}
-			// first look for basedir
-			NodeList list = element.getElementsByTagName("basedir");
-			for (int i = 0; i < list.getLength(); i++) {
-				setBaseDirectory((Element) list.item(i));
-			}
+    public static void addAnimation(String key, Animation anim) {
+        if (hasAnimation(key)) {
+            throw new IllegalArgumentException("Animation for key " + key + " already exist!");
+        }
+        animations.put(key, anim);
+    }
 
-			// load sounds
-			list = element.getElementsByTagName("sound");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadSound((Element) list.item(i));
-			}
-			// load songs
-			list = element.getElementsByTagName("music");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadMusic((Element) list.item(i));
-			}
-			// load images
-			list = element.getElementsByTagName("image");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadImage((Element) list.item(i));
-			}
-			// load sheets
-			list = element.getElementsByTagName("sheet");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadSpriteSheet((Element) list.item(i));
-				// load sprite properties
-				loadSprite((Element) list.item(i));
-			}
+    public static void addFont(String key, Font font) {
+        if (hasFont(key)) {
+            throw new IllegalArgumentException("Font for key " + key + " already exist!");
+        }
+        fonts.put(key, font);
+    }
 
-			// load fonts
-			list = element.getElementsByTagName("angelcodefont");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadAngelCodeFont((Element) list.item(i));
-			}
-			// load maps
-			list = element.getElementsByTagName("map");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadTiledMap((Element) list.item(i));
-			}
-			// load ints
-			list = element.getElementsByTagName("int");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadInt((Element) list.item(i));
-			}
-			// load floats
-			list = element.getElementsByTagName("float");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadFloat((Element) list.item(i));
-			}
-			// load strings
-			list = element.getElementsByTagName("string");
-			for (int i = 0; i < list.getLength(); i++) {
-				loadString((Element) list.item(i));
-			}
-		} catch (IOException e) {
-			Log.error(e);
-			throw e;
-		} catch (Exception e) {
-			Log.error(e);
-			throw new IOException("Unable to load resource configuration file");
-		}
-	}
+    public static void addMusic(String key, Music music) {
+        if (hasMusic(key)) {
+            throw new IllegalArgumentException("Music for key " + key + " already exist!");
+        }
+        songs.put(key, music);
+    }
 
-	private static void loadSprite(Element sprsheet) {
-		String key = sprsheet.getAttribute("key");
-		NodeList sprites = sprsheet.getElementsByTagName("sprite");
-		if (sprites != null) {
-			for (int i = 0; i < sprites.getLength(); i++) {
-				loadSpriteInformation((Element) sprites.item(i), key);
-			}
-		}
-	}
+    public static void addSound(String key, Sound sound) {
+        if (hasSound(key)) {
+            throw new IllegalArgumentException("Sound for key " + key + " already exist!");
+        }
+        sounds.put(key, sound);
+    }
 
-	private static void loadSpriteInformation(Element sprite,
-			String spriteSheetKey) {
-		String id = sprite.getAttribute("id");
-		String type = sprite.getAttribute("type");
+    public static void setParameter(String key, String value) {
+        parameters.put(key, value);
+    }
 
-		List<SpriteInfo> infos = spriteInfo.get(spriteSheetKey);
-		if (infos == null) {
-			infos = new ArrayList<SpriteInfo>();
-		}
-		infos.add(new SpriteInfo(id, type));
-		Collections.sort(infos);
-		spriteInfo.put(spriteSheetKey, infos);
-	}
+    public static void addTiledMap(String key, TiledMap map) {
+        if (hasTiledMap(key)) {
+            throw new IllegalArgumentException("TiledMap for key " + key + " already exist!");
+        }
+        tiledMaps.put(key, map);
+    }
 
-	public static void loadTiledMap(Element map) throws SlickException {
-		String key = map.getAttribute("key");
-		String file = map.getAttribute("file");
-		Log.debug("Trying to load tiled map file '" + file + "' at key '" + key
-				+ "'...");
-		TiledMap tiledMap = new TiledMap(baseDir + file);
-		maps.put(key, tiledMap);
-	}
+    public static boolean hasImage(String key) {
+        return images.containsKey(key);
+    }
 
-	private static void setBaseDirectory(Element basedir) throws SlickException {
-		String dir = basedir.getAttribute("path");
-		setBaseDirectory(dir);
-	}
+    public static boolean hasSpriteSheet(String key) {
+        return sheets.containsKey(key);
+    }
 
-	public static void setBaseDirectory(String baseDirectory)
-			throws SlickException {
-		Log.debug("Setting ResourceManager base directory to '" + baseDirectory
-				+ "'");
-		if (baseDirectory == null || baseDirectory.isEmpty())
-			throw new SlickException("BaseDirectory must not be null or empty!");
-		baseDir = baseDirectory;
-		if (!baseDir.endsWith("/"))
-			baseDir = baseDir + "/";
-	}
+    public static boolean hasAnimation(String key) {
+        return animations.containsKey(key);
+    }
 
-	private static void loadMusic(Element music) throws SlickException {
-		String key = music.getAttribute("key");
-		String file = music.getAttribute("file");
-		loadMusic(key, file);
-	}
+    public static boolean hasFont(String key) {
+        return fonts.containsKey(key);
+    }
 
-	public static void loadMusic(String key, String file) throws SlickException {
-		Log.debug("Trying to load music file '" + file + "' at key '" + key
-				+ "'...");
-		if (songs.get(key) != null)
-			throw new SlickException("Music for key " + key
-					+ " already existing!");
-		if (baseDir != null && !file.startsWith(baseDir))
-			file = baseDir + file;
-		Music song = new Music(file);
-		songs.put(key, song);
-	}
+    public static boolean hasMusic(String key) {
+        return songs.containsKey(key);
+    }
 
-	public static Music getMusic(String key) {
-		Music music = songs.get(key);
-		if (music == null)
-			Log.error("No music for key " + key + " found!");
-		return music;
-	}
+    public static boolean hasSound(String key) {
+        return sounds.containsKey(key);
+    }
 
-	private static void loadSound(Element snd) throws SlickException {
-		String key = snd.getAttribute("key");
-		String file = snd.getAttribute("file");
-		loadSound(key, file);
-	}
+    public static boolean hasParameter(String key) {
+        return parameters.containsKey(key);
+    }
 
-	public static void loadSound(String key, String file) throws SlickException {
-		Log.debug("Trying to load sound file '" + file + "' at key '" + key
-				+ "'...");
-		if (sounds.get(key) != null)
-			throw new SlickException("Sound for key " + key
-					+ " already existing!");
-		if (baseDir != null && !file.startsWith(baseDir))
-			file = baseDir + file;
-		Sound sound = new Sound(file);
-		sounds.put(key, sound);
-	}
+    public static boolean hasTiledMap(String key) {
+        return tiledMaps.containsKey(key);
+    }
 
-	public static Sound getSound(String key) {
-		Sound sound = sounds.get(key);
-		if (sound == null)
-			Log.error("No sound for key " + key + " found!");
-		return sound;
-	}
+    public static Image getImage(String key) {
+        Image image = images.get(key);
+        if (image == null)
+            throw new IllegalArgumentException("No image for key " + key + " " + images.keySet());
+        return image;
+    }
 
-	private static void loadImage(Element img) throws SlickException {
-		String key = img.getAttribute("key");
-		String file = img.getAttribute("file");
-		String transColor = img.getAttribute("transparentColor");
-		Color transparentColor = null;
-		if (transColor != null && !transColor.isEmpty())
-			transparentColor = Color.decode(transColor);
-		else
-			transColor = null;
-		loadImage(key, file, transparentColor);
-	}
+    public static SpriteSheet getSpriteSheet(String key) {
+        SpriteSheet spriteSheet = sheets.get(key);
+        if (spriteSheet == null)
+            throw new IllegalArgumentException("No spriteSheet for key " + key + " " + sheets.keySet());
+        return spriteSheet;
+    }
 
-	public static void loadImage(String key, String file, Color transparentColor)
-			throws SlickException {
-		Log.debug("Trying to load image file '" + file + "' at key '" + key
-				+ "'...");
-		if (images.get(key) != null)
-			throw new SlickException("Image for key " + key
-					+ " already existing!");
-		if (baseDir != null && !file.startsWith(baseDir))
-			file = baseDir + file;
-		try {
-			Image image;
-			if (transparentColor != null)
-				image = new Image(file, transparentColor);
-			else
-				image = new Image(file);
-			images.put(key, image);
-		} catch (Exception e) {
-			// for textures larger than 512x512 old cards throws error, try to
-			// use BigImage instead
-			Log.info("Texture too big for this hardware, try to use BigImage.. ignoring transparent color!");
-			BigImage image;
-			image = new BigImage(file);
-			images.put(key, image);
-		}
-	}
+    public static Animation getAnimation(String key) {
+        Animation anim = animations.get(key);
+        if (anim == null)
+            throw new IllegalArgumentException("No Animation for key " + key + " " + animations.keySet());
+        return anim;
+    }
 
-	public static Image getImage(String key) {
-		Image image = images.get(key);
-		if (image == null)
-			Log.error("No image for key " + key + " found!");
-		return image;
-	}
+    public static Font getFont(String key) {
+        Font font = fonts.get(key);
+        if (font == null)
+            throw new IllegalArgumentException("No font for key " + key + " " + fonts.keySet());
+        return font;
+    }
 
-	private static void loadSpriteSheet(Element sprsheet) throws SlickException {
-		String key = sprsheet.getAttribute("key");
-		String file = sprsheet.getAttribute("file");
-		int width = Integer.parseInt(sprsheet.getAttribute("width"));
-		int height = Integer.parseInt(sprsheet.getAttribute("height"));
-		String transColor = sprsheet.getAttribute("transparentColor");
-		Color transparentColor = null;
-		if (transColor != null && !transColor.isEmpty())
-			transparentColor = Color.decode(transColor);
-		else
-			transColor = null;
-		loadSpriteSheet(key, file, width, height, transparentColor);
-	}
+    public static Music getMusic(String key) {
+        Music music = songs.get(key);
+        if (music == null)
+            throw new IllegalArgumentException("No music for key " + key + " " + songs.keySet());
+        return music;
+    }
 
-	public static void loadSpriteSheet(String key, String file, int width,
-			int height, Color transparentColor) throws SlickException {
-		Log.debug("Trying to load spritesheet file '"
-				+ file
-				+ "' with width "
-				+ width
-				+ " and height "
-				+ height
-				+ ((transparentColor == null) ? " without transparent color"
-						: " with transparent color '"
-								+ transparentColor.toString() + "'")
-				+ " at key '" + key + "'...");
-		if (sheets.get(key) != null)
-			throw new SlickException("SpriteSheet for key " + key
-					+ " already existing!");
-		SpriteSheet spriteSheet = null;
-		if (baseDir != null && !file.startsWith(baseDir))
-			file = baseDir + file;
-		if (transparentColor == null)
-			spriteSheet = new SpriteSheet(file, width, height);
-		else
-			spriteSheet = new SpriteSheet(file, width, height, transparentColor);
-		sheets.put(key, spriteSheet);
-	}
+    public static Sound getSound(String key) {
+        Sound sound = sounds.get(key);
+        if (sound == null)
+            throw new IllegalArgumentException("No sound for key " + key + " " + sounds.keySet());
+        return sound;
+    }
 
-	public static SpriteSheet getSpriteSheet(String key) {
-		SpriteSheet spriteSheet = sheets.get(key);
-		if (spriteSheet == null)
-			Log.error("No SpriteSheet for key " + key + " found!");
-		return spriteSheet;
-	}
+    public static int getInt(String key) {
+        return Integer.parseInt(getParameter(key));
+    }
 
-	public static HashMap<String, SpriteSheet> getSpriteSheets() {
-		return sheets;
-	}
+    public static double getDouble(String key) {
+        return Double.parseDouble(getParameter(key));
+    }
 
-	private static void loadAngelCodeFont(Element fnt) throws SlickException {
-		String key = fnt.getAttribute("key");
-		String fntfile = fnt.getAttribute("fontFile");
-		String imagefile = fnt.getAttribute("imageFile");
-		loadAngelCodeFont(key, fntfile, imagefile);
-	}
+    public static float getFloat(String key) {
+        return Float.parseFloat(getParameter(key));
+    }
 
-	public static void loadAngelCodeFont(String key, String fontFile,
-			String imageFile) throws SlickException {
-		Log.debug("Trying to load Angelcode font file '" + fontFile
-				+ "' and imagefile '" + imageFile + "' at key '" + key + "'...");
-		if (fonts.get(key) != null)
-			throw new SlickException("AngelCodeFont for key " + key
-					+ " already existing!");
-		// load AngelCodeFonts with caching enabled to speed up rendering
-		if (baseDir != null && !fontFile.startsWith(baseDir)) {
-			fontFile = baseDir + fontFile;
-			imageFile = baseDir + imageFile;
-		}
-		AngelCodeFont font = new AngelCodeFont(fontFile, imageFile, true);
-		fonts.put(key, font);
-	}
+    public static String getParameter(String key) {
+        String val = parameters.get(key);
+        if (val == null)
+            throw new IllegalArgumentException("No parameter for key " + key + " " + parameters.keySet());
+        return val;
+    }
 
-	public static AngelCodeFont getAngelCodeFont(String key) {
-		AngelCodeFont font = fonts.get(key);
-		if (font == null)
-			Log.error("No AngelCodeFont for key " + key + " found!");
-		return font;
-	}
-
-	private static void loadInt(Element intval) throws SlickException {
-		String key = intval.getAttribute("key");
-		String value = intval.getAttribute("value");
-		int val = Integer.parseInt(value);
-		setInt(key, val);
-	}
-
-	public static void setInt(String key, int value) {
-		ints.put(key, value);
-	}
-
-	public static int getInt(String key) {
-		Integer intval = ints.get(key);
-		if (intval == null)
-			Log.error("No int for key " + key + " found!");
-		return intval;
-	}
-
-	private static void loadFloat(Element floatval) throws SlickException {
-		String key = floatval.getAttribute("key");
-		String value = floatval.getAttribute("value");
-		float val = Float.parseFloat(value);
-		setFloat(key, val);
-	}
-
-	public static void setFloat(String key, float value) {
-		floats.put(key, value);
-	}
-
-	public static float getFloat(String key) {
-		Float floatval = floats.get(key);
-		if (floatval == null)
-			Log.error("No float for key " + key + " found!");
-		return floatval;
-	}
-
-	private static void loadString(Element stringval) throws SlickException {
-		String key = stringval.getAttribute("key");
-		String value = stringval.getAttribute("value");
-		setString(key, value);
-	}
-
-	public static void setString(String key, String value) {
-		strings.put(key, value);
-	}
-
-	public static String getString(String key) {
-		String val = strings.get(key);
-		if (val == null)
-			Log.error("No string for key" + key + " found!");
-		return val;
-	}
-
-	public static TiledMap getMap(String key) {
-		TiledMap map = maps.get(key);
-		if (map == null)
-			Log.error("No map for key " + key + " found!");
-		return map;
-	}
-
-	/**
-	 * set the volume of all sound effects to given volume
-	 * 
-	 * @param sfxVolume
-	 *            a value between 0 and 1
-	 */
-	public static void setSfxVolume(float volume) {
-		sfxVolume = volume;
-		SoundStore.get().setSoundVolume(sfxVolume);
-	}
-
-	/**
-	 * set the volume of all songs to given volume
-	 * 
-	 * @param musicVolume
-	 *            a value between 0 and 1
-	 */
-	public static void setMusicVolume(float volume) {
-		musicVolume = volume;
-		SoundStore.get().setMusicVolume(musicVolume);
-	}
-
-	public static float getMusicVolume() {
-		return musicVolume;
-	}
-
-	public static float getSfxVolume() {
-		return sfxVolume;
-	}
-
-	public static List<SpriteInfo> getSpriteInfo(String spriteSheet) {
-		List<SpriteInfo> infos = spriteInfo.get(spriteSheet);
-		if (infos == null) {
-			Log.error("No sprite info found for spritesheet with key "
-					+ spriteSheet);
-		}
-		return infos;
-	}
-
-	public static SpriteInfo getSpriteInfo(String spriteSheet, String id) {
-		List<SpriteInfo> infos = getSpriteInfo(spriteSheet);
-		if (infos != null) {
-			for (SpriteInfo spriteInfo : infos) {
-				if (spriteInfo.getId().equalsIgnoreCase(id)) {
-					return spriteInfo;
-				}
-			}
-		}
-		return null;
-	}
-
-	public static ArrayList<Image> getImagesAsListWithoutKeys(List<String> keys) {
-		ArrayList<Image> list = new ArrayList<Image>();
-		for (String key : images.keySet()) {
-			if (key != null) {
-				boolean found = false;
-				for (String without : keys) {
-					if (key.contains(without)) {
-						found = true;
-					}
-				}
-				if (!found) {
-					list.add(images.get(key));
-				}
-			}
-		}
-		return list;
-	}
-
+    public static TiledMap getMap(String key) {
+        TiledMap map = tiledMaps.get(key);
+        if (map == null)
+            throw new IllegalArgumentException("No tilemap for key " + key + " " + tiledMaps.keySet());
+        return map;
+    }
 }

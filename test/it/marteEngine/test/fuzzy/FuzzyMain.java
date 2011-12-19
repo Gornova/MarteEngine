@@ -5,11 +5,7 @@ import it.marteEngine.ResourceManager;
 
 import java.io.IOException;
 
-import org.newdawn.slick.AngelCodeFont;
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
@@ -27,7 +23,7 @@ public class FuzzyMain extends StateBasedGame {
 
 	private static boolean ressourcesInited;
 
-	public static AngelCodeFont font;
+	public static Font font;
 	public static Integer gotoLevel = -1;
 
 	public FuzzyMain() {
@@ -38,7 +34,7 @@ public class FuzzyMain extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		initRessources();
 
-		font = ResourceManager.getAngelCodeFont("font");
+		font = ResourceManager.getFont("font");
 
 		FuzzyGameWorld gameState = new FuzzyGameWorld(GAME_STATE);
 		FuzzyMenuWorld menuState = new FuzzyMenuWorld(MENU_STATE);

@@ -7,119 +7,253 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.awt.Point;
+
 /**
- * 
- * for now let's just assume that the camera covers the whole screen, starting
- * at 0,0 so no clipping area necessary
- * 
+ * A Camera is a device through which the player views the world.
+ * For now let's just assume that the camera covers the whole screen, starting
+ * at 0,0 so no clipping area is necessary.
  */
 public class Camera {
+	private float cameraX;
+	private float cameraY;
+	private final float cameraWidth, cameraHeight;
+	private final Rectangle visibleRect, moveRect;
+	private final int horBorderPixel, vertBorderPixel;
+	private Vector2f speed;
+	private World world;
+	private Entity entityToFollow;
 
-	private World myWorld;
-	/** coordinates of the top left corner of the camera area in the world */
-	public float cameraX;
-	public float cameraY;
-	/** width and height of the render area for this camera */
-	private float renderWidth;
-	private float renderHeight;
-	private Vector2f maxSpeed = null;
-	private int horBorderPixel = 0;
-	private int vertBorderPixel = 0;
-	private Rectangle visibleRect = null;
-	private Rectangle moveRect = null;
-
-	private Entity follow;
-
-	public Camera(World world, Entity toFollow, int width, int height) {
-		this(world, toFollow, width, height, -1, -1, null);
+	/**
+	 * Create a camera without smooth movement. Instead the camera will
+	 * jump in 1 frame towards the target coordinates.
+	 * Call {@link #setSpeed} to allow smooth movement.
+	 */
+	public Camera(World world, int cameraWidth, int cameraHeight) {
+		this(world, cameraWidth, cameraHeight, -1, -1, new Vector2f(0, 0));
 	}
 
-	public Camera(World world, Entity toFollow, int width, int height,
-			int horBorderPixel, int vertBorderPixel, Vector2f maxSpeed) {
+	/**
+	 * Create a camera with smooth movement.
+	 */
+	public Camera(World world, int cameraWidth, int cameraHeight, Vector2f speed) {
+		this(world, cameraWidth, cameraHeight, -1, -1, speed);
+	}
+
+	/**
+	 * Create a camera without smooth movement. Instead the camera will
+	 * jump in 1 frame towards the entity coordinates.
+	 * Call {@link #setSpeed} to allow smooth movement.
+	 */
+	public Camera(World world, Entity entity, int cameraWidth, int cameraHeight) {
+		this(world, entity, 5, 5, cameraWidth, cameraHeight, new Vector2f(0, 0));
+	}
+
+	/**
+	 * Create a camera that keeps on following an entity.
+	 * The camera starts to scroll when the entity is at the edge of the camera.
+	 */
+	public Camera(World world, Entity entity, int cameraWidth,
+				  int cameraHeight, Vector2f speed) {
+		this(world, entity, 5, 5, cameraWidth, cameraHeight, speed);
+	}
+
+	/**
+	 * Create a camera that follows an entity.
+	 * <p/>
+	 * The horBorderPixel and vertBorderPixel define a move region around the entity.
+	 * The camera does not move when the entity is within the move rectangle.
+	 * The camera starts moving when the entity is at the edge of the move rectangle.
+	 */
+	public Camera(World world, Entity entity, int cameraWidth,
+				  int cameraHeight, int horBorderPixel, int vertBorderPixel,
+				  Vector2f speed) {
+		this(world, cameraWidth, cameraHeight, horBorderPixel, vertBorderPixel, speed);
+		follow(entity);
+	}
+
+	public Camera(World world, int cameraWidth, int cameraHeight, int horBorderPixel, int vertBorderPixel, Vector2f speed) {
 		this.cameraX = 0;
 		this.cameraY = 0;
-		this.renderWidth = width;
-		this.renderHeight = height;
-		this.follow = toFollow;
+		this.cameraWidth = cameraWidth;
+		this.cameraHeight = cameraHeight;
 		this.horBorderPixel = horBorderPixel;
 		this.vertBorderPixel = vertBorderPixel;
-		this.maxSpeed = maxSpeed;
-		if (toFollow != null) {
-			// on startup position camera that toFollow is in the center of the
-			// screen
-			this.cameraX = follow.x - (this.renderWidth / 2);
-			this.cameraY = follow.y - (this.renderHeight / 2);
+		this.speed = speed;
+		this.world = world;
+
+		if (speed == null) {
+			throw new NullPointerException("speed cannot be null");
 		}
-		this.myWorld = world;
-		this.visibleRect = new Rectangle(cameraX - horBorderPixel, cameraY
-				- vertBorderPixel, renderWidth + horBorderPixel, renderHeight
-				+ vertBorderPixel);
-		this.moveRect = new Rectangle(cameraX - horBorderPixel, cameraY
-				- vertBorderPixel, renderWidth + horBorderPixel, renderHeight
-				+ vertBorderPixel);
-		setCamera();
+
+		checkCameraPosition();
+		visibleRect = new Rectangle(cameraX - horBorderPixel, cameraY
+			- vertBorderPixel, cameraWidth + horBorderPixel, cameraHeight
+			+ vertBorderPixel);
+		moveRect = new Rectangle(cameraX + horBorderPixel / 2, cameraY
+			+ vertBorderPixel / 2, cameraWidth - horBorderPixel,
+			cameraHeight - vertBorderPixel);
 	}
 
 	public void update(GameContainer container, int delta)
-			throws SlickException {
-		setCamera();
+		throws SlickException {
+		if (entityToFollow != null && !isEntityWithinMoveRect()) {
+			followEntity();
+		}
+		checkCameraPosition();
+		calculateRectangles();
 	}
 
-	private void setCamera() {
-		// position camera so that follow is on the center of the screen
+	private boolean isEntityWithinMoveRect() {
+		return moveRect.contains(entityToFollow.x + entityToFollow.width / 2,
+			entityToFollow.y + entityToFollow.height / 2);
+	}
 
-		if (follow != null
-				&& !moveRect.contains(follow.x + follow.width / 2, follow.y
-						+ follow.height / 2)) {
-			float targetCX = follow.x - (this.renderWidth / 2);
-			float targetCY = follow.y - (this.renderHeight / 2);
-			// now smoothly move camera on position cameraX, cameraY to position
-			// targetCX, targetCY, using
-			// maxSpeed
-			if (maxSpeed != null) {
-				if (Math.abs(targetCX - cameraX) > maxSpeed.x) {
-					if (targetCX > cameraX)
-						cameraX += maxSpeed.x * 2;
-					else
-						cameraX -= maxSpeed.x * 2;
-				} else
-					cameraX = targetCX;
-				if (Math.abs(targetCY - cameraY) > maxSpeed.y) {
-					if (targetCY > cameraY)
-						cameraY += maxSpeed.y * 2;
-					else
-						cameraY -= maxSpeed.y * 2;
-				} else
-					cameraY = targetCY;
-			} else {
-				// move camera directly to new position
-				cameraX = targetCX;
-				cameraY = targetCY;
-			}
-			// recalculate worldX and worldY based on translateX and translateY
-		}
-		// Log.debug("setCamera(): cameraX = " + cameraX + ", cameraY = " +
-		// cameraY + ", follow.x = " + follow.x + ", follow.y = " + follow.y);
-		// do some border checking. we want to stay inside the world with our
-		// container
-		if (cameraX < 0)
+	private void followEntity() {
+		float centerX = entityToFollow.x < 0 ? 0 : entityToFollow.x
+			- (cameraWidth / 2);
+		float centerY = entityToFollow.y < 0 ? 0 : entityToFollow.y
+			- (cameraHeight / 2);
+		moveTo(centerX, centerY);
+	}
+
+	/**
+	 * Check the camera coordinates. Make sure that the camera
+	 * remains inside the world.
+	 */
+	private void checkCameraPosition() {
+		if (cameraX < 0) {
 			cameraX = 0;
-		if (cameraX + renderWidth > myWorld.width)
-			cameraX = myWorld.width - renderWidth + 1;
-		if (cameraY < 0)
+		}
+		if (cameraX + cameraWidth > world.width && canMoveHorizontally()) {
+			cameraX = world.width - cameraWidth + 1;
+		}
+		if (cameraY < 0) {
 			cameraY = 0;
-		if (cameraY + renderHeight > myWorld.height)
-			cameraY = myWorld.height - renderHeight + 1;
-		// Log.debug("setCamera2(): cameraX = " + cameraX + ", cameraY = " +
-		// cameraY + ", follow.x = " + follow.x + ", follow.y = " + follow.y);
-		// also calculate rendering rect to improve speed in contains() method
-		// later on for rendering
+		}
+		if (cameraY + cameraHeight > world.height && canMoveVertically()) {
+			cameraY = world.height - cameraHeight + 1;
+		}
+	}
+
+	/**
+	 * Calculate rendering rect to improve speed in contains() method
+	 * later on for rendering
+	 */
+	private void calculateRectangles() {
 		visibleRect.setBounds(cameraX - horBorderPixel, cameraY
-				- vertBorderPixel, renderWidth + horBorderPixel, renderHeight
-				+ vertBorderPixel);
-		moveRect.setBounds(cameraX + horBorderPixel / 2 - follow.speed.x,
-				cameraY + vertBorderPixel / 2, renderWidth - horBorderPixel
-						+ follow.speed.x, renderHeight - vertBorderPixel);
+			- vertBorderPixel, cameraWidth + horBorderPixel, cameraHeight
+			+ vertBorderPixel);
+
+		float entitySpeedX = 0;
+		if (entityToFollow != null) {
+			entitySpeedX = entityToFollow.speed.x;
+		}
+		moveRect.setBounds(cameraX + horBorderPixel / 2 - entitySpeedX, cameraY
+			+ vertBorderPixel / 2, cameraWidth - horBorderPixel
+			+ entitySpeedX, cameraHeight - vertBorderPixel);
+	}
+
+	/**
+	 * Move the camera with the x and y offset.
+	 * Using the speed of the camera. See {@link #setSpeed}
+	 * This is the same as calling following method
+	 * moveTo(camera.getX() + xOffset, camera.getY() + yOffset)
+	 *
+	 * @param xOffset The amount of pixels the camera should move on the x axis
+	 * @param yOffset The amount of pixels the camera should move on the y axis
+	 */
+	public void scroll(float xOffset, float yOffset) {
+		moveTo(cameraX + xOffset, cameraY + yOffset);
+	}
+
+	/**
+	 * Position the camera so that it keeps on following the entity on the screen
+	 *
+	 * @param entity The entity to follow.
+	 */
+	public void follow(Entity entity) {
+		center(entity.x, entity.y);
+		checkCameraPosition();
+		entityToFollow = entity;
+	}
+
+	public void stopFollowingEntity() {
+		entityToFollow = null;
+	}
+
+	/**
+	 * Move the camera to the given x, y coordinates.
+	 * So that the x, y is in the center of the camera.
+	 */
+	public void center(float x, float y) {
+		float cameraX = x - (cameraWidth / 2);
+		float cameraY = y - (cameraHeight / 2);
+		moveTo(cameraX, cameraY);
+	}
+
+	/**
+	 * Move the camera smoothly to the target position.
+	 * Using the speed of the camera. If no speed is set the camera
+	 * will moves directly to the targetX, targetY position.
+	 *
+	 * @param targetX The x coordinate the camera should move to
+	 * @param targetY The y coordinate the camera should move to
+	 * @see #setSpeed(float)
+	 */
+	public void moveTo(float targetX, float targetY) {
+		final boolean canMoveHorizontal = canMoveHorizontally();
+		final boolean canMoveVertical = canMoveVertically();
+		if (targetX < 0)
+			targetX = 0;
+		if (targetY < 0)
+			targetY = 0;
+		if (!canMoveHorizontal)
+			targetX = 0;
+		if (!canMoveVertical)
+			targetY = 0;
+
+		// Make sure the camera fits into the world
+		if (canMoveHorizontal && !world.isWithinBounds(targetX + cameraWidth, 0)) {
+			targetX = world.getWidth() - cameraWidth;
+		}
+		if (canMoveVertical && !world.isWithinBounds(0, targetY + cameraHeight)) {
+			targetY = world.getHeight() - cameraHeight;
+		}
+		if (canMoveHorizontal && !world.isWithinBounds(targetX, 0)) {
+			targetX = 0;
+		}
+		if (canMoveVertical && !world.isWithinBounds(0, targetY)) {
+			targetY = 0;
+		}
+
+		if (speed.x != 0 && Math.abs(targetX - cameraX) > speed.x) {
+			if (targetX > cameraX) {
+				cameraX += speed.x * 2;
+			} else {
+				cameraX -= speed.x * 2;
+			}
+		} else {
+			cameraX = targetX;
+		}
+
+		if (speed.y != 0 && Math.abs(targetY - cameraY) > speed.y) {
+			if (targetY > cameraY) {
+				cameraY += speed.y * 2;
+			} else {
+				cameraY -= speed.y * 2;
+			}
+		} else {
+			cameraY = targetY;
+		}
+	}
+
+	private boolean canMoveVertically() {
+		return cameraHeight < world.height;
+	}
+
+	private boolean canMoveHorizontally() {
+		return cameraWidth < world.width;
 	}
 
 	public boolean contains(Entity e) {
@@ -127,20 +261,38 @@ public class Camera {
 		return visibleRect.intersects(entity);
 	}
 
-	public World getMyWorld() {
-		return myWorld;
+	public void setWorld(World world) {
+		this.world = world;
 	}
 
-	public void setMyWorld(World myWorld) {
-		this.myWorld = myWorld;
+	/**
+	 * Set the horizontal and vertical move speed of the camera
+	 */
+	public void setSpeed(float newValue) {
+		setHorizontalSpeed(newValue);
+		setVerticalSpeed(newValue);
 	}
 
-	public Entity getFollow() {
-		return follow;
+	/**
+	 * Set the horizontal move speed of the camera
+	 */
+	public void setHorizontalSpeed(float newValue) {
+		if (newValue < 0) {
+			throw new IllegalArgumentException(
+				"Move speed must be a positive number");
+		}
+		speed.x = newValue;
 	}
 
-	public void setFollow(Entity follow) {
-		this.follow = follow;
+	/**
+	 * Set the Vertical move speed of the camera
+	 */
+	public void setVerticalSpeed(float newValue) {
+		if (newValue < 0) {
+			throw new IllegalArgumentException(
+				"Move speed must be a positive number");
+		}
+		speed.y = newValue;
 	}
 
 	public Rectangle getVisibleRect() {
@@ -151,4 +303,23 @@ public class Camera {
 		return moveRect;
 	}
 
+	public Point screenToWorldCoordinate(float x, float y) {
+		return new Point((int) (x + cameraX), (int) (y + cameraY));
+	}
+
+	public int getX() {
+		return (int) cameraX;
+	}
+
+	public int getY() {
+		return (int) cameraY;
+	}
+
+	public float getWidth() {
+		return cameraWidth;
+	}
+
+	public float getHeight() {
+		return cameraHeight;
+	}
 }

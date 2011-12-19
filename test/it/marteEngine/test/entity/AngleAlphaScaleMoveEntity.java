@@ -2,7 +2,7 @@ package it.marteEngine.test.entity;
 
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
-
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -28,9 +28,10 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 		super(x, y);
 
 		// load and get the image that we are showing
-		if (ResourceManager.getImage("ship") == null) {
+		if (!ResourceManager.hasImage("ship")) {
 			try {
-				ResourceManager.loadImage("ship", "data/triangle.png", null);
+        Image image = new Image("data/triangle.png");
+        ResourceManager.addImage("ship", image);
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -43,15 +44,15 @@ public class AngleAlphaScaleMoveEntity extends Entity {
 			// set an alarm named "rotateMe" that is triggered every 2 update
 			// calls, starts right now
 			// and runs for ever
-			this.setAlarm("rotateMe", 2, false, true);
+			addAlarm("rotateMe", 2, false, true);
 		}
 
 		if (changeScale) {
-			this.setAlarm("scaleMe", 10, false, true);
+			addAlarm("scaleMe", 10, false, true);
 		}
 
 		if (changeAlpha) {
-			this.setAlarm("alphaMe", 5, false, true);
+			addAlarm("alphaMe", 5, false, true);
 		}
 		this.setCentered(true);
 	}

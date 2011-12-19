@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 //TODO modify hitbox coordinates to a real shape without changing method interface.
 //TODO a shape can be rotated and scaled when the entity is rotated and scaled.
@@ -84,8 +82,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	private Color color = new Color(Color.white);
 
-	private Hashtable<String, Alarm> alarms = new Hashtable<String, Alarm>();
-	private Hashtable<String, Alarm> addableAlarms = new Hashtable<String, Alarm>();
+	private AlarmContainer alarms;
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
@@ -131,6 +128,7 @@ public abstract class Entity implements Comparable<Entity> {
 		this.startx = x;
 		this.starty = y;
 		stateManager = new StateManager();
+		this.alarms = new AlarmContainer(this);
 	}
 
 	/**
@@ -720,67 +718,48 @@ public abstract class Entity implements Comparable<Entity> {
 	/***************** some methods to deal with alarms ************************************/
 
 	/**
-	 * Create an Alarm with given parameters and add to current Entity
+	 * Add an alarm with the given parameters and add it to current Entity
 	 */
-	public Alarm setAlarm(String name, int triggerTime, boolean oneShot,
+	public void addAlarm(String alarmName, int triggerTime, boolean oneShot) {
+		addAlarm(alarmName, triggerTime, oneShot, true);
+	}
+
+	/**
+	 * Add an alarm with given parameters and add it to current Entity
+	 */
+	public void addAlarm(String alarmName, int triggerTime, boolean oneShot,
 			boolean startNow) {
-		Alarm alarm = new Alarm(name, triggerTime, oneShot);
-
-		if (startNow)
-			alarm.start();
-		addableAlarms.put(name, alarm);
-		return alarm;
+		alarms.addAlarm(alarmName, triggerTime, oneShot, startNow);
 	}
 
-	public boolean restartAlarm(String name) {
-		Alarm alarm = alarms.get(name);
-		if (alarm != null) {
-			alarm.start();
-			return true;
-		}
-		return false;
+	public boolean restartAlarm(String alarmName) {
+		return alarms.restartAlarm(alarmName);
 	}
 
-	public boolean pauseAlarm(String name) {
-		Alarm alarm = alarms.get(name);
-		if (alarm != null) {
-			alarm.pause();
-			return true;
-		}
-		return false;
-
+	public boolean pauseAlarm(String alarmName) {
+		return alarms.pauseAlarm(alarmName);
 	}
 
-	public boolean resumeAlarm(String name) {
-		Alarm alarm = alarms.get(name);
-		if (alarm != null) {
-			alarm.resume();
-			return true;
-		}
-		return false;
+	public boolean resumeAlarm(String alarmName) {
+		return alarms.resumeAlarm(alarmName);
 	}
 
-	public boolean destroyAlarm(String name) {
-		Alarm alarm = alarms.get(name);
-		if (alarm != null) {
-			alarm.setDead(true);
-			return true;
-		}
-		return false;
+	public boolean destroyAlarm(String alarmName) {
+		return alarms.destroyAlarm(alarmName);
 	}
 
-	public boolean existAlarm(String name) {
-		return alarms.get(name) == null ? false : true;
+	public boolean hasAlarm(String alarmName) {
+		return alarms.hasAlarm(alarmName);
 	}
 
 	/**
 	 * overwrite this method if your entity shall react on alarms that reached
 	 * their triggerTime
 	 * 
-	 * @param name
+	 * @param alarmName
 	 *            the name of the alarm that triggered right now
 	 */
-	public void alarmTriggered(String name) {
+	public void alarmTriggered(String alarmName) {
 		// this method needs to be overwritten to deal with alarms
 	}
 
@@ -789,45 +768,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * by your game code. Don't touch this method ;-) Consider it private!
 	 */
 	public void updateAlarms(int delta) {
-		ArrayList<String> deadAlarms = null;
-		Set<String> alarmNames = alarms.keySet();
-		if (!alarmNames.isEmpty()) {
-			for (String alarmName : alarmNames) {
-				Alarm alarm = alarms.get(alarmName);
-				if (alarm.isActive()) {
-					boolean retval = alarm.update(delta);
-					if (retval) {
-						alarmTriggered(alarm.getName());
-						if (alarm.isOneShotAlaram()) {
-							alarm.setActive(false);
-						} else {
-							alarm.start();
-						}
-					}
-				}
-				if (alarm.isDead()) {
-					if (deadAlarms == null)
-						deadAlarms = new ArrayList<String>();
-					deadAlarms.add(alarmName);
-				}
-			}
-			if (deadAlarms != null) {
-				for (String deadAlarm : deadAlarms) {
-					alarms.remove(deadAlarm);
-				}
-			}
-		}
-		if (addableAlarms != null && !addableAlarms.isEmpty()) {
-
-			Iterator<String> itr = addableAlarms.keySet().iterator();
-			while (itr.hasNext()) {
-				String name = itr.next();
-				alarms.put(name, addableAlarms.get(name));
-			}
-		}
-		if (!addableAlarms.isEmpty()) {
-			addableAlarms.clear();
-		}
+		alarms.update(delta);
 	}
 
 	public int getAngle() {

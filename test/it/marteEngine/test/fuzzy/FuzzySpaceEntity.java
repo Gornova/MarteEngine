@@ -1,7 +1,6 @@
 package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -19,7 +18,7 @@ public class FuzzySpaceEntity extends Entity {
 
 	@Override
 	public void addedToWorld() {
-		setAlarm("jump", 15, false, true);
+		addAlarm("jump", 15, false, true);
 	}
 
 	@Override

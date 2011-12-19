@@ -3,15 +3,6 @@ package it.marteEngine.entity;
 import it.marteEngine.ME;
 import it.marteEngine.StateManager;
 import it.marteEngine.World;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -23,6 +14,14 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 //TODO modify hitbox coordinates to a real shape without changing method interface.
 //TODO a shape can be rotated and scaled when the entity is rotated and scaled.
@@ -90,8 +89,8 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/** spritesheet that holds animations **/
 	protected SpriteSheet sheet;
-	public Hashtable<String, Animation> animations = new Hashtable<String, Animation>();
-	public String currentAnim;
+	private Hashtable<String, Animation> animations = new Hashtable<String, Animation>();
+	private String currentAnim;
 	public int duration = 200;
 	public int depth = -1;
 
@@ -101,13 +100,10 @@ public abstract class Entity implements Comparable<Entity> {
 	/** available commands for entity **/
 	public Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
 
-	/** collision type for entity **/
-	private HashSet<String> type = new HashSet<String>();
+	/** collision types for entity **/
+	private HashSet<String> types = new HashSet<String>();
 
-	/**
-	 * true for active entities, false otherwise. for active entities update()
-	 * is called
-	 */
+	/** true if this entity can receive updates */
 	public boolean active = true;
 	/** true for collidable entity, false otherwise **/
 	public boolean collidable = true;
@@ -127,10 +123,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public StateManager stateManager;
 
 	/**
-	 * create a new entity setting initial position (x,y)
-	 * 
-	 * @param x
-	 * @param y
+	 * create a new entity positioned at the (x,y) coordinates.
 	 */
 	public Entity(float x, float y) {
 		this.x = x;
@@ -141,11 +134,8 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Create a new entity setting initial position (x,y) and static image
-	 * 
-	 * @param x
-	 * @param y
-	 * @param image
+	 * Create a new entity positioned at the (x,y) coordinates.
+	 * Displayed as an image
 	 */
 	public Entity(float x, float y, Image image) {
 		this(x, y);
@@ -153,9 +143,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Set if image or animation must be centered on position
-	 * 
-	 * @param on
+	 * Set if the image or animation must be centered
 	 */
 	public void setCentered(boolean on) {
 		int whalf = 0, hhalf = 0;
@@ -182,13 +170,6 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
-	/**
-	 * Update entity animation
-	 * 
-	 * @param container
-	 * @param delta
-	 * @throws SlickException
-	 */
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		previousx = x;
@@ -218,13 +199,6 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
-	/**
-	 * Render entity
-	 * 
-	 * @param container
-	 * @param g
-	 * @throws SlickException
-	 */
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		if (stateManager != null && stateManager.currentState() != null) {
@@ -294,8 +268,6 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Set an image as graphic
-	 * 
-	 * @param image
 	 */
 	public void setGraphic(Image image) {
 		this.currentImage = image;
@@ -305,8 +277,6 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Set a sprite sheet as graphic
-	 * 
-	 * @param sheet
 	 */
 	public void setGraphic(SpriteSheet sheet) {
 		this.sheet = sheet;
@@ -315,71 +285,48 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Add animation to entity, first animation added is current animation
-	 * 
-	 * @param name
-	 * @param loop
-	 * @param row
-	 * @param frames
+	 * Add animation to entity, first animation added is set as the current animation
 	 */
 	public void addAnimation(String name, boolean loop, int row, int... frames) {
 		Animation anim = new Animation(false);
 		anim.setLooping(loop);
-		for (int i = 0; i < frames.length; i++) {
-			anim.addFrame(sheet.getSprite(frames[i], row), duration);
+		for (int frame : frames) {
+			anim.addFrame(sheet.getSprite(frame, row), duration);
 		}
-		if (animations.size() == 0) {
-			currentAnim = name;
-		}
-		animations.put(name, anim);
+		addAnimation(name, anim);
 	}
 
 	public Animation addAnimation(SpriteSheet sheet, String name, boolean loop,
 			int row, int... frames) {
 		Animation anim = new Animation(false);
 		anim.setLooping(loop);
-		for (int i = 0; i < frames.length; i++) {
-			anim.addFrame(sheet.getSprite(frames[i], row), duration);
+		for (int frame : frames) {
+			anim.addFrame(sheet.getSprite(frame, row), duration);
 		}
-		if (animations.size() == 0) {
-			currentAnim = name;
-		}
-		animations.put(name, anim);
+		addAnimation(name, anim);
 		return anim;
 	}
 
 	/**
 	 * Add animation to entity, first animation added is current animation. Can
-	 * Flip the frames horizontally o vertically
-	 * 
-	 * @Param name
-	 * @Param loop
-	 * @Param fliphorizontal
-	 * @Param flipvertical
-	 * @Param row
-	 * @Param frames
-	 * 
-	 * @author Sabathorn
+	 * Flip the frames horizontally and/or vertically
 	 */
 	public void addFlippedAnimation(String name, boolean loop,
 			boolean fliphorizontal, boolean flipvertical, int row,
 			int... frames) {
 		Animation anim = new Animation(false);
 		anim.setLooping(loop);
-		for (int i = 0; i < frames.length; i++) {
+		for (int frame : frames) {
 			anim.addFrame(
-					sheet.getSprite(frames[i], row).getFlippedCopy(
-							fliphorizontal, flipvertical), duration);
+				sheet.getSprite(frame, row).getFlippedCopy(
+					fliphorizontal, flipvertical), duration);
 		}
-		if (animations.size() == 0) {
-			currentAnim = name;
-		}
-		animations.put(name, anim);
+		addAnimation(name, anim);
 	}
 
 	/**
 	 * Add animation to entity.
-	 * The first animation added is set as the current animation.
+	 * The first animation is set as the current animation.
 	 */
 	public void addAnimation(String animName, Animation animation) {
 		if (animations.isEmpty()) {
@@ -387,7 +334,24 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		animations.put(animName, animation);
 	}
-  
+
+	/**
+	 * Set the current animation to the animation stored as animName.
+	 *
+	 * @param animName The name of the animation to show
+	 * @throws IllegalArgumentException If there is no animation stored as animName
+	 * @see #addAnimation(String, org.newdawn.slick.Animation)
+	 */
+  	public void setAnimation(String animName) {
+		if (!animations.containsKey(animName)) {
+			throw new IllegalArgumentException("No animation for " + animName);
+		}
+		currentAnim = animName;
+		Animation currentAnimation = animations.get(currentAnim);
+		width = currentAnimation.getWidth();
+		height = currentAnimation.getHeight();
+	}
+	
 	/**
 	 * define commands to handle inputs
 	 * 
@@ -402,9 +366,6 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Check if a command is down
-	 * 
-	 * @param key
-	 * @return
 	 */
 	public boolean check(String command) {
 		int[] checked = commands.get(command);
@@ -429,9 +390,6 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Check if a command is pressed
-	 * 
-	 * @param key
-	 * @return
 	 */
 	public boolean pressed(String command) {
 		int[] checked = commands.get(command);
@@ -462,8 +420,8 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Set hitbox for collision (by default if and entity have an hitbox, is
-	 * collidable against other entities)
+	 * Set hitbox for collision
+	 * by default if an entity has an hitbox, it is collidable against other entities
 	 * 
 	 * @param xOffset
 	 * @param yOffset
@@ -471,45 +429,30 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @param height
 	 */
 	public void setHitBox(float xOffset, float yOffset, int width, int height) {
-		setHitBox(xOffset, yOffset, width, height, true);
-	}
-
-	/**
-	 * Set hitbox for collision and set if is collidable against other entities
-	 * 
-	 * @param xOffset
-	 * @param yOffset
-	 * @param width
-	 * @param height
-	 * @param collidable
-	 */
-	public void setHitBox(float xOffset, float yOffset, int width, int height,
-			boolean collidable) {
 		this.hitboxOffsetX = xOffset;
 		this.hitboxOffsetY = yOffset;
 		this.hitboxWidth = width;
 		this.hitboxHeight = height;
 		this.collidable = true;
-
 		this.width = width;
 		this.height = height;
 	}
 
 	/**
-	 * Add collision types to entity
-	 * 
-	 * @param types
-	 * @return
+	 * Add collision types that identifies this entity during a collision check.
+	 * To allow collision with other entities add at least 1 collision type.
+	 *
+	 * @param types The collision types that identifies this entity during a collision.
 	 */
-	public boolean addType(String... types) {
-		return type.addAll(Arrays.asList(types));
+	public void addType(String... types) {
+		this.types.addAll(Arrays.asList(types));
 	}
 
 	/**
 	 * Reset type information for this entity
 	 */
 	public void clearTypes() {
-		type.clear();
+		types.clear();
 	}
 
 	/**
@@ -630,14 +573,12 @@ public abstract class Entity implements Comparable<Entity> {
 	 * overload if you want to act on addition to world
 	 */
 	public void addedToWorld() {
-
 	}
 
 	/**
 	 * overload if you want to act on removal from world
 	 */
 	public void removedFromWorld() {
-
 	}
 
 	/**
@@ -646,14 +587,12 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @param other
 	 */
 	public void collisionResponse(Entity other) {
-
 	}
 
 	/**
 	 * overload if you want to act on leaving world boundaries
 	 */
 	public void leftWorldBoundaries() {
-
 	}
 
 	public Image getCurrentImage() {
@@ -691,32 +630,22 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
-	private String getTypes() {
-		StringBuffer types = new StringBuffer();
-		for (String singleType : type) {
-			if (types.length() > 0)
-				types.append(", ");
-			types.append(singleType);
-		}
-		return types.toString();
-	}
-
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("name: " + name);
-		sb.append(", types: " + getTypes());
+		sb.append(", types: " + types);
 		sb.append(", depth: " + depth);
 		sb.append(", x: " + this.x);
 		sb.append(", y: " + this.y);
 		return sb.toString();
 	}
 
-	public HashSet<String> getType() {
-		return type;
+	public String[] getTypes() {
+		return types.toArray(new String[types.size()]);
 	}
 
 	public boolean isType(String type) {
-		return this.type.contains(type);
+		return types.contains(type);
 	}
 
 	/**
@@ -934,9 +863,13 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
+	public boolean isCurrentAnim(String animName) {
+		return currentAnim.equals(animName);
+	}
+
 	public String toCsv() {
 		return "" + (int) x + "," + (int) y + "," + name + ","
-				+ type.iterator().next();
+				+ types.iterator().next();
 	}
 
 	/**

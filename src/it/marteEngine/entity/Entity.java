@@ -696,14 +696,20 @@ public abstract class Entity implements Comparable<Entity> {
 		return ((((angle2 - angle1) % 360) + 540) % 360) - 180;
 	}
 
-	public Vector2f getPointWithAngleAndDistance(int angle, float distance) {
+	public static Vector2f getPointWithAngleAndDistanceFromStartPoint(
+			float startx, float starty, int angle, float distance) {
 		Vector2f point;
 		float tx, ty;
 		double theta = StrictMath.toRadians(angle + 90);
-		tx = (float) (this.x + distance * StrictMath.cos(theta));
-		ty = (float) (this.y + distance * StrictMath.sin(theta));
+		tx = (float) (startx + distance * StrictMath.cos(theta));
+		ty = (float) (starty + distance * StrictMath.sin(theta));
 		point = new Vector2f(tx, ty);
 		return point;
+	}
+
+	public Vector2f getPointWithAngleAndDistance(int angle, float distance) {
+		return getPointWithAngleAndDistanceFromStartPoint(this.x, this.y,
+				angle, distance);
 	}
 
 	public float getDistance(Entity other) {

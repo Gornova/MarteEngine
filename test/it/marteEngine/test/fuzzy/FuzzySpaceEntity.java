@@ -19,7 +19,7 @@ public class FuzzySpaceEntity extends Entity {
 
 	@Override
 	public void addedToWorld() {
-		setAlarm("jump", 15, false, true);
+		addAlarm("jump", 15, false, true);
 	}
 
 	@Override

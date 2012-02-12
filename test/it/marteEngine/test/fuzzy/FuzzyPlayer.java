@@ -127,7 +127,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 	public void invulnerable(int time) {
 		if (!invulnerable) {
 			invulnerable = true;
-			setAlarm(INVULNERABLE_ALARM, time, true, true);
+			addAlarm(INVULNERABLE_ALARM, time, true, true);
 		}
 	}
 

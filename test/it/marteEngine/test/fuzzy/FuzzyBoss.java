@@ -42,7 +42,7 @@ public class FuzzyBoss extends Entity {
 
 		loadPath();
 
-		setAlarm(MOVE_FIRE_ALARM, 60, false, true);
+		addAlarm(MOVE_FIRE_ALARM, 60, false, true);
 	}
 
 	/**

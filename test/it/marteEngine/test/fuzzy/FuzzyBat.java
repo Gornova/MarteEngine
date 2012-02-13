@@ -34,7 +34,7 @@ public class FuzzyBat extends Entity {
 		addType(BAT, SOLID);
 		setHitBox(0, 0, 32, 32);
 		speed.x = moveSpeed;
-		currentAnim = "moveRight";
+		setAnim("moveRight");
 	}
 
 	@Override
@@ -46,10 +46,10 @@ public class FuzzyBat extends Entity {
 
 			if (faceRight && collide(SOLID, x + 1, y) != null) {
 				faceRight = false;
-				currentAnim = "moveLeft";
+				setAnim("moveLeft");
 			} else if (!faceRight && collide(SOLID, x - 1, y) != null) {
 				faceRight = true;
-				currentAnim = "moveRight";
+				setAnim("moveRight");
 			}
 			ty = y;
 			Entity player = collide(PLAYER, x, y - 1);

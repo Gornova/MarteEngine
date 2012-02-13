@@ -56,7 +56,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		currentAnim = faceRight ? "right" : "left";
+		setAnim(faceRight ? "right" : "left");
 
 		super.render(container, g);
 

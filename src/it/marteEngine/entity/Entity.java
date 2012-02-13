@@ -6,11 +6,10 @@ import it.marteEngine.World;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -91,8 +90,8 @@ public abstract class Entity implements Comparable<Entity> {
 	private AlarmContainer alarms;
 
 	protected SpriteSheet sheet;
-	public Hashtable<String, Animation> animations = new Hashtable<String, Animation>();
-	public String currentAnim;
+	private Map<String, Animation> animations = new HashMap<String, Animation>();
+	private String currentAnim;
 	public int duration = 200;
 	public int depth = -1;
 
@@ -100,12 +99,12 @@ public abstract class Entity implements Comparable<Entity> {
 	public Image currentImage;
 
 	/** input commands */
-	public Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
+	public Map<String, int[]> commands = new HashMap<String, int[]>();
 
 	/** The types this entity can collide with */
 	private HashSet<String> collisionTypes = new HashSet<String>();
 
-	/** ² this entity can receive updates */
+	/** true if this entity can receive updates */
 	public boolean active = true;
 	public boolean collidable = true;
 	public boolean visible = true;
@@ -323,15 +322,36 @@ public abstract class Entity implements Comparable<Entity> {
 	 * animation.
 	 */
 	public void addAnimation(String animName, Animation animation) {
-		if (animations.isEmpty()) {
-			currentAnim = animName;
-		}
+		boolean firstAnim = animations.isEmpty();
 		animations.put(animName, animation);
+
+		if (firstAnim) {
+			setAnim(animName);
+		}
+	}
+
+	/**
+	 * Start playing the animation stored as animName.
+	 * 
+	 * @param animName
+	 *            The name of the animation to play
+	 * @throws IllegalArgumentException
+	 *             If there is no animation stored as animName
+	 * @see #addAnimation(String, org.newdawn.slick.Animation)
+	 */
+	public void setAnim(String animName) {
+		if (!animations.containsKey(animName)) {
+			throw new IllegalArgumentException("No animation for " + animName);
+		}
+		currentAnim = animName;
+		Animation currentAnimation = animations.get(currentAnim);
+		width = currentAnimation.getWidth();
+		height = currentAnimation.getHeight();
 	}
 
 	/**
 	 * define commands to handle inputs
-	 *
+	 * 
 	 * @param command
 	 *            name of the command
 	 * @param keys
@@ -399,7 +419,7 @@ public abstract class Entity implements Comparable<Entity> {
 	/**
 	 * Set the hitbox used for collision detection. If an entity has an hitbox,
 	 * it is collidable against other entities.
-	 *
+	 * 
 	 * @param xOffset
 	 *            The offset of the hitbox on the x axis. Relative to the top
 	 *            left point of the entity.
@@ -426,7 +446,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * other entities add at least 1 type. For example in a space invaders game.
 	 * To allow a ship to collide with a bullet and a monster:
 	 * ship.addType("bullet", "monster")
-	 *
+	 * 
 	 * @param types
 	 *            The types that this entity can collide with.
 	 */
@@ -452,7 +472,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * <p/>
 	 * If a collision occurred then both the entities are notified of the
 	 * collision by the {@link #collisionResponse(Entity)} method.
-	 *
+	 * 
 	 * @param type
 	 *            The type of another entity to check for collision.
 	 * @param x
@@ -490,7 +510,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Checks for collision against multiple types.
-	 *
+	 * 
 	 * @see #collide(String, float, float)
 	 */
 	public Entity collide(String[] types, float x, float y) {
@@ -504,7 +524,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Checks if this Entity collides with a specific Entity.
-	 *
+	 * 
 	 * @param other
 	 *            The Entity to check for collision
 	 * @param x
@@ -566,7 +586,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * Checks if this Entity contains the specified point. The
 	 * {@link #collisionResponse(Entity)} is called to notify this entity of the
 	 * collision.
-	 *
+	 * 
 	 * @param x
 	 *            The x coordinate of the point to check
 	 * @param y
@@ -599,7 +619,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Response to a collision with another entity
-	 *
+	 * 
 	 * @param other
 	 *            The other entity that collided with us.
 	 */
@@ -760,7 +780,7 @@ public abstract class Entity implements Comparable<Entity> {
 	/**
 	 * Overwrite this method if your entity shall react on alarms that reached
 	 * their triggerTime.
-	 *
+	 * 
 	 * @param alarmName
 	 *            the name of the alarm that triggered right now
 	 */
@@ -807,6 +827,10 @@ public abstract class Entity implements Comparable<Entity> {
 			this.x = pos.x;
 			this.y = pos.y;
 		}
+	}
+
+	public boolean isCurrentAnim(String animName) {
+		return currentAnim.equals(animName);
 	}
 
 	public String toCsv() {

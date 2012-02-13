@@ -4,7 +4,7 @@ import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.game.starcleaner.Background;
 
-import org.newdawn.slick.AngelCodeFont;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -18,8 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class TankGame extends World {
 
 	public Tank tank;
-	private AngelCodeFont font = ResourceManager
-			.getAngelCodeFont("bradleyhanditc24");
+	private Font font = ResourceManager.getFont("bradleyhanditc24");
 
 	public TankGame(int id, GameContainer container) throws SlickException {
 		super(id, container);

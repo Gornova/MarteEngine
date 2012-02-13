@@ -5,9 +5,7 @@
 	<image key="" file="" transparentColor=""/> 
 	<sheet key="" file="" width="" height="" transparentColor=""/>
 	<angelcodefont key="" fontFile="" imageFile=""/>
-	<int key="" value="">
-	<float key="" value=""> 
-	<string key="" value="">
+	<param key="" value="">
 -->
 	
 <resources>

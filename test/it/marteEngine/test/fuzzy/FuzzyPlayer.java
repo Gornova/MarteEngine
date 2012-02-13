@@ -56,7 +56,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		currentAnim = faceRight ? "right" : "left";
+		setAnim(faceRight ? "right" : "left");
 
 		super.render(container, g);
 
@@ -127,7 +127,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 	public void invulnerable(int time) {
 		if (!invulnerable) {
 			invulnerable = true;
-			setAlarm(INVULNERABLE_ALARM, time, true, true);
+			addAlarm(INVULNERABLE_ALARM, time, true, true);
 		}
 	}
 

@@ -3,7 +3,6 @@ package it.marteEngine.game.starcleaner;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -27,13 +26,13 @@ public class Hud extends Entity {
 	private static final String CMD_NEXT = "nextLevel";
 	private static final String CMD_PREVIOUS = "previousLevel";
 
-	private AngelCodeFont font;
+	private Font font;
 
 	public Hud(float x, float y) {
 		super(x, y);
 		this.name = "HUD";
 		this.depth = 400;
-		this.font = ResourceManager.getAngelCodeFont("bradleyhanditc24");
+		this.font = ResourceManager.getFont("bradleyhanditc24");
 
 		this.define(CMD_NEXT, Input.KEY_N);
 		this.define(CMD_PREVIOUS, Input.KEY_P);

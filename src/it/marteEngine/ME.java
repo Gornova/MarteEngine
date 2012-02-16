@@ -88,7 +88,7 @@ public class ME {
 		// special key handling
 		if (keyToggleDebug != -1) {
 			if (container.getInput().isKeyPressed(keyToggleDebug)) {
-				debugEnabled = debugEnabled ? false : true;
+				debugEnabled = !debugEnabled;
 			}
 		}
 		if (keyRestart != -1) {
@@ -100,14 +100,14 @@ public class ME {
 		}
 		if (keyMuteMusic != -1) {
 			if (container.getInput().isKeyPressed(keyMuteMusic)) {
-				playMusic = playMusic ? false : true;
+				playMusic = !playMusic;
 				muteMusic();
 			}
 		}
 		if (keyFullScreen != -1) {
 			if (container.getInput().isKeyPressed(keyFullScreen)) {
 				container
-						.setFullscreen(container.isFullscreen() ? false : true);
+						.setFullscreen(!container.isFullscreen());
 			}
 		}
 
@@ -187,11 +187,11 @@ public class ME {
 
 	public static void muteMusic() {
 		if (playMusic) {
-			ResourceManager.setMusicVolume(1.0f);
-			ResourceManager.setSfxVolume(1.0f);
+			SFX.setMusicVolume(1.0f);
+			SFX.setSoundVolume(1.0f);
 		} else {
-			ResourceManager.setMusicVolume(0f);
-			ResourceManager.setSfxVolume(0f);
+			SFX.setMusicVolume(0f);
+			SFX.setSoundVolume(0f);
 		}
 	}
 

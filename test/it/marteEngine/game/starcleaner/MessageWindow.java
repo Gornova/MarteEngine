@@ -5,7 +5,6 @@ import it.marteEngine.entity.Entity;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -17,7 +16,7 @@ public class MessageWindow extends Entity {
 
 	public static final String MESSAGEWINDOW = "messageWindow";
 
-	private AngelCodeFont font = null;
+	private Font font = null;
 	private ArrayList<String> messageLines;
 	private Image background;
 
@@ -29,7 +28,7 @@ public class MessageWindow extends Entity {
 		this.addType(MESSAGEWINDOW);
 		messageLines = message;
 		setGraphic(background);
-		font = ResourceManager.getAngelCodeFont("bradleyhanditc24");
+		font = ResourceManager.getFont("bradleyhanditc24");
 		setHitBox(0, 0, width, height);
 		depth = 100;
 		if (centerOnScreen) {

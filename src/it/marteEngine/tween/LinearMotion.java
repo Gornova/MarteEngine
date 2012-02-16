@@ -55,8 +55,4 @@ public class LinearMotion extends Motion {
 		y = fromY + moveY * t;
 	}
 
-	public Vector2f getPosition() {
-		return new Vector2f(x, y);
-	}
-
 }

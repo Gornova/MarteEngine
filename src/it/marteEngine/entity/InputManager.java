@@ -21,6 +21,11 @@ public class InputManager {
 		mouseCommands = new HashMap<String, int[]>();
 	}
 
+	public InputManager(Input input) {
+		this();
+		this.input = input;
+	}
+
 	/**
 	 * Bind a command to 1 or more keyboard key(s). If the command already has a
 	 * key mapping, then the new key will overwrite the previous key.

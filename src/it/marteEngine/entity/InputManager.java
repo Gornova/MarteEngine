@@ -12,24 +12,23 @@ import java.util.Map;
  * Allows to bind keyboard and mouse input to a text command.
  */
 public class InputManager {
-	/** keyboard input commands */
-	private Map<String, int[]> keyboardCommands = new HashMap<String, int[]>();
-
-	/** mouse input commands */
-	private Map<String, int[]> mouseCommands = new HashMap<String, int[]>();
+	private Map<String, int[]> keyboardCommands;
+	private Map<String, int[]> mouseCommands;
 	private Input input;
 
 	public InputManager() {
+		keyboardCommands = new HashMap<String, int[]>();
+		mouseCommands = new HashMap<String, int[]>();
 	}
 
 	/**
-	 * Bind a command to 1 or more keyboard key(s) If the command already has a
-	 * key mapped to it then the new key will overwrites the previous value.
-	 * 
+	 * Bind a command to 1 or more keyboard key(s). If the command already has a
+	 * key mapping, then the new key will overwrite the previous key.
+	 *
 	 * @param command
 	 *            Name of the command
 	 * @param keys
-	 *            Keyboard keys from the {@link org.newdawn.slick.Input} class
+	 *            Keyboard keys from the {@link Input} class
 	 */
 	public void bindToKey(String command, int... keys) {
 		keyboardCommands.put(command, keys);
@@ -37,12 +36,12 @@ public class InputManager {
 
 	/**
 	 * Bind a command to 1 or more mouse button(s) If the command already has a
-	 * key mapped to it then the new key will overwrites the previous value.
-	 * 
+	 * key mapping, then the new key will overwrites the previous key.
+	 *
 	 * @param command
 	 *            Name of the command
 	 * @param buttons
-	 *            Mouse buttons from the {@link org.newdawn.slick.Input} class
+	 *            Mouse buttons from the {@link Input} class
 	 */
 	public void bindToMouse(String command, int... buttons) {
 		for (int button : buttons) {
@@ -57,13 +56,13 @@ public class InputManager {
 	}
 
 	/**
-	 * True if a command is currently down. Check keeps on returning true until
+	 * True if a command is currently down. isDown keeps on returning true until
 	 * the command is released.
 	 */
 	public boolean isDown(String command) {
-		boolean keyPressed = checkKeyboardKeyDown(command);
-		boolean mouseButtonPressed = checkMouseButtonDown(command);
-		return keyPressed || mouseButtonPressed;
+		boolean keyDown = checkKeyboardKeyDown(command);
+		boolean mouseButtonDown = checkMouseButtonDown(command);
+		return keyDown || mouseButtonDown;
 	}
 
 	private boolean checkKeyboardKeyDown(String command) {
@@ -125,10 +124,6 @@ public class InputManager {
 		return false;
 	}
 
-	public boolean isInited() {
-		return input != null;
-	}
-
 	public void setInput(Input input) {
 		this.input = input;
 	}
@@ -141,7 +136,7 @@ public class InputManager {
 		mouseCommands.remove(command);
 	}
 
-	/*
+	/**
 	 * Get a list of names of the keyboard and mouse input mapped to the given
 	 * command.
 	 */

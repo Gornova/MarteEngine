@@ -643,25 +643,25 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	public void checkWorldBoundaries() {
-		if ((x + width) < 0) {
+		if (x + width < 0) {
 			leftWorldBoundaries();
 			if (wrapHorizontal) {
-				x = this.world.width + 1;
+				x = world.width - 1;
 			}
 		}
-		if (x > this.world.width) {
+		if (x > world.width) {
 			leftWorldBoundaries();
 			if (wrapHorizontal) {
 				x = (-width + 1);
 			}
 		}
-		if ((y + height) < 0) {
+		if (y + height < 0) {
 			leftWorldBoundaries();
 			if (wrapVertical) {
-				y = this.world.height + 1;
+				y = world.height - 1;
 			}
 		}
-		if (y > this.world.height) {
+		if (y > world.height) {
 			leftWorldBoundaries();
 			if (wrapVertical) {
 				y = (-height + 1);

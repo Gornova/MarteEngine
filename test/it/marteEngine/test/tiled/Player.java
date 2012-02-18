@@ -17,8 +17,8 @@ public class Player extends Entity {
 	public Player(float x, float y) {
 		super(x, y);
 		setGraphic(ResourceManager.getImage("image"));
-		define("MOVE", Input.MOUSE_LEFT_BUTTON);
-		define("CHANGE_MODE", Input.MOUSE_RIGHT_BUTTON);
+		bindToMouse("MOVE", Input.MOUSE_LEFT_BUTTON);
+		bindToMouse("CHANGE_MODE", Input.MOUSE_RIGHT_BUTTON);
 		define("START", Input.KEY_Z);
 		define("PAUSE", Input.KEY_X);
 		define("RESET", Input.KEY_C);

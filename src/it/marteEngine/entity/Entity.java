@@ -113,6 +113,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public int hitboxHeight;
 
 	public StateManager stateManager;
+	private boolean leftTheWorld;
 
 	/**
 	 * Create a new entity positioned at the (x,y) coordinates.
@@ -621,27 +622,42 @@ public abstract class Entity implements Comparable<Entity> {
 		input.setInput(world.container.getInput());
 	}
 
+	/**
+	 * Check if this entity has left the world.
+	 * 
+	 * If the entity has moved outside of the world then the entity is notified by the
+	 * {@link #leftWorldBoundaries()} method. If the entity must be wrapped, make it
+	 * reappear on the opposite side of the world.
+	 */
 	public void checkWorldBoundaries() {
+		if (world.contains(this)) {
+			leftTheWorld = false;
+		} else {
+			if (!leftTheWorld) {
+				leftWorldBoundaries();
+				leftTheWorld = true;
+			}
+			wrapEntity();
+		}
+	}
+
+	private void wrapEntity() {
 		if (x + width < 0) {
-			leftWorldBoundaries();
 			if (wrapHorizontal) {
 				x = world.width - 1;
 			}
 		}
 		if (x > world.width) {
-			leftWorldBoundaries();
 			if (wrapHorizontal) {
 				x = (-width + 1);
 			}
 		}
 		if (y + height < 0) {
-			leftWorldBoundaries();
 			if (wrapVertical) {
 				y = world.height - 1;
 			}
 		}
 		if (y > world.height) {
-			leftWorldBoundaries();
 			if (wrapVertical) {
 				y = (-height + 1);
 			}

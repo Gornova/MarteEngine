@@ -451,4 +451,14 @@ public class World extends BasicGameState {
 		return input.isPressed(command);
 	}
 
+	public boolean contains(Entity entity) {
+		return contains(entity.x,entity.y,entity.width ,entity.height);
+	}
+
+	public boolean contains(float x, float y, int width, int height) {
+		return x >=0 && y>=0 &&
+				x + width <= this.width &&
+				y + height <= this.height;
+	}
+
 }

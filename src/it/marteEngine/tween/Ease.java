@@ -1,7 +1,5 @@
 package it.marteEngine.tween;
 
-import org.newdawn.slick.util.Log;
-
 /**
  * 
  * @author Flashpunk (www.flashpunk.net)
@@ -10,24 +8,14 @@ import org.newdawn.slick.util.Log;
 public class Ease {
 
 	// Easing constants.
-	/** @private */
 	private static double PI = Math.PI;
-	/** @private */
 	private static double PI2 = Math.PI / 2;
-	/** @private */
-	@SuppressWarnings("unused")
 	private static double EL = 2 * PI / .45;
-	/** @private */
 	private static double B1 = 1 / 2.75;
-	/** @private */
 	private static double B2 = 2 / 2.75;
-	/** @private */
 	private static double B3 = 1.5 / 2.75;
-	/** @private */
 	private static double B4 = 2.5 / 2.75;
-	/** @private */
 	private static double B5 = 2.25 / 2.75;
-	/** @private */
 	private static double B6 = 2.625 / 2.75;
 
 	public static final int NONE = -1;
@@ -261,128 +249,126 @@ public class Ease {
 
 	public static String getName(int easeFunction) {
 		switch (easeFunction) {
-		case Ease.QUAD_IN:
-			return "QUAD_IN";
-		case Ease.QUAD_OUT:
-			return "QUAD_OUT";
-		case Ease.QUAD_IN_OUT:
-			return "QUAD_IN_OUT";
-		case Ease.CUBE_IN:
-			return "CUBE_IN";
-		case Ease.CUBE_OUT:
-			return "CUBE_OUT";
-		case Ease.CUBE_IN_OUT:
-			return "CUBE_IN_OUT";
-		case Ease.QUART_IN:
-			return "QUART_IN";
-		case Ease.QUART_OUT:
-			return "QUART_OUT";
-		case Ease.QUART_IN_OUT:
-			return "QUART_IN_OUT";
-		case Ease.QUINT_IN:
-			return "QUINT_IN";
-		case Ease.QUINT_OUT:
-			return "QUINT_OUT";
-		case Ease.QUINT_IN_OUT:
-			return "QUINT_IN_OUT";
-		case Ease.SINE_IN:
-			return "SINE_IN";
-		case Ease.SINE_OUT:
-			return "SINE_OUT";
-		case Ease.SINE_IN_OUT:
-			return "SINE_IN_OUT";
-		case Ease.BOUNCE_IN:
-			return "BOUNCE_IN";
-		case Ease.BOUNCE_OUT:
-			return "BOUNCE_OUT";
-		case Ease.BOUNCE_IN_OUT:
-			return "BOUNCE_IN_OUT";
-		case Ease.CIRC_IN:
-			return "CIRC_IN";
-		case Ease.CIRC_OUT:
-			return "CIRC_OUT";
-		case Ease.CIRC_IN_OUT:
-			return "CIRC_IN_OUT";
-		case Ease.EXPO_IN:
-			return "EXPO_IN";
-		case Ease.EXPO_OUT:
-			return "EXPO_OUT";
-		case Ease.EXPO_IN_OUT:
-			return "EXPO_IN_OUT";
-		case Ease.BACK_IN:
-			return "BACK_IN";
-		case Ease.BACK_OUT:
-			return "BACK_OUT";
-		case Ease.BACK_IN_OUT:
-			return "BACK_IN_OUT";
-		default:
-			Log.warn("Easing function not mapped " + easeFunction);
-			break;
+			case Ease.QUAD_IN :
+				return "QUAD_IN";
+			case Ease.QUAD_OUT :
+				return "QUAD_OUT";
+			case Ease.QUAD_IN_OUT :
+				return "QUAD_IN_OUT";
+			case Ease.CUBE_IN :
+				return "CUBE_IN";
+			case Ease.CUBE_OUT :
+				return "CUBE_OUT";
+			case Ease.CUBE_IN_OUT :
+				return "CUBE_IN_OUT";
+			case Ease.QUART_IN :
+				return "QUART_IN";
+			case Ease.QUART_OUT :
+				return "QUART_OUT";
+			case Ease.QUART_IN_OUT :
+				return "QUART_IN_OUT";
+			case Ease.QUINT_IN :
+				return "QUINT_IN";
+			case Ease.QUINT_OUT :
+				return "QUINT_OUT";
+			case Ease.QUINT_IN_OUT :
+				return "QUINT_IN_OUT";
+			case Ease.SINE_IN :
+				return "SINE_IN";
+			case Ease.SINE_OUT :
+				return "SINE_OUT";
+			case Ease.SINE_IN_OUT :
+				return "SINE_IN_OUT";
+			case Ease.BOUNCE_IN :
+				return "BOUNCE_IN";
+			case Ease.BOUNCE_OUT :
+				return "BOUNCE_OUT";
+			case Ease.BOUNCE_IN_OUT :
+				return "BOUNCE_IN_OUT";
+			case Ease.CIRC_IN :
+				return "CIRC_IN";
+			case Ease.CIRC_OUT :
+				return "CIRC_OUT";
+			case Ease.CIRC_IN_OUT :
+				return "CIRC_IN_OUT";
+			case Ease.EXPO_IN :
+				return "EXPO_IN";
+			case Ease.EXPO_OUT :
+				return "EXPO_OUT";
+			case Ease.EXPO_IN_OUT :
+				return "EXPO_IN_OUT";
+			case Ease.BACK_IN :
+				return "BACK_IN";
+			case Ease.BACK_OUT :
+				return "BACK_OUT";
+			case Ease.BACK_IN_OUT :
+				return "BACK_IN_OUT";
+			default :
+				throw new IllegalArgumentException(
+						"Easing function not mapped " + easeFunction);
 		}
-		return "NONE";
 	}
 
 	public static float ease(int easeFunction, float t) {
 		switch (easeFunction) {
-		case Ease.QUAD_IN:
-			return Ease.quadIn(t);
-		case Ease.QUAD_OUT:
-			return Ease.quadOut(t);
-		case Ease.QUAD_IN_OUT:
-			return Ease.quadInOut(t);
-		case Ease.CUBE_IN:
-			return Ease.cubeIn(t);
-		case Ease.CUBE_OUT:
-			return Ease.cubeOut(t);
-		case Ease.CUBE_IN_OUT:
-			return Ease.cubeInOut(t);
-		case Ease.QUART_IN:
-			return Ease.quartIn(t);
-		case Ease.QUART_OUT:
-			return Ease.quartOut(t);
-		case Ease.QUART_IN_OUT:
-			return Ease.quartInOut(t);
-		case Ease.QUINT_IN:
-			return Ease.quintIn(t);
-		case Ease.QUINT_OUT:
-			return Ease.quintOut(t);
-		case Ease.QUINT_IN_OUT:
-			return Ease.quintInOut(t);
-		case Ease.SINE_IN:
-			return Ease.sineIn(t);
-		case Ease.SINE_OUT:
-			return Ease.sineOut(t);
-		case Ease.SINE_IN_OUT:
-			return Ease.sineInOut(t);
-		case Ease.BOUNCE_IN:
-			return Ease.bounceIn(t);
-		case Ease.BOUNCE_OUT:
-			return Ease.bounceOut(t);
-		case Ease.BOUNCE_IN_OUT:
-			return Ease.bounceInOut(t);
-		case Ease.CIRC_IN:
-			return Ease.circIn(t);
-		case Ease.CIRC_OUT:
-			return Ease.circOut(t);
-		case Ease.CIRC_IN_OUT:
-			return Ease.circInOut(t);
-		case Ease.EXPO_IN:
-			return Ease.expoIn(t);
-		case Ease.EXPO_OUT:
-			return Ease.expoOut(t);
-		case Ease.EXPO_IN_OUT:
-			return Ease.expoInOut(t);
-		case Ease.BACK_IN:
-			return Ease.backIn(t);
-		case Ease.BACK_OUT:
-			return Ease.backOut(t);
-		case Ease.BACK_IN_OUT:
-			return Ease.backInOut(t);
-		default:
-			Log.warn("Easing function not mapped " + easeFunction);
-			break;
+			case Ease.QUAD_IN :
+				return Ease.quadIn(t);
+			case Ease.QUAD_OUT :
+				return Ease.quadOut(t);
+			case Ease.QUAD_IN_OUT :
+				return Ease.quadInOut(t);
+			case Ease.CUBE_IN :
+				return Ease.cubeIn(t);
+			case Ease.CUBE_OUT :
+				return Ease.cubeOut(t);
+			case Ease.CUBE_IN_OUT :
+				return Ease.cubeInOut(t);
+			case Ease.QUART_IN :
+				return Ease.quartIn(t);
+			case Ease.QUART_OUT :
+				return Ease.quartOut(t);
+			case Ease.QUART_IN_OUT :
+				return Ease.quartInOut(t);
+			case Ease.QUINT_IN :
+				return Ease.quintIn(t);
+			case Ease.QUINT_OUT :
+				return Ease.quintOut(t);
+			case Ease.QUINT_IN_OUT :
+				return Ease.quintInOut(t);
+			case Ease.SINE_IN :
+				return Ease.sineIn(t);
+			case Ease.SINE_OUT :
+				return Ease.sineOut(t);
+			case Ease.SINE_IN_OUT :
+				return Ease.sineInOut(t);
+			case Ease.BOUNCE_IN :
+				return Ease.bounceIn(t);
+			case Ease.BOUNCE_OUT :
+				return Ease.bounceOut(t);
+			case Ease.BOUNCE_IN_OUT :
+				return Ease.bounceInOut(t);
+			case Ease.CIRC_IN :
+				return Ease.circIn(t);
+			case Ease.CIRC_OUT :
+				return Ease.circOut(t);
+			case Ease.CIRC_IN_OUT :
+				return Ease.circInOut(t);
+			case Ease.EXPO_IN :
+				return Ease.expoIn(t);
+			case Ease.EXPO_OUT :
+				return Ease.expoOut(t);
+			case Ease.EXPO_IN_OUT :
+				return Ease.expoInOut(t);
+			case Ease.BACK_IN :
+				return Ease.backIn(t);
+			case Ease.BACK_OUT :
+				return Ease.backOut(t);
+			case Ease.BACK_IN_OUT :
+				return Ease.backInOut(t);
+			default :
+				throw new IllegalArgumentException(
+						"Easing function not mapped " + easeFunction);
 		}
-		return 0;
 	}
 
 }

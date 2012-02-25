@@ -38,6 +38,8 @@ public class TweenWorld extends World {
 
 		g.drawString("Current ease: " + Ease.getName(player.currentEase), 550,
 				5);
+		g.drawString("Active: " + player.motion.isActive() + "", 550, 25);
+
 	}
 
 }

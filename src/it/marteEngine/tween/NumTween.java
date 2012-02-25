@@ -7,17 +7,18 @@ public class NumTween extends Tween {
 	private float range = 0f;
 
 	public NumTween(float from, float to, float duration, TweenerMode type,
-			int easingType, boolean deltaTiming) {
-		super(duration, type, easingType, deltaTiming, true);
+			int easingType) {
+		super(duration, type, easingType);
+		super.target = duration;
 		start = value = from;
 		range = to - value;
-		target = duration;
-		easingFunction = easingType;
-		mode = type;
 		start();
 	}
 
 	public void update(int delta) {
+		if (!active)
+			return;
+
 		super.update(delta);
 		value = start + range * t;
 	}

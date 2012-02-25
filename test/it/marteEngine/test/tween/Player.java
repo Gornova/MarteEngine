@@ -4,14 +4,14 @@ import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.tween.LinearMotion;
 
+import it.marteEngine.tween.Motion;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Player extends Entity {
 
-	private LinearMotion motion;
-
+	public Motion motion;
 	public int currentEase = 0;
 
 	public Player(float x, float y) {
@@ -22,47 +22,41 @@ public class Player extends Entity {
 		define("START", Input.KEY_Z);
 		define("PAUSE", Input.KEY_X);
 		define("RESET", Input.KEY_C);
-
-		motion = null;
+		motion = new LinearMotion(x, y, x, y, 0, 0);
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		super.update(container, delta);
-		if (motion != null)
-			motion.update(delta);
+		motion.update(delta);
+		checkInput(container.getInput());
 
-		Input input = container.getInput();
-		// change tween's ease
-		if (check("CHANGE_MODE")) {
+		// update player position according to tween
+		setPosition(motion.getPosition());
+	}
+
+	private void checkInput(Input input) {
+		if (pressed("CHANGE_MODE")) {
 			if (currentEase + 1 <= 26) {
 				currentEase++;
 			} else {
 				currentEase = 0;
 			}
 		}
-		// check controls
-		if (check("MOVE")) {
-			// set new tween for player
+
+		if (pressed("MOVE")) {
 			motion = new LinearMotion(x, y, input.getMouseX(),
 					input.getMouseY(), 100, currentEase);
 		}
-		if (check("START")) {
-			// start tween update
+		if (pressed("START")) {
 			motion.start();
 		}
-		if (check("PAUSE")) {
-			// start tween update
-			motion.pause();
+		if (pressed("PAUSE")) {
+			motion.setActive(!motion.isActive());
 		}
-		if (check("RESET")) {
-			// reset tween to starting position
+		if (pressed("RESET")) {
 			motion.reset();
-			setPosition(motion.getPosition());
 		}
-		// update player position according to tween
-		if (motion != null)
-			setPosition(motion.getPosition());
 	}
 }

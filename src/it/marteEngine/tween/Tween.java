@@ -1,7 +1,11 @@
 package it.marteEngine.tween;
 
+import it.marteEngine.ME;
+
 /**
- * Tween can change Entity status
+ * Tween allows an object to move with smooth acceleration and deceleration. It
+ * does not change the object directly, instead the object should update it's
+ * position based on the position of the tween.
  * 
  * @author Gornova
  */
@@ -9,7 +13,7 @@ public abstract class Tween {
 
 	public enum TweenerMode {
 		ONESHOT, LOOPING, PERSIST
-	};
+	}
 
 	protected String name = null;
 	protected TweenerMode mode = TweenerMode.PERSIST;
@@ -24,27 +28,21 @@ public abstract class Tween {
 	private float time = 0f;
 	/** when is this tweener done */
 	protected float target = 0f;
-	/** do we use delta timing or frame counting */
-	protected boolean deltaTiming = false;
 
 	/** which easing function does this Tween use */
 	protected int easingFunction = Ease.NONE;
 
-	public Tween(float duration, TweenerMode type, int easingType,
-			boolean active) {
-		this(duration, type, easingType, false, active);
-	}
-
-	public Tween(float duration, TweenerMode type, int easingType,
-			boolean deltaTiming, boolean active) {
+	public Tween(float duration, TweenerMode mode, int easingType) {
 		this.target = duration;
-		this.active = active;
-		this.deltaTiming = deltaTiming;
+		this.mode = mode;
 		this.easingFunction = easingType;
 	}
 
 	public void update(int delta) {
-		if (this.deltaTiming)
+		if (!active)
+			return;
+
+		if (ME.useDeltaTiming)
 			time += delta;
 		else
 			time++;
@@ -53,7 +51,7 @@ public abstract class Tween {
 			t = Ease.ease(easingFunction, t);
 		if (time > target) {
 			t = 1;
-			this.finished = true;
+			finished = true;
 		}
 	}
 
@@ -76,8 +74,6 @@ public abstract class Tween {
 
 	/**
 	 * Reset tween to initial position
-	 * 
-	 * @return void
 	 */
 	public void reset() {
 		time = 0;
@@ -87,22 +83,22 @@ public abstract class Tween {
 	/**
 	 * internal function, called by the Tweener if this Tween is finished
 	 */
-	public void finish() {
-		switch (this.mode) {
-		case PERSIST:
-			time = target;
-			active = false;
-			break;
-		case ONESHOT:
-			time = target;
-			active = false;
-			if (parent != null)
-				parent.remove(this);
-			break;
-		case LOOPING:
-			time %= target;
-			t = time / target;
-			break;
+	void finish() {
+		switch (mode) {
+			case PERSIST :
+				time = target;
+				active = false;
+				break;
+			case ONESHOT :
+				time = target;
+				active = false;
+				if (parent != null)
+					parent.remove(this);
+				break;
+			case LOOPING :
+				time %= target;
+				t = time / target;
+				break;
 		}
 		finished = false;
 	}

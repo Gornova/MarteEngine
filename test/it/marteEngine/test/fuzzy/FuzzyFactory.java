@@ -23,14 +23,14 @@ public class FuzzyFactory {
 
 	public static Tween getFadeTween(float t) {
 		NumTween tween = new NumTween(1, 0, t, TweenerMode.ONESHOT,
-				Ease.CUBE_OUT, false);
+				Ease.CUBE_OUT);
 		tween.setName(FADE);
 		return tween;
 	}
 
 	public static Tween getMoveUpTween(float t) {
 		NumTween tween = new NumTween(0, 5, t, TweenerMode.ONESHOT,
-				Ease.QUAD_IN, false);
+				Ease.QUAD_IN);
 		tween.setName(MOVE_UP);
 		return tween;
 	}
@@ -46,10 +46,10 @@ public class FuzzyFactory {
 	public static Tweener getMoveTweener(float t, float fromx, float fromy,
 			float tox, float toy) {
 		NumTween tweenx = new NumTween(fromx, tox, t, TweenerMode.ONESHOT,
-				Ease.CUBE_OUT, false);
+				Ease.CUBE_OUT);
 		tweenx.setName(MOVEX);
 		NumTween tweeny = new NumTween(fromy, toy, t, TweenerMode.ONESHOT,
-				Ease.CUBE_OUT, false);
+				Ease.CUBE_OUT);
 		tweeny.setName(MOVEY);
 		return new Tweener(getFadeTween(t), tweenx, tweeny);
 	}

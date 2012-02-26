@@ -250,7 +250,8 @@ public class World extends BasicGameState {
 
 	/**
 	 *
-	 * @param type The entity type to count
+	 * @param type
+	 *            The entity type to count
 	 * @return number of entities of the given type in this world
 	 */
 	public int getNrOfEntities(String type) {
@@ -363,6 +364,15 @@ public class World extends BasicGameState {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public boolean contains(Entity entity) {
+		return contains(entity.x, entity.y, entity.width, entity.height);
+	}
+
+	public boolean contains(float x, float y, int width, int height) {
+		return x >= 0 && y >= 0 && x + width <= this.width
+				&& y + height <= this.height;
 	}
 
 	public List<Entity> findEntityWithType(String type) {

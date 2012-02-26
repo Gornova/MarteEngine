@@ -59,7 +59,7 @@ public class ResizeSquare extends Entity {
 		define(ME.WALK_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
 		define(ADD, Input.KEY_Z);
 		define(MINUS, Input.KEY_X);
-		define(ATTACK1, Input.MOUSE_LEFT_BUTTON);
+		bindToMouse(ATTACK1, Input.MOUSE_LEFT_BUTTON);
 	}
 
 	@Override

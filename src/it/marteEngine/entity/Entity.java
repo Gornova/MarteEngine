@@ -98,8 +98,7 @@ public abstract class Entity implements Comparable<Entity> {
 	/** static image for non-animated entity */
 	public Image currentImage;
 
-	/** input commands */
-	public Map<String, int[]> commands = new HashMap<String, int[]>();
+	public InputManager input;
 
 	/** The types this entity can collide with */
 	private HashSet<String> collisionTypes = new HashSet<String>();
@@ -126,6 +125,7 @@ public abstract class Entity implements Comparable<Entity> {
 		this.starty = y;
 		stateManager = new StateManager();
 		alarms = new AlarmContainer(this);
+		input = new InputManager();
 	}
 
 	/**
@@ -337,7 +337,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 *            The name of the animation to play
 	 * @throws IllegalArgumentException
 	 *             If there is no animation stored as animName
-	 * @see #addAnimation(String, org.newdawn.slick.Animation)
+	 * @see #addAnimation(String, Animation)
 	 */
 	public void setAnim(String animName) {
 		if (!animations.containsKey(animName)) {
@@ -350,59 +350,38 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * define commands to handle inputs
-	 * 
-	 * @param command
-	 *            name of the command
-	 * @param keys
-	 *            keys or mouse input from {@link Input} class
+	 * @see #bindToKey(String, int...)
 	 */
 	public void define(String command, int... keys) {
-		commands.put(command, keys);
+		bindToKey(command, keys);
 	}
 
 	/**
-	 * Check if a command is down
+	 * @see InputManager#bindToKey(String, int...)
+	 */
+	public void bindToKey(String command, int... keys) {
+		input.bindToKey(command, keys);
+	}
+
+	/**
+	 * @see InputManager#bindToMouse(String, int...)
+	 */
+	public void bindToMouse(String command, int... buttons) {
+		input.bindToMouse(command, buttons);
+	}
+
+	/**
+	 * @see InputManager#isDown(String)
 	 */
 	public boolean check(String command) {
-		if (!commands.containsKey(command))
-			return false;
-
-		int[] checked = commands.get(command);
-		Input input = world.container.getInput();
-		for (int i = 0; i < checked.length; i++) {
-			if (input.isKeyDown(checked[i])) {
-				return true;
-			} else if (checked[i] < 10) {
-				// 10 is max number of button on a mouse, @see Input
-				if (input.isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isDown(command);
 	}
 
 	/**
-	 * Check if a command is pressed
+	 * @see InputManager#isPressed(String)
 	 */
 	public boolean pressed(String command) {
-		if (!commands.containsKey(command))
-			return false;
-
-		int[] checked = commands.get(command);
-		Input input = world.container.getInput();
-		for (int i = 0; i < checked.length; i++) {
-			if (input.isKeyPressed(checked[i])) {
-				return true;
-			} else if (checked[i] == Input.MOUSE_LEFT_BUTTON
-					|| checked[i] == Input.MOUSE_RIGHT_BUTTON) {
-				if (input.isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isPressed(command);
 	}
 
 	/**
@@ -640,6 +619,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	public void setWorld(World world) {
 		this.world = world;
+		input.setInputProvider(world.container.getInput());
 	}
 
 	public void checkWorldBoundaries() {

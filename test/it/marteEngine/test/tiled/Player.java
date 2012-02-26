@@ -17,8 +17,8 @@ public class Player extends Entity {
 	public Player(float x, float y) {
 		super(x, y);
 		setGraphic(ResourceManager.getImage("image"));
-		define("MOVE", Input.MOUSE_LEFT_BUTTON);
-		define("CHANGE_MODE", Input.MOUSE_RIGHT_BUTTON);
+		bindToMouse("MOVE", Input.MOUSE_LEFT_BUTTON);
+		bindToMouse("CHANGE_MODE", Input.MOUSE_RIGHT_BUTTON);
 		define("START", Input.KEY_Z);
 		define("PAUSE", Input.KEY_X);
 		define("RESET", Input.KEY_C);
@@ -35,7 +35,7 @@ public class Player extends Entity {
 
 		Input input = container.getInput();
 		// change tween's ease
-		if (check("CHANGE_MODE")) {
+		if (pressed("CHANGE_MODE")) {
 			if (currentEase + 1 <= 26) {
 				currentEase++;
 			} else {
@@ -44,23 +44,19 @@ public class Player extends Entity {
 		}
 		// check controls
 		if (check("MOVE")) {
-			// set new tween for player
 			motion = new LinearMotion(x, y, input.getMouseX(),
 					input.getMouseY(), 100, currentEase);
 		}
-		if (check("START")) {
-			// start tween update
+		if (pressed("START")) {
 			motion.start();
 		}
-		if (check("PAUSE")) {
-			// start tween update
+		if (pressed("PAUSE")) {
 			motion.pause();
 		}
-		if (check("RESET")) {
-			// reset tween to starting position
+		if (pressed("RESET")) {
 			motion.reset();
-			setPosition(motion.getPosition());
 		}
+
 		// update player position according to tween
 		if (motion != null)
 			setPosition(motion.getPosition());

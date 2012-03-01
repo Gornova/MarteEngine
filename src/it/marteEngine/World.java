@@ -73,7 +73,7 @@ public class World extends BasicGameState {
 			width = container.getWidth();
 		if (height == 0)
 			height = container.getHeight();
-		// this.clear();
+		camera = new Camera(width, height);
 	}
 
 	@Override
@@ -92,19 +92,13 @@ public class World extends BasicGameState {
 				continue;
 			renderEntity(e, g, container);
 		}
-		// center to camera position
-		if (camera != null)
-			g.translate(-camera.cameraX, -camera.cameraY);
+		g.translate(-camera.getX(), -camera.getY());
 
 		// render entities
 		for (Entity e : entities) {
 			if (!e.visible)
 				continue; // next entity. this one stays invisible
-			if (camera != null) {
-				if (camera.contains(e)) {
-					renderEntity(e, g, container);
-				}
-			} else {
+			if (camera.contains(e)) {
 				renderEntity(e, g, container);
 			}
 		}
@@ -114,13 +108,12 @@ public class World extends BasicGameState {
 			ME.ps.render();
 		}
 
-		if (ME.debugEnabled && camera != null) {
-			if (camera.getMoveRect() != null)
-				g.draw(camera.getMoveRect());
+		if (ME.debugEnabled) {
+			g.draw(camera.getDeadzone());
+			g.draw(camera.getVisibleRect());
 		}
 
-		if (camera != null)
-			g.translate(camera.cameraX, camera.cameraY);
+		g.translate(camera.getX(), camera.getY());
 
 		// finally render entities above camera
 		for (Entity e : aboveCamera) {
@@ -180,9 +173,6 @@ public class World extends BasicGameState {
 			e.updateAlarms(delta);
 			if (e.active)
 				e.update(container, delta);
-			// check for wrapping or out of world entities
-			// TODO: comment for a test
-			// e.checkWorldBoundaries();
 		}
 
 		// update particle system
@@ -198,11 +188,7 @@ public class World extends BasicGameState {
 			entity.removedFromWorld();
 		}
 		removable.clear();
-
-		// update camera
-		if (camera != null) {
-			camera.update(container, delta);
-		}
+		camera.update(delta);
 
 		ME.update(container, game, delta);
 	}
@@ -252,6 +238,7 @@ public class World extends BasicGameState {
 	/**
 	 *
 	 * @param type
+	 *            The entity type to count
 	 * @return number of entities of the given type in this world
 	 */
 	public int getNrOfEntities(String type) {
@@ -337,25 +324,13 @@ public class World extends BasicGameState {
 		removable.clear();
 	}
 
-	public void setCamera(Camera camera) {
-		this.camera = camera;
-		this.camera.setMyWorld(this);
-	}
-
-	public void setCameraOn(Entity entity) {
-		if (camera == null) {
-			this.setCamera(new Camera(this, entity, this.container.getWidth(),
-					this.container.getHeight()));
-		}
-		this.camera.setFollow(entity);
-	}
-
 	public int getWidth() {
 		return width;
 	}
 
 	public void setWidth(int width) {
 		this.width = width;
+		camera.setSceneWidth(width);
 	}
 
 	public int getHeight() {
@@ -364,6 +339,16 @@ public class World extends BasicGameState {
 
 	public void setHeight(int height) {
 		this.height = height;
+		camera.setSceneHeight(height);
+	}
+
+	public boolean contains(Entity entity) {
+		return contains(entity.x, entity.y, entity.width, entity.height);
+	}
+
+	public boolean contains(float x, float y, int width, int height) {
+		return x >= 0 && y >= 0 && x + width <= this.width
+				&& y + height <= this.height;
 	}
 
 	public List<Entity> findEntityWithType(String type) {
@@ -449,16 +434,6 @@ public class World extends BasicGameState {
 	 */
 	public boolean pressed(String command) {
 		return input.isPressed(command);
-	}
-
-	public boolean contains(Entity entity) {
-		return contains(entity.x,entity.y,entity.width ,entity.height);
-	}
-
-	public boolean contains(float x, float y, int width, int height) {
-		return x >=0 && y>=0 &&
-				x + width <= this.width &&
-				y + height <= this.height;
 	}
 
 }

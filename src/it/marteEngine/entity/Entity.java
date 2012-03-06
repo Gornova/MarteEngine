@@ -828,6 +828,10 @@ public abstract class Entity implements Comparable<Entity> {
 		return currentAnim.equals(animName);
 	}
 
+	public Animation getCurrentAnim() {
+		return animations.get(currentAnim);
+	}
+
 	public String toCsv() {
 		return "" + (int) x + "," + (int) y + "," + name + ","
 				+ collisionTypesToString();

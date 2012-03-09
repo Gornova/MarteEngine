@@ -318,16 +318,17 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Add an animation.The first animation added is set as the current
-	 * animation.
+	 * Add a name, animation pair to this entity. If the animation name is
+	 * already used, the new animation overwrites the previous animation.
+	 * 
+	 * @param animName
+	 *            The unique identifier for this animation
+	 * @param animation
+	 *            The animation to add
+	 * @see #setAnim(String)
 	 */
 	public void addAnimation(String animName, Animation animation) {
-		boolean firstAnim = animations.isEmpty();
 		animations.put(animName, animation);
-
-		if (firstAnim) {
-			setAnim(animName);
-		}
 	}
 
 	/**
@@ -824,8 +825,24 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
+	public boolean hasAnim(String animName) {
+		return animations.containsKey(animName);
+	}
+
 	public boolean isCurrentAnim(String animName) {
-		return currentAnim.equals(animName);
+		return currentAnim != null && currentAnim.equals(animName);
+	}
+
+	public Animation getCurrentAnim() {
+		if (animations.isEmpty()) {
+			throw new IllegalArgumentException(
+					"No animations defined, use addAnimation.");
+		}
+		if (currentAnim == null) {
+			throw new IllegalArgumentException(
+                    "No animation set, use setAnim");
+		}
+		return animations.get(currentAnim);
 	}
 
 	public String toCsv() {

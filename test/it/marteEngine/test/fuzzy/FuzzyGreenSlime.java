@@ -6,7 +6,6 @@ import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PhysicsEntity;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.tween.Tweener;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -34,6 +33,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 		setHitBox(0, 0, 40, 20);
 		// make Slime sloow
 		maxSpeed.x = 1;
+		setAnim("move");
 	}
 
 	@Override

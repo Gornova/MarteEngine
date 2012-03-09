@@ -1,7 +1,6 @@
 package it.marteEngine.actor;
 
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -53,6 +52,7 @@ public class StaticActor extends Entity {
 		try {
 			setGraphic(new SpriteSheet(ref, width, height));
 			addAnimation(NAME, false, row, frame);
+			setAnim(NAME);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

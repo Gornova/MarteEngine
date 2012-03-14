@@ -5,13 +5,12 @@ import it.marteEngine.entity.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 
+import it.marteEngine.entity.InputManager;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
@@ -54,7 +53,7 @@ public class World extends BasicGameState {
 	public int renderedEntities;
 
 	/** available commands for world **/
-	protected Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
+	protected InputManager input;
 
 	public World(int id) {
 		this.id = id;
@@ -68,11 +67,13 @@ public class World extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		this.container = container;
+		input = new InputManager(container.getInput());
+
 		if (width == 0)
 			width = container.getWidth();
 		if (height == 0)
 			height = container.getHeight();
-		// this.clear();
+		camera = new Camera(width, height);
 	}
 
 	@Override
@@ -91,19 +92,13 @@ public class World extends BasicGameState {
 				continue;
 			renderEntity(e, g, container);
 		}
-		// center to camera position
-		if (camera != null)
-			g.translate(-camera.cameraX, -camera.cameraY);
+		g.translate(-camera.getX(), -camera.getY());
 
 		// render entities
 		for (Entity e : entities) {
 			if (!e.visible)
 				continue; // next entity. this one stays invisible
-			if (camera != null) {
-				if (camera.contains(e)) {
-					renderEntity(e, g, container);
-				}
-			} else {
+			if (camera.contains(e)) {
 				renderEntity(e, g, container);
 			}
 		}
@@ -113,13 +108,12 @@ public class World extends BasicGameState {
 			ME.ps.render();
 		}
 
-		if (ME.debugEnabled && camera != null) {
-			if (camera.getMoveRect() != null)
-				g.draw(camera.getMoveRect());
+		if (ME.debugEnabled) {
+			g.draw(camera.getDeadzone());
+			g.draw(camera.getVisibleRect());
 		}
 
-		if (camera != null)
-			g.translate(camera.cameraX, camera.cameraY);
+		g.translate(camera.getX(), camera.getY());
 
 		// finally render entities above camera
 		for (Entity e : aboveCamera) {
@@ -179,9 +173,6 @@ public class World extends BasicGameState {
 			e.updateAlarms(delta);
 			if (e.active)
 				e.update(container, delta);
-			// check for wrapping or out of world entities
-			// TODO: comment for a test
-			// e.checkWorldBoundaries();
 		}
 
 		// update particle system
@@ -197,11 +188,7 @@ public class World extends BasicGameState {
 			entity.removedFromWorld();
 		}
 		removable.clear();
-
-		// update camera
-		if (camera != null) {
-			camera.update(container, delta);
-		}
+		camera.update(delta);
 
 		ME.update(container, game, delta);
 	}
@@ -213,7 +200,7 @@ public class World extends BasicGameState {
 
 	/**
 	 * Add entity to world and sort entity in z order
-	 * 
+	 *
 	 * @param e
 	 *            entity to add
 	 */
@@ -249,8 +236,9 @@ public class World extends BasicGameState {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param type
+	 *            The entity type to count
 	 * @return number of entities of the given type in this world
 	 */
 	public int getNrOfEntities(String type) {
@@ -336,25 +324,13 @@ public class World extends BasicGameState {
 		removable.clear();
 	}
 
-	public void setCamera(Camera camera) {
-		this.camera = camera;
-		this.camera.setMyWorld(this);
-	}
-
-	public void setCameraOn(Entity entity) {
-		if (camera == null) {
-			this.setCamera(new Camera(this, entity, this.container.getWidth(),
-					this.container.getHeight()));
-		}
-		this.camera.setFollow(entity);
-	}
-
 	public int getWidth() {
 		return width;
 	}
 
 	public void setWidth(int width) {
 		this.width = width;
+		camera.setSceneWidth(width);
 	}
 
 	public int getHeight() {
@@ -363,6 +339,16 @@ public class World extends BasicGameState {
 
 	public void setHeight(int height) {
 		this.height = height;
+		camera.setSceneHeight(height);
+	}
+
+	public boolean contains(Entity entity) {
+		return contains(entity.x, entity.y, entity.width, entity.height);
+	}
+
+	public boolean contains(float x, float y, int width, int height) {
+		return x >= 0 && y >= 0 && x + width <= this.width
+				&& y + height <= this.height;
 	}
 
 	public List<Entity> findEntityWithType(String type) {
@@ -416,65 +402,38 @@ public class World extends BasicGameState {
 	}
 
 	/**
-	 * define commands to handle inputs
-	 * 
-	 * @param command
-	 *            name of the command
-	 * @param keys
-	 *            keys or mouse input from {@link Input} class
+	 * @see #bindToKey(String, int...)
 	 */
 	public void define(String command, int... keys) {
-		commands.put(command, keys);
+		bindToKey(command, keys);
 	}
 
 	/**
-	 * Check if a command is down
-	 * 
-	 * @param key
-	 * @return
+	 * @see InputManager#bindToKey(String, int...)
+	 */
+	public void bindToKey(String command, int... keys) {
+		input.bindToKey(command, keys);
+	}
+
+	/**
+	 * @see InputManager#bindToMouse(String, int...)
+	 */
+	public void bindToMouse(String command, int... buttons) {
+		input.bindToMouse(command, buttons);
+	}
+
+	/**
+	 * @see InputManager#isDown(String)
 	 */
 	public boolean check(String command) {
-		int[] checked = commands.get(command);
-		if (checked == null)
-			return false;
-		for (int i = 0; i < checked.length; i++) {
-			if (this.container.getInput().isKeyDown(checked[i])) {
-				return true;
-			} else if (checked[i] < 10) {
-				/**
-				 * 10 is max number of button on a mouse
-				 * 
-				 * @see Input
-				 */
-				if (this.container.getInput().isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isDown(command);
 	}
 
 	/**
-	 * Check if a command is pressed
-	 * 
-	 * @param key
-	 * @return
+	 * @see InputManager#isPressed(String)
 	 */
 	public boolean pressed(String command) {
-		int[] checked = commands.get(command);
-		if (checked == null)
-			return false;
-		for (int i = 0; i < checked.length; i++) {
-			if (this.container.getInput().isKeyPressed(checked[i])) {
-				return true;
-			} else if (checked[i] == Input.MOUSE_LEFT_BUTTON
-					|| checked[i] == Input.MOUSE_RIGHT_BUTTON) {
-				if (this.container.getInput().isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isPressed(command);
 	}
 
 }

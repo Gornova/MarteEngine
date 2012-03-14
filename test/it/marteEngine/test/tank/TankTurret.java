@@ -28,7 +28,7 @@ public class TankTurret extends Entity {
 
 		this.setCentered(true);
 
-		define(FIRE, Input.MOUSE_LEFT_BUTTON);
+		bindToMouse(FIRE, Input.MOUSE_LEFT_BUTTON);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class TankTurret extends Entity {
 		angle = (int) calculateAngle(x, y, mx, my);
 
 		// add new Missile when player fire
-		if (check(FIRE)) {
+		if (pressed(FIRE)) {
 			Missile m = new Missile(x, y, angle);
 			m.setCentered(true);
 			ME.world.add(m);

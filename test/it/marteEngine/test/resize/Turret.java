@@ -24,7 +24,7 @@ public class Turret extends Entity {
 		// position turret on top of parent position
 		this.parent = parent;
 		this.setCentered(true);
-		define(FIRE, Input.MOUSE_LEFT_BUTTON);
+		bindToMouse(FIRE, Input.MOUSE_LEFT_BUTTON);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class Turret extends Entity {
 		angle = (int) calculateAngle(x, y, mx, my);
 
 		// add new Missile when player fire
-		if (check(FIRE)) {
+		if (pressed(FIRE)) {
 			Bullet b = new Bullet(x, y, "data/bullet.png", angle);
 			b.setCentered(true);
 			ME.world.add(b);

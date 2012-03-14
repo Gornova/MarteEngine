@@ -26,22 +26,23 @@ import java.util.StringTokenizer;
 /**
  * The XMLResourceLoader parses an xml document and reads the following known
  * elements:
- * basedir path(req)
+ * basedir path (required, all resources are relative to this directory)
  * sound key file
  * music key file
  * image key file transparentColor(opt)
  * sheet key file width height transparentColor(opt)
- * anim key imgName frameDuration frames(opt) flipVertical(opt) flipHorizontal(opt) loop(default=true)
+ * anim key imgName frameDuration row frames(default=all horizontal frames)
+ * flipVertical(opt) flipHorizontal(opt) loop(default=true)
  * angelcodefont key fontFile imageFile
  * unicodefont key file fontSize(default=12)
  * spritesheetfont key file firstchar
  * map key file
  * param key value
- * <p/>
- * A parameter followed by (req) means Required and by (opt) means Optional.
- * Some parameters are optional because they have a default value. The file
- * parameter is relative to the basedir.
- * <p/>
+ *
+ * The key is the reference to the resource. All parameters are required except
+ * when the parameter is suffixed with (opt) which stands for optional.
+ * Some parameters are optional because they have a default value.
+ *
  * Examples:
  * <sound key="jump" file="jump.wav" />
  * <music key="sleepy" file="sleep.wav" />
@@ -55,7 +56,7 @@ import java.util.StringTokenizer;
  * <param key="bossLevel" value="11" />
  */
 public class XMLResourceLoader {
-	private Element[] NO_ELEMENTS = new Element[0];
+	private static final Element[] NO_ELEMENTS = new Element[0];
 	private String baseDir;
 	private Element rootElement;
 
@@ -68,7 +69,7 @@ public class XMLResourceLoader {
 			validateResourceFile();
 
 			Element[] elements = getElementsByTagName("basedir");
-			setBaseDirectory(elements[0].getAttribute("path"));
+			setBaseDirectory(elements[0]);
 
 			for (Element element : getElementsByTagName("sound")) {
 				loadSound(element);
@@ -130,15 +131,13 @@ public class XMLResourceLoader {
 		}
 	}
 
-	private void setBaseDirectory(String baseDirectory) throws SlickException {
-		Log.debug("Setting base directory to " + baseDirectory);
-		if (baseDirectory == null || baseDirectory.isEmpty()) {
-			throw new SlickException("Could not find required BaseDir element.");
-		}
-		baseDir = baseDirectory;
+	private void setBaseDirectory(Element element) {
+		checkRequiredAttributes(element, "path");
+		baseDir = element.getAttribute("path");
 		if (!baseDir.endsWith("/")) {
 			baseDir += "/";
 		}
+		Log.debug("Setting base directory to " + baseDir);
 	}
 
 	private void loadSound(Element element) throws SlickException {
@@ -209,49 +208,46 @@ public class XMLResourceLoader {
 	}
 
 	private void loadAnimation(Element element) {
-		checkRequiredAttributes(element, "key", "imgName", "frameDuration");
+		checkRequiredAttributes(element, "key", "imgName", "frameDuration",
+				"row");
 		String key = element.getAttribute("key");
 		String imgName = element.getAttribute("imgName");
 		int frameDuration = parseIntAttribute(element, "frameDuration");
-		boolean flipHorizontal = false, flipVertical = false;
-		int[] frames;
-		int row = 0;
-		boolean loop = true;
+		int row = parseIntAttribute(element, "row");
 
 		if (!ResourceManager.hasSpriteSheet(imgName)) {
 			throw new IllegalArgumentException("Animation " + key
 					+ " needs spritesheet " + imgName
 					+ " but it has not been loaded.");
 		}
-		SpriteSheet sheet = ResourceManager.getSpriteSheet(imgName);
 
-		if (element.hasAttribute("frames")) {
-			String framesAsText = element.getAttribute("frames");
-			frames = readFrameIndexes(framesAsText);
-		} else {
-			frames = new int[sheet.getHorizontalCount()];
-			for (int i = 0; i < sheet.getHorizontalCount(); i++) {
-				frames[i] = i;
-			}
-		}
-		if (element.hasAttribute("flipHorizontal")) {
-			flipHorizontal = parseBooleanAttribute(element, "flipHorizontal");
-		}
-		if (element.hasAttribute("flipVertical")) {
-			flipVertical = parseBooleanAttribute(element, "flipVertical");
-		}
-		if (element.hasAttribute("row")) {
-			row = parseIntAttribute(element, "row");
-		}
-		if (element.hasAttribute("loop")) {
-			loop = parseBooleanAttribute(element, "loop");
-		}
+		SpriteSheet sheet = ResourceManager.getSpriteSheet(imgName);
+		int[] frames = getHorizontalFrames(element, sheet.getHorizontalCount());
+		boolean flipHorizontal = parseBooleanAttribute(
+            element, "flipHorizontal", false);
+		boolean flipVertical = parseBooleanAttribute(
+            element, "flipVertical",	false);
+		boolean loop = parseBooleanAttribute(element, "loop", true);
 
 		Animation anim = buildAnimationFromFrames(sheet, row, frames,
 				frameDuration, flipHorizontal, flipVertical);
 		anim.setLooping(loop);
 		Log.debug(formatLoadMsg("animation", key, "spritesheet", imgName));
 		ResourceManager.addAnimation(key, anim);
+	}
+
+	private int[] getHorizontalFrames(Element element, int allFrames) {
+		int[] frames;
+		if (element.hasAttribute("frames")) {
+			String framesAsText = element.getAttribute("frames");
+			frames = readFrameIndexes(framesAsText);
+		} else {
+			frames = new int[allFrames];
+			for (int i = 0; i < allFrames; i++) {
+				frames[i] = i;
+			}
+		}
+		return frames;
 	}
 
 	private int[] readFrameIndexes(String framesAsText) {
@@ -278,9 +274,9 @@ public class XMLResourceLoader {
 	 * @param frameDuration
 	 *            The duration of 1 frame in the resulting animation.
 	 * @param flipHorizontal
-	 *            If true flips each frame in the animation on the x axis
+	 *            If true flips each frame in the animation over the y axis
 	 * @param flipVertical
-	 *            If true flips each frame in the animation on the y axis
+	 *            If true flips each frame in the animation over the x axis
 	 * @return An animation parsed from the spritesheet
 	 */
 	private Animation buildAnimationFromFrames(SpriteSheet sheet, int row,
@@ -317,11 +313,7 @@ public class XMLResourceLoader {
 		checkRequiredAttributes(element, "key", "file");
 		String key = element.getAttribute("key");
 		String ttfFile = element.getAttribute("file");
-		int fontSize = 12;
-
-		if (element.hasAttribute("fontSize")) {
-			fontSize = parseIntAttribute(element, "fontSize");
-		}
+		int fontSize = parseIntAttribute(element, "fontSize", 12);
 
 		Log.debug(formatLoadMsg("Unicode font", key, ttfFile));
 		UnicodeFont unicodeFont = new UnicodeFont(baseDir + ttfFile, fontSize,
@@ -371,34 +363,45 @@ public class XMLResourceLoader {
 	}
 
 	private void checkRequiredAttributes(Element element, String... attributes) {
-		boolean requiredAttributeMissing = false;
-		for (String attribute : attributes) {
-			if (!element.hasAttribute(attribute)) {
-				requiredAttributeMissing = true;
+		for (String requiredAttribute : attributes) {
+			if (!element.hasAttribute(requiredAttribute)) {
+				String msg = "Required attribute(s) missing: ";
+
+				for (String attribute : attributes) {
+					if (!element.hasAttribute(attribute)) {
+						if (msg.length() > 0) {
+							msg += ", ";
+						}
+						msg += attribute;
+					}
+				}
+
+				msg += " from element " + element.getNodeName();
+				throw new IllegalArgumentException(msg);
 			}
 		}
+	}
 
-		if (requiredAttributeMissing) {
-			StringBuffer missingAttributesMessage = new StringBuffer(
-					"Required attribute(s) missing: ");
-			for (String attribute : attributes) {
-				if (!element.hasAttribute(attribute)) {
-					missingAttributesMessage.append(attribute);
-					missingAttributesMessage.append(", ");
-				}
-			}
-			// Remove trailing ", "
-			int length = missingAttributesMessage.length();
-			missingAttributesMessage.delete(length - 2, length);
-			missingAttributesMessage.append(" from element ").append(
-					element.getNodeName());
-			throw new IllegalArgumentException(
-					missingAttributesMessage.toString());
+	private int parseIntAttribute(Element element, String attributeName,
+			int defaultValue) {
+		if (element.hasAttribute(attributeName)) {
+			return parseIntAttribute(element, attributeName);
+		} else {
+			return defaultValue;
 		}
 	}
 
 	private int parseIntAttribute(Element element, String attributeName) {
 		return Integer.parseInt(element.getAttribute(attributeName));
+	}
+
+	private boolean parseBooleanAttribute(Element element,
+			String attributeName, boolean defaultValue) {
+		if (element.hasAttribute(attributeName)) {
+			return parseBooleanAttribute(element, attributeName);
+		} else {
+			return defaultValue;
+		}
 	}
 
 	private boolean parseBooleanAttribute(Element element, String attributeName) {

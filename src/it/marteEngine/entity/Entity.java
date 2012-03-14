@@ -16,7 +16,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
@@ -98,8 +97,7 @@ public abstract class Entity implements Comparable<Entity> {
 	/** static image for non-animated entity */
 	public Image currentImage;
 
-	/** input commands */
-	public Map<String, int[]> commands = new HashMap<String, int[]>();
+	public InputManager input;
 
 	/** The types this entity can collide with */
 	private HashSet<String> collisionTypes = new HashSet<String>();
@@ -115,6 +113,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public int hitboxHeight;
 
 	public StateManager stateManager;
+	private boolean leftTheWorld;
 
 	/**
 	 * Create a new entity positioned at the (x,y) coordinates.
@@ -126,6 +125,7 @@ public abstract class Entity implements Comparable<Entity> {
 		this.starty = y;
 		stateManager = new StateManager();
 		alarms = new AlarmContainer(this);
+		input = new InputManager();
 	}
 
 	/**
@@ -318,21 +318,22 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Add an animation.The first animation added is set as the current
-	 * animation.
+	 * Add a name, animation pair to this entity. If the animation name is
+	 * already used, the new animation overwrites the previous animation.
+	 * 
+	 * @param animName
+	 *            The unique identifier for this animation
+	 * @param animation
+	 *            The animation to add
+	 * @see #setAnim(String)
 	 */
 	public void addAnimation(String animName, Animation animation) {
-		boolean firstAnim = animations.isEmpty();
 		animations.put(animName, animation);
-
-		if (firstAnim) {
-			setAnim(animName);
-		}
 	}
 
 	/**
 	 * Start playing the animation stored as animName.
-	 * 
+	 *
 	 * @param animName
 	 *            The name of the animation to play
 	 * @throws IllegalArgumentException
@@ -350,59 +351,38 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * define commands to handle inputs
-	 * 
-	 * @param command
-	 *            name of the command
-	 * @param keys
-	 *            keys or mouse input from {@link Input} class
+	 * @see #bindToKey(String, int...)
 	 */
 	public void define(String command, int... keys) {
-		commands.put(command, keys);
+		bindToKey(command, keys);
 	}
 
 	/**
-	 * Check if a command is down
+	 * @see InputManager#bindToKey(String, int...)
+	 */
+	public void bindToKey(String command, int... keys) {
+		input.bindToKey(command, keys);
+	}
+
+	/**
+	 * @see InputManager#bindToMouse(String, int...)
+	 */
+	public void bindToMouse(String command, int... buttons) {
+		input.bindToMouse(command, buttons);
+	}
+
+	/**
+	 * @see InputManager#isDown(String)
 	 */
 	public boolean check(String command) {
-		if (!commands.containsKey(command))
-			return false;
-
-		int[] checked = commands.get(command);
-		Input input = world.container.getInput();
-		for (int i = 0; i < checked.length; i++) {
-			if (input.isKeyDown(checked[i])) {
-				return true;
-			} else if (checked[i] < 10) {
-				// 10 is max number of button on a mouse, @see Input
-				if (input.isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isDown(command);
 	}
 
 	/**
-	 * Check if a command is pressed
+	 * @see InputManager#isPressed(String)
 	 */
 	public boolean pressed(String command) {
-		if (!commands.containsKey(command))
-			return false;
-
-		int[] checked = commands.get(command);
-		Input input = world.container.getInput();
-		for (int i = 0; i < checked.length; i++) {
-			if (input.isKeyPressed(checked[i])) {
-				return true;
-			} else if (checked[i] == Input.MOUSE_LEFT_BUTTON
-					|| checked[i] == Input.MOUSE_RIGHT_BUTTON) {
-				if (input.isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isPressed(command);
 	}
 
 	/**
@@ -419,7 +399,7 @@ public abstract class Entity implements Comparable<Entity> {
 	/**
 	 * Set the hitbox used for collision detection. If an entity has an hitbox,
 	 * it is collidable against other entities.
-	 * 
+	 *
 	 * @param xOffset
 	 *            The offset of the hitbox on the x axis. Relative to the top
 	 *            left point of the entity.
@@ -446,7 +426,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * other entities add at least 1 type. For example in a space invaders game.
 	 * To allow a ship to collide with a bullet and a monster:
 	 * ship.addType("bullet", "monster")
-	 * 
+	 *
 	 * @param types
 	 *            The types that this entity can collide with.
 	 */
@@ -472,7 +452,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * <p/>
 	 * If a collision occurred then both the entities are notified of the
 	 * collision by the {@link #collisionResponse(Entity)} method.
-	 * 
+	 *
 	 * @param type
 	 *            The type of another entity to check for collision.
 	 * @param x
@@ -510,7 +490,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Checks for collision against multiple types.
-	 * 
+	 *
 	 * @see #collide(String, float, float)
 	 */
 	public Entity collide(String[] types, float x, float y) {
@@ -524,7 +504,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Checks if this Entity collides with a specific Entity.
-	 * 
+	 *
 	 * @param other
 	 *            The Entity to check for collision
 	 * @param x
@@ -586,7 +566,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * Checks if this Entity contains the specified point. The
 	 * {@link #collisionResponse(Entity)} is called to notify this entity of the
 	 * collision.
-	 * 
+	 *
 	 * @param x
 	 *            The x coordinate of the point to check
 	 * @param y
@@ -619,7 +599,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Response to a collision with another entity
-	 * 
+	 *
 	 * @param other
 	 *            The other entity that collided with us.
 	 */
@@ -640,29 +620,45 @@ public abstract class Entity implements Comparable<Entity> {
 
 	public void setWorld(World world) {
 		this.world = world;
+		input.setInput(world.container.getInput());
 	}
 
+	/**
+	 * Check if this entity has left the world.
+	 * 
+	 * If the entity has moved outside of the world then the entity is notified by the
+	 * {@link #leftWorldBoundaries()} method. If the entity must be wrapped, make it
+	 * reappear on the opposite side of the world.
+	 */
 	public void checkWorldBoundaries() {
-		if ((x + width) < 0) {
-			leftWorldBoundaries();
+		if (world.contains(this)) {
+			leftTheWorld = false;
+		} else {
+			if (!leftTheWorld) {
+				leftWorldBoundaries();
+				leftTheWorld = true;
+			}
+			wrapEntity();
+		}
+	}
+
+	private void wrapEntity() {
+		if (x + width < 0) {
 			if (wrapHorizontal) {
-				x = this.world.width + 1;
+				x = world.width - 1;
 			}
 		}
-		if (x > this.world.width) {
-			leftWorldBoundaries();
+		if (x > world.width) {
 			if (wrapHorizontal) {
 				x = (-width + 1);
 			}
 		}
-		if ((y + height) < 0) {
-			leftWorldBoundaries();
+		if (y + height < 0) {
 			if (wrapVertical) {
-				y = this.world.height + 1;
+				y = world.height - 1;
 			}
 		}
-		if (y > this.world.height) {
-			leftWorldBoundaries();
+		if (y > world.height) {
 			if (wrapVertical) {
 				y = (-height + 1);
 			}
@@ -780,7 +776,7 @@ public abstract class Entity implements Comparable<Entity> {
 	/**
 	 * Overwrite this method if your entity shall react on alarms that reached
 	 * their triggerTime.
-	 * 
+	 *
 	 * @param alarmName
 	 *            the name of the alarm that triggered right now
 	 */
@@ -829,8 +825,24 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
+	public boolean hasAnim(String animName) {
+		return animations.containsKey(animName);
+	}
+
 	public boolean isCurrentAnim(String animName) {
-		return currentAnim.equals(animName);
+		return currentAnim != null && currentAnim.equals(animName);
+	}
+
+	public Animation getCurrentAnim() {
+		if (animations.isEmpty()) {
+			throw new IllegalArgumentException(
+					"No animations defined, use addAnimation.");
+		}
+		if (currentAnim == null) {
+			throw new IllegalArgumentException(
+                    "No animation set, use setAnim");
+		}
+		return animations.get(currentAnim);
 	}
 
 	public String toCsv() {

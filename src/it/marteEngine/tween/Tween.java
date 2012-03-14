@@ -44,6 +44,8 @@ public abstract class Tween {
 	}
 
 	public void update(int delta) {
+		if(!active) return;
+
 		if (this.deltaTiming)
 			time += delta;
 		else
@@ -76,8 +78,6 @@ public abstract class Tween {
 
 	/**
 	 * Reset tween to initial position
-	 * 
-	 * @return void
 	 */
 	public void reset() {
 		time = 0;

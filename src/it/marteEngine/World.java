@@ -5,8 +5,9 @@ import it.marteEngine.entity.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -54,7 +55,7 @@ public class World extends BasicGameState {
 	public int renderedEntities;
 
 	/** available commands for world **/
-	protected Hashtable<String, int[]> commands = new Hashtable<String, int[]>();
+	protected Map<String, int[]> commands = new HashMap<String, int[]>();
 
 	public World(int id) {
 		this.id = id;

@@ -2,7 +2,8 @@ package it.marteEngine;
 
 import it.marteEngine.entity.Entity;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -49,8 +50,8 @@ public class ME {
 	public static final String WALK_UP = "walk_Up";
 	public static final String WALK_DOWN = "walk_Down";
 
-	/** utility hashtable for game attributes **/
-	public static Hashtable<String, Object> attributes = new Hashtable<String, Object>();
+	/** game attributes **/
+	public static Map<String, Object> attributes = new HashMap<String, Object>();
 
 	public static World world;
 

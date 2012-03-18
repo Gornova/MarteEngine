@@ -1,7 +1,7 @@
 package it.marteEngine.entity;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,8 +11,8 @@ import java.util.Set;
  * alarm is triggered by the alarmTriggered method.
  */
 public class AlarmContainer {
-	private Map<String, Alarm> alarms = new Hashtable<String, Alarm>();
-	private Map<String, Alarm> alarmsToAdd = new Hashtable<String, Alarm>();
+	private Map<String, Alarm> alarms = new HashMap<String, Alarm>();
+	private Map<String, Alarm> alarmsToAdd = new HashMap<String, Alarm>();
 	private Entity entity;
 
 	public AlarmContainer(Entity entity) {

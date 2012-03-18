@@ -218,9 +218,7 @@ public abstract class Entity implements Comparable<Entity> {
 			if (angle != 0)
 				g.resetTransform();
 		} else if (currentImage != null) {
-			if (color!= null){
-			currentImage.setAlpha(color.a);
-			}
+		    currentImage.setAlpha(color.a);
 			int w = currentImage.getWidth() / 2;
 			int h = currentImage.getHeight() / 2;
 			if (centered) {
@@ -234,22 +232,15 @@ public abstract class Entity implements Comparable<Entity> {
 				currentImage.setRotation(angle);
 			}
 			if (scale != 1.0f) {
-				if (centered)
+				if (centered) {
 					g.translate(xpos - (w * scale - w), ypos - (h * scale - h));
-				else
+				} else {
 					g.translate(xpos, ypos);
+				}
 				g.scale(scale, scale);
-				if (color.equals(Color.white)) {
-					g.drawImage(currentImage, 0, 0);
-				} else {
-					g.drawImage(currentImage, 0, 0, color);
-				}
+				g.drawImage(currentImage, 0, 0, color);
 			} else {
-				if (color.equals(Color.white)) {
-					g.drawImage(currentImage, xpos, ypos);
-				} else {
-					g.drawImage(currentImage, 0, 0, color);
-				}
+				g.drawImage(currentImage, xpos, ypos, color);
 			}
 			if (scale != 1.0f)
 				g.resetTransform();

@@ -25,7 +25,7 @@ public class FuzzyMain extends StateBasedGame {
 	public static final int WIN_STATE = 2;
 	public static final int SELECT_STATE = 3;
 
-	private static boolean ressourcesInited;
+	private static boolean resourcesLoaded;
 
 	public static Font font;
 	public static Integer gotoLevel = -1;
@@ -36,7 +36,7 @@ public class FuzzyMain extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		initRessources();
+		loadResources();
 
 		font = ResourceManager.getFont("font");
 
@@ -52,18 +52,18 @@ public class FuzzyMain extends StateBasedGame {
 		addState(selectState);
 	}
 
-	public static void initRessources() throws SlickException {
-		if (ressourcesInited)
+	public static void loadResources() throws SlickException {
+		if (resourcesLoaded)
 			return;
 		try {
 			ResourceManager.loadResources("data/fuzzy/resources.xml");
 		} catch (IOException e) {
-			Log.error("failed to load ressource file 'data/fuzzy/resources.xml': "
+			Log.error("failed to load resource file 'data/fuzzy/resources.xml': "
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
 
-		ressourcesInited = true;
+		resourcesLoaded = true;
 	}
 
 	public static void main(String[] argv) {

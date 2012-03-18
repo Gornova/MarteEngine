@@ -87,7 +87,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	private Color color = new Color(Color.white);
 
-	private AlarmContainer alarms;
+	public AlarmContainer alarms;
 
 	protected SpriteSheet sheet;
 	private Map<String, Animation> animations = new HashMap<String, Animation>();
@@ -782,26 +782,6 @@ public abstract class Entity implements Comparable<Entity> {
 		alarms.addAlarm(alarm, startNow);
 	}
 
-	public boolean restartAlarm(String alarmName) {
-		return alarms.restartAlarm(alarmName);
-	}
-
-	public boolean pauseAlarm(String alarmName) {
-		return alarms.pauseAlarm(alarmName);
-	}
-
-	public boolean resumeAlarm(String alarmName) {
-		return alarms.resumeAlarm(alarmName);
-	}
-
-	public boolean destroyAlarm(String alarmName) {
-		return alarms.destroyAlarm(alarmName);
-	}
-
-	public boolean hasAlarm(String alarmName) {
-		return alarms.hasAlarm(alarmName);
-	}
-
 	/**
 	 * Overwrite this method if your entity shall react on alarms that reached
 	 * their triggerTime.
@@ -811,14 +791,6 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void alarmTriggered(String alarmName) {
 		// this method needs to be overwritten to deal with alarms
-	}
-
-	/**
-	 * this method is called automatically by the World and must not be called
-	 * by your game code. Don't touch this method ;-) Consider it private!
-	 */
-	public void updateAlarms(int delta) {
-		alarms.update(delta);
 	}
 
 	public int getAngle() {

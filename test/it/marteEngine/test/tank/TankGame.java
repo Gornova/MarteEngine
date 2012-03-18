@@ -11,8 +11,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * In game World for TestTest
- * 
+ * In game World for the tank entity
+ *
  * @author Gornova
  */
 public class TankGame extends World {
@@ -45,11 +45,9 @@ public class TankGame extends World {
 		// add background from
 		// http://www.flickr.com/photos/fredmikerudy/4136592583/
 		Background bg = new Background(0, 0);
-		bg.depth = -100;
 		add(bg);
 
 		container.setMouseCursor(ResourceManager.getImage("cursor"), 25, 25);
-
 	}
 
 	@Override

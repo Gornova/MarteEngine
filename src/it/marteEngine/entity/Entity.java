@@ -108,6 +108,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean active = true;
 	public boolean collidable = true;
 	public boolean visible = true;
+	private boolean leftTheWorld;
 
 	public float hitboxOffsetX;
 	public float hitboxOffsetY;
@@ -644,29 +645,51 @@ public abstract class Entity implements Comparable<Entity> {
 		this.world = world;
 	}
 
+	/**
+	 * Check if this entity has left the world.
+	 * 
+	 * If the entity has moved outside of the world then the entity is notified
+	 * once by the {@link #leftWorldBoundaries()} event.
+	 * 
+	 * If the entity must be wrapped (wrapHorizontal or wrapVertical is true)
+	 * make this entity reappear on the opposite side of the world. The entity
+	 * did not leave the world hence {@link #leftWorldBoundaries()} is not
+	 * called.
+	 */
 	public void checkWorldBoundaries() {
-		if ((x + width) < 0) {
-			leftWorldBoundaries();
+		if (wrapHorizontal || wrapVertical) {
+			wrapEntity();
+		} else {
+			if (world.contains(this)) {
+				leftTheWorld = false;
+			} else {
+				if (!leftTheWorld) {
+					leftWorldBoundaries();
+					leftTheWorld = true;
+				}
+			}
+		}
+	}
+
+	private void wrapEntity() {
+		if (x + width < 0) {
 			if (wrapHorizontal) {
-				x = this.world.width + 1;
+				x = world.width - 1;
 			}
 		}
-		if (x > this.world.width) {
-			leftWorldBoundaries();
+		if (x > world.width) {
 			if (wrapHorizontal) {
-				x = (-width + 1);
+				x = -width + 1;
 			}
 		}
-		if ((y + height) < 0) {
-			leftWorldBoundaries();
+		if (y + height < 0) {
 			if (wrapVertical) {
-				y = this.world.height + 1;
+				y = world.height - 1;
 			}
 		}
-		if (y > this.world.height) {
-			leftWorldBoundaries();
+		if (y > world.height) {
 			if (wrapVertical) {
-				y = (-height + 1);
+				y = -height + 1;
 			}
 		}
 	}

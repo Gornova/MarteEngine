@@ -173,16 +173,11 @@ public class World extends BasicGameState {
 			e.updateAlarms(delta);
 			if (e.active)
 				e.update(container, delta);
-			// check for wrapping or out of world entities
-			e.checkWorldBoundaries();
 		}
 		for (Entity e : aboveCamera) {
 			e.updateAlarms(delta);
 			if (e.active)
 				e.update(container, delta);
-			// check for wrapping or out of world entities
-			// TODO: comment for a test
-			// e.checkWorldBoundaries();
 		}
 
 		// update particle system
@@ -335,6 +330,15 @@ public class World extends BasicGameState {
 		entities.clear();
 		addable.clear();
 		removable.clear();
+	}
+
+	public boolean contains(Entity entity) {
+		return contains(entity.x, entity.y, entity.width, entity.height);
+	}
+
+	public boolean contains(float x, float y, int width, int height) {
+		return x >= 0 && y >= 0 && x + width <= this.width
+				&& y + height <= this.height;
 	}
 
 	public void setCamera(Camera camera) {

@@ -18,9 +18,7 @@ import org.newdawn.slick.util.Log;
  * @author Gornova
  */
 public class TankTest extends StateBasedGame {
-
-	public static int keyRestart = Input.KEY_R;
-	private static boolean ressourcesInited;
+	private static boolean resourcesLoaded;
 
 	public TankTest() throws SlickException {
 		super("Tank Test");
@@ -28,24 +26,23 @@ public class TankTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		initRessources();
+		loadResources();
 		TankGame inGameState = new TankGame(0, container);
 		addState(inGameState);
-
 	}
 
-	public static void initRessources() throws SlickException {
-		if (ressourcesInited)
+	public static void loadResources() throws SlickException {
+		if (resourcesLoaded)
 			return;
 		try {
 			ResourceManager.loadResources("data/tank/resources.xml");
 		} catch (IOException e) {
-			Log.error("failed to load ressource file 'data/tank/resources.xml': "
+			Log.error("failed to load resource file 'data/tank/resources.xml': "
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
 
-		ressourcesInited = true;
+		resourcesLoaded = true;
 	}
 
 	public static void main(String[] argv) {

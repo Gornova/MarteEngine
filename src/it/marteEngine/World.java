@@ -192,6 +192,7 @@ public class World extends BasicGameState {
 			entities.remove(entity);
 			belowCamera.remove(entity);
 			aboveCamera.remove(entity);
+			entity.active = false;
 			entity.removedFromWorld();
 		}
 		removable.clear();

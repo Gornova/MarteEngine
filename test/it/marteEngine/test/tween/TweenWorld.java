@@ -1,7 +1,6 @@
 package it.marteEngine.test.tween;
 
 import it.marteEngine.World;
-import it.marteEngine.tween.Ease;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -19,9 +18,7 @@ public class TweenWorld extends World {
 
 	public TweenWorld(int id, GameContainer container) throws SlickException {
 		super(id, container);
-
 		player = new Player(100, 100);
-
 		add(player);
 	}
 
@@ -36,7 +33,7 @@ public class TweenWorld extends World {
 		g.drawString("Press Z to start, X to pause, C to reset current Tween",
 				5, 45);
 
-		g.drawString("Current ease: " + Ease.getName(player.currentEase), 550,
+		g.drawString("Current ease: " + player.currentEase, 550,
 				5);
 	}
 

@@ -28,14 +28,14 @@ public abstract class Tween {
 	protected boolean deltaTiming = false;
 
 	/** which easing function does this Tween use */
-	protected int easingFunction = Ease.NONE;
+	protected Ease easingFunction = Ease.NONE;
 
-	public Tween(float duration, TweenerMode type, int easingType,
+	public Tween(float duration, TweenerMode type, Ease easingType,
 			boolean active) {
 		this(duration, type, easingType, false, active);
 	}
 
-	public Tween(float duration, TweenerMode type, int easingType,
+	public Tween(float duration, TweenerMode type, Ease easingType,
 			boolean deltaTiming, boolean active) {
 		this.target = duration;
 		this.active = active;
@@ -50,7 +50,7 @@ public abstract class Tween {
 			time++;
 		t = time / target;
 		if (easingFunction != Ease.NONE && t > 0 && t < 1)
-			t = Ease.ease(easingFunction, t);
+			t = easingFunction.ease(t);
 		if (time > target) {
 			t = 1;
 			this.finished = true;

@@ -11,12 +11,12 @@ public abstract class Motion extends Tween {
 	/** the coordinates of the motion */
 	protected float x, y;
 
-	public Motion(float duration, TweenerMode type, int easingType,
+	public Motion(float duration, TweenerMode type, Ease easingType,
 			boolean active) {
 		this(duration, type, easingType, false, active);
 	}
 
-	public Motion(float duration, TweenerMode type, int easingType,
+	public Motion(float duration, TweenerMode type, Ease easingType,
 			boolean deltaTiming, boolean active) {
 		super(duration, type, easingType, deltaTiming, active);
 	}

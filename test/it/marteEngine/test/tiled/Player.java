@@ -2,8 +2,8 @@ package it.marteEngine.test.tiled;
 
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.tween.Ease;
 import it.marteEngine.tween.LinearMotion;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -12,7 +12,7 @@ public class Player extends Entity {
 
 	private LinearMotion motion;
 
-	public int currentEase = 0;
+	public Ease currentEase = Ease.NONE;
 
 	public Player(float x, float y) {
 		super(x, y);
@@ -36,11 +36,7 @@ public class Player extends Entity {
 		Input input = container.getInput();
 		// change tween's ease
 		if (check("CHANGE_MODE")) {
-			if (currentEase + 1 <= 26) {
-				currentEase++;
-			} else {
-				currentEase = 0;
-			}
+			currentEase = currentEase.next();
 		}
 		// check controls
 		if (check("MOVE")) {

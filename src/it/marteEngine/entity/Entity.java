@@ -179,7 +179,6 @@ public abstract class Entity implements Comparable<Entity> {
 			x += speed.x;
 			y += speed.y;
 		}
-		checkWorldBoundaries();
 		previousx = x;
 		previousy = y;
 	}

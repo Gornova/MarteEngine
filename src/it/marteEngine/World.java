@@ -171,8 +171,10 @@ public class World extends BasicGameState {
 		}
 		for (Entity e : entities) {
 			e.alarms.update(delta);
-			if (e.active)
+			if (e.active) {
 				e.update(container, delta);
+				e.checkWorldBoundaries();
+			}
 		}
 		for (Entity e : aboveCamera) {
 			e.alarms.update(delta);

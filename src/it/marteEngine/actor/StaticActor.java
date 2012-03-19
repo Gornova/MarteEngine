@@ -53,6 +53,7 @@ public class StaticActor extends Entity {
 		try {
 			setGraphic(new SpriteSheet(ref, width, height));
 			addAnimation(NAME, false, row, frame);
+            setAnim(NAME);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

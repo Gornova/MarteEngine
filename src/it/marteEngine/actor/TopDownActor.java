@@ -66,6 +66,7 @@ public class TopDownActor extends Entity {
 			addAnimation(STAND_UP, false, 1, 0);
 			addAnimation(STAND_RIGHT, false, 2, 0);
 			addAnimation(STAND_LEFT, false, 3, 0);
+            setAnim(STAND_RIGHT);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

@@ -34,7 +34,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public static final String PLAYER = "Player";
 
 	/** the world this entity lives in */
-	public World world = null;
+	public World world;
 
 	/** unique identifier */
 	public String name;
@@ -48,7 +48,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * If this entity is centered the x,y position is in the center. otherwise
 	 * the x,y position is the top left corner.
 	 */
-	public boolean centered = false;
+	public boolean centered;
 
 	/**
 	 * width of the entity. not necessarily the width of the hitbox. Used for
@@ -66,8 +66,8 @@ public abstract class Entity implements Comparable<Entity> {
 	/** start x and y position stored for reseting for example. very helpful */
 	public float startx, starty;
 
-	public boolean wrapHorizontal = false;
-	public boolean wrapVertical = false;
+	public boolean wrapHorizontal;
+	public boolean wrapVertical;
 
 	/** speed vector (x,y): specifies x and y movement per update call in pixels */
 	public Vector2f speed = new Vector2f(0, 0);
@@ -185,12 +185,10 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	protected void updateAnimation(int delta) {
-		if (animations != null) {
-			if (currentAnim != null) {
-				Animation anim = animations.get(currentAnim);
-				if (anim != null) {
-					anim.update(delta);
-				}
+		if (currentAnim != null) {
+			Animation anim = animations.get(currentAnim);
+			if (anim != null) {
+				anim.update(delta);
 			}
 		}
 	}
@@ -321,16 +319,17 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Add an animation.The first animation added is set as the current
-	 * animation.
+	 * Add a name, animation pair to this entity. If the animation name is
+	 * already used, the new animation overwrites the previous animation.
+	 * 
+	 * @param animName
+	 *            The unique identifier for this animation
+	 * @param animation
+	 *            The animation to add
+	 * @see #setAnim(String)
 	 */
 	public void addAnimation(String animName, Animation animation) {
-		boolean firstAnim = animations.isEmpty();
 		animations.put(animName, animation);
-
-		if (firstAnim) {
-			setAnim(animName);
-		}
 	}
 
 	/**
@@ -344,7 +343,8 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public void setAnim(String animName) {
 		if (!animations.containsKey(animName)) {
-			throw new IllegalArgumentException("No animation for " + animName);
+			throw new IllegalArgumentException("No animation for " + animName
+					+ " animations: " + animations.keySet());
 		}
 		currentAnim = animName;
 		Animation currentAnimation = animations.get(currentAnim);
@@ -826,8 +826,23 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
+	public boolean hasAnim(String animName) {
+		return animations.containsKey(animName);
+	}
+
 	public boolean isCurrentAnim(String animName) {
-		return currentAnim.equals(animName);
+		return currentAnim != null && currentAnim.equals(animName);
+	}
+
+	public Animation getCurrentAnim() {
+		if (animations.isEmpty()) {
+			throw new IllegalArgumentException(
+					"No animations defined, use addAnimation.");
+		}
+		if (currentAnim == null) {
+			throw new IllegalArgumentException("No animation set, use setAnim");
+		}
+		return animations.get(currentAnim);
 	}
 
 	public String toCsv() {

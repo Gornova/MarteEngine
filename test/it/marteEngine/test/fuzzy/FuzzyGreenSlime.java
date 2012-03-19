@@ -34,6 +34,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 		setHitBox(0, 0, 40, 20);
 		// make Slime sloow
 		maxSpeed.x = 1;
+        setAnim("move");
 	}
 
 	@Override
@@ -43,10 +44,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 			super.update(container, delta);
 			checkGround(true, false);
 			ty = y;
-			if (speed.x > 0)
-				this.faceRight = true;
-			else
-				this.faceRight = false;
+            this.faceRight = speed.x > 0;
 
 			Entity player = collide(PLAYER, x, y - 1);
 			if (player != null) {

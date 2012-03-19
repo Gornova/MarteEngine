@@ -43,7 +43,7 @@ public class Angel extends PhysicsEntity {
 	public boolean dead = false;
 	private Light myLight = null;
 
-	public static String[] enemies = { Spikes.SPIKES, Crow.CROW };
+	public static String[] enemies = {Spikes.SPIKES, Crow.CROW};
 
 	private Sound jumpSnd, hitSnd, pickupstarSnd, allPickedUpSnd;
 
@@ -79,10 +79,9 @@ public class Angel extends PhysicsEntity {
 	}
 
 	private void defineCommands() {
-		define(CMD_JUMP, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
-		define(CMD_LEFT, Input.KEY_LEFT, Input.KEY_A);
-		define(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
-
+		bindToKey(CMD_JUMP, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
+		bindToKey(CMD_LEFT, Input.KEY_LEFT, Input.KEY_A);
+    bindToKey(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
 	}
 
 	public void update(GameContainer container, int delta)

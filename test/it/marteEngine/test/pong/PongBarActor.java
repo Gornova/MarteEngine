@@ -39,8 +39,8 @@ public class PongBarActor extends Entity {
 	}
 
 	private void defineControls(int up, int down) {
-		define(ME.WALK_UP, up);
-		define(ME.WALK_DOWN, down);
+		bindToKey(ME.WALK_UP, up);
+		bindToKey(ME.WALK_DOWN, down);
 	}
 
 	@Override

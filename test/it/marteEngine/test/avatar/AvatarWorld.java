@@ -64,10 +64,9 @@ public class AvatarWorld extends World {
 		add(createTemple(1000, 1000));
 		add(createTemple(1880, 1880));
 
-		define("change_mode", Input.KEY_M);
-		define("change_follow_style", Input.KEY_F);
-		define("followEntity", Input.KEY_F);
-		define("focus", Input.MOUSE_RIGHT_BUTTON);
+		bindToKey("change_mode", Input.KEY_M);
+		bindToKey("change_follow_style", Input.KEY_F);
+		bindToMouse("focus", Input.MOUSE_RIGHT_BUTTON);
 		nextMode();
 	}
 
@@ -91,21 +90,21 @@ public class AvatarWorld extends World {
 					scroll(input);
 					break;
 				case FOCUS_ON_RIGHT_CLICK :
-          focus(input);
-          break;
+					focus(input);
+					break;
 			}
 		}
 	}
 
-  private void focus(Input input) {
-    // Center on the mouse location
-    if (pressed("focus")) {
-      camera.focus(input.getMouseX() + camera.getX(),
-          input.getMouseY() + camera.getY());
-    }
-  }
+	private void focus(Input input) {
+		// Center on the mouse location
+		if (pressed("focus")) {
+			camera.focus(input.getMouseX() + camera.getX(), input.getMouseY()
+					+ camera.getY());
+		}
+	}
 
-  private void scroll(Input input) {
+	private void scroll(Input input) {
 		// Scroll 30 pixels
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			camera.scroll(30, 0);

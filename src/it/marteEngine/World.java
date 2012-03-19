@@ -5,14 +5,12 @@ import it.marteEngine.entity.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import it.marteEngine.entity.InputManager;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
@@ -55,7 +53,7 @@ public class World extends BasicGameState {
 	public int renderedEntities;
 
 	/** available commands for world **/
-	protected Map<String, int[]> commands = new HashMap<String, int[]>();
+	protected InputManager input;
 
 	public World(int id) {
 		this.id = id;
@@ -69,6 +67,8 @@ public class World extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		this.container = container;
+		input = new InputManager(container.getInput());
+
 		if (width == 0)
 			width = container.getWidth();
 		if (height == 0)
@@ -401,65 +401,40 @@ public class World extends BasicGameState {
 	}
 
 	/**
-	 * define commands to handle inputs
-	 * 
-	 * @param command
-	 *            name of the command
-	 * @param keys
-	 *            keys or mouse input from {@link Input} class
+   * @deprecated As of release 0.3, replaced by
+   *             {@link #bindToKey(String, int...)} and
+   *             {@link #bindToMouse(String, int...)}
 	 */
 	public void define(String command, int... keys) {
-		commands.put(command, keys);
+		bindToKey(command, keys);
 	}
 
 	/**
-	 * Check if a command is down
-	 * 
-	 * @param key
-	 * @return
+	 * @see InputManager#bindToKey(String, int...)
+	 */
+	public void bindToKey(String command, int... keys) {
+		input.bindToKey(command, keys);
+	}
+
+	/**
+	 * @see InputManager#bindToMouse(String, int...)
+	 */
+	public void bindToMouse(String command, int... buttons) {
+		input.bindToMouse(command, buttons);
+	}
+
+	/**
+	 * @see InputManager#isDown(String)
 	 */
 	public boolean check(String command) {
-		int[] checked = commands.get(command);
-		if (checked == null)
-			return false;
-		for (int i = 0; i < checked.length; i++) {
-			if (this.container.getInput().isKeyDown(checked[i])) {
-				return true;
-			} else if (checked[i] < 10) {
-				/**
-				 * 10 is max number of button on a mouse
-				 * 
-				 * @see Input
-				 */
-				if (this.container.getInput().isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isDown(command);
 	}
 
 	/**
-	 * Check if a command is pressed
-	 * 
-	 * @param key
-	 * @return
+	 * @see InputManager#isPressed(String)
 	 */
 	public boolean pressed(String command) {
-		int[] checked = commands.get(command);
-		if (checked == null)
-			return false;
-		for (int i = 0; i < checked.length; i++) {
-			if (this.container.getInput().isKeyPressed(checked[i])) {
-				return true;
-			} else if (checked[i] == Input.MOUSE_LEFT_BUTTON
-					|| checked[i] == Input.MOUSE_RIGHT_BUTTON) {
-				if (this.container.getInput().isMousePressed(checked[i])) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return input.isPressed(command);
 	}
 
 }

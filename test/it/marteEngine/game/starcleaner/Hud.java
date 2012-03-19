@@ -34,8 +34,8 @@ public class Hud extends Entity {
 		this.depth = 400;
 		this.font = ResourceManager.getFont("bradleyhanditc24");
 
-		this.define(CMD_NEXT, Input.KEY_N);
-		this.define(CMD_PREVIOUS, Input.KEY_P);
+		bindToKey(CMD_NEXT, Input.KEY_N);
+		bindToKey(CMD_PREVIOUS, Input.KEY_P);
 	}
 
 	public void render(GameContainer container, Graphics g)

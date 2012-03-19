@@ -31,10 +31,10 @@ public class Tank extends Entity {
 		setGraphic(ResourceManager.getSpriteSheet("tank").getSubImage(1, 0));
 		setCentered(true);
 
-		define(FORWARD, Input.KEY_W, Input.KEY_UP);
-		define(BACKWARD, Input.KEY_S, Input.KEY_DOWN);
-		define(ROTATE_LEFT, Input.KEY_A, Input.KEY_LEFT);
-		define(ROTATE_RIGHT, Input.KEY_D, Input.KEY_RIGHT);
+		bindToKey(FORWARD, Input.KEY_W, Input.KEY_UP);
+		bindToKey(BACKWARD, Input.KEY_S, Input.KEY_DOWN);
+		bindToKey(ROTATE_LEFT, Input.KEY_A, Input.KEY_LEFT);
+		bindToKey(ROTATE_RIGHT, Input.KEY_D, Input.KEY_RIGHT);
 
 		// If the tank goes out of the world bounds make sure it
 		// reappears on the opposite side.
@@ -69,7 +69,7 @@ public class Tank extends Entity {
 	 * Update tank position forward or backward
 	 */
 	private void move(boolean forward) {
-    Vector2f speed = calculateVector(angle, MOVE_SPEED * (forward ? 1 : -1));
+		Vector2f speed = calculateVector(angle, MOVE_SPEED * (forward ? 1 : -1));
 		x += speed.x;
 		y += speed.y;
 	}

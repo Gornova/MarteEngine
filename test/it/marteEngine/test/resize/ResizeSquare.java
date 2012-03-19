@@ -53,13 +53,13 @@ public class ResizeSquare extends Entity {
 	}
 
 	private void defineControls() {
-		define(ME.WALK_UP, Input.KEY_UP, Input.KEY_W);
-		define(ME.WALK_DOWN, Input.KEY_DOWN, Input.KEY_S);
-		define(ME.WALK_LEFT, Input.KEY_LEFT, Input.KEY_A);
-		define(ME.WALK_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
-		define(ADD, Input.KEY_Z);
-		define(MINUS, Input.KEY_X);
-		define(ATTACK1, Input.MOUSE_LEFT_BUTTON);
+		bindToKey(ME.WALK_UP, Input.KEY_UP, Input.KEY_W);
+		bindToKey(ME.WALK_DOWN, Input.KEY_DOWN, Input.KEY_S);
+		bindToKey(ME.WALK_LEFT, Input.KEY_LEFT, Input.KEY_A);
+		bindToKey(ME.WALK_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
+		bindToKey(ADD, Input.KEY_Z);
+		bindToKey(MINUS, Input.KEY_X);
+		bindToMouse(ATTACK1, Input.MOUSE_LEFT_BUTTON);
 	}
 
 	@Override

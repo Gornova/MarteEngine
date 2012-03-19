@@ -133,7 +133,7 @@ public class FuzzyGameWorld extends World {
 
 		FuzzyPlayer.life = 3;
 
-		define("layer", Input.KEY_L);
+		bindToKey("layer", Input.KEY_L);
 
 		if (stars <= 0) {
 			stars = starsNumber;

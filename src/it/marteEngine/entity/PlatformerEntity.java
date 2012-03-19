@@ -53,9 +53,9 @@ public class PlatformerEntity extends PhysicsEntity {
 	 * Override it to change default controls
 	 */
 	public void defineControls() {
-		define(CMD_JUMP, Input.KEY_UP, Input.KEY_X, Input.KEY_W);
-		define(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
-		define(CMD_LEFT, Input.KEY_LEFT, Input.KEY_A);
+		bindToKey(CMD_JUMP, Input.KEY_UP, Input.KEY_X, Input.KEY_W);
+		bindToKey(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
+		bindToKey(CMD_LEFT, Input.KEY_LEFT, Input.KEY_A);
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class Title extends Entity {
 		name = "title";
 		depth = 2;
 		currentImage = ResourceManager.getImage("title");
-		define(CMD_START, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
+		bindToKey(CMD_START, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
 	}
 
 	public void update(GameContainer container, int delta)

@@ -84,7 +84,7 @@ public class Sword extends Entity {
 	}
 
 	private void defineControls() {
-		define(ATTACK, Input.KEY_SPACE);
+		bindToKey(ATTACK, Input.KEY_SPACE);
 	}
 
 	@Override

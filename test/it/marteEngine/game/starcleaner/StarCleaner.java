@@ -87,7 +87,7 @@ public class StarCleaner extends StateBasedGame {
 		try {
 			ResourceManager.loadResources(path);
 		} catch (IOException e) {
-			Log.error("failed to load resource file '" + path + "'"
+			Log.error("failed to load resource file '" + path + "' "
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}

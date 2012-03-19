@@ -1,6 +1,6 @@
 package it.marteEngine.test.fuzzy;
 
-import it.marteEngine.Camera;
+import it.marteEngine.CameraFollowStyle;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
@@ -124,11 +124,8 @@ public class FuzzyGameWorld extends World {
 				"enemies", "spikes"));
 
 		PlatformerEntity player = loadPlayer(map, "player");
-		// old camera
-		// setCamera(new Camera(this, player, container.getWidth(),
-		// container.getHeight()));
-		setCamera(new Camera(this, player, container.getWidth(),
-				container.getHeight(), 550, 170, player.maxSpeed));
+		camera.follow(player, CameraFollowStyle.PLATFORMER);
+		camera.setSpeed(player.maxSpeed.x * 2, player.maxSpeed.y * 2);
 
 		add(new Background(0, 0), BELOW);
 
@@ -427,7 +424,7 @@ public class FuzzyGameWorld extends World {
 		time += delta;
 
 		if (container.getInput().isKeyPressed(Input.KEY_F1)) {
-			showTutorialPanel = showTutorialPanel ? false : true;
+			showTutorialPanel = !showTutorialPanel;
 		}
 
 		if (stars == 0 && getCount() > 0) {
@@ -443,7 +440,7 @@ public class FuzzyGameWorld extends World {
 		if (container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			if (volumeControl.contains(container.getInput().getMouseX(),
 					container.getInput().getMouseY())) {
-				ME.playMusic = ME.playMusic ? false : true;
+				ME.playMusic = !ME.playMusic;
 			}
 		}
 
@@ -513,7 +510,7 @@ public class FuzzyGameWorld extends World {
 	private void switchLayer() {
 		for (Entity entity : getEntities()) {
 			if (entity instanceof StaticActor) {
-				entity.collidable = entity.collidable ? false : true;
+				entity.collidable = !entity.collidable;
 				if (entity.collidable) {
 					entity.setAlpha(1);
 				} else {

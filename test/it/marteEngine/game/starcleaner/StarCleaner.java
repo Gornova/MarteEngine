@@ -34,8 +34,6 @@ public class StarCleaner extends StateBasedGame {
 
 	public static boolean wizardMode = false;
 
-	public static boolean ressourcesInited = false;
-
 	private AppGameContainer container;
 
 	public StarCleaner() {
@@ -45,6 +43,8 @@ public class StarCleaner extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
+		loadResources("data/starcleaner/res/resources.xml");
+
 		if (container instanceof AppGameContainer) {
 			this.container = (AppGameContainer) container;
 		}
@@ -83,18 +83,14 @@ public class StarCleaner extends StateBasedGame {
 		SFX.setSoundVolume(1.0f);
 	}
 
-	public static void initRessources() throws SlickException {
-		if (ressourcesInited)
-			return;
+	private void loadResources(String path) throws SlickException {
 		try {
-			ResourceManager.loadResources("data/starcleaner/res/resources.xml");
+			ResourceManager.loadResources(path);
 		} catch (IOException e) {
-			Log.error("failed to load resource file 'data/starcleaner/res/resources.xml': "
+			Log.error("failed to load resource file '" + path + "'"
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-
-		ressourcesInited = true;
 	}
 
 	/**

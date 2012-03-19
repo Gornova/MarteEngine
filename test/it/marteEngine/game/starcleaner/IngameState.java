@@ -22,7 +22,6 @@ public class IngameState extends World {
 
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		StarCleaner.initRessources();
 		super.init(container, game);
 	}
 

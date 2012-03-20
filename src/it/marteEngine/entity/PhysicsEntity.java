@@ -79,8 +79,6 @@ public class PhysicsEntity extends Entity {
 
 	/**
 	 * Increases this entity's vertical speed, based on its gravity (gravity)
-	 * 
-	 * @return void
 	 */
 	public void gravity(int delta) {
 		// increase velocity/speed based on gravity
@@ -95,7 +93,6 @@ public class PhysicsEntity extends Entity {
 	 *            Include horizontal movement
 	 * @param my
 	 *            Include vertical movement
-	 * @return void
 	 */
 	public void friction(boolean mx, boolean my) {
 		// if we should use friction, horizontally
@@ -128,7 +125,6 @@ public class PhysicsEntity extends Entity {
 	 *            Include horizontal movement
 	 * @param my
 	 *            Include vertical movement
-	 * @return void
 	 */
 	public void maxspeed(boolean mx, boolean my) {
 		if (mx) {
@@ -244,7 +240,6 @@ public class PhysicsEntity extends Entity {
 	 *            Entity type to check for
 	 * @param speed
 	 *            The speep at which to move the thing above you
-	 * @return void
 	 */
 	public void moveontop(String type, float speed) {
 		Entity e = collide(type, x, y - 1);

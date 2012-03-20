@@ -17,7 +17,6 @@ import org.newdawn.slick.state.StateBasedGame;
  * Marte Engine Utility class
  * 
  * @author RandomTower
- * @project MarteEngine
  */
 public class ME {
 
@@ -74,10 +73,6 @@ public class ME {
 
 	/**
 	 * Update entities and add new entities and remove old entities
-	 * 
-	 * @param container
-	 * @param delta
-	 * @throws SlickException
 	 */
 	public static void update(GameContainer container, StateBasedGame game,
 			int delta) throws SlickException {
@@ -120,10 +115,6 @@ public class ME {
 
 	/**
 	 * Render entities following camera, show debug information if in debug mode
-	 * 
-	 * @param container
-	 * @param g
-	 * @throws SlickException
 	 */
 	public static void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {

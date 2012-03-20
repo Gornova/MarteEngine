@@ -76,8 +76,6 @@ public abstract class Tween {
 
 	/**
 	 * Reset tween to initial position
-	 * 
-	 * @return void
 	 */
 	public void reset() {
 		time = 0;

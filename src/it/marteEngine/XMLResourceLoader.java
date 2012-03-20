@@ -262,7 +262,7 @@ public class XMLResourceLoader {
 
 	/**
 	 * Create an animation from a spritesheet row.
-	 * 
+	 *
 	 * @param sheet
 	 *            The spritesheet that contains the individual images.
 	 * @param row
@@ -365,19 +365,19 @@ public class XMLResourceLoader {
 	private void checkRequiredAttributes(Element element, String... attributes) {
 		for (String requiredAttribute : attributes) {
 			if (!element.hasAttribute(requiredAttribute)) {
-				String msg = "Required attribute(s) missing: ";
+				String missingAttributes = "";
 
 				for (String attribute : attributes) {
 					if (!element.hasAttribute(attribute)) {
-						if (msg.length() > 0) {
-							msg += ", ";
+						if (missingAttributes.length() > 0) {
+							missingAttributes += ", ";
 						}
-						msg += attribute;
+						missingAttributes += attribute;
 					}
 				}
-
-				msg += " from element " + element.getNodeName();
-				throw new IllegalArgumentException(msg);
+				throw new IllegalArgumentException(
+						"Required attribute(s) missing: " + missingAttributes
+								+ " from element " + element.getNodeName());
 			}
 		}
 	}
@@ -414,9 +414,6 @@ public class XMLResourceLoader {
 
 	private String formatLoadMsg(String type, String key, String valueName,
 			String value) {
-		StringBuffer buf = new StringBuffer("Loading ");
-		buf.append(type).append(" key=").append(key).append(" ")
-				.append(valueName).append("=").append(value);
-		return buf.toString();
+		return String.format("Loading %s key=%s %s=%s", type, key, valueName, value);
 	}
 }

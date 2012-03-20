@@ -242,21 +242,23 @@ public abstract class Entity implements Comparable<Entity> {
 			if (scale != 1.0f)
 				g.resetTransform();
 		}
-		if (ME.debugEnabled && collidable) {
-			g.setColor(ME.borderColor);
-			Rectangle hitBox = new Rectangle(x + hitboxOffsetX, y
-					+ hitboxOffsetY, hitboxWidth, hitboxHeight);
-			g.draw(hitBox);
+	}
+
+	public void renderDebug(Graphics g) {
+		g.setColor(ME.borderColor);
+		Rectangle hitBox = new Rectangle(x + hitboxOffsetX, y + hitboxOffsetY,
+				hitboxWidth, hitboxHeight);
+		g.draw(hitBox);
+		g.setColor(Color.white);
+		g.drawRect(x, y, 1, 1);
+
+		// draw entity center
+		if (width != 0 && height != 0) {
+			float centerX = x + width / 2;
+			float centerY = y + height / 2;
+			g.setColor(Color.green);
+			g.drawRect(centerX, centerY, 1, 1);
 			g.setColor(Color.white);
-			g.drawRect(x, y, 1, 1);
-			// draw entity center
-			if (width != 0 && height != 0) {
-				float centerX = x + width / 2;
-				float centerY = y + height / 2;
-				g.setColor(Color.green);
-				g.drawRect(centerX, centerY, 1, 1);
-				g.setColor(Color.white);
-			}
 		}
 	}
 

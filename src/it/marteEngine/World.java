@@ -128,14 +128,11 @@ public class World extends BasicGameState {
 	private void renderEntity(Entity e, Graphics g, GameContainer container)
 			throws SlickException {
 		renderedEntities++;
-		if (ME.debugEnabled && e.collidable) {
-			g.setColor(ME.borderColor);
-			Rectangle hitBox = new Rectangle(e.x + e.hitboxOffsetX, e.y
-					+ e.hitboxOffsetY, e.hitboxWidth, e.hitboxHeight);
-			g.draw(hitBox);
-			g.setColor(Color.white);
-		}
 		e.render(container, g);
+
+		if (ME.debugEnabled && e.collidable) {
+			e.renderDebug(g);
+		}
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta)
@@ -401,9 +398,9 @@ public class World extends BasicGameState {
 	}
 
 	/**
-   * @deprecated As of release 0.3, replaced by
-   *             {@link #bindToKey(String, int...)} and
-   *             {@link #bindToMouse(String, int...)}
+	 * @deprecated As of release 0.3, replaced by
+	 *             {@link #bindToKey(String, int...)} and
+	 *             {@link #bindToMouse(String, int...)}
 	 */
 	public void define(String command, int... keys) {
 		bindToKey(command, keys);

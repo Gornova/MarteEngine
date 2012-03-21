@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Created-By: MarteEngine
-Main-Class: @package@.@class@
-Class-Path: lib/slick.jar lib/lwjgl.jar lib/jorbis-0.0.15.jar lib/jogg-0.0.7.jar

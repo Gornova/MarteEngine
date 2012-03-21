@@ -1,306 +1,238 @@
-<?xml version="1.0" ?>
 <!--
-
-Welcome into MarteEngine ant buildfile. For more information about ant see http://ant.apache.org/
-Main objective of this build configuration is to help in build distribuiable packages as:
-- windows's .exe,
-- webstart
+Welcome into MarteEngine ant Game buildfile. For more information about ant see http://ant.apache.org/
+Main objective of this build configuration is to distribute your game as:
+ - lwjgl applet
+ - fatjar
+ - webstart
 -->
+<project name="Game Distribution" basedir="." default="webstart">
+    <taskdef name="jnlp" classname="com.orangevolt.tools.ant.JNLPTask">
+        <classpath location="./external/jnlp-ant-task.jar"/>
+    </taskdef>
 
-<project name="MarteEngine" default="compile">
+    <!-- Game properties, don't use spaces in game.name -->
+    <property name="game.name" value="game-name"/>
+    <property name="game.main.class" value="it.marteEngine.test.fuzzy.FuzzyMain"/>
+    <property name="game.java.version" value="1.5"/>
 
-	<property name="target.package" value="it.marteEngine.test.fuzzy" />
-	<property name="target.class" value="FuzzyMain" />
-	<property name="target.res" value="data/fuzzy" />
+    <property name="webstart.title" value="game-name"/>
+    <property name="webstart.description" value="Platformer test game"/>
+    <property name="webstart.vendor" value="your name"/>
+    <property name="webstart.homepage" value="http://yourwebsite.com"/>
+    <!-- To run webstart online, change . to the location of the jnlp file on your website. -->
+    <property name="webstart.codebase" value="."/>
 
-	<property name="engine.version" value="0.3" />
+    <property name="applet.title" value="${game.name}"/>
+    <property name="applet.width" value="800"/>
+    <property name="applet.height" value="600"/>
 
-	<property name="webstart.title" value="MarteEngine Pong Test Example" />
-	<property name="webstart.description" value="MarteEngine Pong for 2 players on same pc" />
-	<property name="webstart.homepage" value="http://randomtower.blogspot.com" />
-	<!-- change codebase from . to your website to change mode of test for webstart: local or remote  -->
-	<!-- <property name="webstart.codebase" value="." /> -->
-	<property name="webstart.codebase" value="http://jpacman.googlecode.com/files/" />
+    <property name="src.dir" value="src"/>
+    <property name="res.dir" value="data"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="build.dir" value="bin"/>
+    <property name="keystore.file.name" value="${user.home}/.keystore"/>
 
-	<property name="exej.dir" value="external/exej" />
+    <path id="build.path">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
 
-	<property name="applet.width" value="800" />
-	<property name="applet.height" value="600" />
+    <target name="clean" description="Clean distribution and output directories">
+        <delete includeEmptyDirs="true" failonerror="false" quiet="true">
+            <fileset dir="${build.dir}"/>
+            <fileset dir="${dist.dir}"/>
+        </delete>
 
-	<property name="src.dir" value="src" />
-	<property name="test.dir" value="test" />
-	<property name="res.dir" value="data" />
-	<property name="lib.dir" value="lib" />
-	<property name="obj.dir" value="bin" />
-	<property name="dist.dir" value="dist" />
-	<property name="dist_all.dir" value="dist_all" />
-	<property name="data.dir" value="res" />
-	<property name="target.dir" value="target" />
-	<property name="script.dir" value="script" />
-	<property name="webstart.dir" value="${target.dir}/webstart" />
-	<property name="applet.dir" value="${target.dir}/applet" />
+        <fail message="Unable to delete previous build directories">
+            <condition>
+                <or>
+                    <available file="${dist.dir}" type="dir"/>
+                    <available file="${build.dir}" type="dir"/>
+                </or>
+            </condition>
+        </fail>
+    </target>
 
-	<property name="wamp.libdir" value="C:/Programmi/wamp/www/mygamelib/" />
-	<property name="applet.jarname" value="${target.class}.jar" />
-	<property name="launch4j.dir" location="C:/Programmi/launch4j-3.0.1-win32/launch4j" />
-	
-	<!-- Set up the environment including preparing the natives. -->
-	<target name="setup" depends="setup-check">
-		<delete dir="${lib.dir}/native" />
-		<mkdir dir="${lib.dir}/native" />
-		<unzip src="${lib.dir}/natives-win32.jar" dest="${lib.dir}/native" />
-		<unzip src="${lib.dir}/natives-mac.jar" dest="${lib.dir}/native" />
-		<unzip src="${lib.dir}/natives-linux.jar" dest="${lib.dir}/native" />
+    <target name="dir" depends="clean" description="Create directories">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
 
-	</target>
+    <target name="compile" depends="dir" description="Compile source code">
+        <javac srcdir="${src.dir}"
+               destdir="${build.dir}"
+               classpathref="build.path"
+               includeantruntime="false"
+               debug="on"
+               fork="true"
+               source="${game.java.version}"
+               target="${game.java.version}">
+        </javac>
+    </target>
 
-	<!-- Compile and archive -->
-	<target name="jar">
-		<antcall target="compile" />
-		<antcall target="archive" />
-	</target>
+    <target name="jar-source" depends="compile" description="Create distribution jar">
+        <!-- Jar the compiled source -->
+        <jar destfile="${dist.dir}/${game.name}.jar">
+            <fileset dir="${build.dir}"/>
+        </jar>
 
-	<!-- Run -->
-	<target name="run" depends="setup,compile">
-		<java fork="true" classname="${target.package}.${target.class}">
-			<classpath>
-				<pathelement path="${obj.dir}" />
-				<fileset dir="${lib.dir}">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<jvmarg value="-Djava.library.path=lib/native" />
-		</java>
-	</target>
+        <!-- Delete the compiled source files -->
+        <delete dir="${build.dir}" includeEmptyDirs="true" quiet="true"/>
+    </target>
 
-	<!-- Clean up the environment. -->
-	<target name="clean" depends="makeTarget">
-		<delete includeEmptyDirs="true">
-			<fileset dir="${obj.dir}" includes="**/*" defaultExcludes="no" />
-		</delete>
-		<delete includeEmptyDirs="true">
-			<fileset dir="${target.dir}" includes="**/*" defaultExcludes="no" />
-		</delete>
-	</target>
-	
-	<!-- Make target dir -->
-	<target name="makeTarget" depends="target-check" unless="target.exists">
-		<mkdir dir="${target.dir}" />
-	</target>	
+    <target name="jar-resources" description="Jar and copy the resources to dist as resources.jar">
+        <!-- Copy the resources, maintaining the directory structure res.dir is the root directory. -->
+        <copy todir="${dist.dir}/tmp/${res.dir}">
+            <fileset dir="${res.dir}"/>
+        </copy>
 
-	<!-- Create a webstart directory in order to deploy. -->
-	<target name="webstart" depends="clean">
-		<delete dir="${webstart.dir}" />
-		<mkdir dir="${webstart.dir}" />
-		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${webstart.dir}/${target.class}.jar" />
-		<copy file="${script.dir}/template.jnlp" tofile="${webstart.dir}/${target.class}.jnlp">
-			<filterchain>
-				<replacetokens>
-					<token key="codebase" value="${webstart.codebase}" />
-					<token key="title" value="${webstart.title}" />
-					<token key="description" value="${webstart.description}" />
-					<token key="homepage" value="${webstart.homepage}" />
-					<token key="jarname" value="${target.class}.jar" />
-					<token key="mainclass" value="${target.package}.${target.class}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-		<antcall target="webstart-signjar" />
-	</target>
+        <!-- jar and delete the resource files -->
+        <jar destfile="${dist.dir}/resources.jar" basedir="${dist.dir}/tmp/"/>
+        <delete dir="${dist.dir}/tmp" includeEmptyDirs="true" quiet="true"/>
+    </target>
 
+    <target name="webstart" depends="jar-source, jar-resources" description="Deploy as jnlp webstart">
+        <!--
+            Copy all required jars from lib to dist
+            Skip jars already provided by the slick extension
+        -->
+        <copy todir="${dist.dir}">
+            <fileset dir="${lib.dir}" includes="*.jar">
+                <exclude name="slick.jar"/>
+                <exclude name="ibxm.jar"/>
+                <exclude name="jogg-0.0.7.jar"/>
+                <exclude name="jorbis-0.0.15.jar"/>
+                <exclude name="lwjgl.jar"/>
+                <exclude name="lwjgl_util.jar"/>
+                <exclude name="jinput.jar"/>
+            </fileset>
+        </copy>
 
-	<!-- Build a .exe wrapper for project -->
-	<target name="exej" depends="proguard">
-		<delete file="${target.dir}/${target.class}.jar" />
-		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${target.dir}/${target.class}.jar" />
-		<delete file="${target.dir}/${target.class}_opt.jar" />
-		<copy file="${exej.dir}/exej.exe" tofile="${target.dir}/exej.exe" />
-		<mkdir dir="${target.dir}/system" />
-		<copy file="${exej.dir}/system/exe_template.exe" tofile="${target.dir}/system/exe_template.exe" />
-		<copy file="${exej.dir}/config.txt" tofile="${target.dir}/config.txt">
-			<filterchain>
-				<replacetokens>
-					<token key="jarname" value="${target.class}.jar" />
-				</replacetokens>
-			</filterchain>
-		</copy>
+        <!-- Sign all the jars in the dist dir -->
+        <antcall target="signjars"/>
 
-		<exec dir="${target.dir}" executable="cmd">
-			<arg value="/c" />
-			<arg value="exej.exe -cfg config.txt" />
-		</exec>
+        <!--
+            Use the JNLPTask to create a jnlp file
+            see http://ovanttasks.sourceforge.net/rat/chapter-N104F5.html
+         -->
+        <jnlp tofile="${dist.dir}/${game.name}.jnlp" codebase="${webstart.codebase}">
+            <information>
+                <title>${webstart.title}</title>
+                <vendor>${webstart.vendor}</vendor>
+                <homepage href="${webstart.homepage}"/>
+                <description kind="short">${webstart.description}</description>
 
+                <shortcut online="true">
+                    <desktop />
+                </shortcut>
+            </information>
 
-		<move file="${target.dir}/using_javaw.exe" tofile="${target.dir}/${target.class}.exe" />
-		<move file="${target.dir}/using_java.exe" tofile="${target.dir}/${target.class}_debug.exe" />
-		<mkdir dir="${target.dir}/lib" />
-		<copy todir="${target.dir}">
-			<fileset dir="${lib.dir}/native">
-				<include name="*.dll" />
-			</fileset>
-		</copy>
-		<copyfile dest="${target.dir}/lib/slick.jar" src="${lib.dir}/slick.jar" />
-		<copyfile dest="${target.dir}/lib/lwjgl.jar" src="${lib.dir}/lwjgl.jar" />
-		<delete file="${target.dir}/manifest.txt" />
-		<delete file="${target.dir}/exej.exe" />
-		<delete dir="${target.dir}/system" />
-		<delete file="${target.dir}/config.txt" />
+            <security>
+                <all_permissions/>
+            </security>
 
+            <resources>
+                <jar>
+                    <fileset dir="${dist.dir}">
+                        <include name="*.jar"/>
+                    </fileset>
+                </jar>
+                <extension href="http://slick.cokeandcode.com/demos/slick.jnlp"/>
+            </resources>
 
-	</target>
+            <application_desc main_class="${game.main.class}"/>
+        </jnlp>
+    </target>
 
-	<!-- Determines whether setup has been run. -->
-	<target name="setup-check">
-		<condition property="setup.exists">
-			<available file="${lib.dir}/native" type="dir" />
-		</condition>
-	</target>
+    <target name="applet" depends="jar-source, jar-resources" description="Create a lwjgl Applet">
+        <!--
+            Copy all required jars from lib to dist
+            Skip jars already provided by the lwjgl applet
+        -->
+        <copy todir="${dist.dir}">
+            <fileset dir="${lib.dir}" includes="*.jar">
+                <exclude name="jinput.jar"/>
+            </fileset>
+        </copy>
 
-	<!-- Determine if target dir exist or not-->
-	<target name="target-check">
-		<condition property="target.exists">
-			<available file="${target.dir}" type="dir" />
-		</condition>
-	</target>
-	
-	<!-- Determines whether a keystore exists. -->
-	<target name="check-keystore">
-		<input message="Username:" addproperty="keystore.alias" />
-		<input message="Password:" addproperty="keystore.pass" />
-		<condition property="keystore.exists">
-			<available file="${target.dir}/${keystore.alias}.ks" type="file" />
-		</condition>
-	</target>
+        <!-- Sign all the jars in the dist dir -->
+        <antcall target="signjars"/>
 
-	<!-- Create a key store. -->
-	<target name="webstart-keystore" depends="check-keystore" unless="keystore.exists">
-		<input message="Full Name:" addproperty="keystore.name" />
-		<input message="Company:" addproperty="keystore.company" />
+        <!-- Separate each jar file name by a ',' and store in game_jars -->
+        <fileset id="game_jars_fileset" dir="${dist.dir}" includes="*.jar"/>
+        <pathconvert pathsep=", " property="game_jars" refid="game_jars_fileset">
+            <mapper type="flatten"/>
+        </pathconvert>
 
-		<genkey keystore="${target.dir}/${keystore.alias}.ks" alias="${keystore.alias}" storepass="${keystore.pass}">
-			<dname>
-				<param name="CN" value="${keystore.name}" />
-				<param name="OU" value="${keystore.company}" />
-				<param name="O" value="" />
-				<param name="C" value="" />
-			</dname>
-		</genkey>
-	</target>
+        <!-- Copy the lwjgl applet launcher + natives to dist -->
+        <copy todir="${dist.dir}">
+            <fileset dir="external/lwjglApplet">
+                <include name="*.lzma"/>
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
 
-	<!-- Sign's jar for deployment. -->
-	<target name="webstart-signjar" depends="webstart-keystore">
-		<signjar jar="${webstart.dir}/${target.class}.jar" keystore="${target.dir}/${keystore.alias}.ks" storepass="${keystore.pass}" alias="${keystore.alias}" />
-	</target>
+        <copy file="external/lwjglApplet/appletloader.html" tofile="${dist.dir}/appletloader.html">
+            <filterchain>
+                <replacetokens>
+                    <token key="title" value="${applet.title}"/>
+                    <token key="game_name" value="${game.name}"/>
+                    <token key="width" value="${applet.width}"/>
+                    <token key="height" value="${applet.height}"/>
+                    <token key="mainclass" value="${game.main.class}"/>
+                    <token key="game_jars" value="${game_jars}"/>
+                </replacetokens>
+            </filterchain>
+        </copy>
+    </target>
 
-	<!-- Compile the code put results into obj.dir. -->
-	<target name="compile" depends="clean">
-		<mkdir dir="${obj.dir}" />
-		<javac destdir="${obj.dir}" debug="on">
-			<src path="${src.dir}" />
-			<classpath>
-				<pathelement path="${lib.dir}/slick.jar" />
-				<pathelement path="${lib.dir}/lwjgl.jar" />
-			</classpath>
-		</javac>
-		<javac destdir="${obj.dir}" debug="on">
-			<src path="${test.dir}" />
-			<classpath>
-				<pathelement path="${lib.dir}/slick.jar" />
-				<pathelement path="${lib.dir}/lwjgl.jar" />
-			</classpath>
-		</javac>
+    <target name="fatjar" description="Prepare jar files to be used with the fatjar tool."
+            depends="jar-source, jar-resources">
+        <!-- Copy all required jars from lib to dist -->
+        <copy todir="${dist.dir}">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+        </copy>
+    </target>
 
-	</target>
+    <target name="signjars" depends="create-keystore"
+            description="Sign's all the jars in the dist dir">
+        <input message="Username:" addproperty="keystore.username" defaultvalue="${user.name}"/>
+        <input message="Password:" addproperty="keystore.pass"/>
 
-	<!-- Jar compiled code and place result into target.dir. -->
-	<target name="archive">
-		<copy todir="${obj.dir}/${target.res}">
-			<fileset dir="${target.res}" />
-		</copy>
-		<copy file="${script.dir}/manifest.txt" tofile="${target.dir}/manifest.txt">
-			<filterchain>
-				<replacetokens>
-					<token key="package" value="${target.package}" />
-					<token key="class" value="${target.class}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-		<jar destfile="${target.dir}/${target.class}.jar" manifest="${target.dir}/manifest.txt">
-			<fileset dir="${obj.dir}" />
-		</jar>
-	</target>
+        <signjar keystore="${keystore.file.name}"
+                 storepass="${keystore.pass}"
+                 alias="${keystore.username}"
+                 preservelastmodified="true">
+            <path>
+                <fileset dir="${dist.dir}" includes="*.jar"/>
+            </path>
+        </signjar>
+    </target>
 
-	<!-- You can use proguard to optimize your jar final size, just add as depends on exej, applet or webstart-->
-	<taskdef resource="proguard/ant/task.properties" classpath="external/proguard/proguard.jar" />
-	<target name="proguard" depends="jar">
-		<proguard>
-		  -libraryjars ${java.home}/lib/rt.jar;lib/lwjgl.jar;lib/slick.jar;lib/jorbis-0.0.15.jar
-		  -injars      target/${target.class}.jar
-		  -outjars     target/${target.class}_opt.jar
+    <target name="create-keystore" depends="check-for-keystore" unless="keystore.present"
+            description="Create a key store, unless it already exists">
+        <input message="Keystore Username:" addproperty="keystore.username"/>
+        <input message="Keystore Password:" addproperty="keystore.pass"/>
+        <input message="City/Location:" addproperty="keystore.location"/>
+        <input message="2 Letter Country code:" addproperty="keystore.country"/>
 
-		      -keep public class ${target.package}.${target.class}{
-				public static void main(java.lang.String[]);
-			  }
-		</proguard>
-	</target>
+        <genkey keystore="${keystore.file.name}"
+                alias="${keystore.username}"
+                storepass="${keystore.pass}">
+            <dname>
+                <param name="CN" value="${keystore.username}"/>
+                <param name="OU" value=""/>
+                <param name="O" value=""/>
+                <param name="L" value="${keystore.location}"/>
+                <param name="ST" value=""/>
+                <param name="C" value="${keystore.country}"/>
+            </dname>
+        </genkey>
+    </target>
 
-
-	<!-- Create a webstart directory in order to deploy. -->
-	<target name="applet" depends="clean">
-		<delete dir="${applet.dir}" />
-		<mkdir dir="${applet.dir}" />
-		<copy file="${target.dir}/${target.class}_opt.jar" tofile="${applet.dir}/${target.class}.jar" />
-
-		<copy todir="${applet.dir}">
-			<fileset dir="external/lwjglApplet">
-				<include name="*.lzma" />
-				<include name="*.jar" />
-			</fileset>
-		</copy>
-		<copyfile dest="${applet.dir}/slick.jar" src="${lib.dir}/slick.jar" />
-
-		<copy file="external/lwjglApplet/appletloader.html" tofile="${applet.dir}/appletloader.html">
-			<filterchain>
-				<replacetokens>
-					<token key="title" value="${webstart.title}" />
-					<token key="width" value="${applet.width}" />
-					<token key="height" value="${applet.height}" />
-					<token key="mainclass" value="${target.package}.${target.class}" />
-					<token key="jarname" value="${target.class}.jar" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-
-
-	</target>
-
-	<!-- Create MarteEngine distribution jar -->
-	<target name="distributeMarte" depends="clean">
-		<!-- compile core classes -->
-		<mkdir dir="${obj.dir}" />
-		<javac destdir="${obj.dir}" debug="on">
-			<src path="${src.dir}" />
-			<classpath>
-				<pathelement path="${lib.dir}/slick.jar" />
-				<pathelement path="${lib.dir}/lwjgl.jar" />
-			</classpath>
-		</javac>
-
-		<buildnumber file="build.num" />
-		<tstamp>
-			<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
-		</tstamp>
-
-		<manifest file="MANIFEST.MF">
-			<attribute name="MarteEngine-Version" value="${engine.version}" />
-			<attribute name="MarteEngine-Build-Number" value="b${build.number}" />
-			<attribute name="Built-Date" value="${TODAY}" />
-		</manifest>
-
-		<!-- create jar -->
-		<jar destfile="${target.dir}/marteEngine.jar" manifest="MANIFEST.MF">
-			<fileset dir="${obj.dir}" />
-		</jar>
-	</target>
-
+    <target name="check-for-keystore" description="Determines whether the keystore exists.">
+        <available file="${keystore.file.name}" type="file" property="keystore.present"/>
+    </target>
 </project>

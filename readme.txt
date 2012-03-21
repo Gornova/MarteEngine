@@ -1,16 +1,16 @@
 Marte Engine
-Version: 0.2
+Version: 0.3
 
 1. Introduction
 
-MarteEngine (ME) is a Java videogame engine with focus in a simple, clear API for fast game development.
+MarteEngine (ME) is a Java videogame engine with focus on a simple, clear API for fast game development.
 Major inspiration comes from Flashpunk (http://flashpunk.net) and Slick forum (http://slick.javaunlimited.net/).
 
 
 2. Contribute
 
-MarteEngine is a opensource (see license.txt) project hosted on GitHun: do want to try, improve or help?
-With Git this is easy and fun :D 
+MarteEngine is an opensource project (see license.txt) hosted on GitHub. Do you want to try, improve or help?
+With Git this is easy and fun :D
 
 
 3. Documentation

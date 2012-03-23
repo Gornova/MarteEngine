@@ -34,11 +34,15 @@ public class IdleState implements State {
 	}
 
 	public void update(GameContainer container, int delta) {
-		// do nothing untile player try to move
 		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
-			entity.stateManager.enter(MovingState.class);
+			entity.stateManager.enter("move_state");
 		}
+	}
+
+	@Override
+	public String getName() {
+		return "idle_state";
 	}
 
 }

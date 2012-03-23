@@ -169,7 +169,7 @@ public abstract class Entity implements Comparable<Entity> {
 			throws SlickException {
 		previousx = x;
 		previousy = y;
-		if (stateManager != null && stateManager.currentState() != null) {
+		if (stateManager.isActive()) {
 			stateManager.update(container, delta);
 			return;
 		}
@@ -193,7 +193,7 @@ public abstract class Entity implements Comparable<Entity> {
 
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		if (stateManager != null && stateManager.currentState() != null) {
+		if (stateManager.isActive()) {
 			stateManager.render(g);
 			return;
 		}

@@ -33,7 +33,7 @@ public class WaitState implements State {
 		List<Entity> onSight = e.intersect(radarCircle);
 		if (onSight != null && !onSight.isEmpty()) {
 			Log.debug("enemy on sight!");
-			e.stateManager.enter(AlertState.class);
+			e.stateManager.enter("alert_state");
 		}
 	}
 
@@ -45,7 +45,10 @@ public class WaitState implements State {
 		if (ME.debugEnabled) {
 			g.draw(radarCircle);
 		}
-
 	}
 
+	@Override
+	public String getName() {
+		return "wait_state";
+	}
 }

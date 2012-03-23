@@ -42,7 +42,7 @@ public class AlertState implements State {
 				for (Entity ent : onSight) {
 					if (ent instanceof Player) {
 						Log.info("enemy confirmed, need to move!");
-						e.stateManager.enter(MoveState.class);
+						e.stateManager.enter("move_state");
 					}
 				}
 			}
@@ -57,6 +57,11 @@ public class AlertState implements State {
 		if (ME.debugEnabled) {
 			g.draw(radarCircle);
 		}
+	}
+
+	@Override
+	public String getName() {
+		return "alert_state";
 	}
 
 }

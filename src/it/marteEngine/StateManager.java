@@ -1,59 +1,87 @@
 package it.marteEngine;
 
-import java.util.Collections;
-import java.util.LinkedList;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * The state manager stores states identified by a state name. It will update
+ * and render the current state. The current state can be set using the
+ * {@link #enter(String)} method.
+ * 
+ * The state manager can be enabled/disabled by calling the
+ * {@link #setActive(boolean)} method. If disabled the current state will not be
+ * rendered and updated.
+ */
 public class StateManager {
-	private LinkedList<State> states;
+	private final Map<String, State> states;
+	private String currentStateName;
 	private State currentState;
+	private boolean active;
 
 	public StateManager() {
-		states = new LinkedList<State>();
+		states = new HashMap<String, State>();
 	}
 
-	public void add(State s) {
-		states.add(s);
-		if (currentState == null) {
-			currentState = s;
-			currentState.init();
+	public void addAll(State... states) {
+		for (State state : states) {
+			add(state);
 		}
 	}
 
-	public void addAll(State... st) {
-		if (st != null && st.length > 0) {
-			Collections.addAll(states, st);
-			if (currentState == null) {
-				currentState = st[0];
-				currentState.init();
-			}
-		}
+	/**
+	 * Add a new state to the state manager. If a previous state is already
+	 * assigned to the state name it is overwritten.
+	 */
+	public void add(State newState) {
+		states.put(newState.getName(), newState);
 	}
 
 	/** Transition to the designated state. */
-	public void enter(Class<?> c) {
-		for (State s : states) {
-			if (s.getClass().getCanonicalName()
-					.equalsIgnoreCase(c.getCanonicalName())) {
-				currentState = s;
-				currentState.init();
-				return;
-			}
+	public void enter(String stateNameToEnter) {
+		if (states.containsKey(stateNameToEnter)) {
+			currentStateName = stateNameToEnter;
+			currentState = states.get(stateNameToEnter);
+			currentState.init();
+			setActive(true);
+		} else {
+			throw new IllegalArgumentException("No state for "
+					+ stateNameToEnter + " states:" + states.keySet());
 		}
 	}
 
-	/** Useful if you need to know what state you are currently in. */
-	public Object currentState() {
-		return currentState;
+	/**
+	 * Enables or disables this state manager. Setting active to false means
+	 * that the current state will not receive update and render calls anymore.
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public void update(GameContainer container, int delta) {
-		currentState.update(container, delta);
+		if (active) {
+			currentState.update(container, delta);
+		}
 	}
 
 	public void render(Graphics g) {
-		currentState.render(g);
+		if (active) {
+			currentState.render(g);
+		}
+	}
+
+	/**
+	 * Useful if you need to know what state you are currently in.
+	 * 
+	 * @return the name of the current state, null if there is no current state.
+	 */
+	public String getCurrentStateName() {
+		return currentStateName;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 }

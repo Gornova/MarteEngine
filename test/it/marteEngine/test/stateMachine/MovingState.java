@@ -46,8 +46,12 @@ public class MovingState implements State {
 			entity.x -= entity.speed.x;
 		}
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
-			entity.stateManager.enter(CombatState.class);
+			entity.stateManager.enter("combat_state");
 		}
 	}
 
+	@Override
+	public String getName() {
+		return "move_state";
+	}
 }

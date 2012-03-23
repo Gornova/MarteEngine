@@ -11,4 +11,6 @@ public interface State {
 
 	public void render(Graphics g);
 
+	public String getName();
+
 }

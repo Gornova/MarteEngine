@@ -36,8 +36,12 @@ public class CombatState implements State {
 	public void update(GameContainer container, int delta) {
 		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
-			entity.stateManager.enter(IdleState.class);
+			entity.stateManager.enter("idle_state");
 		}
 	}
 
+	@Override
+	public String getName() {
+		return "combat_state";
+	}
 }

@@ -60,7 +60,7 @@ public class MoveState implements State {
 			timer = 0;
 			List<Entity> onSight = e.intersect(radarCircle);
 			if (onSight != null && onSight.isEmpty()) {
-				e.stateManager.enter(WaitState.class);
+				e.stateManager.enter("wait_state");
 			}
 		}
 
@@ -78,7 +78,10 @@ public class MoveState implements State {
 				ray.render(g);
 			g.resetTransform();
 		}
-
 	}
 
+	@Override
+	public String getName() {
+		return "move_state";
+	}
 }

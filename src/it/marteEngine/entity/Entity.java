@@ -38,10 +38,8 @@ public abstract class Entity implements Comparable<Entity> {
 	/** unique identifier */
 	public String name;
 
-	/** x position */
-	public float x;
-	/** y position */
-	public float y;
+	/** x, y position */
+	public float x, y;
 
 	/**
 	 * If this entity is centered the x,y position is in the center. otherwise
@@ -50,38 +48,36 @@ public abstract class Entity implements Comparable<Entity> {
 	public boolean centered;
 
 	/**
-	 * width of the entity. not necessarily the width of the hitbox. Used for
-	 * world wrapping
+	 * Dimension of the entity. Not necessarily the width of the hitbox. Used
+	 * for world wrapping
 	 */
-	public int width;
-	/**
-	 * height of the entity. not necessarily the height of the hitbox. Used for
-	 * world wrapping
-	 */
-	public int height;
+	public int width, height;
 
 	public float previousx, previousy;
 
-	/** start x and y position stored for reseting for example. very helpful */
+	/** start x and y position */
 	public float startx, starty;
 
-	public boolean wrapHorizontal;
-	public boolean wrapVertical;
+	/**
+	 * If true the entity reappears on the opposite side of the world when it
+	 * leaves the world.
+	 */
+	public boolean wrapHorizontal, wrapVertical;
 
-	/** speed vector (x,y): specifies x and y movement per update call in pixels */
+	/** Specifies x and y movement per update call in pixels */
 	public Vector2f speed = new Vector2f(0, 0);
 
 	/**
-	 * angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
+	 * Angle in degrees from 0 to 360, used for drawing the entity rotated. NOT
 	 * used for direction!
 	 */
 	protected int angle = 0;
 
-	/** scale used for both horizontal and vertical scaling. */
+	/** Scale used for both horizontal and vertical scaling. */
 	public float scale = 1.0f;
 
 	/**
-	 * color of the entity, mainly used for alpha transparency, but could also
+	 * Color of the entity, mainly used for alpha transparency, but could also
 	 * be used for tinting
 	 */
 	private Color color = new Color(Color.white);
@@ -97,6 +93,7 @@ public abstract class Entity implements Comparable<Entity> {
 	/** static image for non-animated entity */
 	public Image currentImage;
 
+	/** Allows to bind input to a string command */
 	public InputManager input;
 
 	/** The types this entity can collide with */
@@ -135,34 +132,6 @@ public abstract class Entity implements Comparable<Entity> {
 	public Entity(float x, float y, Image image) {
 		this(x, y);
 		setGraphic(image);
-	}
-
-	/**
-	 * Set if the image or animation must be centered
-	 */
-	public void setCentered(boolean center) {
-		int whalf = 0, hhalf = 0;
-		if (currentImage != null) {
-			whalf = currentImage.getWidth() / 2;
-			hhalf = currentImage.getHeight() / 2;
-		}
-		if (currentAnim != null) {
-			whalf = animations.get(currentAnim).getWidth() / 2;
-			hhalf = animations.get(currentAnim).getHeight() / 2;
-		}
-		if (center) {
-			// modify hitbox position accordingly - move it a bit up and left
-			this.hitboxOffsetX -= whalf;
-			this.hitboxOffsetY -= hhalf;
-			this.centered = true;
-		} else {
-			if (centered) {
-				// reset hitbox position to top left origin
-				this.hitboxOffsetX += whalf;
-				this.hitboxOffsetY += hhalf;
-			}
-			this.centered = false;
-		}
 	}
 
 	public void update(GameContainer container, int delta)
@@ -215,7 +184,7 @@ public abstract class Entity implements Comparable<Entity> {
 			if (angle != 0)
 				g.resetTransform();
 		} else if (currentImage != null) {
-		    currentImage.setAlpha(color.a);
+			currentImage.setAlpha(color.a);
 			int w = currentImage.getWidth() / 2;
 			int h = currentImage.getHeight() / 2;
 			if (centered) {
@@ -260,24 +229,6 @@ public abstract class Entity implements Comparable<Entity> {
 			g.drawRect(centerX, centerY, 1, 1);
 			g.setColor(Color.white);
 		}
-	}
-
-	/**
-	 * Set an image as graphic
-	 */
-	public void setGraphic(Image image) {
-		this.currentImage = image;
-		this.width = image.getWidth();
-		this.height = image.getHeight();
-	}
-
-	/**
-	 * Set a sprite sheet as graphic
-	 */
-	public void setGraphic(SpriteSheet sheet) {
-		this.sheet = sheet;
-		this.width = sheet.getSprite(0, 0).getWidth();
-		this.height = sheet.getSprite(0, 0).getHeight();
 	}
 
 	public void addAnimation(String animName, boolean loop, int row,
@@ -333,6 +284,52 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
+	 * Set if the image or animation must be centered
+	 */
+	public void setCentered(boolean center) {
+		int whalf = 0, hhalf = 0;
+		if (currentImage != null) {
+			whalf = currentImage.getWidth() / 2;
+			hhalf = currentImage.getHeight() / 2;
+		}
+		if (currentAnim != null) {
+			whalf = animations.get(currentAnim).getWidth() / 2;
+			hhalf = animations.get(currentAnim).getHeight() / 2;
+		}
+		if (center) {
+			// modify hitbox position accordingly - move it a bit up and left
+			this.hitboxOffsetX -= whalf;
+			this.hitboxOffsetY -= hhalf;
+			this.centered = true;
+		} else {
+			if (centered) {
+				// reset hitbox position to top left origin
+				this.hitboxOffsetX += whalf;
+				this.hitboxOffsetY += hhalf;
+			}
+			this.centered = false;
+		}
+	}
+
+	/**
+	 * Set an image as graphic
+	 */
+	public void setGraphic(Image image) {
+		this.currentImage = image;
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+	}
+
+	/**
+	 * Set a sprite sheet as graphic
+	 */
+	public void setGraphic(SpriteSheet sheet) {
+		this.sheet = sheet;
+		this.width = sheet.getSprite(0, 0).getWidth();
+		this.height = sheet.getSprite(0, 0).getHeight();
+	}
+
+	/**
 	 * Start playing the animation stored as animName.
 	 * 
 	 * @param animName
@@ -350,6 +347,65 @@ public abstract class Entity implements Comparable<Entity> {
 		Animation currentAnimation = animations.get(currentAnim);
 		width = currentAnimation.getWidth();
 		height = currentAnimation.getHeight();
+	}
+
+	/**
+	 * Set the hitbox used for collision detection. If an entity has an hitbox,
+	 * it is collidable against other entities.
+	 * 
+	 * @param xOffset
+	 *            The offset of the hitbox on the x axis. Relative to the top
+	 *            left point of the entity.
+	 * @param yOffset
+	 *            The offset of the hitbox on the y axis. Relative to the top
+	 *            left point of the entity.
+	 * @param width
+	 *            The width of the rectangle in pixels
+	 * @param height
+	 *            The height of the rectangle in pixels
+	 */
+	public void setHitBox(float xOffset, float yOffset, int width, int height) {
+		this.hitboxOffsetX = xOffset;
+		this.hitboxOffsetY = yOffset;
+		this.hitboxWidth = width;
+		this.hitboxHeight = height;
+		this.width = width;
+		this.height = height;
+		this.collidable = true;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public void setAlpha(float alpha) {
+		if (alpha >= 0.0f && alpha <= 1.0f)
+			color.a = alpha;
+	}
+
+	public void setPosition(Vector2f pos) {
+		if (pos != null) {
+			this.x = pos.x;
+			this.y = pos.y;
+		}
+	}
+
+	public void setWorld(World world) {
+		this.world = world;
+		input.setInputProvider(world.container.getInput());
+	}
+
+	// TODO: add proper rotation for the hitbox/shape here!!!
+	public void setAngle(int angle) {
+		this.angle = angle;
+	}
+
+	/**
+	 * remove ourselves from world
+	 */
+	public void destroy() {
+		this.world.remove(this);
+		this.visible = false;
 	}
 
 	/**
@@ -387,42 +443,6 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	public boolean pressed(String command) {
 		return input.isPressed(command);
-	}
-
-	/**
-	 * Compare to another entity on zLevel
-	 */
-	public int compareTo(Entity o) {
-		if (depth == o.depth)
-			return 0;
-		if (depth > o.depth)
-			return 1;
-		return -1;
-	}
-
-	/**
-	 * Set the hitbox used for collision detection. If an entity has an hitbox,
-	 * it is collidable against other entities.
-	 * 
-	 * @param xOffset
-	 *            The offset of the hitbox on the x axis. Relative to the top
-	 *            left point of the entity.
-	 * @param yOffset
-	 *            The offset of the hitbox on the y axis. Relative to the top
-	 *            left point of the entity.
-	 * @param width
-	 *            The width of the rectangle in pixels
-	 * @param height
-	 *            The height of the rectangle in pixels
-	 */
-	public void setHitBox(float xOffset, float yOffset, int width, int height) {
-		this.hitboxOffsetX = xOffset;
-		this.hitboxOffsetY = yOffset;
-		this.hitboxWidth = width;
-		this.hitboxHeight = height;
-		this.width = width;
-		this.height = height;
-		this.collidable = true;
 	}
 
 	/**
@@ -588,43 +608,25 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * overload if you want to act on addition to the world
+	 * @param shape
+	 *            the shape to check for intersection
+	 * @return The entities that intersect with their hitboxes into the given
+	 *         shape
 	 */
-	public void addedToWorld() {
-
-	}
-
-	/**
-	 * overload if you want to act on removal from the world
-	 */
-	public void removedFromWorld() {
-
-	}
-
-	/**
-	 * Response to a collision with another entity
-	 * 
-	 * @param other
-	 *            The other entity that collided with us.
-	 */
-	public void collisionResponse(Entity other) {
-
-	}
-
-	/**
-	 * overload if you want to act on leaving world boundaries
-	 */
-	public void leftWorldBoundaries() {
-
-	}
-
-	public Image getCurrentImage() {
-		return currentImage;
-	}
-
-	public void setWorld(World world) {
-		this.world = world;
-		input.setInputProvider(world.container.getInput());
+	public List<Entity> intersect(Shape shape) {
+		if (shape == null)
+			return null;
+		List<Entity> result = new ArrayList<Entity>();
+		for (Entity entity : world.getEntities()) {
+			if (entity.collidable && !entity.equals(this)) {
+				Rectangle rec = new Rectangle(entity.x, entity.y, entity.width,
+						entity.height);
+				if (shape.intersects(rec)) {
+					result.add(entity);
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -676,30 +678,54 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 	}
 
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("name: ").append(name);
-		sb.append(", types: ").append(collisionTypesToString());
-		sb.append(", depth: ").append(depth);
-		sb.append(", x: ").append(x);
-		sb.append(", y: ").append(y);
-		return sb.toString();
+	/**
+	 * Compare to another entity on zLevel
+	 */
+	public int compareTo(Entity o) {
+		if (depth == o.depth)
+			return 0;
+		if (depth > o.depth)
+			return 1;
+		return -1;
 	}
 
-	public String[] getCollisionTypes() {
+	/**
+	 * overload if you want to act on addition to the world
+	 */
+	public void addedToWorld() {
+	}
+
+	/**
+	 * overload if you want to act on removal from the world
+	 */
+	public void removedFromWorld() {
+	}
+
+	/**
+	 * Response to a collision with another entity
+	 * 
+	 * @param other
+	 *            The other entity that collided with us.
+	 */
+	public void collisionResponse(Entity other) {
+	}
+
+	/**
+	 * overload if you want to act on leaving world boundaries
+	 */
+	public void leftWorldBoundaries() {
+	}
+
+	public Image getCurrentImage() {
+		return currentImage;
+	}
+
+	public String[] getTypes() {
 		return collisionTypes.toArray(new String[collisionTypes.size()]);
 	}
 
 	public boolean isType(String type) {
 		return collisionTypes.contains(type);
-	}
-
-	/**
-	 * remove ourselves from world
-	 */
-	public void destroy() {
-		this.world.remove(this);
-		this.visible = false;
 	}
 
 	/***************** some methods to deal with angles and vectors ************************************/
@@ -779,33 +805,12 @@ public abstract class Entity implements Comparable<Entity> {
 		return angle;
 	}
 
-	// TODO: add proper rotation for the hitbox/shape here!!!
-	public void setAngle(int angle) {
-		this.angle = angle;
-	}
-
 	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
 	public float getAlpha() {
 		return color.a;
-	}
-
-	public void setAlpha(float alpha) {
-		if (alpha >= 0.0f && alpha <= 1.0f)
-			color.a = alpha;
-	}
-
-	public void setPosition(Vector2f pos) {
-		if (pos != null) {
-			this.x = pos.x;
-			this.y = pos.y;
-		}
 	}
 
 	public boolean hasAnim(String animName) {
@@ -832,8 +837,18 @@ public abstract class Entity implements Comparable<Entity> {
 				+ collisionTypesToString();
 	}
 
+	public String toString() {
+        StringBuilder sb = new StringBuilder();
+		sb.append("name: ").append(name);
+		sb.append(", types: ").append(collisionTypesToString());
+		sb.append(", depth: ").append(depth);
+		sb.append(", x: ").append(x);
+		sb.append(", y: ").append(y);
+		return sb.toString();
+	}
+
 	private String collisionTypesToString() {
-		StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 		for (String type : collisionTypes) {
 			if (sb.length() > 0) {
 				sb.append(", ");
@@ -842,27 +857,4 @@ public abstract class Entity implements Comparable<Entity> {
 		}
 		return sb.toString();
 	}
-
-	/**
-	 * @param shape
-	 *            the shape to check for intersection
-	 * @return The entities that intersect with their hitboxes into the given
-	 *         shape
-	 */
-	public List<Entity> intersect(Shape shape) {
-		if (shape == null)
-			return null;
-		List<Entity> result = new ArrayList<Entity>();
-		for (Entity entity : world.getEntities()) {
-			if (entity.collidable && !entity.equals(this)) {
-				Rectangle rec = new Rectangle(entity.x, entity.y, entity.width,
-						entity.height);
-				if (shape.intersects(rec)) {
-					result.add(entity);
-				}
-			}
-		}
-		return result;
-	}
-
 }

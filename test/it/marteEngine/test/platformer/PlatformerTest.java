@@ -20,7 +20,6 @@ import org.newdawn.slick.util.Log;
 public class PlatformerTest extends StateBasedGame {
 
 	public static final int GAME_STATE = 0;
-	private static boolean ressourcesInited;
 
 	public PlatformerTest() {
 		super("PlatformerTest MarteEngine");
@@ -28,24 +27,19 @@ public class PlatformerTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		initRessources();
-		PlatformerGameWorld gameState = new PlatformerGameWorld(GAME_STATE);
-
-		addState(gameState);
+		loadResources();
+		PlatformerGameWorld platformerGameWorld = new PlatformerGameWorld(GAME_STATE);
+		addState(platformerGameWorld);
 	}
 
-	public static void initRessources() throws SlickException {
-		if (ressourcesInited)
-			return;
+	public static void loadResources() throws SlickException {
 		try {
 			ResourceManager.loadResources("data/platformer/resources.xml");
 		} catch (IOException e) {
-			Log.error("failed to load ressource file 'data/platformer/resources.xml': "
+			Log.error("failed to load resource file 'data/platformer/resources.xml': "
 					+ e.getMessage());
 			throw new SlickException("Resource loading failed!");
 		}
-
-		ressourcesInited = true;
 	}
 
 	public static void main(String[] argv) {

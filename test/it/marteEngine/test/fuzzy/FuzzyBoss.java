@@ -38,7 +38,7 @@ public class FuzzyBoss extends Entity {
 		setGraphic(ResourceManager.getImage("boss1"));
 
 		addType(SOLID, FUZZY_BOSS);
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
+		setHitBox(0, 0, width, height);
 
 		loadPath();
 

@@ -30,11 +30,12 @@ public class PlatformerEntity extends PhysicsEntity {
 	public PlatformerEntity(float x, float y, String ref) throws SlickException {
 		super(x, y);
 
-		currentImage = ResourceManager.getImage(ref);
-		if (currentImage == null) {
-			currentImage = new Image(ref);
+		if (ResourceManager.hasImage(ref)) {
+			setGraphic(ResourceManager.getImage(ref));
+		} else {
+			setGraphic(new Image(ref));
 		}
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
+		setHitBox(0, 0, width, height);
 		depth = 10;
 		defineControls();
 	}
@@ -72,7 +73,7 @@ public class PlatformerEntity extends PhysicsEntity {
 		// set acceleration to nothing
 		acceleration.x = 0;
 
-		// increase acceeration, if we're not going too fast
+		// increase acceleration, if we're not going too fast
 		if (check(CMD_LEFT) && speed.x > -maxSpeed.x) {
 			acceleration.x = -moveSpeed;
 		}
@@ -101,14 +102,14 @@ public class PlatformerEntity extends PhysicsEntity {
 		// make sure we're not going too fast vertically
 		// the reason we don't stop the player from moving too fast left/right
 		// is because
-		// that would (partially) destroy the walljumping. Instead, we just make
-		// sure the player,
+		// that would (partially) destroy the wall jumping. Instead, we just
+		// make sure the player,
 		// using the arrow keys, can't go faster than the max speed, and if we
 		// are going faster
-		// than the max speed, descrease it with friction slowly.
+		// than the max speed, decrease it with friction slowly.
 		maxspeed(false, true);
 
-		// variable jumping (tripple gravity)
+		// variable jumping (triple gravity)
 		if (speed.y < 0 && !check(CMD_JUMP)) {
 			gravity(delta);
 			gravity(delta);

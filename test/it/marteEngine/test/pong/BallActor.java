@@ -33,7 +33,7 @@ public class BallActor extends Entity {
 		depth = ME.Z_LEVEL_TOP;
 
 		// define collision box and type
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
+		setHitBox(0, 0, width, height);
 		addType(NAME, SOLID);
 	}
 

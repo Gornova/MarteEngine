@@ -19,9 +19,9 @@ public class Crow extends Entity {
 		super(x, y);
 		depth = 20;
 		name = CROW;
-		this.addType(CROW);
+		addType(CROW);
 		sheet = ResourceManager.getSpriteSheet("crow");
-		currentImage = sheet.getSprite(frame, 0);
+		setGraphic(sheet.getSprite(frame, 0));
 		wrapHorizontal = true;
 		setHitBox(4, 8, 32, 24);
 	}
@@ -35,7 +35,6 @@ public class Crow extends Entity {
 			frame++;
 			if (frame > 1)
 				frame = 0;
-			currentImage = sheet.getSprite(frame, 0);
 		}
 		x += (speed * delta);
 	}

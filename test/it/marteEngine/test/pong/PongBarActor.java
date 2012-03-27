@@ -34,7 +34,7 @@ public class PongBarActor extends Entity {
 		defineControls(up, down);
 
 		// define collision box and type
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
+		setHitBox(0, 0, width, height);
 		addType(name, SOLID);
 	}
 

@@ -12,7 +12,7 @@ public class Spike extends Entity {
 
 	public Spike(float x, float y) {
 		super(x, y, ResourceManager.getImage("spike"));
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
+		setHitBox(0, 0, width, height);
 
 		addType(SPIKE);
 	}

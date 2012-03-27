@@ -9,14 +9,14 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Bullet extends Entity {
 
-	public float fireSpeed = 0.5f;
 	public static final String NAME = "BULLET";
 
 	public Bullet(float x, float y, String ref, int angle)
 			throws SlickException {
 		super(x, y);
+		name = NAME;
 		this.angle = angle;
-		currentImage = new Image(ref);
+		setGraphic(new Image(ref));
 
 		addType(SOLID);
 		setHitBox(0, 0, 8, 8);
@@ -25,13 +25,10 @@ public class Bullet extends Entity {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		float dx = 0;
-		float dy = 0;
+		float angle = getAngle();
 		Vector2f vectorSpeed = calculateVector(angle, 8);
-		dx += vectorSpeed.x;
-		dy += vectorSpeed.y;
-		x += dx;
-		y += dy;
+		x += vectorSpeed.x;
+		y += vectorSpeed.y;
 
 		collide(SOLID, x, y);
 

@@ -12,21 +12,21 @@ public class Background extends Entity {
 		super(x, y);
 		name = "background";
 		depth = -100;
-		currentImage = ResourceManager.getImage("background");
+		setGraphic(ResourceManager.getImage("background"));
 	}
 
 	public Background(float x, float y, String refImage) throws SlickException {
 		super(x, y);
 		name = "background";
 		depth = -100;
-		currentImage = new Image(refImage);
+		setGraphic(new Image(refImage));
 	}
 
 	public Background(float x, float y, Image image) throws SlickException {
 		super(x, y);
 		name = "background";
 		depth = -100;
-		currentImage = image;
+		setGraphic(image);
 	}
 
 }

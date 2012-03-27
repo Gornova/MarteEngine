@@ -11,7 +11,7 @@ public class Block extends Solid {
 		super(x, y, w, h);
 		name = "block";
 		depth = 5;
-		currentImage = ResourceManager.getImage("block");
+		setGraphic(ResourceManager.getImage("block"));
 	}
 
 }

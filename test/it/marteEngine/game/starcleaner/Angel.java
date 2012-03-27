@@ -57,7 +57,7 @@ public class Angel extends PhysicsEntity {
 		this.name = ANGEL;
 		this.addType(Entity.PLAYER);
 		sheet = ResourceManager.getSpriteSheet(ANGEL);
-		currentImage = sheet.getSprite(0, 0);
+		setGraphic(sheet.getSprite(0, 0));
 		myLight = light;
 		width = 40;
 		height = 40;
@@ -81,7 +81,7 @@ public class Angel extends PhysicsEntity {
 	private void defineCommands() {
 		bindToKey(CMD_JUMP, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
 		bindToKey(CMD_LEFT, Input.KEY_LEFT, Input.KEY_A);
-    bindToKey(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
+		bindToKey(CMD_RIGHT, Input.KEY_RIGHT, Input.KEY_D);
 	}
 
 	public void update(GameContainer container, int delta)
@@ -180,10 +180,10 @@ public class Angel extends PhysicsEntity {
 		// sure the player,
 		// using the arrow keys, can't go faster than the max speed, and if we
 		// are going faster
-		// than the max speed, descrease it with friction slowly.
+		// than the max speed, decrease it with friction slowly.
 		maxspeed(false, true);
 
-		// variable jumping (tripple gravity)
+		// variable jumping (triple gravity)
 		if (speed.y < 0 && !check(CMD_JUMP)) {
 			gravity(delta);
 			gravity(delta);
@@ -203,30 +203,29 @@ public class Angel extends PhysicsEntity {
 				}
 			}
 			if (speed.x < 0) {
-				currentImage = sheet.getSprite(frame, 0).getFlippedCopy(true,
-						false);
+				setGraphic(sheet.getSprite(frame, 0)
+						.getFlippedCopy(true, false));
 				// sprPlayer.play("walkLeft");
 			}
 			if (speed.x > 0) {
-				currentImage = sheet.getSprite(frame, 0);
+				setGraphic(sheet.getSprite(frame, 0));
 				// sprPlayer.play("walkRight");
 			}
 
 			if (speed.x == 0) {
 				if (faceRight)
-					currentImage = sheet.getSprite(0, 0);
+					setGraphic(sheet.getSprite(0, 0));
 				else
-					currentImage = sheet.getSprite(0, 0).getFlippedCopy(true,
-							false);
+					setGraphic(sheet.getSprite(0, 0)
+							.getFlippedCopy(true, false));
 				// if (direction) { sprPlayer.play("standRight"); } else {
 				// sprPlayer.play("standLeft"); }
 			}
 		} else {
 			if (faceRight)
-				currentImage = sheet.getSprite(2, 0);
+				setGraphic(sheet.getSprite(2, 0));
 			else
-				currentImage = sheet.getSprite(2, 0)
-						.getFlippedCopy(true, false);
+				setGraphic(sheet.getSprite(2, 0).getFlippedCopy(true, false));
 			// if (direction) { sprPlayer.play("jumpRight"); } else {
 			// sprPlayer.play("jumpLeft"); }
 
@@ -272,8 +271,4 @@ public class Angel extends PhysicsEntity {
 		// the player unfortunately left the screen - so we retry
 		Globals.playerDead = true;
 	}
-
-	public void animEnd() {
-	}
-
 }

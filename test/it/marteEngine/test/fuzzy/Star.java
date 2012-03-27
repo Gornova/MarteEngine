@@ -23,7 +23,7 @@ public class Star extends Entity {
 
 	public Star(float x, float y) {
 		super(x, y, ResourceManager.getImage("star"));
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
+		setHitBox(0, 0, width, height);
 
 		addType(STAR);
 

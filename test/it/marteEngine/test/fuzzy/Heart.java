@@ -24,7 +24,7 @@ public class Heart extends Entity {
 		super(x, y);
 
 		setGraphic(ResourceManager.getImage("heart"));
-		setHitBox(0, 0, currentImage.getWidth(), currentImage.getHeight());
+		setHitBox(0, 0, width, height);
 		addType(HEART);
 
 		heartSnd = ResourceManager.getSound("heart");

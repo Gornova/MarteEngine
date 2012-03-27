@@ -22,7 +22,7 @@ public class Solid extends Entity {
 		this(x, y, width, height);
 		this.depth = depth;
 		if (refImage != null)
-			currentImage = new Image(refImage);
+          setGraphic(new Image(refImage));
 		name = "solid";
 	}
 
@@ -32,7 +32,7 @@ public class Solid extends Entity {
 		addType(SOLID);
 		setHitBox(0, 0, width, height);
 		this.depth = depth;
-		currentImage = image;
+		setGraphic(image);
 		name = "solid";
 	}
 

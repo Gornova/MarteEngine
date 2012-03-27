@@ -18,7 +18,7 @@ public class Title extends Entity {
 		super(x, y);
 		name = "title";
 		depth = 2;
-		currentImage = ResourceManager.getImage("title");
+		setGraphic(ResourceManager.getImage("title"));
 		bindToKey(CMD_START, Input.KEY_X, Input.KEY_W, Input.KEY_UP);
 	}
 

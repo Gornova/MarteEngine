@@ -91,7 +91,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public int depth = -1;
 
 	/** static image for non-animated entity */
-	public Image currentImage;
+	private Image currentImage;
 
 	/** Allows to bind input to a string command */
 	public InputManager input;

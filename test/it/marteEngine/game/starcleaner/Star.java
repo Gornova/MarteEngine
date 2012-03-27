@@ -16,7 +16,7 @@ public class Star extends Entity {
 		super(x, y);
 		addType(STAR_TYPE);
 		depth = 10;
-		currentImage = ResourceManager.getImage("star");
+		setGraphic(ResourceManager.getImage("star"));
 		myLight = light;
 		setHitBox(4, 4, 32, 32);
 	}
@@ -24,17 +24,14 @@ public class Star extends Entity {
 	public void collisionResponse(Entity other) {
 		if (other.isType(Entity.PLAYER)) {
 			Globals.lightMap.removeLight(myLight);
-			this.destroy();
+			destroy();
 		}
 	}
 
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		// stars are invisible during the day
-		if (Globals.lightMap.isDay())
-			this.visible = false;
-		else
-			this.visible = true;
+		visible = !Globals.lightMap.isDay();
 	}
 
 }

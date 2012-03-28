@@ -1,14 +1,13 @@
 package it.marteEngine;
 
 import it.marteEngine.entity.Entity;
+import it.marteEngine.entity.InputManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import it.marteEngine.entity.InputManager;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -327,8 +326,8 @@ public class World extends BasicGameState {
 	}
 
 	public boolean contains(float x, float y, int width, int height) {
-		return x >= 0 && y >= 0 && x + width <= this.width
-				&& y + height <= this.height;
+		return x + width >= 0 && y + height >= 0 && x <= this.width
+				&& y <= this.height;
 	}
 
 	public int getWidth() {

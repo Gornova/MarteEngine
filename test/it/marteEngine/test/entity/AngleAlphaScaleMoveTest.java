@@ -1,6 +1,7 @@
 package it.marteEngine.test.entity;
 
 import it.marteEngine.ME;
+import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.TopDownActor;
 import it.marteEngine.entity.Entity;
@@ -9,16 +10,14 @@ import it.marteEngine.entity.TextEntity;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class AngleAlphaScaleMoveTest extends StateBasedGame {
 
-	private TopDownActor player = null;
-	private TopDownActor scaledPlayer = null;
-	private TopDownActor rotatingAndAlphaPlayer = null;
-	private TopDownActor rotatingAndScalingAndAlphaPlayer = null;
+	private World world;
 
 	public AngleAlphaScaleMoveTest() {
 		super("AngleAlphaScaleMoveTest");
@@ -26,60 +25,57 @@ public class AngleAlphaScaleMoveTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		World world = new World(0, container);
+		world = new World(0, container);
+		loadResources();
 		prepareTestScenario(container, world);
 		addState(world);
 	}
 
+	private void loadResources() {
+		try {
+			Image triangle = new Image("data/triangle.png");
+			ResourceManager.addImage("triangle", triangle);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void prepareTestScenario(GameContainer container, World world) {
 		Font defaultFont = container.getDefaultFont();
-		// add some entities to our world
+		// Row 1: add some entities to our world
 		// images rotating, scaling and alpha
 		world.add(new TextEntity(10, 50, defaultFont, "rotating"));
-		world.add(new AngleAlphaScaleMoveEntity(100, 150, true, false, false,
-				false));
+		world.add(new AngleAlphaScaleMoveEntity(100, 150, true, false, false));
 		world.add(new TextEntity(210, 50, defaultFont, "rotating and scaling"));
-		world.add(new AngleAlphaScaleMoveEntity(300, 150, true, false, true,
-				false));
+		world.add(new AngleAlphaScaleMoveEntity(300, 150, true, false, true));
 		world.add(new TextEntity(410, 50, defaultFont, "rotating and alpha"));
-		world.add(new AngleAlphaScaleMoveEntity(500, 150, true, true, false,
-				false));
+		world.add(new AngleAlphaScaleMoveEntity(500, 150, true, true, false));
 		world.add(new TextEntity(610, 50, defaultFont, "rotating, scaling"));
 		world.add(new TextEntity(610, 70, defaultFont, "and alpha"));
-		world.add(new AngleAlphaScaleMoveEntity(700, 150, true, true, true,
-				false));
+		world.add(new AngleAlphaScaleMoveEntity(700, 150, true, true, true));
 
-		// animations rotating, scaling and alpha
+		// Row 2: animations rotating, scaling and alpha
 		world.add(new TextEntity(10, 350, defaultFont, "rotating"));
-		player = new TopDownActor(100, 400, "data/link.png");
-		player.name = Entity.PLAYER;
-		player.setCentered(true);
-		world.add(player);
+		addAnimatedEntity(100, 400, Entity.PLAYER);
 
 		world.add(new TextEntity(210, 350, defaultFont, "rotating and scaling"));
-		scaledPlayer = new TopDownActor(300, 400, "data/link.png");
-		scaledPlayer.name = "ScaledPlayer";
-		scaledPlayer.setCentered(true);
-		world.add(scaledPlayer);
+		addAnimatedEntity(300, 400, "ScaledPlayer");
 
 		world.add(new TextEntity(410, 350, defaultFont, "rotating and alpha"));
-		rotatingAndAlphaPlayer = new TopDownActor(500, 400, "data/link.png");
-		rotatingAndAlphaPlayer.name = "RotatingAndAlphaPlayer";
-		rotatingAndAlphaPlayer.setCentered(true);
-		world.add(rotatingAndAlphaPlayer);
+		addAnimatedEntity(500, 400, "RotatingAndAlphaPlayer");
 
 		world.add(new TextEntity(610, 350, defaultFont, "rotating, scaling"));
 		world.add(new TextEntity(610, 370, defaultFont, "and alpha"));
-		rotatingAndScalingAndAlphaPlayer = new TopDownActor(700, 400,
-				"data/link.png");
-		rotatingAndScalingAndAlphaPlayer.name = "RotatingAndScalingAndAlphaPlayer";
-		rotatingAndScalingAndAlphaPlayer.setCentered(true);
-		world.add(rotatingAndScalingAndAlphaPlayer);
+		addAnimatedEntity(700, 400, "RotatingAndScalingAndAlphaPlayer");
 	}
 
-	/**
-	 * @param args
-	 */
+	private void addAnimatedEntity(float x, float y, String name) {
+		Entity entity = new TopDownActor(x, y, "data/link.png");
+		entity.name = name;
+		entity.setCentered(true);
+		world.add(entity);
+	}
+
 	public static void main(String[] args) {
 		try {
 			ME.keyRestart = Input.KEY_R;

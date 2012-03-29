@@ -12,8 +12,7 @@ import org.newdawn.slick.SlickException;
 
 public class MovingPlatform extends PhysicsEntity {
 
-	// private static String[] carry = {SOLID, PLAYER};
-	private static String[] carry = { PLAYER };
+	private static String[] carry = {PLAYER};
 
 	private boolean direction = false;
 	private Image oneBlock = ResourceManager.getImage("platform");
@@ -26,6 +25,8 @@ public class MovingPlatform extends PhysicsEntity {
 		depth = 5;
 		direction = (new Random()).nextBoolean();
 		setHitBox(0, 0, 80, 40);
+		width = 80;
+		height = 40;
 	}
 
 	public void update(GameContainer container, int delta)

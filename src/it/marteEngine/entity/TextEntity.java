@@ -8,23 +8,22 @@ import org.newdawn.slick.SlickException;
 public class TextEntity extends Entity {
 
 	private Font font = null;
-	private String text = null;
+	private String text = "";
 
 	public TextEntity(float x, float y, Font font, String text) {
 		super(x, y);
 		this.font = font;
-		this.setText(text);
+		setText(text);
 	}
 
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		if (font == null) {
 			font = container.getDefaultFont();
-			this.calculateHitBox();
+			calculateHitBox();
 		}
 		g.setFont(font);
-		if (text != null)
-			g.drawString(text, x, y);
+		g.drawString(text, x, y);
 	}
 
 	public Font getFont() {
@@ -41,14 +40,14 @@ public class TextEntity extends Entity {
 
 	public void setText(String text) {
 		this.text = text;
-		this.calculateHitBox();
+		calculateHitBox();
 	}
 
 	private void calculateHitBox() {
-		if (font != null && text != null) {
-			int w = font.getWidth(text);
-			int h = font.getHeight(text);
-			this.setHitBox(0, 0, w, h);
+		if (font != null) {
+			width = font.getWidth(text);
+			height = font.getHeight(text);
+			setHitBox(0, 0, width, height);
 		}
 	}
 }

@@ -107,8 +107,7 @@ public class Level {
 
 				switch (c) {
 				case BLOCK:
-					world.add(new Block(xpos, ypos, StarCleaner.TILESIZE,
-							StarCleaner.TILESIZE));
+					world.add(new Block(xpos, ypos));
 					break;
 				case STAR:
 					light = new Light(xpos + StarCleaner.TILESIZE / 2, ypos

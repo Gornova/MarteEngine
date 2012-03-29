@@ -369,8 +369,6 @@ public abstract class Entity implements Comparable<Entity> {
 		this.hitboxOffsetY = yOffset;
 		this.hitboxWidth = width;
 		this.hitboxHeight = height;
-		this.width = width;
-		this.height = height;
 		this.collidable = true;
 	}
 

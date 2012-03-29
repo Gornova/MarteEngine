@@ -10,13 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A single instance to all resources used in a game.
+ * Provides convenient access to all game resources.
  * Each of these resources is mapped to a key eg "SELECT_SOUND" -> Sound object.
  *
  * If an attempt is made to overwrite an existing resource an IllegalArgumentException is thrown.
- * An exception is the user defined parameters. These values can be overwritten.
+ * This is true for all resources except the parameters, the parameter values can be overwritten.
  */
-public class ResourceManager {
+public final class ResourceManager {
     private static final Map<String, Music> songs = new HashMap<String, Music>();
     private static final Map<String, Sound> sounds = new HashMap<String, Sound>();
     private static final Map<String, Image> images = new HashMap<String, Image>();
@@ -26,22 +26,39 @@ public class ResourceManager {
     private static final Map<String, String> parameters = new HashMap<String, String>();
     private static final Map<String, TiledMap> tiledMaps = new HashMap<String, TiledMap>();
 
+    /**
+     * This constructor is intentionally made private.
+     * Use the static methods.
+     */
     private ResourceManager() {
     }
 
     /**
+     * @param ref
+     *            The path to the resource file
+     * @throws SlickException
+     *             If the resources could not be loaded
      * @see it.marteEngine.XMLResourceLoader
      */
-    public static void loadResources(String ref) throws IOException {
-        loadResources(ResourceLoader.getResourceAsStream(ref));
+    public static void loadResources(String ref) throws SlickException {
+      loadResources(ResourceLoader.getResourceAsStream(ref));
     }
 
     /**
+     * @param in
+     *            The stream to the resource file
+     * @throws SlickException
+     *             If the resources could not be loaded
      * @see it.marteEngine.XMLResourceLoader
      */
-    public static void loadResources(InputStream in) throws IOException {
+    public static void loadResources(InputStream in) throws SlickException {
+      try {
         XMLResourceLoader resourceLoader = new XMLResourceLoader();
         resourceLoader.load(in);
+      } catch (IOException e) {
+        throw new SlickException("Resource loading failed: "
+                + e.getMessage());
+      }
     }
 
     public static void addImage(String key, Image image) {
@@ -193,7 +210,7 @@ public class ResourceManager {
     public static TiledMap getMap(String key) {
         TiledMap map = tiledMaps.get(key);
         if (map == null)
-            throw new IllegalArgumentException("No tilemap for key " + key + " " + tiledMaps.keySet());
+            throw new IllegalArgumentException("No tiledmap for key " + key + " " + tiledMaps.keySet());
         return map;
     }
 }

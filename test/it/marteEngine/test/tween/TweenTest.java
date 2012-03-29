@@ -3,14 +3,11 @@ package it.marteEngine.test.tween;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 
-import java.io.IOException;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.Log;
 
 /**
  * Test for Tweening
@@ -19,33 +16,15 @@ import org.newdawn.slick.util.Log;
  */
 public class TweenTest extends StateBasedGame {
 
-	public static int keyRestart = Input.KEY_R;
-	private static boolean ressourcesInited;
-
 	public TweenTest() throws SlickException {
 		super("Tween Test");
 	}
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		initRessources();
+		ResourceManager.loadResources("data/tween/resources.xml");
 		TweenWorld inGameState = new TweenWorld(0, container);
 		addState(inGameState);
-
-	}
-
-	public static void initRessources() throws SlickException {
-		if (ressourcesInited)
-			return;
-		try {
-			ResourceManager.loadResources("data/tween/resources.xml");
-		} catch (IOException e) {
-			Log.error("failed to load ressource file 'data/tween/resources.xml': "
-					+ e.getMessage());
-			throw new SlickException("Resource loading failed!");
-		}
-
-		ressourcesInited = true;
 	}
 
 	public static void main(String[] argv) {

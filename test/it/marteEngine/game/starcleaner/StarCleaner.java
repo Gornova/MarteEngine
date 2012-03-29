@@ -2,8 +2,6 @@ package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.ResourceManager;
 
-import java.io.IOException;
-
 import it.marteEngine.SFX;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -43,7 +41,7 @@ public class StarCleaner extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
-		loadResources("data/starcleaner/res/resources.xml");
+		ResourceManager.loadResources("data/starcleaner/res/resources.xml");
 
 		if (container instanceof AppGameContainer) {
 			this.container = (AppGameContainer) container;
@@ -81,16 +79,6 @@ public class StarCleaner extends StateBasedGame {
 	private void applyGameOptions() {
 		SFX.setMusicVolume(1.0f);
 		SFX.setSoundVolume(1.0f);
-	}
-
-	private void loadResources(String path) throws SlickException {
-		try {
-			ResourceManager.loadResources(path);
-		} catch (IOException e) {
-			Log.error("failed to load resource file '" + path + "' "
-					+ e.getMessage());
-			throw new SlickException("Resource loading failed!");
-		}
 	}
 
 	/**

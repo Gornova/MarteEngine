@@ -3,15 +3,12 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 
-import java.io.IOException;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.Log;
 
 /**
  * Scrolling Platformer Test
@@ -34,7 +31,7 @@ public class FuzzyMain extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		loadResources("data/fuzzy/resources.xml");
+		ResourceManager.loadResources("data/fuzzy/resources.xml");
 
 		font = ResourceManager.getFont("font");
 
@@ -48,16 +45,6 @@ public class FuzzyMain extends StateBasedGame {
 		addState(gameState);
 		addState(winState);
 		addState(selectState);
-	}
-
-	public static void loadResources(String path) throws SlickException {
-		try {
-			ResourceManager.loadResources(path);
-		} catch (IOException e) {
-			Log.error("failed to load resource file " + path + " "
-					+ e.getMessage());
-			throw new SlickException("Resource loading failed!");
-		}
 	}
 
 	public static void main(String[] argv) {

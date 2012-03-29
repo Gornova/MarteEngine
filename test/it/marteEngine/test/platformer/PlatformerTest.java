@@ -3,14 +3,11 @@ package it.marteEngine.test.platformer;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 
-import java.io.IOException;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.Log;
 
 /**
  * Platformer Test
@@ -27,19 +24,9 @@ public class PlatformerTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		loadResources();
+		ResourceManager.loadResources("data/platformer/resources.xml");
 		PlatformerGameWorld platformerGameWorld = new PlatformerGameWorld(GAME_STATE);
 		addState(platformerGameWorld);
-	}
-
-	public static void loadResources() throws SlickException {
-		try {
-			ResourceManager.loadResources("data/platformer/resources.xml");
-		} catch (IOException e) {
-			Log.error("failed to load resource file 'data/platformer/resources.xml': "
-					+ e.getMessage());
-			throw new SlickException("Resource loading failed!");
-		}
 	}
 
 	public static void main(String[] argv) {

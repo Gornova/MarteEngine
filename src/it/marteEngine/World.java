@@ -263,15 +263,27 @@ public class World extends BasicGameState {
 	}
 
 	/**
-	 * @param entity
-	 *            to remove from game
-	 * @return false if entity is already set to be remove
+	 * Register the given entities for removal from this world. They are removed
+	 * in the next update cycle.
+	 * 
+	 * @param entities
+	 *            The entities to be removed
 	 */
-	public boolean remove(Entity entity) {
-		if (!removable.contains(entity)) {
-			return removable.add(entity);
+	public void removeAll(Collection<Entity> entities) {
+		for (Entity entity : entities) {
+			remove(entity);
 		}
-		return false;
+	}
+
+	/**
+	 * Register the given entity for removal from this world. The entity is
+	 * removed in the next update cycle.
+	 * 
+	 * @param entity
+	 *            the entity to be removed
+	 */
+	public void remove(Entity entity) {
+		removable.add(entity);
 	}
 
 	/**

@@ -28,6 +28,7 @@ public class TankGame extends World {
 		add(tank);
 		// and add a turret on top of it
 		TankTurret turret = new TankTurret(tank);
+		tank.setTurret(turret);
 		add(turret);
 
 		// add some destructible targets

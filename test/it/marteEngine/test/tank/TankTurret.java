@@ -7,9 +7,10 @@ import it.marteEngine.entity.Entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 /**
- * Placed on top of a Tank, let it to fire Missiles {@link Missile}
+ * Placed on top of a Tank, it can fire Missiles {@link Missile}
  * 
  * @author Gornova
  */
@@ -23,10 +24,10 @@ public class TankTurret extends Entity {
 		super(parent.x, parent.y);
 		// position turret on top of parent position
 		this.parent = parent;
-		this.setGraphic(ResourceManager.getSpriteSheet("tank")
-				.getSubImage(2, 0));
+		SpriteSheet sheet = ResourceManager.getSpriteSheet("tank");
+		setGraphic(sheet.getSubImage(2, 0));
 
-		this.setCentered(true);
+		setCentered(true);
 
 		bindToKey(FIRE, Input.KEY_SPACE);
 		bindToMouse(FIRE, Input.MOUSE_LEFT_BUTTON);
@@ -54,5 +55,4 @@ public class TankTurret extends Entity {
 
 		super.update(container, delta);
 	}
-
 }

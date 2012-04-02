@@ -20,9 +20,11 @@ public class Tank extends Entity {
 	private static final String BACKWARD = "backward";
 	private static final String ROTATE_RIGHT = "rotate right";
 	private static final String ROTATE_LEFT = "rotate left";
+	private static final String SCALE_UP = "scale up";
+	private static final String SCALE_DOWN = "scale down";
 
 	// main turret of this tank
-	public TankTurret turret;
+	private TankTurret turret;
 
 	public Tank(float x, float y) {
 		super(x, y);
@@ -35,6 +37,8 @@ public class Tank extends Entity {
 		bindToKey(BACKWARD, Input.KEY_S, Input.KEY_DOWN);
 		bindToKey(ROTATE_LEFT, Input.KEY_A, Input.KEY_LEFT);
 		bindToKey(ROTATE_RIGHT, Input.KEY_D, Input.KEY_RIGHT);
+		bindToKey(SCALE_DOWN, Input.KEY_2);
+		bindToKey(SCALE_UP, Input.KEY_3);
 
 		// If the tank goes out of the world bounds make sure it
 		// reappears on the opposite side.
@@ -51,18 +55,23 @@ public class Tank extends Entity {
 		} else if (check(BACKWARD)) {
 			move(false);
 		}
+
 		if (check(ROTATE_LEFT)) {
 			angle -= ROTATE_SPEED;
 		} else if (check(ROTATE_RIGHT)) {
 			angle += ROTATE_SPEED;
 		}
 
+		if (pressed(SCALE_UP)) {
+			scale += 0.5f;
+			turret.scale += 0.5f;
+		} else if (pressed(SCALE_DOWN)) {
+			scale -= 0.5f;
+			turret.scale -= 0.5f;
+		}
+
 		// update entity logic
 		super.update(container, delta);
-		// update turret logic
-		if (turret != null) {
-			turret.update(container, delta);
-		}
 	}
 
 	/**
@@ -74,4 +83,7 @@ public class Tank extends Entity {
 		y += speed.y;
 	}
 
+	public void setTurret(TankTurret turret) {
+		this.turret = turret;
+	}
 }

@@ -73,6 +73,9 @@ public abstract class Entity implements Comparable<Entity> {
 	 */
 	protected int angle = 0;
 
+	/** The center point to use when rotating, in screen coordinates. */
+	protected float centerOfRotationX, centerOfRotationY;
+
 	/** Scale used for both horizontal and vertical scaling. */
 	public float scale = 1.0f;
 
@@ -164,52 +167,38 @@ public abstract class Entity implements Comparable<Entity> {
 			throws SlickException {
 		if (stateManager.isActive()) {
 			stateManager.render(g);
-			return;
-		}
-		float xpos = x, ypos = y;
-		if (currentAnim != null) {
+		} else if (currentAnim != null) {
 			Animation anim = animations.get(currentAnim);
-			int w = anim.getWidth();
-			int h = anim.getHeight();
-			int whalf = w / 2;
-			int hhalf = h / 2;
-			if (centered) {
-				xpos = x - (whalf * scale);
-				ypos = y - (hhalf * scale);
-			}
-			if (angle != 0) {
-				g.rotate(x, y, angle);
-			}
-			anim.draw(xpos, ypos, w * scale, h * scale, color);
-			if (angle != 0)
-				g.resetTransform();
+			render(anim.getCurrentFrame(), g);
 		} else if (currentImage != null) {
-			currentImage.setAlpha(color.a);
-			int w = currentImage.getWidth() / 2;
-			int h = currentImage.getHeight() / 2;
-			if (centered) {
-				xpos -= w;
-				ypos -= h;
-				currentImage.setCenterOfRotation(w, h);
-			} else
-				currentImage.setCenterOfRotation(0, 0);
+			render(currentImage, g);
+		}
+	}
 
-			if (angle != 0) {
-				currentImage.setRotation(angle);
-			}
-			if (scale != 1.0f) {
-				if (centered) {
-					g.translate(xpos - (w * scale - w), ypos - (h * scale - h));
-				} else {
-					g.translate(xpos, ypos);
-				}
-				g.scale(scale, scale);
-				g.drawImage(currentImage, 0, 0, color);
-			} else {
-				g.drawImage(currentImage, xpos, ypos, color);
-			}
-			if (scale != 1.0f)
-				g.resetTransform();
+	private void render(Image img, Graphics g) {
+		img.setAlpha(color.a);
+
+		float xpos, ypos;
+		if (centered) {
+			float scaledWidth = img.getWidth() * scale;
+			float scaledHeight = img.getHeight() * scale;
+			xpos = x - scaledWidth / 2;
+			ypos = y - scaledHeight / 2;
+			centerOfRotationX = x;
+			centerOfRotationY = y;
+		} else {
+			xpos = x;
+			ypos = y;
+		}
+
+		if (angle != 0) {
+			g.rotate(centerOfRotationX, centerOfRotationY, angle);
+		}
+
+		img.draw(xpos, ypos, scale, color);
+
+		if (angle != 0) {
+			g.rotate(centerOfRotationX, centerOfRotationY, -angle);
 		}
 	}
 
@@ -396,6 +385,21 @@ public abstract class Entity implements Comparable<Entity> {
 	// TODO: add proper rotation for the hitbox/shape here!!!
 	public void setAngle(int angle) {
 		this.angle = angle;
+	}
+
+	/**
+	 * Set the center where the entity should rotate around.
+	 * 
+	 * @param corX
+	 *            The x coordinate relative to the top left corner of the entity
+	 *            to be used as rotation center.
+	 * @param corY
+	 *            The y coordinate relative to the top left corner of the entity
+	 *            to be used as rotation center.
+	 */
+	public void setCenterOfRotation(int corX, int corY) {
+		centerOfRotationX = this.x + corX;
+		centerOfRotationY = this.y + corY;
 	}
 
 	/**
@@ -629,10 +633,10 @@ public abstract class Entity implements Comparable<Entity> {
 
 	/**
 	 * Check if this entity has left the world.
-	 * 
+	 *
 	 * If the entity has moved outside of the world then the entity is notified
 	 * once by the {@link #leftWorldBoundaries()} event.
-	 * 
+	 *
 	 * If the entity must be wrapped (wrapHorizontal or wrapVertical is true)
 	 * make this entity reappear on the opposite side of the world. The entity
 	 * did not leave the world hence {@link #leftWorldBoundaries()} is not
@@ -836,7 +840,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	public String toString() {
-        StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		sb.append("name: ").append(name);
 		sb.append(", types: ").append(collisionTypesToString());
 		sb.append(", depth: ").append(depth);
@@ -846,7 +850,7 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	private String collisionTypesToString() {
-        StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		for (String type : collisionTypes) {
 			if (sb.length() > 0) {
 				sb.append(", ");

@@ -9,7 +9,7 @@ Major inspiration comes from Flashpunk (http://flashpunk.net) and Slick forum (h
 
 2. Contribute
 
-MarteEngine is a opensource (see license.txt) project hosted on GitHun: do want to try, improve or help?
+MarteEngine is a opensource (see license.txt) project hosted on GitHub: do want to try, improve or help?
 With Git this is easy and fun :D 
 
 

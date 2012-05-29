@@ -266,10 +266,10 @@ public class XMLResourceLoader {
 	 * @param sheet
 	 *            The spritesheet that contains the individual images.
 	 * @param row
-	 *            The vertical index in the spritesheet to read the animation
+	 *            The horizontal index in the spritesheet to read the animation
 	 *            from, zero based.
 	 * @param frames
-	 *            The horizontal indexes of the frames that need to be included
+	 *            The column indexes on the given row that need to be included
 	 *            in the animation, zero based.
 	 * @param frameDuration
 	 *            The duration of 1 frame in the resulting animation.

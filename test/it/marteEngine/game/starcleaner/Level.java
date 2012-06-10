@@ -32,8 +32,6 @@ public class Level {
 	public ArrayList<String> message = new ArrayList<String>();
 
 	public static Level load(int levelNo, World world) throws SlickException {
-		world.add(new Background(0, 0));
-
 		// now load the level file and create the entities from the file
 		DecimalFormat formatter = new DecimalFormat("###000");
 		String level = "data/starcleaner/res/levels/level"

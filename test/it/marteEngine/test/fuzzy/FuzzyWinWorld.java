@@ -3,10 +3,10 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
-import it.marteEngine.game.starcleaner.Background;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -16,6 +16,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 public class FuzzyWinWorld extends World {
 
 	private boolean gotoMenu;
+	private Image background;
 
 	public FuzzyWinWorld(int id) {
 		super(id);
@@ -25,7 +26,7 @@ public class FuzzyWinWorld extends World {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.init(container, game);
-		add(new Background(0, 0, ResourceManager.getImage("menu")));
+		background = ResourceManager.getImage("menu");
 		add(new FuzzySpaceEntity(180, 400, true));
 	}
 
@@ -47,6 +48,7 @@ public class FuzzyWinWorld extends World {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.drawImage(background, 0, 0);
 		super.render(container, game, g);
 
 		FuzzyMain.font.drawString(40, 20, "Congratulations!");
@@ -77,7 +79,6 @@ public class FuzzyWinWorld extends World {
 		if (gotoMenu) {
 			game.enterState(FuzzyMain.MENU_STATE, new FadeOutTransition(),
 					new FadeInTransition());
-			return;
 		}
 	}
 

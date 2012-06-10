@@ -1,14 +1,18 @@
 package it.marteEngine.game.starcleaner;
 
+import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class IngameState extends World {
+
+	private Image background;
 
 	public IngameState(int id) {
 		super(id);
@@ -23,6 +27,7 @@ public class IngameState extends World {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.init(container, game);
+		background = ResourceManager.getImage("background");
 	}
 
 	public void enter(GameContainer container, StateBasedGame game)
@@ -65,6 +70,7 @@ public class IngameState extends World {
 
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.drawImage(background, 0, 0);
 		// render all entities
 		super.render(container, game, g);
 	}

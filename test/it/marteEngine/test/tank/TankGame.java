@@ -2,11 +2,11 @@ package it.marteEngine.test.tank;
 
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
-import it.marteEngine.game.starcleaner.Background;
 
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,7 +18,8 @@ import org.newdawn.slick.state.StateBasedGame;
 public class TankGame extends World {
 
 	public Tank tank;
-	private Font font = ResourceManager.getFont("bradleyhanditc24");
+	private Font font;
+	private Image background;
 
 	public TankGame(int id, GameContainer container) throws SlickException {
 		super(id, container);
@@ -45,8 +46,8 @@ public class TankGame extends World {
 
 		// add background from
 		// http://www.flickr.com/photos/fredmikerudy/4136592583/
-		Background bg = new Background(0, 0);
-		add(bg);
+		font = ResourceManager.getFont("bradleyhanditc24");
+		background = ResourceManager.getImage("background");
 
 		container.setMouseCursor(ResourceManager.getImage("cursor"), 25, 25);
 	}
@@ -54,6 +55,7 @@ public class TankGame extends World {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.drawImage(background, 0, 0);
 		// render everything
 		super.render(container, game, g);
 		// simple gui

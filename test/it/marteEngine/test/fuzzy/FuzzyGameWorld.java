@@ -8,7 +8,6 @@ import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.Alarm;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
-import it.marteEngine.game.starcleaner.Background;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -73,6 +72,7 @@ public class FuzzyGameWorld extends World {
 	public static int points = 0;
 
 	public static Sound killSound = ResourceManager.getSound("kill");
+	private Image background;
 
 	public FuzzyGameWorld(int id) {
 		super(id);
@@ -92,7 +92,7 @@ public class FuzzyGameWorld extends World {
 		super.init(container, game);
 
 		heart = ResourceManager.getImage("heart").copy();
-
+		background = ResourceManager.getImage("background");
 	}
 
 	@Override
@@ -126,8 +126,6 @@ public class FuzzyGameWorld extends World {
 		PlatformerEntity player = loadPlayer(map, "player");
 		camera.follow(player, CameraFollowStyle.PLATFORMER);
 		camera.setSpeed(player.maxSpeed.x * 2, player.maxSpeed.y * 2);
-
-		add(new Background(0, 0), BELOW);
 
 		time = 0;
 
@@ -329,6 +327,7 @@ public class FuzzyGameWorld extends World {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.drawImage(background, 0, 0);
 		super.render(container, game, g);
 
 		// render gui

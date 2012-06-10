@@ -3,10 +3,9 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
-import it.marteEngine.game.starcleaner.Background;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -20,6 +19,7 @@ public class FuzzyMenuWorld extends World {
 	public static Music music;
 
 	private boolean showContinue;
+	private Image background;
 
 	public FuzzyMenuWorld(int id) {
 		super(id);
@@ -31,8 +31,8 @@ public class FuzzyMenuWorld extends World {
 		super.init(container, game);
 
 		music = ResourceManager.getMusic("song0");
+		background = ResourceManager.getImage("menu");
 
-		add(new Background(0, 0, ResourceManager.getImage("menu")));
 		add(new FuzzySpaceEntity(180, 400, showContinue));
 	}
 
@@ -62,6 +62,7 @@ public class FuzzyMenuWorld extends World {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.drawImage(background, 0, 0);
 		super.render(container, game, g);
 
 		FuzzyMain.font.drawString(90, 50, "Fuzzy Platformer");

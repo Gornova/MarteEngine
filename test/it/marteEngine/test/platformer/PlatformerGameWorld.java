@@ -1,15 +1,18 @@
 package it.marteEngine.test.platformer;
 
+import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.PlatformerEntity;
-import it.marteEngine.game.starcleaner.Background;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class PlatformerGameWorld extends World {
+
+	private Image background;
 
 	public PlatformerGameWorld(int id) {
 		super(id);
@@ -51,12 +54,13 @@ public class PlatformerGameWorld extends World {
 		}
 		// add a background image, from
 		// http://thetutorials.wordpress.com/2008/11/26/ps-cute-cartoon-clouds-the-simple-way/
-		add(new Background(0, 0));
+		background = ResourceManager.getImage("background");
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		g.drawImage(background, 0, 0);
 		super.render(container, game, g);
 
 		// render gui

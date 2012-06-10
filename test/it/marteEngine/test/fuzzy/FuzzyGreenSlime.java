@@ -34,7 +34,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 		setHitBox(0, 0, 40, 20);
 		// make Slime sloow
 		maxSpeed.x = 1;
-        setAnim("move");
+		setAnim("move");
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 			super.update(container, delta);
 			checkGround(true, false);
 			ty = y;
-            this.faceRight = speed.x > 0;
+			faceRight = speed.x > 0;
 
 			Entity player = collide(PLAYER, x, y - 1);
 			if (player != null) {
@@ -83,9 +83,6 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 
 	/**
 	 * Check if falling
-	 * 
-	 * @param revertHorizontal
-	 * @param revertVertical
 	 */
 	public void checkGround(boolean revertHorizontal, boolean revertVertical) {
 		boolean blocked = ((FuzzyGameWorld) world).blocked(this.x
@@ -111,7 +108,7 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 		}
 	}
 
-	private boolean damagePlayer(Entity player) {
+	private void damagePlayer(Entity player) {
 		if (player != null) {
 			FuzzyPlayer pl = (FuzzyPlayer) ME.world.find(PLAYER);
 			pl.damage(-1);
@@ -125,8 +122,6 @@ public class FuzzyGreenSlime extends PhysicsEntity {
 				faceRight = true;
 				this.speed.x = +moveSpeed;
 			}
-			return true;
 		}
-		return false;
 	}
 }

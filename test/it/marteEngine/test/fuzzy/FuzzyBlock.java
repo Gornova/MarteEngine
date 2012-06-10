@@ -31,7 +31,7 @@ public class FuzzyBlock extends Entity {
 		if (!fade) {
 			Entity player = collide(PLAYER, x, y + height + 1);
 			if (player != null && player instanceof FuzzyPlayer) {
-				((FuzzyPlayer) player).y = y + height + 1;
+				player.y = y + height + 1;
 				fade = true;
 				if (Math.random() > 0.5) {
 					ME.world.add(new Star(x, y), World.GAME);

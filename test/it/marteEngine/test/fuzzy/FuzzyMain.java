@@ -38,7 +38,7 @@ public class FuzzyMain extends StateBasedGame {
 		FuzzyGameWorld gameState = new FuzzyGameWorld(GAME_STATE);
 		FuzzyMenuWorld menuState = new FuzzyMenuWorld(MENU_STATE);
 		FuzzyWinWorld winState = new FuzzyWinWorld(WIN_STATE);
-		FuzzySelectLevellWorld selectState = new FuzzySelectLevellWorld(
+		FuzzySelectLevelWorld selectState = new FuzzySelectLevelWorld(
 				SELECT_STATE);
 
 		addState(menuState);

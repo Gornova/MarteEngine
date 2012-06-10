@@ -169,9 +169,6 @@ public class FuzzyGameWorld extends World {
 
 	/**
 	 * Load entity from a tiled map into current World
-	 * 
-	 * @param map
-	 * @throws SlickException
 	 */
 	public void loadEntityFromMap(TiledMap map, List<String> types)
 			throws SlickException {
@@ -297,11 +294,6 @@ public class FuzzyGameWorld extends World {
 
 	/**
 	 * Load player position from layer with given name
-	 * 
-	 * @param map
-	 * @param layerName
-	 * @return
-	 * @throws SlickException
 	 */
 	private PlatformerEntity loadPlayer(TiledMap map, String layerName)
 			throws SlickException {
@@ -314,7 +306,7 @@ public class FuzzyGameWorld extends World {
 				if (img != null) {
 					int x = w * img.getWidth();
 					int y = h * img.getHeight();
-					// create player & camera
+					// create player
 					FuzzyPlayer player = new FuzzyPlayer(x, y, "player");
 					add(player);
 					return player;
@@ -479,7 +471,6 @@ public class FuzzyGameWorld extends World {
 			// level finished, player have won!
 			game.enterState(FuzzyMain.WIN_STATE, new FadeOutTransition(),
 					new FadeInTransition());
-			return;
 		}
 	}
 
@@ -519,8 +510,8 @@ public class FuzzyGameWorld extends World {
 		}
 	}
 
-	public static void addPoints(int i) {
-		FuzzyGameWorld.points += 100;
+	public static void addPoints(int points) {
+		FuzzyGameWorld.points += points;
 	}
 
 	public Vector2f getPlayerCenter() {

@@ -19,11 +19,11 @@ import org.newdawn.slick.util.Log;
 
 public class FuzzyArrowTrap extends Entity {
 
-	private static final int SHOOT_TIME = 2000;
+	private static final int SHOOT_TIME = 1300;
 
 	public static final String ARROW_TRAP = "arrowTrap";
 
-	private static final int SIGHT_SIZE = 6;
+	private static final int SIGHT_SIZE = 10;
 
 	protected boolean faceRight = false;
 
@@ -33,7 +33,7 @@ public class FuzzyArrowTrap extends Entity {
 
 	private Line sight;
 
-	private int shootTimer = 0;
+	private int shootTimer;
 
 	private static Sound fireSnd;
 
@@ -49,6 +49,7 @@ public class FuzzyArrowTrap extends Entity {
 		setGraphic(ResourceManager.getImage("arrowTrap"));
 		addType(ARROW_TRAP, SOLID);
 		setHitBox(0, 0, 32, 32);
+		shootTimer = SHOOT_TIME; // Fire on sight
 
 		sx = x;
 		sy = y + height / 2;
@@ -113,21 +114,26 @@ public class FuzzyArrowTrap extends Entity {
 
 	private void shoot(int delta) throws SlickException {
 		shootTimer += delta;
-		if (shootTimer > SHOOT_TIME) {
+		if (shootTimer > SHOOT_TIME && playerInSight()) {
 			shootTimer = 0;
-			List<Entity> ent = intersect(sight);
-			for (Entity entity : ent) {
-				if (entity.isType(FuzzyPlayer.PLAYER)) {
-					Log.info("player here!!");
-					ME.world.add(new FuzzyArrow(sx - 20, sy - 5, faceRight),
-							World.GAME);
-					if (!fireSnd.playing()) {
-						fireSnd.play();
-					}
-					break;
-				}
-			}
+			fireArrow();
 		}
 	}
 
+	private boolean playerInSight() {
+		for (Entity entity : intersect(sight)) {
+			if (entity.isType(FuzzyPlayer.PLAYER)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void fireArrow() throws SlickException {
+		Log.info("Firing arrow");
+		ME.world.add(new FuzzyArrow(sx - 20, sy - 5, faceRight), World.GAME);
+		if (!fireSnd.playing()) {
+			fireSnd.play();
+		}
+	}
 }

@@ -12,6 +12,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
@@ -331,6 +332,30 @@ public class World extends BasicGameState {
 		entities.clear();
 		addable.clear();
 		removable.clear();
+	}
+
+	/**
+	 * Intersect finds all the entities in this world
+	 * that intersect with the given shape.
+	 * If no entity is found then an empty list is returned.
+	 *
+	 * @param shape
+	 *            The shape to check for intersection
+	 * @return The entities that intersect with their hitboxes into the given
+	 *         shape
+	 */
+	public List<Entity> intersect(Shape shape) {
+		List<Entity> result = new ArrayList<Entity>();
+		for (Entity entity : getEntities()) {
+			if (entity.collidable) {
+				Rectangle rec = new Rectangle(entity.x, entity.y, entity.width,
+								entity.height);
+				if (shape.intersects(rec)) {
+					result.add(entity);
+				}
+			}
+		}
+		return result;
 	}
 
 	public boolean contains(Entity entity) {

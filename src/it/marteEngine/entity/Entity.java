@@ -610,28 +610,6 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * @param shape
-	 *            the shape to check for intersection
-	 * @return The entities that intersect with their hitboxes into the given
-	 *         shape
-	 */
-	public List<Entity> intersect(Shape shape) {
-		if (shape == null)
-			return null;
-		List<Entity> result = new ArrayList<Entity>();
-		for (Entity entity : world.getEntities()) {
-			if (entity.collidable && !entity.equals(this)) {
-				Rectangle rec = new Rectangle(entity.x, entity.y, entity.width,
-						entity.height);
-				if (shape.intersects(rec)) {
-					result.add(entity);
-				}
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * Check if this entity has left the world.
 	 *
 	 * If the entity has moved outside of the world then the entity is notified

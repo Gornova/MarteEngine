@@ -121,7 +121,7 @@ public class FuzzyArrowTrap extends Entity {
 	}
 
 	private boolean playerInSight() {
-		for (Entity entity : intersect(sight)) {
+		for (Entity entity : ME.world.intersect(sight)) {
 			if (entity.isType(FuzzyPlayer.PLAYER)) {
 				return true;
 			}

@@ -58,13 +58,13 @@ For the build to succeed:
         </javac>
     </target>
 
-    <target name="jar" depends="compile" description="Create distribution jar">
+    <target name="jar" depends="compile" description="Create the distribution jar containing the compiled files">
         <buildnumber file="build.num"/>
         <tstamp>
             <format property="TODAY" pattern="dd-MM-yyyy HH:mm:ss"/>
         </tstamp>
 
-        <jar destfile="${dist.dir}/${me.name}.jar">
+        <jar destfile="${dist.dir}/${me.name}-${me.version}.jar">
             <manifest>
                 <attribute name="MarteEngine-Version" value="${me.version}"/>
                 <attribute name="MarteEngine-Build-Number" value="b${build.number}"/>
@@ -76,6 +76,13 @@ For the build to succeed:
         <delete includeEmptyDirs="true" failonerror="false" quiet="true">
             <fileset dir="${build.dir}"/>
         </delete>
+    </target>
+
+    <target name="jar sources" description="Create a jar containing the source files">
+        <delete file="dist/${me.name}-${me.version}-sources.jar"/>
+
+        <jar destfile="dist/${me.name}-${me.version}-sources.jar"
+             basedir="src"/>
     </target>
 
     <target name="javadoc" description="Generate Javadoc">

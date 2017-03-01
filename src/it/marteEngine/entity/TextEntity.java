@@ -23,8 +23,10 @@ public class TextEntity extends Entity {
 			this.calculateHitBox();
 		}
 		g.setFont(font);
-		if (text != null)
+		if (text != null) {
+			g.setColor(this.getColor());
 			g.drawString(text, x, y);
+		}
 	}
 
 	public Font getFont() {

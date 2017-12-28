@@ -1,7 +1,6 @@
 package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.ResourceManager;
-
 import it.marteEngine.SFX;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -32,7 +31,7 @@ public class StarCleaner extends StateBasedGame {
 
 	public static boolean wizardMode = false;
 
-	private AppGameContainer container;
+	private GameContainer container;
 
 	public StarCleaner() {
 		super("Star Cleaner");
@@ -40,12 +39,9 @@ public class StarCleaner extends StateBasedGame {
 	}
 
 	@Override
-	public void initStatesList(GameContainer arg0) throws SlickException {
+	public void initStatesList(GameContainer container) throws SlickException {
+		this.container = container;
 		ResourceManager.loadResources("data/starcleaner/res/resources.xml");
-
-		if (container instanceof AppGameContainer) {
-			this.container = (AppGameContainer) container;
-		}
 		addState(new TitleState(TITLE_STATE));
 		// addState(new CreditsState());
 		// addState(new InstructionsState());
@@ -81,25 +77,18 @@ public class StarCleaner extends StateBasedGame {
 		SFX.setSoundVolume(1.0f);
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SlickException {
 		if (args.length == 1 && args[0].equals("wizard"))
 			wizardMode = true;
 
 		// ME.debugEnabled = true;
 
-		try {
 			// Log.setVerbose(false);
 			AppGameContainer container = new AppGameContainer(new StarCleaner());
 			container.setDisplayMode(WIDTH, HEIGHT, false);
 			// container.setShowFPS(false);
 			// switch off mouse cursor
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

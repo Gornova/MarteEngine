@@ -3,12 +3,7 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
-
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
@@ -39,26 +34,17 @@ public class FuzzyWinWorld extends World {
 	}
 
 	@Override
-	public void leave(GameContainer container, StateBasedGame game)
-			throws SlickException {
-		super.leave(container, game);
-
-	}
-
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g)
-			throws SlickException {
+	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		g.drawImage(background, 0, 0);
 		super.render(container, game, g);
 
 		FuzzyMain.font.drawString(40, 20, "Congratulations!");
-		FuzzyMain.font.drawString(120, 120, "You have win!!");
+		FuzzyMain.font.drawString(120, 120, "You have won!!");
 
 		drawScaled(g, 0.5f, "http://randomtower.blogspot.com", 200, 880);
 	}
 
-	private void drawScaled(Graphics g, float scale, String text, float x,
-			float y) {
+	private void drawScaled(Graphics g, float scale, String text, float x, float y) {
 		g.scale(scale, scale);
 		FuzzyMain.font.drawString(x, y, text);
 		g.resetTransform();
@@ -72,8 +58,7 @@ public class FuzzyWinWorld extends World {
 	}
 
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		super.update(container, game, delta);
 
 		if (gotoMenu) {

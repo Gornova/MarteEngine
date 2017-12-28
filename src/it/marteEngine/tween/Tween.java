@@ -9,7 +9,7 @@ public abstract class Tween {
 
 	public enum TweenerMode {
 		ONESHOT, LOOPING, PERSIST
-	};
+	}
 
 	protected String name = null;
 	protected TweenerMode mode = TweenerMode.PERSIST;

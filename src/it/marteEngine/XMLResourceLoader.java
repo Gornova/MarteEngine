@@ -1,16 +1,6 @@
 package it.marteEngine;
 
-import org.newdawn.slick.AngelCodeFont;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.BigImage;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.SpriteSheetFont;
-import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.*;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
@@ -353,7 +343,7 @@ public class XMLResourceLoader {
 		ResourceManager.addTiledMap(key, tiledMap);
 	}
 
-	private void loadParameter(Element element) throws SlickException {
+	private void loadParameter(Element element) {
 		checkRequiredAttributes(element, "key", "value");
 		String key = element.getAttribute("key");
 		String value = element.getAttribute("value");
@@ -365,14 +355,14 @@ public class XMLResourceLoader {
 	private void checkRequiredAttributes(Element element, String... attributes) {
 		for (String requiredAttribute : attributes) {
 			if (!element.hasAttribute(requiredAttribute)) {
-				String missingAttributes = "";
+				StringBuilder missingAttributes = new StringBuilder();
 
 				for (String attribute : attributes) {
 					if (!element.hasAttribute(attribute)) {
 						if (missingAttributes.length() > 0) {
-							missingAttributes += ", ";
+							missingAttributes.append(", ");
 						}
-						missingAttributes += attribute;
+						missingAttributes.append(attribute);
 					}
 				}
 				throw new IllegalArgumentException(

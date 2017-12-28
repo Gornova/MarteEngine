@@ -2,15 +2,9 @@ package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.ME;
 import it.marteEngine.entity.Entity;
+import org.newdawn.slick.*;
 
 import java.util.ArrayList;
-
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.ImageBuffer;
-import org.newdawn.slick.SlickException;
 
 public class LightMap extends Entity {
 
@@ -33,7 +27,7 @@ public class LightMap extends Entity {
 
 	private Image whiteSquare;
 
-	private ArrayList<Light> lights = new ArrayList<Light>();
+	private ArrayList<Light> lights = new ArrayList<>();
 	/**
 	 * The values calculated for each vertex of the tile map, note how it's one
 	 * more to account for the bottom corner of the map. The 3 dimension is for
@@ -106,7 +100,7 @@ public class LightMap extends Entity {
 				// lighting and
 				// brightness
 				for (int i = 0; i < lights.size(); i++) {
-					float[] effect = ((Light) lights.get(i)).getEffectAt(x
+					float[] effect = lights.get(i).getEffectAt(x
 							* mapTileSize, y * mapTileSize, colouredLights);
 					// if (effect[0] != 0 || effect[1] != 0 || effect[2] != 0)
 					// Log.debug("Light " + i + ": x = " + x + ", y = " + y +

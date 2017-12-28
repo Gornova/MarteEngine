@@ -1,13 +1,8 @@
 package it.marteEngine.test.fuzzy;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.newdawn.slick.util.Log;
+
+import java.io.*;
 
 public class FuzzyUtil {
 
@@ -42,8 +37,8 @@ public class FuzzyUtil {
 			int deadCounter = in.read();
 			// Close the output stream
 			in.close();
-			result[0] = Integer.valueOf(level);
-			result[1] = Integer.valueOf(deadCounter);
+			result[0] = level;
+			result[1] = deadCounter;
 		} catch (IOException e) {
 			Log.error(e.getMessage());
 		}

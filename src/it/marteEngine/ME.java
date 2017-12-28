@@ -1,10 +1,6 @@
 package it.marteEngine;
 
 import it.marteEngine.entity.Entity;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -12,6 +8,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.StateBasedGame;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Marte Engine Utility class
@@ -50,7 +49,7 @@ public class ME {
 	public static final String WALK_DOWN = "walk_Down";
 
 	/** game attributes **/
-	public static Map<String, Object> attributes = new HashMap<String, Object>();
+	public static Map<String, Object> attributes = new HashMap<>();
 
 	public static World world;
 
@@ -127,7 +126,7 @@ public class ME {
 			g.scale(scaleX, scaleY);
 
 		// render debug stuff
-		int ypos = 1;
+		int ypos;
 		if (debugWindowAtTop)
 			ypos = 1;
 		else

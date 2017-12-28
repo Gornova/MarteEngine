@@ -17,8 +17,8 @@ public class InputManager {
 	private Input input;
 
 	public InputManager() {
-		keyboardCommands = new HashMap<String, int[]>();
-		mouseCommands = new HashMap<String, int[]>();
+		keyboardCommands = new HashMap<>();
+		mouseCommands = new HashMap<>();
 	}
 
 	public InputManager(Input input) {
@@ -155,7 +155,7 @@ public class InputManager {
 	 * command.
 	 */
 	public List<String> getBinds(String command) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 
 		for (String keyCommand : keyboardCommands.keySet()) {
 			if (keyCommand.equals(command)) {

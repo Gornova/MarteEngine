@@ -1,7 +1,6 @@
 package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -38,7 +37,7 @@ public class FuzzySpaceEntity extends Entity {
 	@Override
 	public void alarmTriggered(String name) {
 		if (name.equalsIgnoreCase("jump")) {
-			up = up ? false : true;
+			up = !up;
 		}
 	}
 

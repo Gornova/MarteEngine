@@ -1,12 +1,7 @@
 package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.entity.TextEntity;
-
-import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 
 public class FuzzyLevelButton extends TextEntity {
 
@@ -36,21 +31,15 @@ public class FuzzyLevelButton extends TextEntity {
 		super.update(container, delta);
 
 		Input input = container.getInput();
-		if (collidePoint(input.getMouseX(), input.getMouseY())) {
-			renderBorder = true;
-		} else {
-			renderBorder = false;
-		}
+		renderBorder = collidePoint(input.getMouseX(), input.getMouseY());
 
-		if (enableClick && renderBorder
-				&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+		if (enableClick && renderBorder && input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			if (getText().equalsIgnoreCase("boss")) {
 				FuzzyMain.gotoLevel = 11;
 			} else {
 				FuzzyMain.gotoLevel = Integer.valueOf(getText());
 			}
 		}
-
 	}
 
 }

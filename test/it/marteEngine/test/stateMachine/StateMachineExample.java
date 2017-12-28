@@ -4,7 +4,6 @@ import it.marteEngine.ME;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -33,16 +32,12 @@ public class StateMachineExample extends StateBasedGame {
 		addState(world);
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			ME.keyRestart = Input.KEY_R;
 			AppGameContainer container = new AppGameContainer(
 					new StateMachineExample(), 800, 600, false);
 			container.setTargetFrameRate(30);
 			container.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

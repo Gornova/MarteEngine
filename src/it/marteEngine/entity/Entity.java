@@ -3,24 +3,11 @@ package it.marteEngine.entity;
 import it.marteEngine.ME;
 import it.marteEngine.StateManager;
 import it.marteEngine.World;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+
+import java.util.*;
 
 //TODO modify hitbox coordinates to a real shape without changing method interface.
 //TODO a shape can be rotated and scaled when the entity is rotated and scaled.
@@ -88,7 +75,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public AlarmContainer alarms;
 
 	protected SpriteSheet sheet;
-	private Map<String, Animation> animations = new HashMap<String, Animation>();
+	private Map<String, Animation> animations = new HashMap<>();
 	private String currentAnim;
 	public int duration = 200;
 	public int depth = -1;
@@ -100,7 +87,7 @@ public abstract class Entity implements Comparable<Entity> {
 	public InputManager input;
 
 	/** The types this entity can collide with */
-	private HashSet<String> collisionTypes = new HashSet<String>();
+	private HashSet<String> collisionTypes = new HashSet<>();
 
 	/** true if this entity can receive updates */
 	public boolean active = true;
@@ -580,7 +567,7 @@ public abstract class Entity implements Comparable<Entity> {
 					this.collisionResponse(entity);
 					entity.collisionResponse(this);
 					if (collidingEntities == null)
-						collidingEntities = new ArrayList<Entity>();
+						collidingEntities = new ArrayList<>();
 					collidingEntities.add(entity);
 				}
 			}
@@ -662,11 +649,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * Compare to another entity on zLevel
 	 */
 	public int compareTo(Entity o) {
-		if (depth == o.depth)
-			return 0;
-		if (depth > o.depth)
-			return 1;
-		return -1;
+		return Integer.compare(depth, o.depth);
 	}
 
 	/**
@@ -752,8 +735,6 @@ public abstract class Entity implements Comparable<Entity> {
 		return (float) (Math.toDegrees(angle) - 90);
 	}
 
-	/***************** some methods to deal with alarms ************************************/
-
 	/**
 	 * Add an alarm with the given parameters and add it to this Entity
 	 */
@@ -818,13 +799,11 @@ public abstract class Entity implements Comparable<Entity> {
 	}
 
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("name: ").append(name);
-		sb.append(", types: ").append(collisionTypesToString());
-		sb.append(", depth: ").append(depth);
-		sb.append(", x: ").append(x);
-		sb.append(", y: ").append(y);
-		return sb.toString();
+		return "name: " + name +
+				", types: " + collisionTypesToString() +
+				", depth: " + depth +
+				", x: " + x +
+				", y: " + y;
 	}
 
 	private String collisionTypesToString() {

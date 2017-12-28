@@ -2,9 +2,7 @@ package it.marteEngine.actor;
 
 import it.marteEngine.ME;
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -142,12 +140,6 @@ public class TopDownActor extends Entity {
 		if (collide(SOLID, x, y - mySpeed.y) == null) {
 			y -= mySpeed.y;
 		}
-	}
-
-	@Override
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
-		super.render(container, g);
 	}
 
 	public boolean isRightMoving() {

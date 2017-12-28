@@ -3,9 +3,6 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.PlatformerEntity;
-
-import java.io.IOException;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -15,6 +12,8 @@ import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.util.Log;
+
+import java.io.IOException;
 
 public class FuzzyPlayer extends PlatformerEntity {
 
@@ -28,7 +27,7 @@ public class FuzzyPlayer extends PlatformerEntity {
 
 	public static int life = 3;
 
-	public FuzzyPlayer(float x, float y, String ref) throws SlickException {
+	public FuzzyPlayer(float x, float y) {
 		super(x, y, 22, 30);
 		addAnimation(ResourceManager.getSpriteSheet("left"), "left", true, 0,
 				0, 1, 2, 3);

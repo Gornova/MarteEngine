@@ -6,13 +6,7 @@ import it.marteEngine.World;
 import it.marteEngine.actor.TopDownActor;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.TextEntity;
-
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class AngleAlphaScaleMoveTest extends StateBasedGame {
@@ -76,8 +70,7 @@ public class AngleAlphaScaleMoveTest extends StateBasedGame {
 		world.add(entity);
 	}
 
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args) throws SlickException {
 			ME.keyRestart = Input.KEY_R;
 			ME.debugEnabled = true;
 
@@ -85,9 +78,6 @@ public class AngleAlphaScaleMoveTest extends StateBasedGame {
 					new AngleAlphaScaleMoveTest(), 800, 600, false);
 			container.setTargetFrameRate(60);
 			container.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

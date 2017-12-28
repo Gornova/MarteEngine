@@ -1,7 +1,6 @@
 package it.marteEngine.test.pong;
 
 import it.marteEngine.World;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -12,12 +11,6 @@ public class PongIntroState extends World {
 
 	public PongIntroState(int id) {
 		super(id);
-	}
-
-	@Override
-	public void init(GameContainer container, StateBasedGame game)
-			throws SlickException {
-		super.init(container, game);
 	}
 
 	@Override
@@ -39,8 +32,6 @@ public class PongIntroState extends World {
 
 		g.drawString("2010 - http://randomtower.blogspot.com", 100,
 				container.getHeight() - 40);
-
-		return;
 	}
 
 	@Override
@@ -50,7 +41,6 @@ public class PongIntroState extends World {
 		if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
 			game.enterState(PongTest.GAME_STATE);
 		}
-		return;
 	}
 
 }

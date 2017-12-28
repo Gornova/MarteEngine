@@ -1,19 +1,13 @@
 package it.marteEngine;
 
+import org.newdawn.slick.*;
+import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.util.ResourceLoader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.tiled.TiledMap;
-import org.newdawn.slick.util.ResourceLoader;
 
 /**
  * Provides convenient access to all game resources. Each of these resources is
@@ -24,14 +18,14 @@ import org.newdawn.slick.util.ResourceLoader;
  * parameters, the parameter values can be overwritten.
  */
 public final class ResourceManager {
-	private static final Map<String, Music> songs = new HashMap<String, Music>();
-	private static final Map<String, Sound> sounds = new HashMap<String, Sound>();
-	private static final Map<String, Image> images = new HashMap<String, Image>();
-	private static final Map<String, SpriteSheet> sheets = new HashMap<String, SpriteSheet>();
-	private static final Map<String, Animation> animations = new HashMap<String, Animation>();
-	private static final Map<String, Font> fonts = new HashMap<String, Font>();
-	private static final Map<String, String> parameters = new HashMap<String, String>();
-	private static final Map<String, TiledMap> tiledMaps = new HashMap<String, TiledMap>();
+	private static final Map<String, Music> songs = new HashMap<>();
+	private static final Map<String, Sound> sounds = new HashMap<>();
+	private static final Map<String, Image> images = new HashMap<>();
+	private static final Map<String, SpriteSheet> sheets = new HashMap<>();
+	private static final Map<String, Animation> animations = new HashMap<>();
+	private static final Map<String, Font> fonts = new HashMap<>();
+	private static final Map<String, String> parameters = new HashMap<>();
+	private static final Map<String, TiledMap> tiledMaps = new HashMap<>();
 
 	/**
 	 * This constructor is intentionally made private. Use the static methods.

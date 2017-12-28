@@ -2,12 +2,7 @@ package it.marteEngine.test.zombieEscape;
 
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
-
-import org.newdawn.slick.AngelCodeFont;
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -29,8 +24,7 @@ public class ZombieMain extends StateBasedGame {
 		addState(new ZombieWorld(GAME_STATE));
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			ME.keyToggleDebug = Input.KEY_1;
 			ME.keyRestart = Input.KEY_R;
 			ME.keyMuteMusic = Input.KEY_M;
@@ -40,9 +34,6 @@ public class ZombieMain extends StateBasedGame {
 			container.setTargetFrameRate(60);
 			container.setShowFPS(false);
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -22,7 +22,7 @@ public class StateManager {
 	private boolean active;
 
 	public StateManager() {
-		states = new HashMap<String, State>();
+		states = new HashMap<>();
 	}
 
 	public void addAll(State... states) {

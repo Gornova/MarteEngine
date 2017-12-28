@@ -6,21 +6,20 @@ import it.marteEngine.entity.Entity;
 import it.marteEngine.tween.Ease;
 import it.marteEngine.tween.LinearMotion;
 import it.marteEngine.tween.Tweener;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FuzzyBoss extends Entity {
 
 	public static String FUZZY_BOSS = "fuzzyBoss";
 	private static final String MOVE_FIRE_ALARM = "moveAlarm";
 
-	private List<Vector2f> path = new ArrayList<Vector2f>();
+	private List<Vector2f> path = new ArrayList<>();
 
 	private LinearMotion motion;
 

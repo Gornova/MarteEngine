@@ -2,9 +2,6 @@ package it.marteEngine.test.pong;
 
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
-
-import java.io.IOException;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -32,17 +29,13 @@ public class PongTest extends StateBasedGame {
 		addState(new PongGameState(GAME_STATE));
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			ME.keyToggleDebug = Input.KEY_1;
 			AppGameContainer container = new AppGameContainer(new PongTest());
 			container.setDisplayMode(640, 480, false);
 			container.setTargetFrameRate(60);
 			container.setShowFPS(false);
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

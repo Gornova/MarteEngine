@@ -2,7 +2,6 @@ package it.marteEngine.test.tween;
 
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -16,7 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class TweenTest extends StateBasedGame {
 
-	public TweenTest() throws SlickException {
+	public TweenTest() {
 		super("Tween Test");
 	}
 
@@ -27,16 +26,12 @@ public class TweenTest extends StateBasedGame {
 		addState(inGameState);
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			ME.keyToggleDebug = Input.KEY_1;
 			AppGameContainer container = new AppGameContainer(new TweenTest());
 			container.setDisplayMode(800, 600, false);
 			container.setTargetFrameRate(60);
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

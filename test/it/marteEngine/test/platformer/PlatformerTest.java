@@ -2,7 +2,6 @@ package it.marteEngine.test.platformer;
 
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -29,8 +28,7 @@ public class PlatformerTest extends StateBasedGame {
 		addState(platformerGameWorld);
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			ME.keyToggleDebug = Input.KEY_1;
 			AppGameContainer container = new AppGameContainer(
 					new PlatformerTest());
@@ -38,9 +36,6 @@ public class PlatformerTest extends StateBasedGame {
 			container.setTargetFrameRate(60);
 			container.setShowFPS(false);
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

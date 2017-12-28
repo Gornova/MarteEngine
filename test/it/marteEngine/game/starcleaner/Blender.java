@@ -1,7 +1,6 @@
 package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -12,7 +11,7 @@ public class Blender extends Entity {
 
 	public static final String BLENDER_TYPE = "Blender";
 
-	private Color blendColor = null;
+	private Color blendColor;
 	int alpha, millis;
 	int milliStep;
 	int milliCount;

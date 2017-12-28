@@ -2,19 +2,18 @@ package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.PhysicsEntity;
-
-import java.util.Random;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import java.util.Random;
+
 public class MovingPlatform extends PhysicsEntity {
 
 	private static String[] carry = {PLAYER};
 
-	private boolean direction = false;
+	private boolean direction;
 	private Image oneBlock = ResourceManager.getImage("platform");
 
 	private int movement = 2;
@@ -47,8 +46,7 @@ public class MovingPlatform extends PhysicsEntity {
 		}
 	}
 
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
+	public void render(GameContainer container, Graphics g) throws SlickException {
 		if (!visible)
 			return;
 		g.drawImage(oneBlock, x, y);

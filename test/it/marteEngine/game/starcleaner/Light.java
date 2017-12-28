@@ -31,7 +31,7 @@ class Light {
 	 *            The x coordinate of the position the light has in the world
 	 * @param y
 	 *            The y coordinate of the position the light has in the world
-	 * @param str
+	 * @param intensity
 	 *            The strength of the light, this specifies in pixels how far
 	 *            the light will shine
 	 * @param col

@@ -2,12 +2,6 @@ package it.marteEngine;
 
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.InputManager;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -16,6 +10,11 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 //TODO addAll() muss intern add() aufrufen, um korrekt nach flags in die listen einzusortieren
 public class World extends BasicGameState {
@@ -28,7 +27,7 @@ public class World extends BasicGameState {
 	public GameContainer container = null;
 
 	/** unique id for every world **/
-	public int id = 0;
+	public int id;
 
 	/** width of the world, useful for horizontal wrapping entitites */
 	public int width = 0;
@@ -36,16 +35,16 @@ public class World extends BasicGameState {
 	public int height = 0;
 
 	/** internal list for entities **/
-	private List<Entity> entities = new ArrayList<Entity>();
-	private List<Entity> removable = new ArrayList<Entity>();
-	private List<Entity> addable = new ArrayList<Entity>();
+	private List<Entity> entities = new ArrayList<>();
+	private List<Entity> removable = new ArrayList<>();
+	private List<Entity> addable = new ArrayList<>();
 
 	/**
 	 * two lists to contain objects that are rendered before and after camera
 	 * stuff is rendered
 	 */
-	private List<Entity> belowCamera = new ArrayList<Entity>();
-	private List<Entity> aboveCamera = new ArrayList<Entity>();
+	private List<Entity> belowCamera = new ArrayList<>();
+	private List<Entity> aboveCamera = new ArrayList<>();
 
 	/** current camera **/
 	public Camera camera;
@@ -253,14 +252,14 @@ public class World extends BasicGameState {
 
 	public List<Entity> getEntities(String type) {
 		if (entities.size() > 0) {
-			List<Entity> res = new ArrayList<Entity>();
+			List<Entity> res = new ArrayList<>();
 			for (Entity entity : entities) {
 				if (entity.isType(type))
 					res.add(entity);
 			}
 			return res;
 		}
-		return new ArrayList<Entity>();
+		return new ArrayList<>();
 	}
 
 	/**
@@ -288,7 +287,7 @@ public class World extends BasicGameState {
 	}
 
 	/**
-	 * @param name
+	 * @param name The name of the entity
 	 * @return null if name is null or if no entity is found in game, entity
 	 *         otherwise
 	 */
@@ -345,7 +344,7 @@ public class World extends BasicGameState {
 	 *         shape
 	 */
 	public List<Entity> intersect(Shape shape) {
-		List<Entity> result = new ArrayList<Entity>();
+		List<Entity> result = new ArrayList<>();
 		for (Entity entity : getEntities()) {
 			if (entity.collidable) {
 				Rectangle rec = new Rectangle(entity.x, entity.y, entity.width,
@@ -388,9 +387,9 @@ public class World extends BasicGameState {
 	public List<Entity> findEntityWithType(String type) {
 		if (type == null) {
 			Log.error("Parameter must be not null");
-			return new ArrayList<Entity>();
+			return new ArrayList<>();
 		}
-		List<Entity> result = new ArrayList<Entity>();
+		List<Entity> result = new ArrayList<>();
 		for (Entity entity : entities) {
 			if (entity.isType(type)) {
 				result.add(entity);

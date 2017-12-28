@@ -1,7 +1,6 @@
 package it.marteEngine.test.resize;
 
 import it.marteEngine.ME;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -22,16 +21,12 @@ public class ResizeTest extends StateBasedGame {
 		addState(inGameState);
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			ME.keyToggleDebug = Input.KEY_1;
 			AppGameContainer container = new AppGameContainer(new ResizeTest());
 			container.setDisplayMode(800, 600, false);
 			container.setTargetFrameRate(60);
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

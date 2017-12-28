@@ -1,16 +1,15 @@
 package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.World;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.ResourceLoader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-import org.newdawn.slick.Color;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.util.ResourceLoader;
 
 public class Level {
 	public static final char BLOCK = '=';
@@ -29,7 +28,7 @@ public class Level {
 	private int nrOfStars = 0;
 	public int levelNo = 0;
 	public int timeToFinish = 0;
-	public ArrayList<String> message = new ArrayList<String>();
+	public ArrayList<String> message = new ArrayList<>();
 
 	public static Level load(int levelNo, World world) throws SlickException {
 		// now load the level file and create the entities from the file
@@ -55,7 +54,7 @@ public class Level {
 		Level loadedLevel = new Level();
 		int width = 0;
 		loadedLevel.nrOfStars = 0;
-		loadedLevel.lines = new ArrayList<String>();
+		loadedLevel.lines = new ArrayList<>();
 		loadedLevel.levelNo = levelNo;
 
 		// read through the lines recording them into a list and
@@ -74,7 +73,7 @@ public class Level {
 					loadedLevel.lines.add(line);
 				} else if (lineno == 13) {
 					loadedLevel.timeToFinish = Integer.parseInt(line);
-				} else if (lineno > 13) {
+				} else {
 					loadedLevel.message.add(line);
 				}
 			}
@@ -89,8 +88,7 @@ public class Level {
 		return loadedLevel;
 	}
 
-	private void createEntities(Level level, int width, int height, World world)
-			throws SlickException {
+	private void createEntities(Level level, int width, int height, World world) {
 		// create the lightmap entity
 		LightMap lightMap = new LightMap(0, 0, 20);
 		Globals.lightMap = lightMap;

@@ -3,11 +3,9 @@ package it.marteEngine.game.starcleaner;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 
-import org.newdawn.slick.SlickException;
-
 public class Block extends Entity {
 
-	public Block(float x, float y) throws SlickException {
+	public Block(float x, float y) {
 		super(x, y);
 		name = "block";
 		depth = 5;

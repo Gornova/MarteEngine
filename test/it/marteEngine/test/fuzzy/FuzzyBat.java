@@ -5,7 +5,6 @@ import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.tween.Tweener;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -25,7 +24,7 @@ public class FuzzyBat extends Entity {
 
 	private float ty;
 
-	public FuzzyBat(float x, float y) throws SlickException {
+	public FuzzyBat(float x, float y) {
 		super(x, y);
 		addAnimation(ResourceManager.getSpriteSheet("batLeft"), "moveLeft",
 				true, 0, 0, 1, 2);

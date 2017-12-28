@@ -2,7 +2,6 @@ package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
@@ -10,7 +9,7 @@ public class Star extends Entity {
 
 	public static final String STAR_TYPE = "Star";
 
-	private Light myLight = null;
+	private Light myLight;
 
 	public Star(float x, float y, Light light) {
 		super(x, y);

@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class Tweener {
 
-	private List<Tween> tweens = new ArrayList<Tween>();
-	private List<Tween> removeable = new ArrayList<Tween>();
+	private List<Tween> tweens = new ArrayList<>();
+	private List<Tween> removeable = new ArrayList<>();
 
 	private boolean active = true;
 
@@ -40,13 +40,13 @@ public class Tweener {
 		return false;
 	}
 
-	public boolean remove(Tween tween) {
-		if (tween == null || tween.getParent() != this)
-			return false;
+	public void remove(Tween tween) {
+		if (tween.getParent() != this)
+			throw new IllegalArgumentException("Tween " + tween.getName() + " cannot be deleted");
+
 		removeable.add(tween);
 		tween.setActive(false);
 		tween.setParent(null);
-		return true;
 	}
 
 	public void clearTweens() {
@@ -54,7 +54,7 @@ public class Tweener {
 			tween.setActive(false);
 			tween.setParent(null);
 		}
-		tweens = new ArrayList<Tween>();
+		tweens = new ArrayList<>();
 	}
 
 	public Tween getTween(String name) {

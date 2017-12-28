@@ -2,9 +2,9 @@ package it.marteEngine.tween;
 
 public class NumTween extends Tween {
 
-	private float value = 0f;
-	private float start = 0f;
-	private float range = 0f;
+	private float value;
+	private float start;
+	private float range;
 
 	public NumTween(float from, float to, float duration, TweenerMode type,
 			Ease easingType, boolean deltaTiming) {

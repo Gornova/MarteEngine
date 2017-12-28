@@ -1,7 +1,6 @@
 package it.marteEngine.test.tiled;
 
 import it.marteEngine.ResourceManager;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -14,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class TiledTest extends StateBasedGame {
 
-	public TiledTest() throws SlickException {
+	public TiledTest() {
 		super("Tiled Integration Test");
 	}
 
@@ -24,15 +23,11 @@ public class TiledTest extends StateBasedGame {
 		addState(new TiledWorld(1, container));
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			AppGameContainer container = new AppGameContainer(new TiledTest());
 			container.setDisplayMode(800, 600, false);
 			container.setTargetFrameRate(60);
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

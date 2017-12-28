@@ -8,21 +8,7 @@ import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.Alarm;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.particles.ParticleIO;
@@ -32,9 +18,15 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 public class FuzzyGameWorld extends World {
 
-	private static final int TILESIZE = 32;
+	private static final int TILE_SIZE = 32;
 	public static final int NO_SOLID = -1;
 	private static final int SOLID = 1;
 	public static int stars;
@@ -295,11 +287,10 @@ public class FuzzyGameWorld extends World {
 	/**
 	 * Load player position from layer with given name
 	 */
-	private PlatformerEntity loadPlayer(TiledMap map, String layerName)
-			throws SlickException {
+	private PlatformerEntity loadPlayer(TiledMap map, String playerName) {
 		if (map == null)
 			return null;
-		int layerIndex = map.getLayerIndex(layerName);
+		int layerIndex = map.getLayerIndex(playerName);
 		for (int w = 0; w < map.getWidth(); w++) {
 			for (int h = 0; h < map.getHeight(); h++) {
 				Image img = map.getTileImage(w, h, layerIndex);
@@ -307,7 +298,7 @@ public class FuzzyGameWorld extends World {
 					int x = w * img.getWidth();
 					int y = h * img.getHeight();
 					// create player
-					FuzzyPlayer player = new FuzzyPlayer(x, y, "player");
+					FuzzyPlayer player = new FuzzyPlayer(x, y);
 					add(player);
 					return player;
 				}
@@ -487,8 +478,8 @@ public class FuzzyGameWorld extends World {
 	}
 
 	public boolean blocked(float x, float y) {
-		int tx = (int) x / TILESIZE;
-		int ty = (int) y / TILESIZE;
+		int tx = (int) x / TILE_SIZE;
+		int ty = (int) y / TILE_SIZE;
 
 		if (tx < 0 || tx >= widthInTiles)
 			return false;

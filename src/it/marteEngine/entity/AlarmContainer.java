@@ -1,18 +1,14 @@
 package it.marteEngine.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Holds all the alarms for a single Entity. The entity is notified when an
  * alarm is triggered by the alarmTriggered method.
  */
 public class AlarmContainer {
-	private Map<String, Alarm> alarms = new HashMap<String, Alarm>();
-	private Map<String, Alarm> alarmsToAdd = new HashMap<String, Alarm>();
+	private Map<String, Alarm> alarms = new HashMap<>();
+	private Map<String, Alarm> alarmsToAdd = new HashMap<>();
 	private Entity entity;
 
 	public AlarmContainer(Entity entity) {
@@ -37,7 +33,7 @@ public class AlarmContainer {
 			}
 			if (alarm.isDead()) {
 				if (deadAlarms == null) {
-					deadAlarms = new ArrayList<String>();
+					deadAlarms = new ArrayList<>();
 				}
 				deadAlarms.add(alarmName);
 			}

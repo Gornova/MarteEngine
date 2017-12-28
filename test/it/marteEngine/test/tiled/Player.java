@@ -12,7 +12,7 @@ public class Player extends Entity {
 
 	private LinearMotion motion;
 
-	public Ease currentEase = Ease.NONE;
+	private Ease currentEase = Ease.NONE;
 
 	public Player(float x, float y) {
 		super(x, y);

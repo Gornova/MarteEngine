@@ -3,22 +3,17 @@ package it.marteEngine.test.tiled;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
-
-import java.util.Arrays;
-import java.util.List;
-
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.Log;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * World for Tiled test
- * 
+ *
  * @author Gornova
  */
 public class TiledWorld extends World {
@@ -27,7 +22,7 @@ public class TiledWorld extends World {
 
 	private boolean hideTiles = false;
 
-	public TiledWorld(int id, GameContainer container) throws SlickException {
+	public TiledWorld(int id, GameContainer container) {
 		super(id, container);
 	}
 
@@ -35,21 +30,16 @@ public class TiledWorld extends World {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		super.init(container, game);
-		// load entities from map (see resource.xml of this example in
-		// data/tiled)
+		// load entities from map (see resource.xml of this example in data/tiled)
 		map = ResourceManager.getMap("test1");
 		// load entities from map defined with Tiled
-		loadEntityFromMap(map, Arrays.asList("entity"));
+		loadEntityFromMap(map, Collections.singletonList("entity"));
 	}
 
 	/**
 	 * Load entity from a tiled map into current World
-	 * 
-	 * @param map
-	 * @throws SlickException
 	 */
-	public void loadEntityFromMap(TiledMap map, List<String> types)
-			throws SlickException {
+	public void loadEntityFromMap(TiledMap map, List<String> types) {
 		if (map == null) {
 			Log.error("unable to load map information");
 			return;
@@ -137,7 +127,7 @@ public class TiledWorld extends World {
 
 		Input input = container.getInput();
 		if (input.isKeyPressed(Input.KEY_SPACE)) {
-			hideTiles = hideTiles ? false : true;
+			hideTiles = !hideTiles;
 		}
 	}
 

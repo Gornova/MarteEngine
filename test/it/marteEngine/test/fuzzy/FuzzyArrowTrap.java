@@ -6,14 +6,7 @@ import it.marteEngine.World;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
 import it.marteEngine.tween.Tweener;
-
-import java.util.List;
-
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.util.Log;
 

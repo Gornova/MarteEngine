@@ -2,30 +2,23 @@ package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-
 public class MessageWindow extends Entity {
 
-	public static final String MESSAGEWINDOW = "messageWindow";
+	public static final String MESSAGE_WINDOW = "messageWindow";
 
-	private Font font = null;
+	private Font font;
 	private ArrayList<String> messageLines;
 	private Image background;
 
-	public MessageWindow(ArrayList<String> message, int x, int y,
-			boolean centerOnScreen) {
+	public MessageWindow(ArrayList<String> message, int x, int y, boolean centerOnScreen) {
 		super(x, y);
 		background = ResourceManager.getImage("message");
-		this.name = MESSAGEWINDOW;
-		this.addType(MESSAGEWINDOW);
+		this.name = MESSAGE_WINDOW;
+		this.addType(MESSAGE_WINDOW);
 		messageLines = message;
 		setGraphic(background);
 		font = ResourceManager.getFont("bradleyhanditc24");

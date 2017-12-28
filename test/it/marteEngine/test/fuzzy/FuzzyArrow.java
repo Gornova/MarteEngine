@@ -3,18 +3,16 @@ package it.marteEngine.test.fuzzy;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
 public class FuzzyArrow extends Entity {
 
-	public static final String ARROW = "arrow";
+	private static final String ARROW = "arrow";
 
-	protected boolean faceRight = false;
+	protected boolean faceRight;
 
-	public FuzzyArrow(float x, float y, boolean faceRight)
-			throws SlickException {
+	public FuzzyArrow(float x, float y, boolean faceRight) {
 		super(x, y);
 		this.faceRight = faceRight;
 		if (faceRight) {
@@ -33,7 +31,7 @@ public class FuzzyArrow extends Entity {
 
 		super.update(container, delta);
 
-		float tx = 0;
+		float tx;
 		if (faceRight) {
 			tx = x + 5;
 		} else {

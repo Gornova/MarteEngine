@@ -3,7 +3,6 @@ package it.marteEngine.game.starcleaner;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PhysicsEntity;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -41,7 +40,7 @@ public class Angel extends PhysicsEntity {
 	public boolean doubleJump = false;
 
 	public boolean dead = false;
-	private Light myLight = null;
+	private Light myLight;
 
 	public static String[] enemies = {Spikes.SPIKES, Crow.CROW};
 

@@ -3,9 +3,7 @@ package it.marteEngine.test.pong;
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
-
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -73,12 +71,6 @@ public class PongBarActor extends Entity {
 		if (collide(SOLID, x, y - mySpeed.y) == null && y - mySpeed.y > 0) {
 			y -= mySpeed.y;
 		}
-	}
-
-	@Override
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
-		super.render(container, g);
 	}
 
 	public boolean isUpMoving() {

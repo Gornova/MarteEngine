@@ -1,14 +1,12 @@
 package it.marteEngine.game.starcleaner;
 
 import it.marteEngine.World;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
 
 public class TitleState extends World {
 
@@ -36,21 +34,10 @@ public class TitleState extends World {
 		// this.debugEnabled = true;
 		this.clear();
 		myTitle = new Title(0, 0);
-		myMessage = new MessageWindow(new ArrayList<String>(
-				Arrays.asList(titlemsg)), 310, 210, false);
+		myMessage = new MessageWindow(new ArrayList<>(
+        Arrays.asList(titlemsg)), 310, 210, false);
 		this.add(myTitle);
 		this.add(myMessage);
 	}
 
-	public void render(GameContainer container, StateBasedGame game, Graphics g)
-			throws SlickException {
-		// render all entities
-		super.render(container, game, g);
-	}
-
-	public void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
-		// update all entities
-		super.update(container, game, delta);
-	}
 }

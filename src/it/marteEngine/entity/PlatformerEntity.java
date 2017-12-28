@@ -1,7 +1,6 @@
 package it.marteEngine.entity;
 
 import it.marteEngine.ResourceManager;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -40,8 +39,7 @@ public class PlatformerEntity extends PhysicsEntity {
 		defineControls();
 	}
 
-	public PlatformerEntity(float x, float y, int width, int height)
-			throws SlickException {
+	public PlatformerEntity(float x, float y, int width, int height) {
 		super(x, y);
 
 		setHitBox(0, 0, width, height);

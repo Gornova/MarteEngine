@@ -4,12 +4,7 @@ import it.marteEngine.CameraFollowStyle;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
 import it.marteEngine.actor.TopDownActor;
-
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,10 +15,10 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class AvatarWorld extends World {
 	private Vector2f playerSpeed;
-	private CameraMode cameraMode = CameraMode.FOLLOW_ENTITY;
+	private CameraMode cameraMode;
 	private TopDownActor player;
 
-	private static enum CameraMode {
+	private enum CameraMode {
 		FOLLOW_ENTITY, SCROLL, FOCUS_ON_RIGHT_CLICK;
 
 		public CameraMode getNext() {
@@ -139,8 +134,7 @@ public class AvatarWorld extends World {
 				camera.setSpeed(5, 5);
 				break;
 			default :
-				throw new IllegalStateException("No camera mode for "
-						+ cameraMode);
+				throw new IllegalStateException("No camera mode for " + cameraMode);
 		}
 	}
 
@@ -163,8 +157,7 @@ public class AvatarWorld extends World {
 		g.fillRect(-camera.getX(), -camera.getY(), width, height);
 
 		g.setColor(Color.black);
-		g.drawString("World [" + width + "," + height + "]", -camera.getX(),
-				-camera.getY());
+		g.drawString("World [" + width + "," + height + "]", -camera.getX(), -camera.getY());
 
 		float boundsX = camera.getScene().getX();
 		float boundsY = camera.getScene().getY();

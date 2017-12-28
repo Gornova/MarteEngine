@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 
 public class TextEntity extends Entity {
 
-	private Font font = null;
+	private Font font;
 	private String text = "";
 
 	public TextEntity(float x, float y, Font font, String text) {

@@ -2,7 +2,6 @@ package it.marteEngine.test.tank;
 
 import it.marteEngine.ME;
 import it.marteEngine.ResourceManager;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -15,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Gornova
  */
 public class TankTest extends StateBasedGame {
-	public TankTest() throws SlickException {
+	public TankTest() {
 		super("Tank Test");
 	}
 
@@ -26,16 +25,12 @@ public class TankTest extends StateBasedGame {
 		addState(inGameState);
 	}
 
-	public static void main(String[] argv) {
-		try {
+	public static void main(String[] argv) throws SlickException {
 			ME.keyToggleDebug = Input.KEY_1;
 			AppGameContainer container = new AppGameContainer(new TankTest());
 			container.setDisplayMode(800, 600, false);
 			container.setTargetFrameRate(60);
 			container.start();
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

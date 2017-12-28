@@ -5,12 +5,12 @@ import org.newdawn.slick.Graphics;
 
 public interface State {
 
-	public void init();
+	void init();
 
-	public void update(GameContainer container, int delta);
+	void update(GameContainer container, int delta);
 
-	public void render(Graphics g);
+	void render(Graphics g);
 
-	public String getName();
+	String getName();
 
 }

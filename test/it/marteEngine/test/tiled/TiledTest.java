@@ -20,7 +20,7 @@ public class TiledTest extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		ResourceManager.loadResources("data/helloWorld/resources.xml");
+		ResourceManager.loadResources("data/tiled/resources.xml");
 		addState(new TiledWorld(1, container));
 	}
 

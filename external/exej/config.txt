@@ -1,7 +1,0 @@
-# EXE J CONFIG
-#
-# The command line arguments that will be
-# passed to java.exe/javaw.exe when the user
-# runs the resulting .exe files.
-#
-commandline=-classpath . -jar @jarname@

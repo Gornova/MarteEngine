@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
  * sound key file
  * music key file
  * image key file transparentColor(opt)
- * sheet key file width height transparentColor(opt)
+ * sheet key file tileWidth tileHeight transparentColor(opt)
  * anim key imgName frameDuration row frames(default=all horizontal frames)
  * flipVertical(opt) flipHorizontal(opt) loop(default=true)
  * angelcodefont key fontFile imageFile
@@ -38,7 +38,7 @@ import java.util.StringTokenizer;
  * <sound key="jump" file="jump.wav" />
  * <music key="sleepy" file="sleep.wav" />
  * <image key="ship" file="ship.png" />
- * <sheet key="homer" file="homer.png" width="25" height="25" transparentColor="000000" />
+ * <sheet key="homer" file="homer.png" tileWidth="25" tileHeight="25" transparentColor="000000" />
  * <anim key="homer" imgName="homer" frameDuration="250" row="0" frames="1,2,3,4,5"
  * flipVertical="true" flipHorizontal="true" loop="false"/>
  * <unicodefont key="default" file="gbb.ttf" fontSize="20" />
@@ -172,8 +172,8 @@ public class XMLResourceLoader {
 	private void loadSpriteSheet(Element element) throws SlickException {
 		String key = element.getAttribute("key");
 		String file = element.getAttribute("file");
-		int width = parseIntAttribute(element, "width");
-		int height = parseIntAttribute(element, "height");
+		int tileWidth = parseIntAttribute(element, "tileWidth");
+		int tileHeight = parseIntAttribute(element, "tileHeight");
 		Color transparentColor = null;
 
 		if (element.hasAttribute("transparentColor")) {
@@ -181,10 +181,10 @@ public class XMLResourceLoader {
 		}
 
 		Log.debug(String.format(
-				"Loading spritesheet key=%s file=%s width=%s height=%s", key,
-				file, width, height));
+				"Loading spritesheet key=%s file=%s tileWidth=%s tileHeight=%s", key,
+				file, tileWidth, tileHeight));
 		ResourceManager.addSpriteSheet(key, new SpriteSheet(baseDir + file,
-				width, height, transparentColor));
+				tileWidth, tileHeight, transparentColor));
 	}
 
 	private Color decodeColor(Element element) {
@@ -267,8 +267,8 @@ public class XMLResourceLoader {
 	 * @return An animation parsed from the spritesheet
 	 */
 	private Animation buildAnimationFromFrames(SpriteSheet sheet, int row,
-			int[] frames, int frameDuration, boolean flipHorizontal,
-			boolean flipVertical) {
+																						 int[] frames, int frameDuration, boolean flipHorizontal,
+																						 boolean flipVertical) {
 		Animation animation = new Animation(false);
 		for (int frameIndex : frames) {
 			Image img = sheet.getSubImage(frameIndex, row);
@@ -345,7 +345,7 @@ public class XMLResourceLoader {
 	}
 
 	private int parseIntAttribute(Element element, String attributeName,
-			int defaultValue) {
+																int defaultValue) {
 		if (element.hasAttribute(attributeName)) {
 			return parseIntAttribute(element, attributeName);
 		} else {
@@ -358,7 +358,7 @@ public class XMLResourceLoader {
 	}
 
 	private boolean parseBooleanAttribute(Element element,
-			String attributeName, boolean defaultValue) {
+																				String attributeName, boolean defaultValue) {
 		if (element.hasAttribute(attributeName)) {
 			return parseBooleanAttribute(element, attributeName);
 		} else {
@@ -375,7 +375,7 @@ public class XMLResourceLoader {
 	}
 
 	private String formatLoadMsg(String type, String key, String valueName,
-			String value) {
+															 String value) {
 		return String.format("Loading %s key=%s %s=%s", type, key, valueName, value);
 	}
 }

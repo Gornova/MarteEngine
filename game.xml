@@ -13,7 +13,7 @@ Main objective of this build configuration is to distribute your game as:
     <!-- Game properties, don't use spaces in game.name -->
     <property name="game.name" value="game-name"/>
     <property name="game.main.class" value="it.marteEngine.test.fuzzy.FuzzyMain"/>
-    <property name="game.java.version" value="1.5"/>
+    <property name="game.java.version" value="1.7"/>
 
     <property name="webstart.title" value="game-name"/>
     <property name="webstart.description" value="Platformer test game"/>

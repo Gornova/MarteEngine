@@ -63,7 +63,7 @@ public class XMLResourceLoader {
 			rootElement = document.getDocumentElement();
 			validateResourceFile();
 
-			String baseDir = rootElement.getAttribute("basedir");
+			String baseDir = rootElement.getAttribute("baseDir");
 			setBaseDirectory(baseDir);
 
 			for (Element element : getElementsByTagName("sound")) {
@@ -330,9 +330,17 @@ public class XMLResourceLoader {
 	private void loadTiledMap(Element element) throws SlickException {
 		String key = element.getAttribute("key");
 		String file = element.getAttribute("file");
+    String tileSetPath = element.getAttribute("tileSetPath");
 
 		Log.debug(formatLoadMsg("Tiled map", key, file));
-		TiledMap tiledMap = new TiledMap(baseDir + file);
+
+		TiledMap tiledMap;
+		if(tileSetPath != null && !tileSetPath.isEmpty()) {
+			tiledMap = new TiledMap(baseDir + file, baseDir + tileSetPath);
+		} else {
+			tiledMap = new TiledMap(baseDir + file);
+		}
+
 		ResourceManager.addTiledMap(key, tiledMap);
 	}
 

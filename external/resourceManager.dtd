@@ -1,6 +1,6 @@
 <!ELEMENT resources (sound*, music*, image*, sheet*, anim*, spritesheetfont*, unicodefont*, angelcodefont*, map*, param*)>
         <!ATTLIST resources
-                basedir CDATA #REQUIRED
+                baseDir CDATA #REQUIRED
                 >
 
         <!ELEMENT sound EMPTY>
@@ -64,10 +64,16 @@
                 fontSize CDATA #IMPLIED
                 >
 
+        <!--
+        The tileSetPath is used by Slick to find the tileset images.
+        All paths are relative to the base directory.
+        If tileSetPath is empty then the map layer images must be in the same directory as the tiledMap.
+        -->
         <!ELEMENT map EMPTY>
         <!ATTLIST map
                 key CDATA #REQUIRED
                 file CDATA #REQUIRED
+                tileSetPath CDATA #IMPLIED
                 >
 
         <!ELEMENT param EMPTY>

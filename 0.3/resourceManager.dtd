@@ -68,6 +68,13 @@
         <!ATTLIST map
                 key CDATA #REQUIRED
                 file CDATA #REQUIRED
+
+                <!--
+                This path is used by Slick to find the tileset images.
+                All paths are relative to the base directory
+                If tileSetPath is empty then the map layer images must be in the same directory as the tiledMap.
+                -->
+                tileSetPath CDATA #IMPLIED
                 >
 
         <!ELEMENT param EMPTY>

@@ -1,4 +1,4 @@
-<!ELEMENT resources (sound*, music*, image*, sheet*, angelcodefont*, map*, param*)>
+<!ELEMENT resources (sound*, music*, image*, sheet*, anim*, spritesheetfont*, unicodefont*, angelcodefont*, map*, param*)>
         <!ATTLIST resources
                 basedir CDATA #REQUIRED
                 >
@@ -31,11 +31,37 @@
                 transparentColor CDATA #IMPLIED
                 >
 
+        <!ELEMENT anim EMPTY>
+        <!ATTLIST anim
+                key CDATA #REQUIRED
+                imgName CDATA #REQUIRED
+                row CDATA #REQUIRED
+                frameDuration CDATA #REQUIRED
+                frames CDATA #IMPLIED
+                flipVertical CDATA #IMPLIED
+                flipHorizontal CDATA #IMPLIED
+                loop CDATA #IMPLIED
+                >
+
+        <!ELEMENT spritesheetfont EMPTY>
+        <!ATTLIST spritesheetfont
+                key CDATA #REQUIRED
+                file CDATA #REQUIRED
+                firstchar CDATA #REQUIRED
+                >
+
         <!ELEMENT angelcodefont EMPTY>
         <!ATTLIST angelcodefont
                 key CDATA #REQUIRED
                 fontFile CDATA #REQUIRED
                 imageFile CDATA #REQUIRED
+                >
+
+        <!ELEMENT unicodefont EMPTY>
+        <!ATTLIST unicodefont
+                key CDATA #REQUIRED
+                file CDATA #REQUIRED
+                fontSize CDATA #IMPLIED
                 >
 
         <!ELEMENT map EMPTY>

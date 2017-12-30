@@ -1,9 +1,9 @@
 package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.TextEntity;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;

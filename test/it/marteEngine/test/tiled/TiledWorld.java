@@ -1,8 +1,8 @@
 package it.marteEngine.test.tiled;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;

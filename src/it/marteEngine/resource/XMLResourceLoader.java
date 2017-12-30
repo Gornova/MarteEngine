@@ -1,4 +1,4 @@
-package it.marteEngine;
+package it.marteEngine.resource;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.font.effects.ColorEffect;
@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.StringTokenizer;
+
 /**
  * The XMLResourceLoader parses an xml document and reads the following known
  * elements:
@@ -52,14 +53,18 @@ public class XMLResourceLoader {
 
 	public void load(InputStream in) throws IOException {
 		try {
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setValidating(true);
+
+			DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+			builder.setErrorHandler(new XmlErrorHandler());
+
 			Document document = builder.parse(in);
 			rootElement = document.getDocumentElement();
 			validateResourceFile();
 
-			Element[] elements = getElementsByTagName("basedir");
-			setBaseDirectory(elements[0]);
+			String baseDir = rootElement.getAttribute("basedir");
+			setBaseDirectory(baseDir);
 
 			for (Element element : getElementsByTagName("sound")) {
 				loadSound(element);
@@ -121,17 +126,15 @@ public class XMLResourceLoader {
 		}
 	}
 
-	private void setBaseDirectory(Element element) {
-		checkRequiredAttributes(element, "path");
-		baseDir = element.getAttribute("path");
+	private void setBaseDirectory(String baseDir) {
 		if (!baseDir.endsWith("/")) {
 			baseDir += "/";
 		}
+		this.baseDir = baseDir;
 		Log.debug("Setting base directory to " + baseDir);
 	}
 
 	private void loadSound(Element element) throws SlickException {
-		checkRequiredAttributes(element, "key", "file");
 		String key = element.getAttribute("key");
 		String file = element.getAttribute("file");
 		Log.debug(formatLoadMsg("sound", key, file));
@@ -139,7 +142,6 @@ public class XMLResourceLoader {
 	}
 
 	private void loadMusic(Element element) throws SlickException {
-		checkRequiredAttributes(element, "key", "file");
 		String key = element.getAttribute("key");
 		String file = element.getAttribute("file");
 		Log.debug(formatLoadMsg("music", key, file));
@@ -147,7 +149,6 @@ public class XMLResourceLoader {
 	}
 
 	private void loadImage(Element element) throws SlickException {
-		checkRequiredAttributes(element, "key", "file");
 		String key = element.getAttribute("key");
 		String file = element.getAttribute("file");
 		Color transparentColor = null;
@@ -169,7 +170,6 @@ public class XMLResourceLoader {
 	}
 
 	private void loadSpriteSheet(Element element) throws SlickException {
-		checkRequiredAttributes(element, "key", "file", "width", "height");
 		String key = element.getAttribute("key");
 		String file = element.getAttribute("file");
 		int width = parseIntAttribute(element, "width");
@@ -188,8 +188,7 @@ public class XMLResourceLoader {
 	}
 
 	private Color decodeColor(Element element) {
-		String transparentColorAsText = element
-				.getAttribute("transparentColor");
+		String transparentColorAsText = element.getAttribute("transparentColor");
 		if (transparentColorAsText != null && !transparentColorAsText.isEmpty()) {
 			return Color.decode(transparentColorAsText);
 		} else {
@@ -198,8 +197,6 @@ public class XMLResourceLoader {
 	}
 
 	private void loadAnimation(Element element) {
-		checkRequiredAttributes(element, "key", "imgName", "frameDuration",
-				"row");
 		String key = element.getAttribute("key");
 		String imgName = element.getAttribute("imgName");
 		int frameDuration = parseIntAttribute(element, "frameDuration");
@@ -285,7 +282,6 @@ public class XMLResourceLoader {
 	}
 
 	private void loadAngelCodeFont(Element element) throws SlickException {
-		checkRequiredAttributes(element, "key", "fontFile", "imageFile");
 		String key = element.getAttribute("key");
 		String fontFile = element.getAttribute("fontFile");
 		String imageFile = element.getAttribute("imageFile");
@@ -300,7 +296,6 @@ public class XMLResourceLoader {
 
 	@SuppressWarnings("unchecked")
 	private void loadUnicodeFont(Element element) throws SlickException {
-		checkRequiredAttributes(element, "key", "file");
 		String key = element.getAttribute("key");
 		String ttfFile = element.getAttribute("file");
 		int fontSize = parseIntAttribute(element, "fontSize", 12);
@@ -316,7 +311,6 @@ public class XMLResourceLoader {
 	}
 
 	private void loadSpriteSheetFont(Element element) {
-		checkRequiredAttributes(element, "key", "file", "firstchar");
 		String key = element.getAttribute("key");
 		String imgName = element.getAttribute("file");
 		char startingChar = element.getAttribute("firstchar").charAt(0);
@@ -334,7 +328,6 @@ public class XMLResourceLoader {
 	}
 
 	private void loadTiledMap(Element element) throws SlickException {
-		checkRequiredAttributes(element, "key", "file");
 		String key = element.getAttribute("key");
 		String file = element.getAttribute("file");
 
@@ -344,32 +337,11 @@ public class XMLResourceLoader {
 	}
 
 	private void loadParameter(Element element) {
-		checkRequiredAttributes(element, "key", "value");
 		String key = element.getAttribute("key");
 		String value = element.getAttribute("value");
 
 		Log.debug(formatLoadMsg("Parameter", key, "value", value));
 		ResourceManager.setParameter(key, value);
-	}
-
-	private void checkRequiredAttributes(Element element, String... attributes) {
-		for (String requiredAttribute : attributes) {
-			if (!element.hasAttribute(requiredAttribute)) {
-				StringBuilder missingAttributes = new StringBuilder();
-
-				for (String attribute : attributes) {
-					if (!element.hasAttribute(attribute)) {
-						if (missingAttributes.length() > 0) {
-							missingAttributes.append(", ");
-						}
-						missingAttributes.append(attribute);
-					}
-				}
-				throw new IllegalArgumentException(
-						"Required attribute(s) missing: " + missingAttributes
-								+ " from element " + element.getNodeName());
-			}
-		}
 	}
 
 	private int parseIntAttribute(Element element, String attributeName,

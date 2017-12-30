@@ -1,8 +1,8 @@
 package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.PlatformerEntity;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;

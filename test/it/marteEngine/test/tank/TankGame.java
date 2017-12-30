@@ -1,7 +1,7 @@
 package it.marteEngine.test.tank;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 

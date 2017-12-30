@@ -1,8 +1,8 @@
 package it.marteEngine.test.pong;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;

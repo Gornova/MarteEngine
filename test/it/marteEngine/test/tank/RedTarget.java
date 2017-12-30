@@ -1,8 +1,8 @@
 package it.marteEngine.test.tank;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.resource.ResourceManager;
 
 /**
  * Simple destroyable target

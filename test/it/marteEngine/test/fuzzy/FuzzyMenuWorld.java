@@ -1,13 +1,9 @@
 package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
+import it.marteEngine.resource.ResourceManager;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;

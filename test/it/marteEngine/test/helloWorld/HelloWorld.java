@@ -1,9 +1,9 @@
 package it.marteEngine.test.helloWorld;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;

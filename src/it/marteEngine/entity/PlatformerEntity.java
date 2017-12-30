@@ -1,6 +1,6 @@
 package it.marteEngine.entity;
 
-import it.marteEngine.ResourceManager;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;

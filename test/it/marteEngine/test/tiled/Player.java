@@ -1,7 +1,7 @@
 package it.marteEngine.test.tiled;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.resource.ResourceManager;
 import it.marteEngine.tween.Ease;
 import it.marteEngine.tween.LinearMotion;
 import org.newdawn.slick.GameContainer;

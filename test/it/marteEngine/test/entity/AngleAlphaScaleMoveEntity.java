@@ -1,7 +1,7 @@
 package it.marteEngine.test.entity;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.resource.ResourceManager;
 
 /**
  * some smart test entity that can rotate and scale and change alpha and move

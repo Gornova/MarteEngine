@@ -1,7 +1,7 @@
 package it.marteEngine.test.tank;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.resource.ResourceManager;
 
 /**
  * Invulnerable target

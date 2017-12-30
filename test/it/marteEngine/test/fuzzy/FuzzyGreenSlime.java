@@ -1,12 +1,11 @@
 package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PhysicsEntity;
 import it.marteEngine.entity.PlatformerEntity;
+import it.marteEngine.resource.ResourceManager;
 import it.marteEngine.tween.Tweener;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;

@@ -1,7 +1,7 @@
 package it.marteEngine.test.pong;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;

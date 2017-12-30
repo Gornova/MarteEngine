@@ -1,6 +1,6 @@
 package it.marteEngine.test.tiled;
 
-import it.marteEngine.ResourceManager;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;

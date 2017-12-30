@@ -1,7 +1,7 @@
 package it.marteEngine.test.platformer;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.SlickException;
 
 public class Block extends Entity {

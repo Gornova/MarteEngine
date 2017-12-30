@@ -1,5 +1,6 @@
 package it.marteEngine;
 
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.openal.SoundStore;
 import org.newdawn.slick.util.Log;

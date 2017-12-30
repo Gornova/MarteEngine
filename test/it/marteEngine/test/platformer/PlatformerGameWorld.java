@@ -1,9 +1,8 @@
 package it.marteEngine.test.platformer;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.entity.PlatformerEntity;
-
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;

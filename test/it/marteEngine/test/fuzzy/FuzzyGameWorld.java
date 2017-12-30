@@ -2,12 +2,12 @@ package it.marteEngine.test.fuzzy;
 
 import it.marteEngine.CameraFollowStyle;
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
 import it.marteEngine.entity.Alarm;
 import it.marteEngine.entity.Entity;
 import it.marteEngine.entity.PlatformerEntity;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;

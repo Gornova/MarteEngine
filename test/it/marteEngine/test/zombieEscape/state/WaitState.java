@@ -1,17 +1,16 @@
 package it.marteEngine.test.zombieEscape.state;
 
 import it.marteEngine.ME;
-import it.marteEngine.ResourceManager;
 import it.marteEngine.State;
 import it.marteEngine.entity.Entity;
-
-import java.util.List;
-
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.util.Log;
+
+import java.util.List;
 
 public class WaitState implements State {
 

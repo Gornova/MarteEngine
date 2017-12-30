@@ -1,7 +1,7 @@
 package it.marteEngine.game.starcleaner;
 
-import it.marteEngine.ResourceManager;
 import it.marteEngine.entity.Entity;
+import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;

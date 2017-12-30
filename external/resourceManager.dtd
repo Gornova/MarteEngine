@@ -1,0 +1,51 @@
+<!ELEMENT resources (sound*, music*, image*, sheet*, angelcodefont*, map*, param*)>
+        <!ATTLIST resources
+                basedir CDATA #REQUIRED
+                >
+
+        <!ELEMENT sound EMPTY>
+        <!ATTLIST sound
+                key CDATA #REQUIRED
+                file CDATA #REQUIRED
+                >
+
+        <!ELEMENT music EMPTY>
+        <!ATTLIST music
+                key CDATA #REQUIRED
+                file CDATA #REQUIRED
+                >
+
+        <!ELEMENT image EMPTY>
+        <!ATTLIST image
+                key CDATA #REQUIRED
+                file CDATA #REQUIRED
+                transparentColor CDATA #IMPLIED
+                >
+
+        <!ELEMENT sheet EMPTY>
+        <!ATTLIST sheet
+                key CDATA #REQUIRED
+                file CDATA #REQUIRED
+                width CDATA #REQUIRED
+                height CDATA #REQUIRED
+                transparentColor CDATA #IMPLIED
+                >
+
+        <!ELEMENT angelcodefont EMPTY>
+        <!ATTLIST angelcodefont
+                key CDATA #REQUIRED
+                fontFile CDATA #REQUIRED
+                imageFile CDATA #REQUIRED
+                >
+
+        <!ELEMENT map EMPTY>
+        <!ATTLIST map
+                key CDATA #REQUIRED
+                file CDATA #REQUIRED
+                >
+
+        <!ELEMENT param EMPTY>
+        <!ATTLIST param
+                key CDATA #REQUIRED
+                value CDATA #REQUIRED
+                >

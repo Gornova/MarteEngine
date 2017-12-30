@@ -26,8 +26,8 @@
         <!ATTLIST sheet
                 key CDATA #REQUIRED
                 file CDATA #REQUIRED
-                width CDATA #REQUIRED
-                height CDATA #REQUIRED
+                tileWidth CDATA #REQUIRED
+                tileHeight CDATA #REQUIRED
                 transparentColor CDATA #IMPLIED
                 >
 

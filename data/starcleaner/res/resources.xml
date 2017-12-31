@@ -1,25 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- possible resource settings are valid, transparentColor is optional
-	<basedir path="" /> 
-	<sound key="" file="" />
-	<music key="" file="" />
-	<image key="" file="" transparentColor=""/> 
-	<sheet key="" file="" width="" height="" transparentColor=""/>
-	<angelcodefont key="" fontFile="" imageFile=""/>
-	<param key="" value="">
--->
-	
-<resources>
-	<!-- basedir -->
-	<basedir path="data/starcleaner/res" />
-	<!-- sounds -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE resources SYSTEM "http://gornova.github.io/MarteEngine/0.3/resourceManager.dtd">
+
+<resources baseDir="data/starcleaner/res">
 	<sound key="bump" file="bump.wav" />
 	<sound key="hit" file="hit.wav" />
 	<sound key="jump" file="jump.wav" />
 	<sound key="pickupstar" file="pickupstar.wav" />
 	<sound key="allpickedup" file="allstarscollected.wav" />
-	<!-- songs -->
-	<!-- images -->
+
 	<image key="title" file="title.png" />
 	<image key="background" file="background.png" />
 	<image key="backgroundnight" file="backgroundnight.png" />
@@ -35,9 +23,9 @@
 	<image key="spikesup" file="spikesup.png" />
 	<image key="spikesdown" file="spikesdown.png" />
 	<image key="sign" file="sign.png" />
-	<!-- sheets -->
-	<sheet key="crow" file="crowsheet.png" width="40" height="40" />
-	<sheet key="angel" file="angelsheet.png" width="40" height="40" />
-	<!-- fonts -->
+
+	<sheet key="crow" file="crowsheet.png" tileWidth="40" tileHeight="40" />
+	<sheet key="angel" file="angelsheet.png" tileWidth="40" tileHeight="40" />
+
 	<angelcodefont key="bradleyhanditc24" fontFile="bradleyhanditc24.fnt" imageFile="bradleyhanditc24.png"/>
 </resources>

@@ -2,7 +2,6 @@ package it.marteEngine.test.helloWorld;
 
 import it.marteEngine.ME;
 import it.marteEngine.World;
-import it.marteEngine.actor.StaticActor;
 import it.marteEngine.resource.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -19,11 +18,7 @@ public class HelloWorld extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		ResourceManager.loadResources("data/helloWorld/resources.xml");
-
-		StaticActor helloWorld = new StaticActor(300, 250, 35, 35,
-				ResourceManager.getImage("hello"));
-		World world = new World(0, container);
-		world.add(helloWorld);
+		World world = new TextOnlyWorld(0, container);
 		addState(world);
 	}
 
@@ -36,5 +31,4 @@ public class HelloWorld extends StateBasedGame {
 			container.setTargetFrameRate(60);
 			container.start();
 	}
-
 }

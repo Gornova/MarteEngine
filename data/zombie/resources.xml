@@ -1,19 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- possible resource settings are valid, transparentColor is optional 
-	<sound key="" file="" />
-	<music key="" file="" />
-	<image key="" file="" transparentColor=""/> 
-	<sheet key="" file="" width="" height="" transparentColor=""/>
-	<angelcodefont key="" fontFile="" imageFile=""/>
-	<param key="" value="">
--->
-	
-<resources>
-	<!-- basedir -->
-	<basedir path="data/zombie" />
-	<!-- sounds -->
-	<!-- songs -->
-	<!-- images -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE resources SYSTEM "http://gornova.github.io/MarteEngine/0.3/resourceManager.dtd">
+
+<resources baseDir="data/zombie">
 	<image key="player" file="player.gif" transparentColor=""/>
 	<image key="zombie" file="zombie-icons-64.png" />
 	
@@ -21,7 +9,4 @@
 	<image key="alert" file="icon-exclamation.gif" />
 	<image key="move" file="move.png" />
 	<image key="attack" file="sword-icon.png" />
-	
-	<!-- sheets -->
-	<!-- fonts -->
 </resources>

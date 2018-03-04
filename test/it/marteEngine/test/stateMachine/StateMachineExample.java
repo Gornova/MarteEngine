@@ -13,31 +13,31 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class StateMachineExample extends StateBasedGame {
 
-	public StateMachineExample() {
-		super("StateMachineExample");
-	}
+  public StateMachineExample() {
+    super("StateMachineExample");
+  }
 
-	@Override
-	public void initStatesList(GameContainer container) throws SlickException {
+  @Override
+  public void initStatesList(GameContainer container) throws SlickException {
 
-		World world = new World(0, container);
-		world.init(container, this);
+    World world = new World(0, container);
+    world.init(container, this);
 
-		Entity e = new StaticActor(100, 100, 100, 100, "data/cross.png");
-		e.speed = new Vector2f(8, 8);
-		e.stateManager.addAll(new IdleState(e), new MovingState(e),
-				new CombatState(e));
-		e.stateManager.enter("idle_state");
-		world.add(e);
-		addState(world);
-	}
+    Entity e = new StaticActor(100, 100, 100, 100, "data/cross.png");
+    e.speed = new Vector2f(8, 8);
+    e.stateManager.addAll(new IdleState(e), new MovingState(e),
+        new CombatState(e));
+    e.stateManager.enter("idle_state");
+    world.add(e);
+    addState(world);
+  }
 
-	public static void main(String[] argv) throws SlickException {
-			ME.keyRestart = Input.KEY_R;
-			AppGameContainer container = new AppGameContainer(
-					new StateMachineExample(), 800, 600, false);
-			container.setTargetFrameRate(30);
-			container.start();
-	}
+  public static void main(String[] argv) throws SlickException {
+    ME.keyRestart = Input.KEY_R;
+    AppGameContainer container = new AppGameContainer(
+        new StateMachineExample(), 800, 600, false);
+    container.setTargetFrameRate(30);
+    container.start();
+  }
 
 }

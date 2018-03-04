@@ -15,56 +15,56 @@ import java.util.List;
 
 public class AlertState implements State {
 
-	private Entity zombie;
+  private Entity zombie;
 
-	private int radar = 300;
-	private Circle radarCircle;
-	private Image alertImage;
+  private int radar = 300;
+  private Circle radarCircle;
+  private Image alertImage;
 
-	private float timer = 0;
+  private float timer = 0;
 
-	public AlertState(Entity zombie) {
-		this.zombie = zombie;
-	}
+  public AlertState(Entity zombie) {
+    this.zombie = zombie;
+  }
 
-	public void init() {
-		Log.debug("i'm alert");
-		radarCircle = new Circle(zombie.x + zombie.width / 2, zombie.y
-				+ zombie.height / 2, radar);
-		alertImage = ResourceManager.getImage("alert");
-	}
+  public void init() {
+    Log.debug("i'm alert");
+    radarCircle = new Circle(zombie.x + zombie.width / 2, zombie.y
+        + zombie.height / 2, radar);
+    alertImage = ResourceManager.getImage("alert");
+  }
 
-	public void update(GameContainer container, int delta) {
-		radarCircle = new Circle(zombie.x + zombie.width / 2, zombie.y
-				+ zombie.height / 2, radar);
-		timer += delta;
-		if (timer >= 1000) {
-			timer = 0;
+  public void update(GameContainer container, int delta) {
+    radarCircle = new Circle(zombie.x + zombie.width / 2, zombie.y
+        + zombie.height / 2, radar);
+    timer += delta;
+    if (timer >= 1000) {
+      timer = 0;
 
-			List<Entity> onSight = ME.world.intersect(radarCircle);
-			for (Entity ent : onSight) {
-				if (ent instanceof Player) {
-					Log.info("enemy confirmed, need to move!");
-					zombie.stateManager.enter("move_state");
-				}
-			}
-		}
-	}
+      List<Entity> onSight = ME.world.intersect(radarCircle);
+      for (Entity ent : onSight) {
+        if (ent instanceof Player) {
+          Log.info("enemy confirmed, need to move!");
+          zombie.stateManager.enter("move_state");
+        }
+      }
+    }
+  }
 
-	public void render(Graphics g) {
-		g.drawImage(zombie.getCurrentImage(), zombie.x, zombie.y);
+  public void render(Graphics g) {
+    g.drawImage(zombie.getCurrentImage(), zombie.x, zombie.y);
 
-		// render status image on top left of parent image
-		g.drawImage(alertImage, zombie.x - 10, zombie.y - 10);
+    // render status image on top left of parent image
+    g.drawImage(alertImage, zombie.x - 10, zombie.y - 10);
 
-		if (ME.debugEnabled) {
-			g.draw(radarCircle);
-		}
-	}
+    if (ME.debugEnabled) {
+      g.draw(radarCircle);
+    }
+  }
 
-	@Override
-	public String getName() {
-		return "alert_state";
-	}
+  @Override
+  public String getName() {
+    return "alert_state";
+  }
 
 }

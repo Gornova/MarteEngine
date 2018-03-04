@@ -1,3 +1,5 @@
 /build.num
-/dist
+/MANIFEST.MF
+/target
 /save.dat
+/bin/

@@ -9,76 +9,76 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class PongBarActor extends Entity {
 
-	public static final String STAND_DOWN = "stand_down";
-	public static final String STAND_UP = "stand_up";
+  public static final String STAND_DOWN = "stand_down";
+  public static final String STAND_UP = "stand_up";
 
-	public Vector2f mySpeed = new Vector2f(6, 6);
+  public Vector2f mySpeed = new Vector2f(6, 6);
 
-	public boolean attacking = false;
+  public boolean attacking = false;
 
-	public PongBarActor(float x, float y, String name, int up, int down) {
-		super(x, y);
+  public PongBarActor(float x, float y, String name, int up, int down) {
+    super(x, y);
 
-		// set id
-		this.name = name;
+    // set id
+    this.name = name;
 
-		// load spriteSheet
-		setGraphic(ResourceManager.getImage("bar"));
+    // load spriteSheet
+    setGraphic(ResourceManager.getImage("bar"));
 
-		// player rendered above everything
-		depth = ME.Z_LEVEL_TOP;
+    // player rendered above everything
+    depth = ME.Z_LEVEL_TOP;
 
-		// define labels for the key
-		defineControls(up, down);
+    // define labels for the key
+    defineControls(up, down);
 
-		// define collision box and type
-		setHitBox(0, 0, width, height);
-		addType(name, SOLID);
-	}
+    // define collision box and type
+    setHitBox(0, 0, width, height);
+    addType(name, SOLID);
+  }
 
-	private void defineControls(int up, int down) {
-		bindToKey(ME.WALK_UP, up);
-		bindToKey(ME.WALK_DOWN, down);
-	}
+  private void defineControls(int up, int down) {
+    bindToKey(ME.WALK_UP, up);
+    bindToKey(ME.WALK_DOWN, down);
+  }
 
-	@Override
-	public void update(GameContainer container, int delta)
-			throws SlickException {
-		super.update(container, delta);
+  @Override
+  public void update(GameContainer container, int delta)
+      throws SlickException {
+    super.update(container, delta);
 
-		// movements
-		updateMovements();
-	}
+    // movements
+    updateMovements();
+  }
 
-	private void updateMovements() {
+  private void updateMovements() {
 
-		if (check(ME.WALK_UP)) {
-			moveUp();
-		} else if (check(ME.WALK_DOWN)) {
-			moveDown();
-		}
+    if (check(ME.WALK_UP)) {
+      moveUp();
+    } else if (check(ME.WALK_DOWN)) {
+      moveDown();
+    }
 
-	}
+  }
 
-	public void moveDown() {
-		if (collide(SOLID, x, y + mySpeed.y) == null
-				&& y + mySpeed.y + height < 600) {
-			y += mySpeed.y;
-		}
-	}
+  public void moveDown() {
+    if (collide(SOLID, x, y + mySpeed.y) == null
+        && y + mySpeed.y + height < 600) {
+      y += mySpeed.y;
+    }
+  }
 
-	public void moveUp() {
-		if (collide(SOLID, x, y - mySpeed.y) == null && y - mySpeed.y > 0) {
-			y -= mySpeed.y;
-		}
-	}
+  public void moveUp() {
+    if (collide(SOLID, x, y - mySpeed.y) == null && y - mySpeed.y > 0) {
+      y -= mySpeed.y;
+    }
+  }
 
-	public boolean isUpMoving() {
-		return isCurrentAnim(ME.WALK_UP);
-	}
+  public boolean isUpMoving() {
+    return isCurrentAnim(ME.WALK_UP);
+  }
 
-	public boolean isDownMoving() {
-		return isCurrentAnim(ME.WALK_DOWN);
-	}
+  public boolean isDownMoving() {
+    return isCurrentAnim(ME.WALK_DOWN);
+  }
 
 }

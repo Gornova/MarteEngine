@@ -3,7 +3,6 @@ package it.marteEngine.test.pong;
 import it.marteEngine.ME;
 import it.marteEngine.World;
 import it.marteEngine.actor.StaticActor;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -12,125 +11,125 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class PongGameState extends World {
 
-	/**
-	 * Timer for a new ball
-	 */
-	private int newBallTimer = 0;
+  /**
+   * Timer for a new ball
+   */
+  private int newBallTimer = 0;
 
-	private int lastDir = 1;
+  private int lastDir = 1;
 
-	/**
-	 * Points for victory
-	 */
-	private static final int VICTORY = 5;
+  /**
+   * Points for victory
+   */
+  private static final int VICTORY = 5;
 
-	private boolean victory = false;
+  private boolean victory = false;
 
-	public PongGameState(int id) {
-		super(id);
-	}
+  public PongGameState(int id) {
+    super(id);
+  }
 
-	@Override
-	public void init(GameContainer container, StateBasedGame game)
-			throws SlickException {
-		super.init(container, game);
-		// create players
-		add(new PongBarActor(20, container.getHeight() / 2, "player1",
-				Input.KEY_W, Input.KEY_S));
-		add(new PongBarActor(container.getWidth() - 26,
-				container.getHeight() / 2, "player2", Input.KEY_UP,
-				Input.KEY_DOWN));
-		add(new StaticActor(0, 0, container.getWidth(), 1, ""));
-		add(new StaticActor(0, container.getHeight(), container.getWidth(), 1,
-				""));
+  @Override
+  public void init(GameContainer container, StateBasedGame game)
+      throws SlickException {
+    super.init(container, game);
+    // create players
+    add(new PongBarActor(20, container.getHeight() / 2, "player1",
+        Input.KEY_W, Input.KEY_S));
+    add(new PongBarActor(container.getWidth() - 26,
+        container.getHeight() / 2, "player2", Input.KEY_UP,
+        Input.KEY_DOWN));
+    add(new StaticActor(0, 0, container.getWidth(), 1, ""));
+    add(new StaticActor(0, container.getHeight(), container.getWidth(), 1,
+        ""));
 
-		newBallTimer = 0;
+    newBallTimer = 0;
 
-		resetScore();
-	}
+    resetScore();
+  }
 
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g)
-			throws SlickException {
-		super.render(container, game, g);
+  @Override
+  public void render(GameContainer container, StateBasedGame game, Graphics g)
+      throws SlickException {
+    super.render(container, game, g);
 
-		if (victory) {
-			int score1 = (Integer) ME.attributes.get("score1");
-			int score2 = (Integer) ME.attributes.get("score2");
+    if (victory) {
+      int score1 = (Integer) ME.attributes.get("score1");
+      int score2 = (Integer) ME.attributes.get("score2");
 
-			if (score1 >= VICTORY) {
-				g.drawString("PLAYER 1 WINS!!", 150, 300);
-			} else if (score2 >= VICTORY) {
-				g.drawString("PLAYER 2 WINS!!", 150, 300);
-			}
+      if (score1 >= VICTORY) {
+        g.drawString("PLAYER 1 WINS!!", 150, 300);
+      } else if (score2 >= VICTORY) {
+        g.drawString("PLAYER 2 WINS!!", 150, 300);
+      }
 
-			g.drawString("PRESS SPACE TO play again!", 150, 400);
-			return;
-		}
+      g.drawString("PRESS SPACE TO play again!", 150, 400);
+      return;
+    }
 
-		g.drawString("SCORE : " + ME.attributes.get("score1"), 50, 20);
-		g.drawString("SCORE : " + ME.attributes.get("score2"),
-				container.getWidth() - 150, 20);
+    g.drawString("SCORE : " + ME.attributes.get("score1"), 50, 20);
+    g.drawString("SCORE : " + ME.attributes.get("score2"),
+        container.getWidth() - 150, 20);
 
-	}
+  }
 
-	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
-		if (victory) {
-			if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
-				victory = false;
-				resetScore();
-				game.enterState(PongTest.GAME_STATE);
-			}
-			return;
-		}
+  @Override
+  public void update(GameContainer container, StateBasedGame game, int delta)
+      throws SlickException {
+    if (victory) {
+      if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
+        victory = false;
+        resetScore();
+        game.enterState(PongTest.GAME_STATE);
+      }
+      return;
+    }
 
-		if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
-			game.enterState(0);
-		}
+    if (container.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+      game.enterState(0);
+    }
 
-		// game victory stop check
-		int score1 = (Integer) ME.attributes.get("score1");
-		int score2 = (Integer) ME.attributes.get("score2");
-		if (score1 >= VICTORY || score2 >= VICTORY) {
-			victory = true;
-		}
+    // game victory stop check
+    int score1 = (Integer) ME.attributes.get("score1");
+    int score2 = (Integer) ME.attributes.get("score2");
+    if (score1 >= VICTORY || score2 >= VICTORY) {
+      victory = true;
+    }
 
-		super.update(container, game, delta);
+    super.update(container, game, delta);
 
-		if (container.getInput().isKeyPressed(Input.KEY_R)) {
-			leave(container, game);
-		}
-		// if there is no ball, add one after 2 seconds
-		if (find(BallActor.NAME) == null && newBallTimer <= 0) {
-			newBallTimer = 2000;
-		}
-		if (newBallTimer > 0) {
-			newBallTimer -= delta;
-			if (newBallTimer <= 0) {
-				newBallTimer = 0;
-				addNewBall(container);
-			}
-		}
+    if (container.getInput().isKeyPressed(Input.KEY_R)) {
+      leave(container, game);
+    }
+    // if there is no ball, add one after 2 seconds
+    if (find(BallActor.NAME) == null && newBallTimer <= 0) {
+      newBallTimer = 2000;
+    }
+    if (newBallTimer > 0) {
+      newBallTimer -= delta;
+      if (newBallTimer <= 0) {
+        newBallTimer = 0;
+        addNewBall(container);
+      }
+    }
 
-	}
+  }
 
-	private void resetScore() {
-		ME.attributes.put("score1", 0);
-		ME.attributes.put("score2", 0);
-	}
+  private void resetScore() {
+    ME.attributes.put("score1", 0);
+    ME.attributes.put("score2", 0);
+  }
 
-	private void addNewBall(GameContainer container) {
-		BallActor ball = new BallActor(container.getWidth() / 2,
-				container.getHeight() / 2);
-		if (lastDir > 0) {
-			lastDir *= -1;
-		} else {
-			lastDir *= -1;
-		}
-		ball.mySpeed.x *= lastDir;
-		add(ball);
-	}
+  private void addNewBall(GameContainer container) {
+    BallActor ball = new BallActor(container.getWidth() / 2,
+        container.getHeight() / 2);
+    if (lastDir > 0) {
+      lastDir *= -1;
+    } else {
+      lastDir *= -1;
+    }
+    ball.mySpeed.x *= lastDir;
+    add(ball);
+  }
 
 }

@@ -414,15 +414,6 @@ public abstract class Entity implements Comparable<Entity> {
   }
 
   /**
-   * @deprecated As of release 0.3, replaced by
-   * {@link #bindToKey(String, int...)} and
-   * {@link #bindToMouse(String, int...)}
-   */
-  public void define(String command, int... keys) {
-    bindToKey(command, keys);
-  }
-
-  /**
    * @see InputManager#bindToKey(String, int...)
    */
   public void bindToKey(String command, int... keys) {

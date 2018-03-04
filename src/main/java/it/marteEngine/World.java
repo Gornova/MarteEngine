@@ -68,6 +68,11 @@ public class World extends BasicGameState {
    **/
   protected InputManager input;
 
+  /**
+   * If true the input will be cleared when entering this world
+   */
+  private boolean autoCleanInputOnEnter = true;
+
   public World(int id) {
     this.id = id;
   }
@@ -77,8 +82,7 @@ public class World extends BasicGameState {
     this.container = container;
   }
 
-  public void init(GameContainer container, StateBasedGame game)
-      throws SlickException {
+  public void init(GameContainer container, StateBasedGame game) throws SlickException {
     this.container = container;
     input = new InputManager(container.getInput());
 
@@ -90,14 +94,17 @@ public class World extends BasicGameState {
   }
 
   @Override
-  public void enter(GameContainer container, StateBasedGame game)
-      throws SlickException {
+  public void enter(GameContainer container, StateBasedGame game) throws SlickException {
     ME.world = this;
+
+    if (autoCleanInputOnEnter) {
+      container.getInput().clearControlPressedRecord();
+      container.getInput().clearKeyPressedRecord();
+      container.getInput().clearMousePressedRecord();
+    }
   }
 
-  public void render(GameContainer container, StateBasedGame game, Graphics g)
-      throws SlickException {
-
+  public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
     renderedEntities = 0;
     // first render entities below camera
     for (Entity e : belowCamera) {
@@ -138,8 +145,7 @@ public class World extends BasicGameState {
     ME.render(container, game, g);
   }
 
-  private void renderEntity(Entity e, Graphics g, GameContainer container)
-      throws SlickException {
+  private void renderEntity(Entity e, Graphics g, GameContainer container) throws SlickException {
     renderedEntities++;
     e.render(container, g);
 
@@ -148,8 +154,7 @@ public class World extends BasicGameState {
     }
   }
 
-  public void update(GameContainer container, StateBasedGame game, int delta)
-      throws SlickException {
+  public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
     if (container == null)
       throw new SlickException("no container set");
 
@@ -390,6 +395,10 @@ public class World extends BasicGameState {
   public void setHeight(int height) {
     this.height = height;
     camera.setSceneHeight(height);
+  }
+
+  public void setAutoCleanInputOnEnter(boolean autoCleanInputOnEnter) {
+    this.autoCleanInputOnEnter = autoCleanInputOnEnter;
   }
 
   public List<Entity> findEntityWithType(String type) {
